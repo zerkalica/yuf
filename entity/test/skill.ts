@@ -1,5 +1,5 @@
 namespace $ {
-	export class $nxr_entity_test_talent extends $nxr_entity {
+	export class $yuf_entity_test_skill extends $yuf_entity {
 		defaults() {
 			return {
 				id: '',

@@ -1,12 +1,12 @@
 namespace $ {
-	export class $nxr_entity extends $mol_object {
+	export class $yuf_entity extends $mol_object {
 		constructor(id?: string) {
 			super()
 			if (id) this.id = $mol_const(id)
 		}
 
 		@ $mol_mem_key
-		static factory<Entity extends $nxr_entity>(
+		static factory<Entity extends $yuf_entity>(
 			this: { new(id?: string) : Entity },
 			id: string
 		) {
@@ -15,9 +15,9 @@ namespace $ {
 
 		// @ts-ignore
 		@ $mol_action
-		static add<Entity extends $nxr_entity>(
+		static add<Entity extends $yuf_entity>(
 			this: { new() : Entity },
-			data: Partial<ReturnType<Entity['defaults']>> & { id?: string }
+			data?: Partial<ReturnType<Entity['defaults']>> & { id?: string }
 		): Entity {
 			const id = data?.id ?? (this as unknown as { create_id(): string }).create_id()
 
@@ -25,7 +25,7 @@ namespace $ {
 				factory(id: string): Entity
 			}).factory(id)
 
-		    entity.data(data)
+		    entity.data(data ?? entity.defaults())
 
 		    const t = this as unknown as {
 				ids(next?: readonly string[]): readonly string[]
@@ -42,7 +42,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		static search<Entity extends $nxr_entity>(
+		static search<Entity extends $yuf_entity>(
 			this: {
 				new() : Entity,
 				$: $
@@ -55,7 +55,7 @@ namespace $ {
 
 		// @ts-ignore
 		@ $mol_action
-		static remove<Entity extends $nxr_entity>(
+		static remove<Entity extends $yuf_entity>(
 			this: {
 				new() : Entity,
 				$: $
@@ -64,6 +64,14 @@ namespace $ {
 			id: string
 		) {
 			this.ids(this.ids().filter(target_id => id !== target_id ))
+		}
+
+		clone(patch?: Partial<ReturnType<typeof this['defaults']>>) {
+			const next = { ...JSON.parse(JSON.stringify(this.data())), patch }
+
+			return (this.constructor as unknown as {
+				add(patch: any): any
+			}).add(next)
 		}
 
 		@ $mol_action
@@ -94,11 +102,42 @@ namespace $ {
 			return (this.$.$mol_state_local.value(id, next) ?? null) as null | ReturnType<typeof this['defaults']>
 		}
 
-		remove() { this.data(null) }
+		@ $mol_mem
+		synced(next?: null) {
+			const draft = this.draft()
+			if (! draft) return true
+
+			try {
+				// this.$.$gd_kit_batch.transaction(() => {
+					this.data(draft)
+					this.draft(null)
+				// })
+			} catch (e) {
+				if ($yuf_fail_catch(e)) this.draft(null)
+				$mol_fail_hidden(e)
+			}
+
+			return true
+		}
+
+		@ $mol_action
+		save(next: Partial<ReturnType<typeof this['defaults']>> | null) {
+			this.draft(next)
+			this.synced()
+		}
+
+		@ $mol_action
+		save_async(next: Partial<ReturnType<typeof this['defaults']>> | null) {
+			new this.$.$mol_after_frame(() => $mol_wire_async(this).save(next))
+		}
+
+		remove() {
+			this.data(null)
+		}
 		refresh() { this.data(false) }
 
 		@ $mol_mem
-		protected draft(next?: ReturnType<typeof this['data']> | null) {
+		draft(next?: Partial<ReturnType<typeof this['data']>> | null) {
 			return next ?? null
 		}
 
@@ -120,16 +159,9 @@ namespace $ {
 			// то без draft каждый вызов value будет data на момент первого вызова value
 			// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
 			const next = { ...data, [ field ]: value } as ReturnType<typeof this['data']>
-			this.draft(next)
-
-			try {
-				const result = this.data( next )?.[ field as never ] as NonNullable<ReturnType< this['data'] >>[ Field ]
-				this.draft(null)
-				return result
-			} catch (e) {
-				if ($mol_fail_catch(e)) this.draft(null)
-				$mol_fail_hidden(e)
-			}
+			this.save(next)
+			const result = this.data()?.[ field as never ] as NonNullable<ReturnType< this['data'] >>[ Field ]
+			return result
 		}
 
 	}

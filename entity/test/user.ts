@@ -1,11 +1,11 @@
 namespace $ {
-	export class $nxr_entity_test_user extends $nxr_entity {
+	export class $yuf_entity_test_user extends $yuf_entity {
 		defaults() {
 			return {
 				id: '',
-				name: '',
+				name: 'New user',
 				age: 22,
-				talent_ids: [] as readonly string[]
+				unit_ids: [] as readonly string[]
 			}
 		}
 
@@ -13,25 +13,19 @@ namespace $ {
 		age(next?: number) { return this.value('age', next) }
 
 		@ $mol_mem
-		talent_ids(next?: readonly string[]) {
-			return this.value('talent_ids', next) ?? []
+		unit_ids(next?: readonly string[]) {
+			return this.value('unit_ids', next) ?? []
 		}
 
 		@ $mol_action
-		talent_add(id: string) {
-			this.talent_ids([ ... this.talent_ids(), id ])
+		unit_add(id: string) {
+			this.unit_ids([ ... this.unit_ids(), id ])
 		}
 
 		@ $mol_action
-		talent_remove(id: string) {
-			this.talent_ids(this.talent_ids().filter(target_id => target_id !== id))
+		unit_remove(id: string) {
+			this.unit_ids(this.unit_ids().filter(target_id => target_id !== id))
 		}
-
-		@ $mol_mem
-		talents() {
-			return this.talent_ids().map(id => this.$.$nxr_entity_test_talent.factory(id))
-		}
-
 	}
 
 

@@ -1,0 +1,15 @@
+$yuf_entity_demo_unit_page $yuf_entity_page
+	model $yuf_entity_test_unit
+	form_fields /
+		<= Title_field $mol_form_field
+			name \Title
+			control <= Title $mol_string
+				value? <=> title? \
+	tools_addons /
+		<= Skill_list_link $mol_link
+			hint \Skills
+			arg <= skill_list_enabled_arg *
+			sub / <= Skill_list_icon $mol_icon_unity
+	pages /
+		<= Main
+		<= Skill_list $mol_page

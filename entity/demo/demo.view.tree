@@ -1,0 +1,5 @@
+$yuf_entity_demo $mol_book2_catalog
+	menu_title \Game
+	spreads *
+		users <= Users $yuf_entity_demo_user_list
+		units <= Units $yuf_entity_demo_unit_list
