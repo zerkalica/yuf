@@ -1,0 +1,15 @@
+$yuf_ws_status $mol_button_minor
+	attr *
+		^
+		yuf_ws_status <= ws_status \connecting
+	hint_prefix @ \Связь с сервером: {ws_status} {socket_id}
+	ws_error \
+	ws $yuf_ws
+	statuses *
+		error <= error_msg @ \ошибка
+		open <= open_msg @ \ок
+		connecting <= connecting_msg @ \соединяется
+		sleep <= sleep_msg @ \спит
+	sub /$mol_view
+		<= Icon $yuf_ws_icon
+			status <= ws_status
