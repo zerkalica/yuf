@@ -1,0 +1,12 @@
+$yuf_chess_piece $mol_icon
+	attr *
+		^
+		yuf_chess_piece_color <= color \w
+	type \p
+	icons *$mol_icon
+		b <= Bishop $mol_icon_chess_bishop - слон
+		k <= King $mol_icon_chess_king - король
+		n <= Knight $mol_icon_chess_knight - конь
+		p <= Pawn $mol_icon_chess_pawn - пешка
+		q <= Queen $mol_icon_chess_queen - королева
+		r <= Rook $mol_icon_chess_rook - ладья

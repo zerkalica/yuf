@@ -1,0 +1,10 @@
+$yuf_chess_cell $mol_button
+	minimal_width 36
+	minimal_height 36
+	attr *
+		^
+		yuf_chess_cell_id <= id \
+		yuf_chess_cell_color <= color \w
+		yuf_chess_cell_hilite <= hilited false
+	sub /$mol_view
+		<= Sub null

@@ -1,0 +1,9 @@
+:root {
+	--yuf_chess_board_round: .5rem;
+	--yuf_chess_cell_round: .25rem;
+	/* --yuf_chess_cell_border: rgb(113, 79, 33); */
+	--yuf_chess_cell_white: #b5915f;
+	--yuf_chess_cell_black: #7b3109;
+	--yuf_chess_cell_hilite: #f41a03;
+}
+

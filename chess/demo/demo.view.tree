@@ -1,0 +1,13 @@
+$yuf_chess_demo $mol_example_small
+	title \Chess board
+	sub /
+		<= Chess_board $yuf_chess_board
+			model <= chess_model $yuf_chess_model_stockfish
+				moves_str? <=> moves_str? \
+	tags /
+		\drag
+		\dragndrop
+		\chess
+	aspects /
+		\Widget/Plugin
+		\Drag'n'Drop

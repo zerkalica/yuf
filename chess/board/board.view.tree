@@ -1,0 +1,83 @@
+$yuf_chess_board $mol_view
+	active_value_black @ \black
+	active_value_white @ \white
+	win_title @ \Win
+	draw_title @ \Draw
+	levels *string
+		easy <= level_easy @ \level 1
+		medium <= level_medium @ \medium
+		hard <= level_hard @ \hard
+		hardest <= level_hardest @ \hardest
+		nightmare <= level_nightmare @ \nightmare
+	model $yuf_chess_model
+		level? => level? \
+		moves_str? <=> moves_str? \
+	sub <= rows /
+		<= Toolbar $mol_view
+			minimal_height 40
+			sub <= toolbar_content /$mol_view_content
+				<= Active_field $yuf_chess_board_label
+					title <= active_title <= move_title @ \Move
+					content / <= active_value <= active_value_white
+				<= Score_field $mol_view
+					sub / <= score_value? \
+				<= Undo $mol_button_minor
+					hint <= undo_title @ \Undo
+					sub / <= undo_icon $mol_icon_undo
+					click? <=> undo_event? null
+					enabled <= undo_enabled false
+				<= Reset $mol_button_minor
+					hint <= reset_title @ \Reset
+					enabled <= reset_enabled false
+					sub / <= Reset_icon $mol_icon_restart
+					click? <=> reset? null
+				<= Help $mol_button_minor
+					hint <= help_title @ \Help
+					enabled <= help_enabled false
+					sub / <= Help_icon $mol_icon_lightbulb_question
+					click? <=> help? null
+				<= Level $mol_select
+					Filter null
+					value? <=> level?
+					enabled <= help_enabled false
+					dictionary <= levels
+					hint <= level_title @ \Level
+				^ toolbar_bottom /$mol_view_content
+		<= Fields $mol_view
+			attr *
+				yuf_chess_board_gameover <= gameover \
+				yuf_chess_board_ruler <= ruler_enabled true
+			sub <= fields_content /$mol_view
+				<= Left $mol_view sub <= left /$mol_view
+					<= Y_rule*0 $mol_view sub /$mol_view_content
+						<= y_name* \
+				^ cells /
+					<= Cell*0 $yuf_chess_cell
+						id <= cell_id* \
+						hint <= cell_hint* \
+						color <= cell_color* \
+						hilited <= hilited* false
+						enabled <= move_enabled* false
+						click? <=> click*? null
+						Sub <= Cell_piece* null
+				<= Right $mol_view sub <= right /$mol_view
+				<= Bottom $mol_view sub <= bottom /$mol_view
+					<= X_rule*0 $mol_view sub /
+						<= x_name* \
+	Piece* $yuf_chess_board_piece
+		type <= piece_type* \p
+
+$yuf_chess_board_piece $mol_transit
+	Sub <= Icon $yuf_chess_piece
+		type <= type \p
+
+$yuf_chess_board_label $mol_view
+	sub <= rows /$mol_view
+		<= Label $mol_view
+			minimal_height 24
+			sub <= label /$mol_view_content
+				<= title \
+		<= Content $mol_view
+			minimal_height 24
+			sub <= content /
+

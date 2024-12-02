@@ -1,0 +1,17 @@
+{
+	"$yuf_chess_board_reset_title": "Сбросить",
+	"$yuf_chess_board_undo_title": "Отмена хода",
+	"$yuf_chess_board_move_title": "Ходят",
+	"$yuf_chess_board_move_done_title": "Походили",
+	"$yuf_chess_board_help_title": "Помошь",
+	"$yuf_chess_board_win_title": "Победили",
+	"$yuf_chess_board_draw_title": "Ничья",
+	"$yuf_chess_board_level_title": "Сложность",
+	"$yuf_chess_board_active_value_black": "черные",
+	"$yuf_chess_board_active_value_white": "белые",
+	"$yuf_chess_board_level_easy": "просто",
+	"$yuf_chess_board_level_medium": "средне",
+	"$yuf_chess_board_level_hard": "сложно",
+	"$yuf_chess_board_level_hardest": "больно",
+	"$yuf_chess_board_level_nightmare": "кошмар"
+}
