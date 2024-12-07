@@ -17,6 +17,7 @@ $yuf_chess_board $mol_view
 			minimal_height 40
 			sub <= toolbar_content /$mol_view_content
 				<= Active_field $yuf_chess_board_label
+					pending <= pending false
 					title <= active_title <= move_title @ \Move
 					content / <= active_value <= active_value_white
 				<= Score_field $mol_view
@@ -57,7 +58,7 @@ $yuf_chess_board $mol_view
 						hint <= cell_hint* \
 						color <= cell_color* \
 						hilited <= hilited* false
-						enabled <= move_enabled* false
+						enabled <= move_enabled* true
 						click? <=> click*? null
 						Sub <= Cell_piece* null
 				<= Right $mol_view sub <= right /$mol_view
@@ -72,6 +73,9 @@ $yuf_chess_board_piece $mol_transit
 		type <= type \p
 
 $yuf_chess_board_label $mol_view
+	attr *
+		^
+		yuf_chess_board_label_pending <= pending false
 	sub <= rows /$mol_view
 		<= Label $mol_view
 			minimal_height 24

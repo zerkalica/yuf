@@ -33,7 +33,7 @@ namespace $ {
 
 		return {
 			positions,
-			side: side as $yuf_chess_side,
+			side: side as 'b' | 'w',
 			castles: castles?.split('') as null | readonly $yuf_chess_castles[],
 			enpass: (enpass ?? null) as null | $yuf_chess_position,
 			halfmove_count: half_move_count ? Number(half_move_count) : null,

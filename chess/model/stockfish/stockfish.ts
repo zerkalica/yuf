@@ -103,7 +103,7 @@ namespace $ {
 		override tops() {
 			$mol_wire_solid()
 			this.position()
-			const out = this.send(`go depth ${this.depth() + ( this.bot_active() ? 0 : 2 )}`)
+			const out = this.send(`go depth ${this.depth() + ( this.enemy_active() ? 0 : 2 )}`)
 
 			const moves = {} as Record<string, $yuf_chess_move>
 			let move = null as null | $yuf_chess_move

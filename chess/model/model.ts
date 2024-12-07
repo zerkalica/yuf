@@ -1,33 +1,6 @@
 namespace $ {
 
 	export class $yuf_chess_model extends $mol_object {
-		static x_names = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-		static y_names = ['8', '7', '6', '5', '4', '3', '2', '1']
-
-		static x_name_index = this.x_names.reduce((acc, name, index)=> {
-			acc[name] = index
-			return acc
-		}, {} as Record<string, number>)
-
-		static y_name_index = this.y_names.reduce((acc, name, index)=> {
-			acc[name] = index
-			return acc
-		}, {} as Record<string, number>)
-
-		static ids = this.y_names.flatMap(y_name => this.x_names.map(x_name => `${x_name}${y_name}` as $yuf_chess_position))
-
-		static position(id: $yuf_chess_position) {
-			return [this.x_name_index[id[0]] ?? 0, this.y_name_index[id[1]] ?? 0] as const
-		}
-
-		static piece_color(v: string | null) {
-			return v === 'r' || v === 'n' || v === 'b' || v === 'q' || v === 'k' || v === 'b' || v === 'p' ? 'b' : 'w'
-		}
-
-		static cell_color(id: $yuf_chess_position) {
-			const [x, y] = this.position(id)
-			return Boolean((x + y) % 2) ? 'b' : 'w'
-		}
 
 		checkers() { return [] as readonly $yuf_chess_position[] }
 
@@ -51,6 +24,7 @@ namespace $ {
 				.map(str => {
 					const [_, from, to, promotion, score] = str.match(/([a-h][1-8])([a-h][1-8])([rnbq])?(\d+)?/) ?? []
 					if (! from || ! to) return null
+
 					return ({
 						from,
 						to,
@@ -62,7 +36,7 @@ namespace $ {
 		}
 
 		user_score() {
-			const index = this.bot_active() ? -1 : -2
+			const index = this.enemy_active() ? -1 : -2
 			return this.moves().at(index)?.score
 		}
 
@@ -74,7 +48,7 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		bot_active() { return this.active_color() === this.bot_color() }
+		enemy_active() { return this.active_color() === this.enemy_color() }
 
 		best() {
 			if (this.status()) return null
@@ -91,7 +65,7 @@ namespace $ {
 		reset() { this.started_at(null) }
 
 		@ $mol_action
-		move_enrich(move: $yuf_chess_move) {
+		protected move_enrich(move: $yuf_chess_move) {
 			const promotion = move.promotion ?? this.legal(move.from)?.[move.to]?.[0] ?? null
 			const score = move.score ?? this.score(move)
 			if (! score) return null
@@ -101,8 +75,16 @@ namespace $ {
 			return { ...move, promotion, score, color }
 		}
 
+		/**
+		 * Кто-то из вне предлагает ход. Состояние шахмат меняется сразу.
+		 * Пока предложение существует, другие ходы добавляться не могут.
+		 * Также бот не может походить в ответ.
+		 * 
+		 * В этот момент может проигрываться реакция на ход.
+		 * После проигрывания, нужно передать сюда null.
+		 */
 		@ $mol_mem
-		move(move?: $yuf_chess_move | null) {
+		move_suggest(move?: $yuf_chess_move | null) {
 			if (! move) return null
 
 			const normalized = this.move_enrich(move)
@@ -116,64 +98,16 @@ namespace $ {
 			this.moves([ ...this.moves(), move ])
 		}
 
-		static move_apply(positions: ($yuf_chess_piece_id | null)[][], move: $yuf_chess_move) {
-			const [from_x, from_y] = this.position(move.from)
-			const [to_x, to_y] = this.position(move.to)
-
-			const piece_type = (positions[from_y][from_x]?.[0] ?? null) as (null | $yuf_chess_piece_type)
-
-			if (( piece_type === 'p' || piece_type === 'P' ) && from_x !== to_x && from_y !== to_y && ! positions[to_y][to_x]) {
-				// Взятие на проходе
-				const shift_y = to_y > from_y ? -1 : 1
-				positions[to_y + shift_y][to_x] = null
-			}
-
-			// Превращение пешки
-			const promotion_type = ! move.promotion ? null : piece_type === 'p'
-				? move.promotion
-				: move.promotion.toUpperCase() as $yuf_chess_piece_type
-
-			const existing_piece_indices = ! promotion_type ? null
-				: positions.map(row => row.find(cell => cell?.[0] === promotion_type)?.[1] ?? null)
-					.map(index => index !== null ? Number(index) : null)
-
-			// переиспользуем индексы съеденных фигур, если они есть
-			const promotion_index = existing_piece_indices
-				? ([ 0, 1, 2, 3 ].find(i => ! existing_piece_indices?.includes(i) ) ?? 0)
-				: 0
-
-			positions[to_y][to_x] = promotion_type
-				? `${promotion_type}${promotion_index}` as $yuf_chess_piece_id
-				: positions[from_y][from_x]
-
-			positions[from_y][from_x] = null
-
-			if ((piece_type === 'k' || piece_type === 'K') && Math.abs(to_x - from_x) === 2 && from_y === to_y) {
-				// castling, рокировка
-				const sign = to_x > from_x ? 1 : -1
-				let rook_from_x = to_x
-				do {
-					rook_from_x += sign
-					const rook = positions[to_y][rook_from_x]?.[0]
-					if (rook === 'r' || rook === 'R') {
-						const rook_to_x = to_x - sign
-						positions[to_y][rook_to_x] = positions[from_y][rook_from_x]
-						positions[from_y][rook_from_x] = null
-						break
-					}
-				} while(rook_from_x >= 0 && rook_from_x <= 7)
-			}
-
-			return positions
-		}
-		
+		/**
+		 * Актуальное состояние доски
+		 */
 		@ $mol_mem
 		positions() {
 			const positions = this.fen_initial_parts().positions.map(row => row.slice())
 			let moves = this.moves()
 
 			for (const move of moves) {
-				this.$.$yuf_chess_model.move_apply(positions, move)
+				$yuf_chess_position_update(positions, move)
 			}
 
 			return positions
@@ -208,31 +142,41 @@ namespace $ {
 			return $yuf_chess_fen_parts(this.fen_initial_normalized())
 		}
 
-		move_color(move_count = 0) {
+		/**
+		 * Какой цвет активен на каком ходу
+		 */
+		protected move_color(move_count = 0) {
 			const side_initial = this.fen_initial_parts().side
+			if ( (move_count % 2) === 0 ) return side_initial
 
-			const color = (move_count % 2) === 0 ? side_initial : ( side_initial === 'w' ? 'b' : 'w' )
-			return color
+			return side_initial === 'w' ? 'b' : 'w'
 		}
 
+		/**
+		 * Какой цвет сейчас активен
+		 */
 		@ $mol_mem
 		active_color() {
-			const color = this.move_color(this.moves().length)
-			return color
+			return this.move_color(this.moves().length)
 		}
 
-		bot_color() { return 'b' as $yuf_chess_side }
+		enemy_color() { return 'b' as 'b' | 'w' }
+		your_color() { return this.enemy_color() === 'b' ? 'w' : 'b' }
 
 		piece_type(id: $yuf_chess_position) {
 			return ( this.piece_id(id)?.[0] ?? null ) as null | $yuf_chess_piece_type
 		}
 
+		piece_color(id: $yuf_chess_position) {
+			const current_type = this.piece_type(id)
+			return current_type ? $yuf_chess_piece_color(current_type) : null
+		}
+
 		piece_id(id: $yuf_chess_position): $yuf_chess_piece_id | null {
-			const [x, y] = this.$.$yuf_chess_model.position(id)
+			const [x, y] = this.$.$yuf_chess_position_pack(id)
 			const positions = this.positions()
 			return positions[y][x]
 		}
-
 
 		legal(pos: $yuf_chess_position) {
 			return null as Record<$yuf_chess_position, readonly $yuf_chess_promotion[] | null> | null
@@ -240,9 +184,95 @@ namespace $ {
 
 		check_position() { return null as null | $yuf_chess_position }
 
+		/**
+		 * null - игра не окончена
+		 * Остальные значения: конец игры - мат, ничья или пат.
+		 */
 		@ $mol_mem
 		status() {
 			return null as null | 'checkmate' | 'draw' | 'stalemate' // мат, ничья, пат
+		}
+
+		/**
+		 * Выбранная фигура для осуществления хода
+		 */
+		@ $mol_mem
+		selected(next?: $yuf_chess_position | null) {
+			// сбрасывать selected, если походили через help
+			this.moves()
+
+			// Без try/catch будет мерцать доска на каждый ход
+			try {
+				if ( this.status() ) return null
+			} catch (e) {
+				this.$.$mol_fail_log(e)
+			}
+
+			if ( this.move_suggest() ) return null
+
+			if (next && ! this.legal(next)) return null
+			// если доступна только одна позиция, когда вам шах - подсветим ее
+			return next ?? this.check_position()
+		}
+
+		/**
+		 * Подсвечивает варианты ходов для выбранной фигуры
+		 */
+		@ $mol_mem_key
+		hilited(target: $yuf_chess_position) {
+			const selected = this.selected()
+			const legal = selected ? this.legal(selected) : null
+			return Boolean(legal?.[target]) || selected === target
+		}
+
+		/**
+		 * Первый клик - выбирает фигуру
+		 * Второй клик - ходит фигурой, если это возможно
+		 */
+		select(next: $yuf_chess_position) {
+			const prev = this.selected()
+			const pos_type = this.piece_type(next)
+			const pos_color = this.piece_color(next)
+			const active_color = this.active_color()
+
+			if (! prev && ( ! pos_type || pos_color !== active_color ) ) return null
+
+			if (! prev || (pos_color && pos_color === active_color ) ) {
+				return this.selected(next === prev ? null : next)
+			}
+
+			this.move_suggest({ from: prev, to: next })
+			this.selected(null)
+		}
+
+
+		@ $mol_mem
+		bot_move_player() {
+			const best = this.enemy_active() ? this.best() : null
+
+			if (! best) return null
+
+			this.move_suggest(best)
+
+			return null
+		}
+
+		@ $mol_mem
+		replic_player() {
+			const info = this.move_suggest()
+			if (! info) return null
+
+			$mol_wire_sync(console).log(info.color, 'moves to', info.from, info.to, 'score', info.score)
+			this.$.$mol_wait_timeout(1000)
+
+			this.move_suggest(null)
+
+			return null
+		}
+
+		auto() {
+			this.replic_player()
+			this.bot_move_player()
 		}
 	}
 }

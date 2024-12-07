@@ -57,12 +57,12 @@ namespace $ {
 			},
 			'@': {
 				yuf_chess_board_gameover: {
-					'bot-win': {
+					'w': {
 						Cell: {
 							filter: 'grayscale(1)'
 						}
 					},
-					'user-win': {
+					'b': {
 						Cell: {
 							filter: 'sepia(.75)'
 						}

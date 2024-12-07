@@ -7,3 +7,7 @@
 	--yuf_chess_cell_hilite: #f41a03;
 }
 
+
+[yuf_chess_board_label_pending="true"]:not([mol_view_error="Promise"]) {
+	animation: mol_view_wait 1s steps(20,end) infinite;
+}
