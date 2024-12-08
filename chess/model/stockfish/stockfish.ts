@@ -1,7 +1,7 @@
 namespace $ {
 	export class $yuf_chess_model_stockfish extends $yuf_chess_model {
 		url() {
-			return '/yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.js'
+			return 'yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.js'
 		}
 
 		@ $mol_mem
