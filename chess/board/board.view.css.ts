@@ -1,5 +1,5 @@
 namespace $ {
-	const { rem, px, em, per, vw, vh, s } = $mol_style_unit
+	const { rem, px, em, per, vw, vh, vmin, s } = $mol_style_unit
 	const { calc, hsla, vary, steps } = $mol_style_func
 
 	$mol_style_define( $yuf_chess_board_label, {
@@ -23,7 +23,7 @@ namespace $ {
 			direction: 'column',
 			grow: 0,
 			shrink: 1,
-			basis: rem(50),
+			basis: vmin(90),
 		},
 		Toolbar: {
 			padding: {
