@@ -22,12 +22,12 @@ jobs:
     
     - uses: hyoo-ru/mam_build@master2
       with:
-        package: 'yuf/chess' #FIXME namespace of this package
-        modules: 'demo' #FIXME which modules to build, remove line if only on module at the root
+        package: 'yuf' #FIXME namespace of this package
+        modules: 'chess/demo' #FIXME which modules to build, remove line if only on module at the root
     
     #FIXME remove one of the following
     
     - uses: hyoo-ru/gh-deploy@v4.4.1
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/master'
       with:
         folder: 'yuf/chess/demo/-' #FIXME path to build app
