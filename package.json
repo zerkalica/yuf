@@ -1,0 +1,23 @@
+{
+  "name": "yuf_chess_demo",
+  "version": "0.0.1",
+  "exports": {
+    "node": {
+      "import": "./node.mjs",
+      "default": "./node.js"
+    },
+    "types": "./web.d.ts",
+    "import": "./web.mjs",
+    "default": "./web.js"
+  },
+  "main": "./web.js",
+  "module": "./web.mjs",
+  "browser": "./web.js",
+  "types": "./web.d.ts",
+  "keywords": [
+    "$yuf_chess_demo",
+    "$yuf_chess",
+    "$yuf"
+  ],
+  "dependencies": {}
+}
