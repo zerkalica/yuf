@@ -1,0 +1,21 @@
+{
+	"$mol_search_Clear_hint": "Clear",
+	"$mol_search_hint": "Search...",
+	"$mol_select_filter_hint": "Filter..",
+	"$mol_select_hint": "Pick..",
+	"$mol_select_no_options_message": "No options",
+	"$yuf_chess_board_active_value_black": "black",
+	"$yuf_chess_board_active_value_white": "white",
+	"$yuf_chess_board_draw_title": "Draw",
+	"$yuf_chess_board_help_title": "Help",
+	"$yuf_chess_board_level_easy": "level 1",
+	"$yuf_chess_board_level_hard": "hard",
+	"$yuf_chess_board_level_hardest": "hardest",
+	"$yuf_chess_board_level_medium": "medium",
+	"$yuf_chess_board_level_nightmare": "nightmare",
+	"$yuf_chess_board_level_title": "Level",
+	"$yuf_chess_board_move_title": "Move",
+	"$yuf_chess_board_reset_title": "Reset",
+	"$yuf_chess_board_undo_title": "Undo",
+	"$yuf_chess_board_win_title": "Win"
+}
