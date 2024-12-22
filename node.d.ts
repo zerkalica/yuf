@@ -66,27 +66,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $mol_log3_event<Fields> = {
-        [key in string]: unknown;
-    } & {
-        time?: string;
-        place: unknown;
-        message: string;
-    } & Fields;
-    type $mol_log3_logger<Fields, Res = void> = (this: $, event: $mol_log3_event<Fields>) => Res;
-    let $mol_log3_come: $mol_log3_logger<{}>;
-    let $mol_log3_done: $mol_log3_logger<{}>;
-    let $mol_log3_fail: $mol_log3_logger<{}>;
-    let $mol_log3_warn: $mol_log3_logger<{
-        hint: string;
-    }>;
-    let $mol_log3_rise: $mol_log3_logger<{}>;
-    let $mol_log3_area: $mol_log3_logger<{}, () => void>;
-    function $mol_log3_area_lazy(this: $, event: $mol_log3_event<{}>): () => void;
-    let $mol_log3_stack: (() => void)[];
-}
-
-declare namespace $ {
     const $mol_ambient_ref: unique symbol;
     type $mol_ambient_context = $;
     function $mol_ambient(this: $ | void, overrides: Partial<$>): $;
@@ -134,119 +113,11 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_span extends $mol_object2 {
-        readonly uri: string;
-        readonly source: string;
-        readonly row: number;
-        readonly col: number;
-        readonly length: number;
-        constructor(uri: string, source: string, row: number, col: number, length: number);
-        static unknown: $mol_span;
-        static begin(uri: string, source?: string): $mol_span;
-        static end(uri: string, source: string): $mol_span;
-        static entire(uri: string, source: string): $mol_span;
-        toString(): string;
-        toJSON(): {
-            uri: string;
-            row: number;
-            col: number;
-            length: number;
-        };
-        error(message: string, Class?: ErrorConstructor): Error;
-        span(row: number, col: number, length: number): $mol_span;
-        after(length?: number): $mol_span;
-        slice(begin: number, end?: number): $mol_span;
+    namespace $$ { }
+    const $mol_object_field: unique symbol;
+    class $mol_object extends $mol_object2 {
+        static make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
     }
-}
-
-declare namespace $ {
-    function $mol_tree2_to_string(this: $, tree: $mol_tree2): string;
-}
-
-declare namespace $ {
-    type $mol_tree2_path = Array<string | number | null>;
-    type $mol_tree2_hack<Context> = (input: $mol_tree2, belt: $mol_tree2_belt<Context>, context: Context) => readonly $mol_tree2[];
-    type $mol_tree2_belt<Context> = Record<string, $mol_tree2_hack<Context>>;
-    class $mol_tree2 extends Object {
-        readonly type: string;
-        readonly value: string;
-        readonly kids: readonly $mol_tree2[];
-        readonly span: $mol_span;
-        constructor(type: string, value: string, kids: readonly $mol_tree2[], span: $mol_span);
-        static list(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        list(kids: readonly $mol_tree2[]): $mol_tree2;
-        static data(value: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        data(value: string, kids?: readonly $mol_tree2[]): $mol_tree2;
-        static struct(type: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        struct(type: string, kids?: readonly $mol_tree2[]): $mol_tree2;
-        clone(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
-        text(): string;
-        static fromString(str: string, uri?: string): $mol_tree2;
-        toString(): string;
-        insert(value: $mol_tree2 | null, ...path: $mol_tree2_path): $mol_tree2;
-        select(...path: $mol_tree2_path): $mol_tree2;
-        filter(path: string[], value?: string): $mol_tree2;
-        hack_self<Context extends {
-            span?: $mol_span;
-            [key: string]: unknown;
-        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): readonly $mol_tree2[];
-        hack<Context extends {
-            span?: $mol_span;
-            [key: string]: unknown;
-        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): $mol_tree2[];
-        error(message: string, Class?: ErrorConstructor): Error;
-    }
-    class $mol_tree2_empty extends $mol_tree2 {
-        constructor();
-    }
-}
-
-declare namespace $ {
-    class $mol_error_syntax extends SyntaxError {
-        reason: string;
-        line: string;
-        span: $mol_span;
-        constructor(reason: string, line: string, span: $mol_span);
-    }
-}
-
-declare namespace $ {
-    function $mol_tree2_from_string(this: $, str: string, uri?: string): $mol_tree2;
-}
-
-declare namespace $ {
-    function $mol_tree2_from_json(json: any, span?: $mol_span): $mol_tree2;
-}
-
-declare namespace $ {
-    class $mol_term_color {
-        static reset: (str: string) => string;
-        static bold: (str: string) => string;
-        static italic: (str: string) => string;
-        static underline: (str: string) => string;
-        static inverse: (str: string) => string;
-        static hidden: (str: string) => string;
-        static strike: (str: string) => string;
-        static gray: (str: string) => string;
-        static red: (str: string) => string;
-        static green: (str: string) => string;
-        static yellow: (str: string) => string;
-        static blue: (str: string) => string;
-        static magenta: (str: string) => string;
-        static cyan: (str: string) => string;
-        static Gray: (str: string) => string;
-        static Red: (str: string) => string;
-        static Green: (str: string) => string;
-        static Yellow: (str: string) => string;
-        static Blue: (str: string) => string;
-        static Magenta: (str: string) => string;
-        static Cyan: (str: string) => string;
-        static ansi(open: number, close: number): (str: string) => string;
-    }
-}
-
-declare namespace $ {
-    function $mol_log3_node_make(level: keyof Console, output: 'stdout' | 'stderr', type: string, color: (str: string) => string): (this: $, event: $mol_log3_event<{}>) => () => void;
 }
 
 declare namespace $ {
@@ -407,6 +278,143 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_log3_event<Fields> = {
+        [key in string]: unknown;
+    } & {
+        time?: string;
+        place: unknown;
+        message: string;
+    } & Fields;
+    type $mol_log3_logger<Fields, Res = void> = (this: $, event: $mol_log3_event<Fields>) => Res;
+    let $mol_log3_come: $mol_log3_logger<{}>;
+    let $mol_log3_done: $mol_log3_logger<{}>;
+    let $mol_log3_fail: $mol_log3_logger<{}>;
+    let $mol_log3_warn: $mol_log3_logger<{
+        hint: string;
+    }>;
+    let $mol_log3_rise: $mol_log3_logger<{}>;
+    let $mol_log3_area: $mol_log3_logger<{}, () => void>;
+    function $mol_log3_area_lazy(this: $, event: $mol_log3_event<{}>): () => void;
+    let $mol_log3_stack: (() => void)[];
+}
+
+declare namespace $ {
+    class $mol_span extends $mol_object2 {
+        readonly uri: string;
+        readonly source: string;
+        readonly row: number;
+        readonly col: number;
+        readonly length: number;
+        constructor(uri: string, source: string, row: number, col: number, length: number);
+        static unknown: $mol_span;
+        static begin(uri: string, source?: string): $mol_span;
+        static end(uri: string, source: string): $mol_span;
+        static entire(uri: string, source: string): $mol_span;
+        toString(): string;
+        toJSON(): {
+            uri: string;
+            row: number;
+            col: number;
+            length: number;
+        };
+        error(message: string, Class?: ErrorConstructor): Error;
+        span(row: number, col: number, length: number): $mol_span;
+        after(length?: number): $mol_span;
+        slice(begin: number, end?: number): $mol_span;
+    }
+}
+
+declare namespace $ {
+    function $mol_tree2_to_string(this: $, tree: $mol_tree2): string;
+}
+
+declare namespace $ {
+    type $mol_tree2_path = Array<string | number | null>;
+    type $mol_tree2_hack<Context> = (input: $mol_tree2, belt: $mol_tree2_belt<Context>, context: Context) => readonly $mol_tree2[];
+    type $mol_tree2_belt<Context> = Record<string, $mol_tree2_hack<Context>>;
+    class $mol_tree2 extends Object {
+        readonly type: string;
+        readonly value: string;
+        readonly kids: readonly $mol_tree2[];
+        readonly span: $mol_span;
+        constructor(type: string, value: string, kids: readonly $mol_tree2[], span: $mol_span);
+        static list(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        list(kids: readonly $mol_tree2[]): $mol_tree2;
+        static data(value: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        data(value: string, kids?: readonly $mol_tree2[]): $mol_tree2;
+        static struct(type: string, kids?: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        struct(type: string, kids?: readonly $mol_tree2[]): $mol_tree2;
+        clone(kids: readonly $mol_tree2[], span?: $mol_span): $mol_tree2;
+        text(): string;
+        static fromString(str: string, uri?: string): $mol_tree2;
+        toString(): string;
+        insert(value: $mol_tree2 | null, ...path: $mol_tree2_path): $mol_tree2;
+        select(...path: $mol_tree2_path): $mol_tree2;
+        filter(path: string[], value?: string): $mol_tree2;
+        hack_self<Context extends {
+            span?: $mol_span;
+            [key: string]: unknown;
+        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): readonly $mol_tree2[];
+        hack<Context extends {
+            span?: $mol_span;
+            [key: string]: unknown;
+        } = {}>(belt: $mol_tree2_belt<Context>, context?: Context): $mol_tree2[];
+        error(message: string, Class?: ErrorConstructor): Error;
+    }
+    class $mol_tree2_empty extends $mol_tree2 {
+        constructor();
+    }
+}
+
+declare namespace $ {
+    class $mol_error_syntax extends SyntaxError {
+        reason: string;
+        line: string;
+        span: $mol_span;
+        constructor(reason: string, line: string, span: $mol_span);
+    }
+}
+
+declare namespace $ {
+    function $mol_tree2_from_string(this: $, str: string, uri?: string): $mol_tree2;
+}
+
+declare namespace $ {
+    function $mol_tree2_from_json(json: any, span?: $mol_span): $mol_tree2;
+}
+
+declare namespace $ {
+    class $mol_term_color {
+        static reset: (str: string) => string;
+        static bold: (str: string) => string;
+        static italic: (str: string) => string;
+        static underline: (str: string) => string;
+        static inverse: (str: string) => string;
+        static hidden: (str: string) => string;
+        static strike: (str: string) => string;
+        static gray: (str: string) => string;
+        static red: (str: string) => string;
+        static green: (str: string) => string;
+        static yellow: (str: string) => string;
+        static blue: (str: string) => string;
+        static magenta: (str: string) => string;
+        static cyan: (str: string) => string;
+        static Gray: (str: string) => string;
+        static Red: (str: string) => string;
+        static Green: (str: string) => string;
+        static Yellow: (str: string) => string;
+        static Blue: (str: string) => string;
+        static Magenta: (str: string) => string;
+        static Cyan: (str: string) => string;
+        static ansi(open: number, close: number): (str: string) => string;
+    }
+}
+
+declare namespace $ {
+    function $mol_log3_node_make(level: keyof Console, output: 'stdout' | 'stderr', type: string, color: (str: string) => string): (this: $, event: $mol_log3_event<{}>) => () => void;
+}
+
+declare namespace $ {
     class $mol_wire_task<Host, Args extends readonly unknown[], Result> extends $mol_wire_fiber<Host, Args, Result> {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result): (host: Host, args: Args) => $mol_wire_task<Host, Args, Result>;
         get temp(): boolean;
@@ -429,32 +437,40 @@ declare namespace $ {
 declare namespace $ {
     type $mol_run_error_context = {
         pid?: number;
-        stdout: Buffer;
-        stderr: Buffer;
-        status?: number | null;
-        signal: NodeJS.Signals | null;
+        stdout: Buffer | string;
+        stderr: Buffer | string;
     };
     class $mol_run_error extends $mol_error_mix<{
-        timeout?: boolean;
+        timeout_kill?: boolean;
+        pid?: number;
         signal?: NodeJS.Signals | null;
+        status?: number | null;
+        command: string;
+        dir: string;
     }> {
     }
-    const $mol_run_spawn: typeof import("child_process").spawn;
-    const $mol_run_spawn_sync: typeof import("child_process").spawnSync;
+    const $mol_run_spawn: (command: string, args: readonly string[], options: import("child_process").SpawnOptions) => import("child_process").ChildProcess;
+    const $mol_run_spawn_sync: (command: string, args?: readonly string[] | undefined, options?: import("child_process").SpawnSyncOptions | undefined) => import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
     type $mol_run_options = {
         command: readonly string[] | string;
         dir: string;
         timeout?: number;
         env?: Record<string, string | undefined>;
     };
-    function $mol_run_async(this: $, { dir, timeout, command, env }: $mol_run_options): import("child_process").SpawnSyncReturns<Buffer<ArrayBufferLike>> | (Promise<$mol_run_error_context> & {
-        destructor: () => void;
-    });
-    function $mol_run(this: $, options: $mol_run_options): $mol_run_error_context | import("child_process").SpawnSyncReturns<Buffer<ArrayBufferLike>>;
+    class $mol_run extends $mol_object {
+        static async_enabled(): boolean;
+        static spawn(options: $mol_run_options): $mol_run_error_context | import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
+        static spawn_async({ dir, sync, timeout, command, env }: $mol_run_options & {
+            sync?: boolean;
+        }): import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>> | (Promise<$mol_run_error_context> & {
+            destructor: () => void;
+        });
+        static error_message(res?: $mol_run_error_context): string;
+    }
 }
 
 declare namespace $ {
-    function $mol_exec(this: $, dir: string, command: string, ...args: readonly string[]): $mol_run_error_context | import("child_process").SpawnSyncReturns<Buffer<ArrayBufferLike>>;
+    function $mol_exec(this: $, dir: string, command: string, ...args: readonly string[]): $mol_run_error_context | import("child_process").SpawnSyncReturns<string | Buffer<ArrayBufferLike>>;
 }
 
 declare namespace $ {
@@ -462,14 +478,6 @@ declare namespace $ {
 
 declare namespace $ {
     function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
-}
-
-declare namespace $ {
-    namespace $$ { }
-    const $mol_object_field: unique symbol;
-    class $mol_object extends $mol_object2 {
-        static make<This extends typeof $mol_object>(this: This, config: Partial<InstanceType<This>>): InstanceType<This>;
-    }
 }
 
 declare namespace $ {
@@ -1425,6 +1433,18 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    class $mol_lock extends $mol_object {
+        protected promise: null | Promise<void>;
+        wait(): Promise<() => void>;
+        grab(): () => void;
+    }
+}
+
+declare namespace $ {
+    function $mol_compare_array<Value extends ArrayLike<unknown>>(a: Value, b: Value): boolean;
+}
+
+declare namespace $ {
     type $mol_charset_encoding = 'utf8' | 'utf-16le' | 'utf-16be' | 'ibm866' | 'iso-8859-2' | 'iso-8859-3' | 'iso-8859-4' | 'iso-8859-5' | 'iso-8859-6' | 'iso-8859-7' | 'iso-8859-8' | 'iso-8859-8i' | 'iso-8859-10' | 'iso-8859-13' | 'iso-8859-14' | 'iso-8859-15' | 'iso-8859-16' | 'koi8-r' | 'koi8-u' | 'koi8-r' | 'macintosh' | 'windows-874' | 'windows-1250' | 'windows-1251' | 'windows-1252' | 'windows-1253' | 'windows-1254' | 'windows-1255' | 'windows-1256' | 'windows-1257' | 'windows-1258' | 'x-mac-cyrillic' | 'gbk' | 'gb18030' | 'hz-gb-2312' | 'big5' | 'euc-jp' | 'iso-2022-jp' | 'shift-jis' | 'euc-kr' | 'iso-2022-kr';
 }
 
@@ -1437,6 +1457,104 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type $mol_file_transaction_mode = 'create' | 'exists_truncate' | 'exists_fail' | 'read_only' | 'write_only' | 'read_write' | 'append';
+    type $mol_file_transaction_buffer = ArrayBufferView;
+    class $mol_file_transaction extends $mol_object {
+        path(): string;
+        modes(): readonly $mol_file_transaction_mode[];
+        write(options: {
+            buffer: ArrayBufferView | string | readonly ArrayBufferView[];
+            offset?: number | null;
+            length?: number | null;
+            position?: number | null;
+        }): number;
+        read(): Uint8Array<ArrayBuffer>;
+        truncate(size: number): void;
+        close(): void;
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_file_transaction_node extends $mol_file_transaction {
+        protected descr(): number;
+        write({ buffer, offset, length, position }: {
+            buffer: ArrayBufferView | string | readonly ArrayBufferView[];
+            offset?: number | null;
+            length?: number | null;
+            position?: number | null;
+        }): number;
+        truncate(size: number): void;
+        read(): Uint8Array<ArrayBuffer>;
+        close(): void;
+    }
+}
+
+declare namespace $ {
+    class $mol_file_base extends $mol_object {
+        static absolute<This extends typeof $mol_file_base>(this: This, path: string): InstanceType<This>;
+        static relative<This extends typeof $mol_file_base>(this: This, path: string): InstanceType<This>;
+        static base: string;
+        path(): string;
+        parent(): this;
+        exists_cut(): boolean;
+        protected root(): boolean;
+        protected stat(next?: $mol_file_stat | null, virt?: 'virt'): $mol_file_stat | null;
+        protected static changed: Set<$mol_file_base>;
+        protected static frame: null | $mol_after_timeout;
+        protected static changed_add(type: 'change' | 'rename', path: string): void;
+        static watch_debounce(): number;
+        static flush(): void;
+        protected static watching: boolean;
+        protected static lock: $mol_lock;
+        protected static watch_off(path: string): void;
+        static unwatched<Result>(side_effect: () => Result, affected_dir: string): Result;
+        reset(): void;
+        modified(): Date | null;
+        version(): string;
+        protected info(path: string): null | $mol_file_stat;
+        protected ensure(): void;
+        protected drop(): void;
+        protected copy(to: string): void;
+        protected read(): Uint8Array<ArrayBuffer>;
+        protected write(buffer: Uint8Array<ArrayBuffer>): void;
+        protected kids(): readonly this[];
+        readable(opts: {
+            start?: number;
+            end?: number;
+        }): ReadableStream<Uint8Array<ArrayBuffer>>;
+        writable(opts: {
+            start?: number;
+        }): WritableStream<Uint8Array<ArrayBuffer>>;
+        buffer(next?: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
+        stat_make(size: number): {
+            readonly type: "file";
+            readonly size: number;
+            readonly atime: Date;
+            readonly mtime: Date;
+            readonly ctime: Date;
+        };
+        clone(to: string): this | null;
+        watcher(): {
+            destructor(): void;
+        };
+        exists(next?: boolean): boolean;
+        type(): "" | $mol_file_type;
+        name(): string;
+        ext(): string;
+        text(next?: string, virt?: 'virt'): string;
+        text_int(next?: string, virt?: 'virt'): string;
+        sub(reset?: null): this[];
+        resolve(path: string): this;
+        relate(base?: $mol_file_base): string;
+        find(include?: RegExp, exclude?: RegExp): this[];
+        size(): number;
+        toJSON(): string;
+        open(...modes: readonly $mol_file_transaction_mode[]): $mol_file_transaction;
+    }
+}
+
+declare namespace $ {
     type $mol_file_type = 'file' | 'dir' | 'link';
     interface $mol_file_stat {
         type: $mol_file_type;
@@ -1445,68 +1563,33 @@ declare namespace $ {
         mtime: Date;
         ctime: Date;
     }
-    class $mol_file_not_found extends Error {
-    }
-    abstract class $mol_file extends $mol_object {
-        static absolute(path: string): $mol_file;
-        static relative(path: string): $mol_file;
-        static base: string;
-        path(): string;
-        parent(): $mol_file;
-        abstract stat(next?: $mol_file_stat | null, virt?: 'virt'): $mol_file_stat | null;
-        reset(): void;
-        version(): string;
-        abstract ensure(): void;
-        abstract drop(): void;
-        watcher(): {
-            destructor(): void;
-        };
-        exists(next?: boolean): boolean;
-        type(): "" | $mol_file_type;
-        name(): string;
-        ext(): string;
-        abstract buffer(next?: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
-        text(next?: string, virt?: 'virt'): string;
-        abstract sub(): $mol_file[];
-        abstract resolve(path: string): $mol_file;
-        abstract relate(base?: $mol_file): string;
-        abstract append(next: Uint8Array<ArrayBuffer> | string): void;
-        find(include?: RegExp, exclude?: RegExp): $mol_file[];
-        size(): number;
-        open(...modes: readonly ('create' | 'exists_truncate' | 'exists_fail' | 'read_only' | 'write_only' | 'read_write' | 'append')[]): number;
-        toJSON(): string;
+    class $mol_file extends $mol_file_base {
     }
 }
 
 declare namespace $ {
-    function $mol_compare_array<Value extends ArrayLike<unknown>>(a: Value, b: Value): boolean;
-}
-
-declare namespace $ {
-    enum $mol_file_mode_open {
-        create,
-        exists_truncate,
-        exists_fail,
-        read_only,
-        write_only,
-        read_write,
-        append
-    }
+    function $mol_file_node_buffer_normalize(buf: Buffer<ArrayBuffer>): Uint8Array<ArrayBuffer>;
     class $mol_file_node extends $mol_file {
-        static absolute(path: string): $mol_file_node;
-        static relative(path: string): $mol_file_node;
-        watcher(): {
+        static relative<This extends typeof $mol_file>(this: This, path: string): InstanceType<This>;
+        watcher(reset?: null): {
             destructor(): void;
         };
-        stat(next?: $mol_file_stat | null, virt?: 'virt'): $mol_file_stat | null;
-        ensure(): void;
-        drop(): void;
-        buffer(next?: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer>;
-        sub(): $mol_file[];
-        resolve(path: string): $mol_file;
+        protected info(path: string): $mol_file_stat | null;
+        protected ensure(): null | undefined;
+        protected copy(to: string): void;
+        protected drop(): void;
+        protected read(): Uint8Array<ArrayBuffer>;
+        protected write(buffer: Uint8Array): undefined;
+        protected kids(): this[];
+        resolve(path: string): this;
         relate(base?: $mol_file): string;
-        append(next: Uint8Array<ArrayBuffer> | string): undefined;
-        open(...modes: readonly (keyof typeof $mol_file_mode_open)[]): number;
+        readable(opts: {
+            start?: number;
+            end?: number;
+        }): ReadableStream<Uint8Array<ArrayBuffer>>;
+        writable(opts?: {
+            start?: number;
+        }): WritableStream<Uint8Array<ArrayBuffer>>;
     }
 }
 
@@ -2454,7 +2537,7 @@ declare namespace $ {
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_search_plugins_16 = $mol_type_enforce<
+	type $mol_search_plugins__16 = $mol_type_enforce<
 		ReturnType< $mol_pop['plugins'] >[number]
 		,
 		$mol_plugin
@@ -2751,7 +2834,7 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type _yuf_chess_board_1 = $mol_type_enforce<
+	type __yuf_chess_board_1 = $mol_type_enforce<
 		Parameters< $yuf_chess_board['level'] >[0]
 		,
 		Parameters< ReturnType< $yuf_chess_board['model'] >['level'] >[0]
@@ -2861,7 +2944,7 @@ declare namespace $ {
 		,
 		ReturnType< $mol_select['hint'] >
 	>
-	type $yuf_chess_board_toolbar_content_23 = $mol_type_enforce<
+	type $yuf_chess_board_toolbar_content__23 = $mol_type_enforce<
 		ReturnType< $yuf_chess_board['toolbar_bottom'] >[number]
 		,
 		$mol_view_content
@@ -2936,7 +3019,7 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_chess_board_fields_content_38 = $mol_type_enforce<
+	type $yuf_chess_board_fields_content__38 = $mol_type_enforce<
 		ReturnType< $yuf_chess_board['cells'] >[number]
 		,
 		$mol_view
