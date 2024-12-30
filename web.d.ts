@@ -27,6 +27,10 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    var $mol_dom: typeof globalThis;
+}
+
+declare namespace $ {
     function $mol_style_attach(id: string, text: string): HTMLStyleElement | null;
 }
 

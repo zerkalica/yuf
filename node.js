@@ -1931,6 +1931,13 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.$mol_dom = $mol_dom_context;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     function $mol_style_attach(id, text) {
         const doc = $mol_dom_context.document;
         if (!doc)
