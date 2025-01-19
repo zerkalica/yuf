@@ -3232,6 +3232,7 @@ declare namespace $ {
         static go(next: {
             [key: string]: string | null;
         }): void;
+        static commit(): void;
         constructor(prefix?: string);
         value(key: string, next?: string): string | null;
         sub(postfix: string): $mol_state_arg;
