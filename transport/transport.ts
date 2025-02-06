@@ -51,6 +51,42 @@ namespace $ {
 			return this.base_url_full().replace(/^http/, 'ws')
 		}
 
+		@ $mol_mem_key
+		static gql_query_template(query_url: string) {
+			$mol_wire_solid()
+			return this.get(query_url).text()
+		}
+
+		@ $mol_action
+		static post_gql(
+			path: string,
+			params: Omit<$yuf_transport_req, 'body_object'> & {
+				body_object: {
+					query?: string
+					query_url?: string
+					variables?: Record<string, unknown>
+				}
+			}
+		) {
+
+			const query_url = params.body_object.query_url
+
+			if (query_url) {
+				params = {
+					...params,
+					body_object: {
+						...params.body_object,
+						query_url: undefined,
+						query: this.gql_query_template(query_url)
+					}
+				}
+			}
+
+			if (! params.body_object?.query) throw new Error('No query in body_object')
+	
+			return this.post( path, params )
+		}
+
 		static token_key() {
 			return 'kc_token'
 		}
@@ -214,7 +250,7 @@ namespace $ {
 			const message = response_json?.message ?? 'Unknown'
 
 			throw new $yuf_transport_error_auth(
-				'Сервер вернул ошибку: ' + message,
+				'Server error: ' + message,
 				{ input, init, response: response_json },
 				error ?? new Error(message)
 			)
@@ -243,7 +279,7 @@ namespace $ {
 			const deadline = init.deadline ?? this.deadline()
 			if (! deadline) return res
 
-			const err_deadline = new $yuf_transport_error_deadline('Сервер долго не отвечает', {
+			const err_deadline = new $yuf_transport_error_deadline('Server timeout', {
 				init,
 				input,
 				deadline,
