@@ -5,32 +5,22 @@ namespace $ {
 		headers?: Record<string, string>
 		auth_token?: string | null // null - auth disabled
 		body_object?: object
+		redirect?: 'follow' | 'manual' | 'error'
 	}
 
 	export type $yuf_transport_error_response = {
 		code?: number | null
 		message?: string | null
 		text?: string | null
+		json?: unknown | null
 	}
 
 	export class $yuf_transport extends $mol_fetch {
 
-		static base_url_localhost() {
-			return ''
-		}
-
-		static is_localhost() {
-			const loc = this.$.$mol_dom_context.location
-
-			return loc.hostname === 'localhost'
-		}
-
 		@ $mol_mem
 		static base_url(next?: string) {
-			const url = this.$.$mol_state_local.value( '$yuf_transport.base_url()', next )
+			const url = this.$.$mol_state_arg.value( 'api_url', next )
 			if (url) return url
-
-			if (this.is_localhost()) return this.base_url_localhost()
 
 			return ''
 		}
@@ -61,7 +51,7 @@ namespace $ {
 		static post_gql(
 			path: string,
 			params: Omit<$yuf_transport_req, 'body_object'> & {
-				body_object: {
+				body_object?: {
 					query?: string
 					query_url?: string
 					variables?: Record<string, unknown>
@@ -69,7 +59,7 @@ namespace $ {
 			}
 		) {
 
-			const query_url = params.body_object.query_url
+			const query_url = params.body_object?.query_url
 
 			if (query_url) {
 				params = {
@@ -84,7 +74,18 @@ namespace $ {
 
 			if (! params.body_object?.query) throw new Error('No query in body_object')
 	
-			return this.post( path, params )
+			const res = this.post( path, params )
+
+			try {
+				return res.json()
+			} catch(e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+
+				throw new $yuf_transport_error(
+					'Json parse error',
+					{ input: path, init: params, response: this.response_json(res) }
+				)
+			}
 		}
 
 		static token_key() {
@@ -93,6 +94,7 @@ namespace $ {
 
 		@ $mol_mem
 		static token( next? : string | null ): string | null | undefined {
+			if (next) this.auth_required(null)
 			return this.$.$mol_state_local.value(this.token_key(), next) ?? undefined
 		}
 
@@ -168,31 +170,36 @@ namespace $ {
 
 		protected static auth_need(res: $mol_fetch_response) {
 			const code = res.code()
-
+			const status = res.status()
+			if ( status === 'unknown' && res.native.type === 'opaqueredirect' ) {
+				return 'login' as const
+			}
+			if (code === 302 ) return 'login' as const
 			if (code === 403) return 'login' as const
 			if (code === 401) return 'refresh' as const
 
 			return null
 		}
 
+		protected static promise = null as null | ReturnType<typeof $mol_promise<null>>
+
 		@ $mol_mem
-		static auth_wait(next?: null | 'login' | 'refresh') {
-			// if (!this.token()) next = 'login'
-			if (next !== undefined) {
-				this.$.$mol_log3_rise({
-					place: '$yuf_transport.auth_promise()',
-					message: next ? 'awaiter' : 'null'
-				})
+		static auth_required(next?: null | 'login' | 'refresh') {
+			if (next === null) {
+				this.promise?.done(null)
+				this.promise = null
 			}
 
-			if (! next) return null
+			if (next) this.promise = this.promise ?? $mol_promise()
 
-			const promise = $mol_promise<typeof next | null>()
-
-			return Object.assign(promise, { destructor: () => promise.done(null) }) as unknown as typeof next
+			return next ?? null
 		}
 
-		static auth_refresh() {}
+		@ $mol_action
+		protected static wait(need: 'login' | 'refresh') {
+			this.auth_required(need)
+			return this.promise
+		}
 
 		static deadline() {
 			return 300000
@@ -219,7 +226,7 @@ namespace $ {
 				if (headers_auth) Object.assign(headers, headers_auth)
 
 				if (!headers_auth && ! auth_disabled) {
-					this.auth_wait('login')
+					this.wait('login')
 				}
 
 				const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
@@ -238,16 +245,13 @@ namespace $ {
 				if (auth_disabled) break
 
 				need = this.auth_need(response)
-				// if (need === 'refresh') this.auth_refresh()
 
-				if (need) {
-					this.auth_wait()
-					this.auth_wait(need)
-				}
+				if (need) this.wait(need)
+				else if ( response.status() === 'unknown' && response.native.type === 'opaqueredirect') break
 			} while ( need )
 
-			const response_json = this.responseToJson(response)
-			const message = response_json?.message ?? 'Unknown'
+			const response_json = this.response_json(response)
+			const message = response_json?.message ?? error?.message ?? 'Unknown'
 
 			throw new $yuf_transport_error_auth(
 				'Server error: ' + message,
@@ -256,21 +260,40 @@ namespace $ {
 			)
 		}
 
-		static responseToJson(res?: $mol_fetch_response | null): $yuf_transport_error_response | null {
+		static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null {
 			if (! res) return null
+
+			let code = res.code()
+			let message = res.message()
+
+			if (res.native.type === 'opaqueredirect' && ! code) {
+				code = 302
+				message = 'Redirect to: ' + res.native.url
+			}
 
 			let text
 
 			try {
 				text = res.text()
 			} catch (e) {
-				text = null
+				if ($mol_fail_catch(e)) text = null
+			}
+
+			let json
+			if (text) {
+				try {
+					json = JSON.parse(text)
+					text = null
+				} catch (e) {
+					json = null
+				}
 			}
 
 			return {
-				code: res.code(),
+				code,
 				text,
-				message: res.message(),
+				json,
+				message,
 			}
 		}
 
