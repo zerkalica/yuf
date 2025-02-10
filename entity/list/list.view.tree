@@ -5,6 +5,7 @@ $yuf_entity_list $mol_book2_catalog
 			hint \Add
 			sub / <= Add_icon $mol_icon_plus
 			click? <=> add? null
+		^ tools_addons /
 	Spread* $yuf_entity_page
 		model <= model* null
 		remove <= remove* null

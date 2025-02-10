@@ -11,7 +11,7 @@ namespace $.$$ {
 
 		override remove(id: string) {
 			this.factory().remove(id)
-			if (this.spread() === id) this.spread(null)
+			if (this.spread() === id) this.spread('')
 		}
 
 		override spread_ids() {

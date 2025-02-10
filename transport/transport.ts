@@ -11,9 +11,14 @@ namespace $ {
 	export type $yuf_transport_error_response = {
 		code?: number | null
 		message?: string | null
-		text?: string | null
 		json?: unknown | null
 	}
+
+	export class $yuf_transport_error extends $mol_error_mix<{
+		input: RequestInfo
+		init: $yuf_transport_req
+		response?: $yuf_transport_error_response | null
+	}> {}
 
 	export class $yuf_transport extends $mol_fetch {
 
@@ -39,53 +44,6 @@ namespace $ {
 
 		static base_url_ws() {
 			return this.base_url_full().replace(/^http/, 'ws')
-		}
-
-		@ $mol_mem_key
-		static gql_query_template(query_url: string) {
-			$mol_wire_solid()
-			return this.get(query_url).text()
-		}
-
-		@ $mol_action
-		static post_gql(
-			path: string,
-			params: Omit<$yuf_transport_req, 'body_object'> & {
-				body_object?: {
-					query?: string
-					query_url?: string
-					variables?: Record<string, unknown>
-				}
-			}
-		) {
-
-			const query_url = params.body_object?.query_url
-
-			if (query_url) {
-				params = {
-					...params,
-					body_object: {
-						...params.body_object,
-						query_url: undefined,
-						query: this.gql_query_template(query_url)
-					}
-				}
-			}
-
-			if (! params.body_object?.query) throw new Error('No query in body_object')
-	
-			const res = this.post( path, params )
-
-			try {
-				return res.json()
-			} catch(e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-
-				throw new $yuf_transport_error(
-					'Json parse error',
-					{ input: path, init: params, response: this.response_json(res) }
-				)
-			}
 		}
 
 		static token_key() {
@@ -181,24 +139,20 @@ namespace $ {
 			return null
 		}
 
-		protected static promise = null as null | ReturnType<typeof $mol_promise<null>>
+		protected static _promise = null as null | $mol_promise_blocker<null>
+
+		static blocker_promise() { return this._promise?.then(() => true) }
 
 		@ $mol_mem
 		static auth_required(next?: null | 'login' | 'refresh') {
 			if (next === null) {
-				this.promise?.done(null)
-				this.promise = null
+				this._promise?.done(null)
+				this._promise = null
 			}
 
-			if (next) this.promise = this.promise ?? $mol_promise()
+			if (next && ! this._promise) this._promise = new $mol_promise_blocker<null>()
 
 			return next ?? null
-		}
-
-		@ $mol_action
-		protected static wait(need: 'login' | 'refresh') {
-			this.auth_required(need)
-			return this.promise
 		}
 
 		static deadline() {
@@ -209,8 +163,11 @@ namespace $ {
 		static override success(path: RequestInfo, params: $yuf_transport_req) {
 			let response
 			let init: $yuf_transport_req | undefined
-			let need
-			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//) ? this.base_url() + path : path
+
+			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
+				? this.base_url() + path
+				: path
+
 			let error
 
 			const auth_disabled = params.auth_token === null
@@ -224,10 +181,6 @@ namespace $ {
 				}
 
 				if (headers_auth) Object.assign(headers, headers_auth)
-
-				if (!headers_auth && ! auth_disabled) {
-					this.wait('login')
-				}
 
 				const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
 
@@ -244,16 +197,18 @@ namespace $ {
 				if ( response.status() === 'success' ) return response
 				if (auth_disabled) break
 
-				need = this.auth_need(response)
+				const need = this.auth_need(response)
 
-				if (need) this.wait(need)
-				else if ( response.status() === 'unknown' && response.native.type === 'opaqueredirect') break
-			} while ( need )
+				if (need) {
+					this.auth_required(need)
+					$mol_wire_sync(this).blocker_promise()
+				}
+			} while ( true )
 
 			const response_json = this.response_json(response)
 			const message = response_json?.message ?? error?.message ?? 'Unknown'
 
-			throw new $yuf_transport_error_auth(
+			throw new $yuf_transport_error(
 				'Server error: ' + message,
 				{ input, init, response: response_json },
 				error ?? new Error(message)
@@ -280,21 +235,18 @@ namespace $ {
 			}
 
 			let json
+
 			if (text) {
 				try {
 					json = JSON.parse(text)
 					text = null
 				} catch (e) {
 					json = null
+					message += ', ' + text
 				}
 			}
 
-			return {
-				code,
-				text,
-				json,
-				message,
-			}
+			return { code, json, message }
 		}
 
 		static override request(input: RequestInfo, init: $yuf_transport_req) {
@@ -302,10 +254,10 @@ namespace $ {
 			const deadline = init.deadline ?? this.deadline()
 			if (! deadline) return res
 
-			const err_deadline = new $yuf_transport_error_deadline('Server timeout', {
+			const err_deadline = new $yuf_transport_error('Timeout', {
 				init,
 				input,
-				deadline,
+				response: { code: 408, message: 'Timeout ' + deadline },
 			})
 
 			const deadlined = Promise.race([
@@ -320,15 +272,5 @@ namespace $ {
 			)
 		}
 	}
-
-	export class $yuf_transport_error extends $mol_error_mix<{
-		input: RequestInfo
-		init: $yuf_transport_req
-		response?: $yuf_transport_error_response | null
-		deadline?: number
-	}> {}
-
-	export class $yuf_transport_error_deadline extends $yuf_transport_error {}
-	export class $yuf_transport_error_auth extends $yuf_transport_error {}
 
 }
