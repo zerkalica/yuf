@@ -128,24 +128,32 @@ namespace $ {
 
 		protected static auth_need(res: $mol_fetch_response) {
 			const code = res.code()
-			if (code === 403) return 'login' as const
-			if (code === 401) return 'refresh' as const
+			let reason
+			if (code === 403) reason = 'login' as const
+			if (code === 401) reason = 'refresh' as const
 
-			return null
+			return reason
 		}
 
 		protected static _promise = null as null | $mol_promise_blocker<null>
 
-		static blocker_promise() { return this._promise?.then(() => true) }
-
-		@ $mol_mem
-		static auth_required(next?: null | 'login' | 'refresh') {
-			if (next === null) {
+		static blocker_promise(next?: boolean) {
+			if (next === false) {
 				this._promise?.done(null)
 				this._promise = null
 			}
 
-			if (next && ! this._promise) this._promise = new $mol_promise_blocker<null>()
+			if ( next && ! this._promise) {
+				this._promise = new $mol_promise_blocker<null>()
+			}
+
+			return this._promise?.then(() => true) ?? null
+		}
+
+		@ $mol_mem
+		static auth_required(next?: null | 'login' | 'refresh') {
+			if (next === null) this.blocker_promise(false)
+			if (next) this.blocker_promise(true)
 
 			return next ?? null
 		}
@@ -190,7 +198,7 @@ namespace $ {
 				}
 
 				if ( response.status() === 'success' ) return response
-				const need = auth_disabled ? null : this.auth_need(response)
+				const need = auth_disabled ? false : this.auth_need(response)
 
 				if (! need) break
 
