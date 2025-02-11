@@ -128,11 +128,6 @@ namespace $ {
 
 		protected static auth_need(res: $mol_fetch_response) {
 			const code = res.code()
-			const status = res.status()
-			if ( status === 'unknown' && res.native.type === 'opaqueredirect' ) {
-				return 'login' as const
-			}
-			if (code === 302 ) return 'login' as const
 			if (code === 403) return 'login' as const
 			if (code === 401) return 'refresh' as const
 
@@ -195,14 +190,12 @@ namespace $ {
 				}
 
 				if ( response.status() === 'success' ) return response
-				if (auth_disabled) break
+				const need = auth_disabled ? null : this.auth_need(response)
 
-				const need = this.auth_need(response)
+				if (! need) break
 
-				if (need) {
-					this.auth_required(need)
-					$mol_wire_sync(this).blocker_promise()
-				}
+				this.auth_required(need)
+				$mol_wire_sync(this).blocker_promise()
 			} while ( true )
 
 			const response_json = this.response_json(response)
