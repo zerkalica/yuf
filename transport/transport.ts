@@ -65,10 +65,16 @@ namespace $ {
 			}
 		}
 
+		
+		static client_id() {
+			return `${this}`
+		}
+
 		@ $mol_action
 		static headers_default(): Record<string, string> {
 			return {
 				'X-Request-ID': $mol_guid(),
+				'X-Client-ID': this.client_id(),
 				'Content-Type': 'application/json',
 			}
 		}
