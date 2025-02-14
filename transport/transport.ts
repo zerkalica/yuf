@@ -50,6 +50,10 @@ namespace $ {
 			return 'kc_token'
 		}
 
+		static loggedin() {
+			return this.token() && ! this.auth_required()
+		}
+
 		@ $mol_mem
 		static token( next? : string | null ): string | null | undefined {
 			if (next) this.auth_required(null)
