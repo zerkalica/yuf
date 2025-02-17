@@ -75,13 +75,11 @@ namespace $ {
 		/**
 		 * Custom auth headers.
 		 * 
-		 * @param token optional token 
+		 * @param token access token
 		 * @returns null if no token
 		 */
 		@ $mol_action
-		static headers_auth(token = this.token()): Record<string, string> | null {
-			if (! token) return null
-
+		static headers_auth(token: string): Record<string, string> | null {
 			return {
 				'Authorization': `Bearer ${token}`
 			}
@@ -239,13 +237,13 @@ namespace $ {
 			let init
 
 			do {
-				const headers_auth = params.auth_token === null ? null : this.headers_auth(params.auth_token)
-
 				const headers: $yuf_transport_req['headers'] = {
 					... this.headers_default(),
 					... params.headers,
 				}
 
+				const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
+				const headers_auth = token ? this.headers_auth(token) : null
 				if (headers_auth) Object.assign(headers, headers_auth)
 
 				const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
@@ -253,7 +251,7 @@ namespace $ {
 				init = { ...params, body, headers }
 
 				try {
-					if (params.auth_token !== null && ! this.token_cut()) this.relogin()
+					if (params.auth_token !== null && ! token) this.relogin()
 					response = this.response(input, init)
 				} catch (e) {
 					if ($mol_promise_like(e)) $mol_fail_hidden(e)
