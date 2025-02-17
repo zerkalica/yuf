@@ -46,34 +46,58 @@ namespace $ {
 			return this.base_url_full().replace(/^http/, 'ws')
 		}
 
+		/**
+		 * Access token local storage key.
+		 */
 		static token_key() {
 			return 'kc_token'
 		}
 
+		/**
+		 * Is user logged in.
+		 *
+		 * Token can be exists but obsolete.
+		 */
+		@ $mol_mem
 		static loggedin() {
-			return this.token() && ! this.auth_required()
+			return Boolean(this.token()) && ! this.logining()
 		}
 
+		/**
+		 * Access token, placed in local storage by default.
+		 */
 		@ $mol_mem
 		static token( next? : string | null ): string | null | undefined {
-			if (next) this.auth_required(null)
+			if (next) this.logining(false)
 			return this.$.$mol_state_local.value(this.token_key(), next) ?? undefined
 		}
 
-		// custom auth headers
-		static headers_auth(token = this.token()): Record<string, string> | undefined {
-			if (! token) return undefined
+		/**
+		 * Custom auth headers.
+		 * 
+		 * @param token optional token 
+		 * @returns null if no token
+		 */
+		@ $mol_action
+		static headers_auth(token = this.token()): Record<string, string> | null {
+			if (! token) return null
 
 			return {
 				'Authorization': `Bearer ${token}`
 			}
 		}
 
-		
+		/**
+		 * X-Client-ID header
+		 */
 		static client_id() {
 			return `${this}`
 		}
 
+		/**
+		 * Default hears, merged to every request,
+		 * Values can be overrided from call arguments.
+		 */
 		@ $mol_action
 		static headers_default(): Record<string, string> {
 			return {
@@ -136,18 +160,46 @@ namespace $ {
 			return this.success(path, { ...params, method: 'DELETE' })
 		}
 
+		/**
+		 * If response returns need auth (403 or 401 codes), routes to relogin or refresh.
+		 *
+		 * If return true - restart paused fetch
+		 * If return false - throw error
+		 */
 		protected static auth_need(res: $mol_fetch_response) {
-			const code = res.code()
-			let reason
-			if (code === 403) reason = 'login' as const
-			if (code === 401) reason = 'refresh' as const
+			if (res.code() === 403) return this.relogin()
+			if (res.code() === 401) return this.refresh()
 
-			return reason
+			return false
+		}
+
+		/**
+		 * If obsolete access token, get it via refresh token.
+		 */
+		@ $mol_action
+		static refresh() {
+			return true
+		}
+
+		/**
+		 * If access token obsolete - pause response, ask user to login and retry fetch.
+		 */
+		@ $mol_action
+		protected static relogin() {
+			this.block()
+			$mol_wire_sync(this).blocker()
+			return true
+		}
+
+		@ $mol_action
+		protected static block() {
+			this.blocker(true)
+			this.logining(true)
 		}
 
 		protected static _promise = null as null | $mol_promise_blocker<null>
 
-		static blocker_promise(next?: boolean) {
+		static blocker(next?: boolean) {
 			if (next === false) {
 				this._promise?.done(null)
 				this._promise = null
@@ -161,32 +213,33 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		static auth_required(next?: null | 'login' | 'refresh') {
-			if (next === null) this.blocker_promise(false)
-			if (next) this.blocker_promise(true)
-
-			return next ?? null
+		static logining(next?: boolean) {
+			this.blocker(next)
+			return next ?? false
 		}
 
+		/**
+		 * Client throws timeout error if no response in dedline ms.
+		 */
 		static deadline() {
 			return 300000
 		}
 
 		@ $mol_action
-		static override success(path: RequestInfo, params: $yuf_transport_req) {
-			let response
-			let init: $yuf_transport_req | undefined
+		protected static token_cut() { return this.token() }
 
+		@ $mol_action
+		static override success(path: RequestInfo, params: $yuf_transport_req) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
 				? this.base_url() + path
 				: path
 
 			let error
-
-			const auth_disabled = params.auth_token === null
+			let response
+			let init
 
 			do {
-				const headers_auth = auth_disabled ? undefined : this.headers_auth(params.auth_token)
+				const headers_auth = params.auth_token === null ? null : this.headers_auth(params.auth_token)
 
 				const headers: $yuf_transport_req['headers'] = {
 					... this.headers_default(),
@@ -200,21 +253,18 @@ namespace $ {
 				init = { ...params, body, headers }
 
 				try {
+					if (params.auth_token !== null && ! this.token_cut()) this.relogin()
 					response = this.response(input, init)
 				} catch (e) {
 					if ($mol_promise_like(e)) $mol_fail_hidden(e)
 					error = e as Error
-					break
 				}
 
-				if ( response.status() === 'success' ) return response
-				const need = auth_disabled ? false : this.auth_need(response)
-
-				if (! need) break
-
-				this.auth_required(need)
-				$mol_wire_sync(this).blocker_promise()
-			} while ( true )
+				if (! response) break
+				if ( response?.status() === 'success' ) return response
+				if (params.auth_token === null) break
+				if (! this.auth_need(response) ) break
+			} while (true)
 
 			const response_json = this.response_json(response)
 			const message = response_json?.message ?? error?.message ?? 'Unknown'
