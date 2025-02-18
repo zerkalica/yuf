@@ -21,7 +21,7 @@ namespace $ {
 
 		@ $mol_mem
 		sleeping(next?: null) {
-			const actual = this.$.$gd_kit_browser_live.hidden()
+			const actual = this.$.$yuf_browser_live.hidden()
 			const hidden = actual || this.sleeping_default()
 
 			if (next === undefined) {
