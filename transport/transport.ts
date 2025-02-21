@@ -9,16 +9,16 @@ namespace $ {
 	}
 
 	export type $yuf_transport_error_response = {
-		code?: number | null
+		input?: RequestInfo
+		init?: $yuf_transport_req
+		http_code?: number | null
 		message?: string | null
-		json?: unknown | null
+		code?: string | null
+
+		[key: string]: number | string | null | undefined | Object
 	}
 
-	export class $yuf_transport_error extends $mol_error_mix<{
-		input: RequestInfo
-		init: $yuf_transport_req
-		response?: $yuf_transport_error_response | null
-	}> {}
+	export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {}
 
 	export class $yuf_transport extends $mol_fetch {
 
@@ -176,6 +176,7 @@ namespace $ {
 		 */
 		@ $mol_action
 		static refresh() {
+			throw new Error('Implement refresh')
 			return true
 		}
 
@@ -269,7 +270,7 @@ namespace $ {
 
 			throw new $yuf_transport_error(
 				'Server error: ' + message,
-				{ input, init, response: response_json },
+				{ input, init, ... response_json },
 				error ?? new Error(message)
 			)
 		}
@@ -277,11 +278,11 @@ namespace $ {
 		static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null {
 			if (! res) return null
 
-			let code = res.code()
+			let http_code = res.code()
 			let message = res.message()
 
-			if (res.native.type === 'opaqueredirect' && ! code) {
-				code = 302
+			if (res.native.type === 'opaqueredirect' && ! http_code) {
+				http_code = 302
 				message = 'Redirect to: ' + res.native.url
 			}
 
@@ -305,7 +306,7 @@ namespace $ {
 				}
 			}
 
-			return { code, json, message }
+			return { http_code, message, ...json }
 		}
 
 		static override request(input: RequestInfo, init: $yuf_transport_req) {
@@ -313,10 +314,12 @@ namespace $ {
 			const deadline = init.deadline ?? this.deadline()
 			if (! deadline) return res
 
-			const err_deadline = new $yuf_transport_error('Timeout', {
+			const err_deadline = new $yuf_transport_error('Client timeout', {
 				init,
 				input,
-				response: { code: 408, message: 'Timeout ' + deadline },
+				http_code: 408,
+				code: 'Timeout',
+				deadline
 			})
 
 			const deadlined = Promise.race([
