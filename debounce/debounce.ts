@@ -1,4 +1,25 @@
 namespace $ {
+	/**
+	 * @example
+	 * ```ts
+		class some extends $mol_object {
+			data(next?: string) {
+				return next ?? null
+			}
+
+			@ $mol_mem
+			debounce() {
+				return this.$.$yuf_debounce.make<typeof $yuf_debounce<ReturnType<typeof this.data>>>({
+					data: () => this.data()
+				})
+			}
+
+			value() {
+				return this.debounce().debounced()
+			}
+		}
+	 * ```
+	 */
 	export class $yuf_debounce<Value> extends $mol_object {
 		timeout() { return 300 }
 
@@ -23,6 +44,5 @@ namespace $ {
 
 			return prev ?? this.data()
 		}
-
 	}
 }
