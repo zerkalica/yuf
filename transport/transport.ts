@@ -14,11 +14,13 @@ namespace $ {
 		http_code?: number | null
 		message?: string | null
 		code?: string | null
-
-		[key: string]: number | string | null | undefined | Object
+		json?: unknown
+		// [key: string]: number | string | null | undefined | Object
 	}
 
 	export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {}
+
+	export function $yuf_transport_pass(data: unknown) { return data }
 
 	export class $yuf_transport extends $mol_fetch {
 
@@ -158,6 +160,52 @@ namespace $ {
 			return this.success(path, { ...params, method: 'DELETE' })
 		}
 
+		static data<Result>(params: $yuf_transport_req & {
+			input: RequestInfo,
+			assert: (obj: any) => Result
+		}) {
+			let json
+			let text
+
+			const input = params.input
+			const init = { ...params, input: undefined, assert: undefined } as $yuf_transport_req
+
+			const res = this.success(input, init)
+
+			try {
+				text = res.text()
+				json = JSON.parse(text)
+				return params.assert(json as any)
+			} catch (e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+
+				throw new $yuf_transport_error(`Invalid ${json ? 'object' : 'json'} ${(e as Error).message}`, {
+					input,
+					init,
+					code: json ? 'InvalidObject' : 'InvalidJson',
+					message: (e as Error).message,
+					json
+				}, e as Error)
+			}
+		}
+
+		@ $mol_action
+		static blob_safe( path: string ) {
+			try {
+				return this.get( path ).blob()
+			} catch (e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+				if (e instanceof $yuf_transport_error && e.cause?.http_code === 404) return null
+				$mol_fail_hidden(e)
+			}
+		}
+
+		static objecturl( path: string ) {
+			const blob = this.blob_safe( path )
+			if (! blob ) return null
+			return URL.createObjectURL(blob)
+		}
+
 		/**
 		 * If response returns need auth (403 or 401 codes), routes to relogin or refresh.
 		 *
@@ -227,6 +275,26 @@ namespace $ {
 		@ $mol_action
 		protected static token_cut() { return this.token() }
 
+		protected static init_normalize(params: $yuf_transport_req) {
+			const headers: $yuf_transport_req['headers'] = {
+				... this.headers_default(),
+				... params.headers,
+			}
+
+			const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
+			const headers_auth = token ? this.headers_auth(token) : null
+			if (headers_auth) Object.assign(headers, headers_auth)
+
+			const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
+
+			return { ...params, body, headers }
+		}
+
+		@ $mol_action
+		static override response( input: RequestInfo, init?: $yuf_transport_req ) {
+			return new $mol_fetch_response( $mol_wire_sync( this ).request( input , init) )
+		}
+
 		@ $mol_action
 		static override success(path: RequestInfo, params: $yuf_transport_req) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
@@ -238,19 +306,8 @@ namespace $ {
 			let init
 
 			do {
-				const headers: $yuf_transport_req['headers'] = {
-					... this.headers_default(),
-					... params.headers,
-				}
-
 				const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
-				const headers_auth = token ? this.headers_auth(token) : null
-				if (headers_auth) Object.assign(headers, headers_auth)
-
-				const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
-
-				init = { ...params, body, headers }
-
+				init = this.init_normalize(params)
 				try {
 					if (params.auth_token !== null && ! token) this.relogin()
 					response = this.response(input, init)
@@ -269,7 +326,7 @@ namespace $ {
 			const message = response_json?.message ?? error?.message ?? 'Unknown'
 
 			throw new $yuf_transport_error(
-				'Server error: ' + message,
+				message,
 				{ input, init, ... response_json },
 				error ?? new Error(message)
 			)
@@ -278,40 +335,52 @@ namespace $ {
 		static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null {
 			if (! res) return null
 
-			let http_code = res.code()
-			let message = res.message()
-
-			if (res.native.type === 'opaqueredirect' && ! http_code) {
-				http_code = 302
-				message = 'Redirect to: ' + res.native.url
-			}
-
 			let text
+			let data
 
 			try {
 				text = res.text()
+				let json = JSON.parse(text) as Record<string, string | undefined> | null
+				text = null
+
+				if (! json) json = {}
+				if (typeof json !== 'object') data = { code: 'Unknown', message: text }
+				else data = this.code_from_json(json as {})
+
 			} catch (e) {
-				if ($mol_fail_catch(e)) text = null
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+				data = { code: 'Unknown', message: text || 'Unknown', }
 			}
 
-			let json
+			let http_message = res.message()
+			let http_code = res.code()
 
-			if (text) {
-				try {
-					json = JSON.parse(text)
-					text = null
-				} catch (e) {
-					json = null
-					message += ', ' + text
-				}
+			if (res.native.type === 'opaqueredirect' && ! http_code) {
+				http_code = 302
+				http_message = 'Redirect: ' + res.native.url
 			}
 
-			return { http_code, message, ...json }
+			const message = `${data.message}${data.message ? ', ' : ''}${http_message}`
+			
+			return { ...data, message, http_code  }
 		}
 
-		static override request(input: RequestInfo, init: $yuf_transport_req) {
+		static code_from_json(json: Record<string, string | undefined>) {
+			const error_as_code = json.error && ! json.error.includes(' ') ? json.error : null
+			const code = error_as_code || json.code || json.type || json.error || 'Unknown'
+			const message = json.message || json.error || ''
+			delete json.type
+			delete json.code
+			delete json.message
+			delete json.error
+
+			return { ...json, code, message }
+		}
+
+		static override request(input: RequestInfo, init?: $yuf_transport_req) {
 			const res = super.request(input, init)
-			const deadline = init.deadline ?? this.deadline()
+			Object.assign(res, { init })
+			const deadline = init?.deadline ?? this.deadline()
 			if (! deadline) return res
 
 			const err_deadline = new $yuf_transport_error('Client timeout', {
@@ -319,7 +388,7 @@ namespace $ {
 				input,
 				http_code: 408,
 				code: 'Timeout',
-				deadline
+				message: `Deadline ${deadline} ms`
 			})
 
 			const deadlined = Promise.race([
