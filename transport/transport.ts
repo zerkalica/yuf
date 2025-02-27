@@ -2,7 +2,7 @@ namespace $ {
 
 	export type $yuf_transport_req = Omit<RequestInit, 'headers'> & {
 		deadline?: number
-		headers?: Record<string, string>
+		headers?: Record<string, string | null>
 		auth_token?: string | null // null - auth disabled
 		body_object?: object
 		redirect?: 'follow' | 'manual' | 'error'
@@ -108,11 +108,11 @@ namespace $ {
 		}
 
 		static get(path: string, params?: $yuf_transport_req) {
-			return this.success(path, { ...params, method: 'GET' })
+			return this.success2(path, { ...params, method: 'GET' })
 		}
 
 		static head(path: string, params?: $yuf_transport_req) {
-			return this.success(path, { ...params, method: 'HEAD' })
+			return this.success2(path, { ...params, method: 'HEAD' })
 		}
 
 		// custom range headers
@@ -149,15 +149,15 @@ namespace $ {
 		}
 
 		static put(path: string, params?: $yuf_transport_req) {
-			return this.success(path, { ...params, method: 'PUT' })
+			return this.success2(path, { ...params, method: 'PUT' })
 		}
 
 		static post(path: string, params?: $yuf_transport_req) {
-			return this.success(path, { ...params, method: 'POST' })
+			return this.success2(path, { ...params, method: 'POST' })
 		}
 
 		static delete(path: string, params?: $yuf_transport_req) {
-			return this.success(path, { ...params, method: 'DELETE' })
+			return this.success2(path, { ...params, method: 'DELETE' })
 		}
 
 		static data<Result>(params: $yuf_transport_req & {
@@ -170,7 +170,7 @@ namespace $ {
 			const input = params.input
 			const init = { ...params, input: undefined, assert: undefined } as $yuf_transport_req
 
-			const res = this.success(input, init)
+			const res = this.success2(input, init)
 
 			try {
 				text = res.text()
@@ -190,9 +190,9 @@ namespace $ {
 		}
 
 		@ $mol_action
-		static blob_safe( path: string ) {
+		static blob_safe( path: string, init?: $yuf_transport_req ) {
 			try {
-				return this.get( path ).blob()
+				return this.get( path, init ).blob()
 			} catch (e) {
 				if ($mol_promise_like(e)) $mol_fail_hidden(e)
 				if (e instanceof $yuf_transport_error && e.cause?.http_code === 404) return null
@@ -200,8 +200,8 @@ namespace $ {
 			}
 		}
 
-		static objecturl( path: string ) {
-			const blob = this.blob_safe( path )
+		static objecturl( path: string, init?: $yuf_transport_req ) {
+			const blob = this.blob_safe( path, init )
 			if (! blob ) return null
 			return URL.createObjectURL(blob)
 		}
@@ -276,14 +276,17 @@ namespace $ {
 		protected static token_cut() { return this.token() }
 
 		protected static init_normalize(params: $yuf_transport_req) {
-			const headers: $yuf_transport_req['headers'] = {
-				... this.headers_default(),
-				... params.headers,
-			}
-
 			const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
-			const headers_auth = token ? this.headers_auth(token) : null
-			if (headers_auth) Object.assign(headers, headers_auth)
+
+			const headers = {
+				... this.headers_default(),
+				... ( token ? this.headers_auth(token) : null ),
+				... params.headers,
+			} as Record<string, string>
+
+			for (const key of Object.keys(headers)) {
+				if (headers[key] === null) delete headers[key]
+			}
 
 			const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
 
@@ -291,12 +294,12 @@ namespace $ {
 		}
 
 		@ $mol_action
-		static override response( input: RequestInfo, init?: $yuf_transport_req ) {
+		static override response( input: RequestInfo, init?: Omit<$yuf_transport_req, 'headers'> & { headers: Record<string, string> }) {
 			return new $mol_fetch_response( $mol_wire_sync( this ).request( input , init) )
 		}
 
 		@ $mol_action
-		static override success(path: RequestInfo, params: $yuf_transport_req) {
+		static success2(path: RequestInfo, params: $yuf_transport_req ) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
 				? this.base_url() + path
 				: path
@@ -377,7 +380,7 @@ namespace $ {
 			return { ...json, code, message }
 		}
 
-		static override request(input: RequestInfo, init?: $yuf_transport_req) {
+		static override request(input: RequestInfo, init?: $yuf_transport_req & { headers: Record<string, string> }) {
 			const res = super.request(input, init)
 			Object.assign(res, { init })
 			const deadline = init?.deadline ?? this.deadline()
