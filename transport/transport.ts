@@ -4,6 +4,7 @@ namespace $ {
 		deadline?: number
 		headers?: Record<string, string | null>
 		auth_token?: string | null // null - auth disabled
+		auth_fails?: boolean // if 403 - return error, do not wait user input and retry fetch
 		body_object?: object
 		redirect?: 'follow' | 'manual' | 'error'
 	}
@@ -322,6 +323,7 @@ namespace $ {
 				if (! response) break
 				if ( response?.status() === 'success' ) return response
 				if (params.auth_token === null) break
+				if ( params.auth_fails ) break
 				if (! this.auth_need(response) ) break
 			} while (true)
 
