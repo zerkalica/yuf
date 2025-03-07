@@ -17,10 +17,23 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		static fullscreen_node(next?: Element | null) {
+		static fullscreen_node(next?: Element & {
+			mozFullScreen?: () => boolean
+			webkitIsFullScreen?: () => boolean
+			requestFullscreen?: () => Promise<void>
+			mozRequestFullScreen?: () => Promise<void>
+			webkitRequestFullScreen?: () => Promise<void>
+		} | null) {
 			const doc = this.doc()
+
 			if (next === null && doc.fullscreenElement) doc.exitFullscreen()
-			if (next) next?.requestFullscreen()
+
+			if (next) {
+				next.requestFullscreen?.()
+					?? next.mozRequestFullScreen?.()
+					?? next.webkitRequestFullScreen?.()
+			}
+			
 			if (next === undefined) this.fullscreen_handler()
 
 			return next ?? doc.fullscreenElement ?? null
