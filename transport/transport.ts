@@ -23,6 +23,35 @@ namespace $ {
 
 	export function $yuf_transport_pass(data: unknown) { return data }
 
+	export class $yuf_transport_url extends $mol_object {
+		blob() {
+			return new Blob
+		}
+
+		blob_safe() {
+			try {
+				return this.blob()
+			} catch (e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+			
+				if (e instanceof $yuf_transport_error && e.cause?.http_code === 404) return null
+				$mol_fail_hidden(e)
+			}
+		}
+
+		@ $mol_mem
+		url(reset?: null) {
+			$mol_wire_solid()
+			const blob = this.blob_safe()
+			return blob ? URL.createObjectURL(blob) : null
+		}
+
+		destructor() {
+			const url = this.url()
+			if (url) URL.revokeObjectURL(url)
+		}
+	}
+
 	export class $yuf_transport extends $mol_fetch {
 
 		@ $mol_mem
@@ -190,21 +219,15 @@ namespace $ {
 			}
 		}
 
-		@ $mol_action
-		static blob_safe( path: string, init?: $yuf_transport_req ) {
-			try {
-				return this.get( path, init ).blob()
-			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-				if (e instanceof $yuf_transport_error && e.cause?.http_code === 404) return null
-				$mol_fail_hidden(e)
-			}
+		static get_url_object( path: string, init?: $yuf_transport_req ) {
+			return this.$.$yuf_transport_url.make({
+				blob: () => this.get( path, init ).blob()
+			})
 		}
 
-		static objecturl( path: string, init?: $yuf_transport_req ) {
-			const blob = this.blob_safe( path, init )
-			if (! blob ) return null
-			return URL.createObjectURL(blob)
+		@ $mol_mem_key
+		static url_object( path: string ) {
+			return this.get_url_object(path)
 		}
 
 		/**
@@ -384,6 +407,7 @@ namespace $ {
 
 		static override request(input: RequestInfo, init?: $yuf_transport_req & { headers: Record<string, string> }) {
 			const res = super.request(input, init)
+
 			Object.assign(res, { init })
 			const deadline = init?.deadline ?? this.deadline()
 			if (! deadline) return res
