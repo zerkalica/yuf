@@ -60,6 +60,10 @@ namespace $ {
 			this.saving()
 		}
 
+		save_draft(next: Partial<ReturnType<typeof this['defaults']>> | null) {
+			this.save(next)
+		}
+
 		remove() {
 			this.patch(null)
 		}
@@ -82,6 +86,11 @@ namespace $ {
 			return next ?? null
 		}
 
+		@ $mol_action
+		data_grab() {
+			return this.draft() ?? this.patch()
+		}
+
 		@ $mol_mem_key
 		value<
 			Field extends keyof NonNullable<ReturnType< this['patch'] >>
@@ -89,20 +98,28 @@ namespace $ {
 			field: Field,
 			value?: NonNullable<ReturnType< this['patch'] >>[ Field ] | null,
 		): NonNullable<ReturnType< this['patch'] >>[ Field ] {
-			// try { this.synced() } catch (error) {}
-			const data = this.draft() ?? this.patch()
-			if (value === undefined) {
-				return data?.[field as never] as NonNullable<ReturnType< this['patch'] >>[ Field ]
+			let data = this.draft() ?? this.patch()
+
+			if (value !== undefined) {
+				// В data() может быть асинхронная логика
+				// Если записывать в value не дожидаясь завершения (например в mol_wire_race в цикле в mol_form_draft.submit),
+				// то без draft каждый вызов value будет data на момент первого вызова value
+				// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
+				const next = { ...data, [ field ]: value } as ReturnType<typeof this['patch']>
+				this.save_draft(next)
+				data = this.data_grab()
 			}
 
-			// В data() может быть асинхронная логика
-			// Если записывать в value не дожидаясь завершения (например в mol_wire_race в цикле в mol_form_draft.submit),
-			// то без draft каждый вызов value будет data на момент первого вызова value
-			// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
-			const next = { ...data, [ field ]: value } as ReturnType<typeof this['patch']>
-			this.save(next)
-			const result = this.patch()?.[ field as never ] as NonNullable<ReturnType< this['patch'] >>[ Field ]
-			return result
+			return data?.[ field as never ] as NonNullable<ReturnType< this['patch'] >>[ Field ]
+		}
+
+		@ $mol_mem
+		dirty() {
+			const draft = this.draft()
+			if (draft === null) return false
+
+			const data = this.patch() as typeof draft
+			return ! $mol_compare_deep(data, draft)
 		}
 
 	}
