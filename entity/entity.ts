@@ -7,7 +7,7 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data( full?: ReturnType<typeof this['defaults']> | null) {
+		data( full?: ReturnType<typeof this['defaults']> | null, cache?: 'cache') {
 			return full ?? null
 		}
 
@@ -26,6 +26,8 @@ namespace $ {
 			if (! patch) return false
 
 			this.patch(patch)
+
+			this.draft(null)
 
 			return false
 		}
@@ -118,7 +120,8 @@ namespace $ {
 			const draft = this.draft()
 			if (draft === null) return false
 
-			const data = this.patch() as typeof draft
+			const data = $mol_wire_probe( () => this.patch()) as undefined | typeof draft
+			if (data === undefined) return true
 			return ! $mol_compare_deep(data, draft)
 		}
 
