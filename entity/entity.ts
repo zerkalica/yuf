@@ -7,14 +7,14 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data( full?: ReturnType<typeof this['defaults']> | null, cache?: 'cache' | 'refresh') {
+		data( full?: ReturnType<this['defaults']> | null, cache?: 'cache' | 'refresh') {
 			return full ?? null
 		}
 
 		@ $mol_mem
-		patch( patch?: Partial<ReturnType<typeof this['defaults']>> | null) {
+		patch( patch?: Partial<ReturnType<this['defaults']>> | null) {
 			const full = patch
-				? { ...this.defaults(), ...patch } as ReturnType<typeof this['defaults']>
+				? { ...this.defaults(), ...patch } as ReturnType<this['defaults']>
 				: (patch === null ? null : undefined)
 
 			return this.data(full) ?? null
@@ -57,12 +57,12 @@ namespace $ {
 		}
 
 		@ $mol_action
-		save(next: Partial<ReturnType<typeof this['defaults']>> | null) {
+		save(next: Partial<ReturnType<this['defaults']>> | null) {
 			this.draft(next)
 			this.saving()
 		}
 
-		save_draft(next: Partial<ReturnType<typeof this['defaults']>> | null) {
+		save_draft(next: Partial<ReturnType<this['defaults']>> | null) {
 			this.save(next)
 		}
 
@@ -84,7 +84,7 @@ namespace $ {
 		 * ```
 		 */
 		@ $mol_mem
-		draft(next?: Partial<ReturnType<typeof this['patch']>> | null) {
+		draft(next?: Partial<ReturnType<this['patch']>> | null) {
 			return next ?? null
 		}
 
@@ -107,7 +107,7 @@ namespace $ {
 				// Если записывать в value не дожидаясь завершения (например в mol_wire_race в цикле в mol_form_draft.submit),
 				// то без draft каждый вызов value будет data на момент первого вызова value
 				// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
-				const next = { ...data, [ field ]: value } as ReturnType<typeof this['patch']>
+				const next = { ...data, [ field ]: value } as ReturnType<this['patch']>
 				this.save_draft(next)
 				data = this.data_grab()
 			}
