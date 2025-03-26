@@ -7,7 +7,7 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data( full?: ReturnType<typeof this['defaults']> | null, cache?: 'cache') {
+		data( full?: ReturnType<typeof this['defaults']> | null, cache?: 'cache' | 'refresh') {
 			return full ?? null
 		}
 

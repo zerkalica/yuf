@@ -47,7 +47,7 @@ namespace $ {
 		}
 
 		destructor() {
-			const url = this.url()
+			const url = $mol_wire_probe(() => this.url())
 			if (url) URL.revokeObjectURL(url)
 		}
 	}
