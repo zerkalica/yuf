@@ -27,7 +27,7 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data(next?: ReturnType<typeof this['defaults']> | null) {
+		data(next?: ReturnType<this['defaults']> | null) {
 			type SO = Record<string, string | number | boolean | null>
 
 			const defaults = this.defaults() as SO
@@ -42,7 +42,7 @@ namespace $ {
 
 			const chunks = serialized?.split(sep) ?? []
 
-			const result = { ...defaults } as ReturnType<typeof this['defaults']>
+			const result: ReturnType<typeof this.defaults> = { ...defaults }
 
 			for (const chunk of chunks) {
 				const [name, str] = chunk.split(this.value_separator()) ?? []
@@ -51,7 +51,7 @@ namespace $ {
 				;(result as SO)[name] = val as any
 			}
 
-			return result
+			return result as ReturnType<typeof this['defaults']>
 		}
 
 		@ $mol_mem_key
