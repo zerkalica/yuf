@@ -1,25 +1,11 @@
 namespace $ {
 	export class $yuf_ws_error extends Error {
 		name = '$yuf_ws_error'
-		cause: Event | undefined
+		cause: Event | CloseEvent | undefined
 
-		constructor(cause: Event) {
-			const readyStateText = $yuf_ws_error.ready_state_info[(cause.target as WebSocket).readyState] ?? 'unknown'
-			const codeText = $yuf_ws_error.error_info(cause)
-
-			super(
-				`${readyStateText} ${codeText}`,
-				{ cause }
-			)
-
+		constructor( cause: Event | CloseEvent) {
+			super( $yuf_ws_error.error_info(cause), { cause } )
 			this.cause = cause
-		}
-
-		static message(cause: Event) {
-			const readyStateText = $yuf_ws_error.ready_state_info[(cause.target as WebSocket).readyState] ?? 'unknown'
-			const codeText = $yuf_ws_error.error_info(cause)
-
-			return `${readyStateText} ${codeText}`
 		}
 
 		static ready_state_info: Record<number, string> = {
@@ -27,17 +13,16 @@ namespace $ {
 			1: 'open',
 			2: 'closing',
 			3: 'closed',
-			// [WebSocket.CONNECTING]: 'connecting',
-			// [WebSocket.OPEN]: 'open',
-			// [WebSocket.CLOSING]: 'closing',
-			// [WebSocket.CLOSED]: 'closed',
 		}
 	
 		static error_info(e: Event & Partial<CloseEvent & ErrorEvent>) {
+			let code = e.code
+			if (! code) code = e.wasClean ? 1000 : 1006
+			const code_str = `${this.code_description(code)} [${code}]`
+			const readyStateText = this.ready_state_info[(e.target as WebSocket).readyState] ?? 'unknown'
+
 			return [
-				e.wasClean ? 'clean' : 'dirty',
-				e.code,
-				e.code ? this.code_description(e.code) : undefined,
+				code_str,
 				e.reason,
 				e.message,
 				e.error

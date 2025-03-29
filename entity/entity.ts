@@ -95,11 +95,11 @@ namespace $ {
 
 		@ $mol_mem_key
 		value<
-			Field extends keyof NonNullable<ReturnType< this['patch'] >>
+			Field extends keyof ReturnType< this['defaults'] >
 		>(
 			field: Field,
-			value?: NonNullable<ReturnType< this['patch'] >>[ Field ] | null,
-		): NonNullable<ReturnType< this['patch'] >>[ Field ] {
+			value?: ReturnType< this['defaults'] >[ Field ] | null,
+		): ReturnType< this['defaults'] >[ Field ] {
 			let data = this.draft() ?? this.patch()
 
 			if (value !== undefined) {
@@ -107,12 +107,12 @@ namespace $ {
 				// Если записывать в value не дожидаясь завершения (например в mol_wire_race в цикле в mol_form_draft.submit),
 				// то без draft каждый вызов value будет data на момент первого вызова value
 				// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
-				const next = { ...data, [ field ]: value } as ReturnType<this['patch']>
+				const next = { ...data, [ field ]: value } as ReturnType<this['defaults']>
 				this.save_draft(next)
 				data = this.data_grab()
 			}
 
-			return data?.[ field as never ] as NonNullable<ReturnType< this['patch'] >>[ Field ]
+			return data?.[ field as never ] as ReturnType< this['defaults'] >[ Field ]
 		}
 
 		@ $mol_mem
