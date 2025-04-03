@@ -20,11 +20,13 @@ namespace $ {
 			return this.data(full) ?? null
 		}
 
+		saving_wait() {}
+
 		@ $mol_mem
 		saving() {
 			const patch = this.draft()
 			if (! patch) return false
-
+			this.saving_wait()
 			this.patch(patch)
 
 			this.draft(null)
@@ -57,13 +59,8 @@ namespace $ {
 		}
 
 		@ $mol_action
-		save(next: Partial<ReturnType<this['defaults']>> | null) {
-			this.draft(next)
+		save() {
 			this.saving()
-		}
-
-		save_draft(next: Partial<ReturnType<this['defaults']>> | null) {
-			this.save(next)
 		}
 
 		remove() {
@@ -84,7 +81,7 @@ namespace $ {
 		 * ```
 		 */
 		@ $mol_mem
-		draft(next?: Partial<ReturnType<this['patch']>> | null) {
+		draft(next?: Partial<ReturnType<this['defaults']>> | null) {
 			return next ?? null
 		}
 
@@ -108,7 +105,8 @@ namespace $ {
 				// то без draft каждый вызов value будет data на момент первого вызова value
 				// Из-за спреда, кадый последующий вызов value не учтет изменения от предыдущего
 				const next = { ...data, [ field ]: value } as ReturnType<this['defaults']>
-				this.save_draft(next)
+				this.draft(next)
+				this.save()
 				data = this.data_grab()
 			}
 

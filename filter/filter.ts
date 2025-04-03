@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_filter<Item = string> extends $mol_object {
+	export class $yuf_filter extends $mol_object {
 		prefix() { return '' }
 		separator() { return '~' }
 		value_separator() { return '.' }
@@ -14,13 +14,13 @@ namespace $ {
 		protected serialize<Val>(val: Val, def: Val, name: string) {
 			if (val === def) return ''
 			if (val === true) return name
-			if (val === false) return ''
+			if (val === false) return `!${name}`
 			return `${name}${this.value_separator()}${val}`
 		}
 
 		protected deserialize(str: string, def: unknown) {
 			if (str === '') return def
-			if (typeof def === 'boolean') return Boolean(str) && str !== '0'
+			if (typeof def === 'boolean') return str !== '0'
 			if (typeof def === 'number') return Number.isNaN(Number(str)) ? def : Number(str)
 
 			return str ?? def
@@ -45,9 +45,13 @@ namespace $ {
 			const result: ReturnType<typeof this.defaults> = { ...defaults }
 
 			for (const chunk of chunks) {
-				const [name, str] = chunk.split(this.value_separator()) ?? []
+				const [name_raw, str] = chunk.split(this.value_separator()) ?? []
+				const neg = name_raw.startsWith('!')
+				const name = neg ? name_raw.slice(1) : name_raw
+
 				if (defaults[name] === undefined) continue
-				const val = this.deserialize(str ?? name, defaults[name])
+
+				const val = this.deserialize(neg ? '0' : (str ?? '1'), defaults[name])
 				;(result as SO)[name] = val as any
 			}
 
@@ -56,15 +60,15 @@ namespace $ {
 
 		@ $mol_mem_key
 		value<
-			Field extends keyof NonNullable<ReturnType< this['data'] >>
+			Field extends keyof NonNullable<ReturnType< this['defaults'] >>
 		>(
 			field: Field,
-			value?: NonNullable<ReturnType< this['data'] >>[ Field ] | null,
+			value?: NonNullable<ReturnType< this['defaults'] >>[ Field ] | null,
 		) {
 			let data = this.data()
 			if (value !== undefined) data = this.data({...data, [field]: value })
 
-			return data[field as never] as NonNullable<ReturnType< this['data'] >>[ Field ]
+			return data[field as never] as NonNullable<ReturnType< this['defaults'] >>[ Field ]
 		}
 
 	}
