@@ -1,0 +1,4 @@
+$yuf_app_hello $mol_view
+	dom_name \pre
+	sub /
+		^ logs /string
