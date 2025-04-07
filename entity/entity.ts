@@ -29,7 +29,10 @@ namespace $ {
 			this.saving_wait()
 			this.patch(patch)
 
-			this.draft(null)
+			// Если сохранили в value значение, то без after_tick оно не перевытянется по переключению draft в null
+			// Перевытягивание нужно, что б восстановить связь с data, которая обрывается, когда draft есть
+			// Обрывается она, что б можно было с нуля засетить draft и запушить, не пуля data
+			new $mol_after_tick(() => this.draft(null))
 
 			return false
 		}
