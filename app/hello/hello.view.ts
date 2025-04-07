@@ -2,7 +2,7 @@ namespace $.$$ {
 
 	class Runner extends $mol_object {
 
-		arr = new Array(12).fill(0).map((v, i) => i)
+		arr = new Array(9).fill(0).map((v, i) => i)
 	
 		@ $mol_mem
 		emulate_actions(reset?: null) {
@@ -31,10 +31,10 @@ namespace $.$$ {
 		@ $mol_mem
 		synced() {
 			const r = this.result()
-			this.$.$mol_wait_timeout(500)
-			// debugger
+			this.$.$mol_wait_timeout_oneshot(500)
 			this.log('fetch ' + r)
-			this.$.$mol_wait_timeout(1000)
+			this.$.$mol_wait_timeout_oneshot(1000)
+			this.log('success ' + r)
 			return 'success ' + r
 		}
 
