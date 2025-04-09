@@ -20,22 +20,19 @@ namespace $ {
 			return this.data(full) ?? null
 		}
 
-		saving_wait() {}
+		saving_start() {}
 
 		@ $mol_mem
 		saving() {
 			const patch = this.draft()
 			if (! patch) return false
-			this.saving_wait()
+			this.saving_start()
 			this.patch(patch)
-
-			// Если сохранили в value значение, то без after_tick оно не перевытянется по переключению draft в null
-			// Перевытягивание нужно, что б восстановить связь с data, которая обрывается, когда draft есть
-			// Обрывается она, что б можно было с нуля засетить draft и запушить, не пуля data
-			new $mol_after_tick(() => this.draft(null))
+			this.draft(null)
 
 			return false
 		}
+
 
 		abort() { this.draft(null) }
 
@@ -100,7 +97,8 @@ namespace $ {
 			field: Field,
 			value?: ReturnType< this['defaults'] >[ Field ] | null,
 		): ReturnType< this['defaults'] >[ Field ] {
-			let data = this.draft() ?? this.patch()
+			const patch = this.patch()
+			let data = this.draft() ?? patch
 
 			if (value !== undefined) {
 				// В data() может быть асинхронная логика
