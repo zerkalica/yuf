@@ -28,7 +28,8 @@ namespace $ {
 			if (! patch) return false
 			this.saving_start()
 			this.patch(patch)
-			this.draft(null)
+
+			new $mol_after_tick(()=> this.draft(null))
 
 			return false
 		}
