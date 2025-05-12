@@ -23,33 +23,15 @@ namespace $ {
 
 	export function $yuf_transport_pass(data: unknown) { return data }
 
-	export class $yuf_transport_url extends $mol_object {
-		blob() {
-			return new Blob
-		}
+	export class $yuf_transport_url_object extends $mol_object {
+		constructor(
+			readonly blob: Blob,
+			readonly url = URL.createObjectURL(blob)
+		) { super() }
 
-		blob_safe() {
-			try {
-				return this.blob()
-			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-			
-				if (e instanceof $yuf_transport_error && e.cause?.http_code === 404) return null
-				$mol_fail_hidden(e)
-			}
-		}
+		toString() { return this.url }
 
-		@ $mol_mem
-		url(reset?: null) {
-			$mol_wire_solid()
-			const blob = this.blob_safe()
-			return blob ? URL.createObjectURL(blob) : null
-		}
-
-		destructor() {
-			const url = $mol_wire_probe(() => this.url())
-			if (url) URL.revokeObjectURL(url)
-		}
+		destructor() { URL.revokeObjectURL(this.url) }
 	}
 
 	export class $yuf_transport extends $mol_fetch {
@@ -99,9 +81,9 @@ namespace $ {
 		 * Access token, placed in local storage by default.
 		 */
 		@ $mol_mem
-		static token( next? : string | null ): string | null | undefined {
+		static token( next? : string | null ) {
 			if (next) this.logining(false)
-			return this.$.$mol_state_local.value(this.token_key(), next) ?? undefined
+			return this.$.$mol_state_local.value(this.token_key(), next) ?? null
 		}
 
 		/**
@@ -219,15 +201,9 @@ namespace $ {
 			}
 		}
 
-		static get_url_object( path: string, init?: $yuf_transport_req ) {
-			return this.$.$yuf_transport_url.make({
-				blob: () => this.get( path, init ).blob()
-			})
-		}
-
 		@ $mol_mem_key
 		static url_object( path: string ) {
-			return this.get_url_object(path)
+			return new this.$.$yuf_transport_url_object(this.get( path ).blob())
 		}
 
 		/**
