@@ -20,13 +20,13 @@ namespace $ {
 			return this.data(full) ?? null
 		}
 
-		saving_start() {}
+		debounce() { return false }
 
 		@ $mol_mem
 		saving() {
 			const patch = this.draft()
 			if (! patch) return false
-			this.saving_start()
+			if (this.debounce()) this.$.$yuf_wait_timeout(100)
 			this.patch(patch)
 
 			new $mol_after_tick(()=> this.draft(null))
