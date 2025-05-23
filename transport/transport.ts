@@ -23,17 +23,6 @@ namespace $ {
 
 	export function $yuf_transport_pass(data: unknown) { return data }
 
-	export class $yuf_transport_url_object extends $mol_object {
-		constructor(
-			readonly blob: Blob,
-			readonly url = URL.createObjectURL(blob)
-		) { super() }
-
-		toString() { return this.url }
-
-		destructor() { URL.revokeObjectURL(this.url) }
-	}
-
 	export class $yuf_transport extends $mol_fetch {
 
 		@ $mol_mem
@@ -202,8 +191,12 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		static url_object( path: string ) {
-			return new this.$.$yuf_transport_url_object(this.get( path ).blob())
+		static object_url_ref( path: string ) {
+			return new this.$.$yuf_url_object(this.get( path ).blob())
+		}
+
+		static object_url(path: string) {
+			return this.object_url_ref(path).url
 		}
 
 		/**
@@ -298,6 +291,8 @@ namespace $ {
 			return new $mol_fetch_response( $mol_wire_sync( this ).request( input , init) )
 		}
 
+		static auth_fails() { return false }
+
 		@ $mol_action
 		static success2(path: RequestInfo, params: $yuf_transport_req ) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
@@ -322,7 +317,7 @@ namespace $ {
 				if (! response) break
 				if ( response?.status() === 'success' ) return response
 				if (params.auth_token === null) break
-				if ( params.auth_fails ) break
+				if ( params.auth_fails || this.auth_fails() ) break
 				if (! this.auth_need(response) ) break
 			} while (true)
 

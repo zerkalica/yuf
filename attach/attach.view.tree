@@ -1,0 +1,39 @@
+$yuf_attach $mol_view
+	files? *File|null
+	removing*? false
+	ids /string
+	sub /
+		<= Content $mol_view sub <= items_content /$mol_view
+			<= Item*0 $yuf_attach_item
+				click? <=> item_drop*? null
+				file <= file* File
+				uploading <= uploading* false
+		<= Add $mol_button_open
+			hint <= attach_hint @ \Upload files
+			files? <=> attach_new? null
+			Icon <= Add_icon $mol_icon_attachment
+
+$yuf_attach_item $mol_button_minor
+	attr *
+		^
+		yuf_attach_item_status <= uploading_status \upload
+	file File
+	image_regexp \^.*\.(jpe?g|png|gif|webp)$
+	is_image false
+	uploading false
+	sub /
+		^ item_content /$mol_view
+			<= Image $mol_image
+				title <= image_title \
+				uri <= item_uri \
+		^ unknown_content /$mol_view
+			<= Unknown $yuf_attach_unknown
+				Icon <= Unknown_icon $mol_icon_camera_off
+				file_name <= file_name \
+		<= Remove_icon $mol_icon_close_circle
+
+$yuf_attach_unknown $mol_view
+	sub /
+		<= Icon $mol_view
+		<= Text $mol_view sub /
+			<= ext <= file_name \
