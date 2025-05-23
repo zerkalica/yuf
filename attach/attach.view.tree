@@ -2,6 +2,7 @@ $yuf_attach $mol_view
 	files? *File|null
 	removing*? false
 	ids /string
+	serial_uploads false
 	sub /
 		<= Content $mol_view sub <= items_content /$mol_view
 			<= Item*0 $yuf_attach_item
@@ -11,6 +12,9 @@ $yuf_attach $mol_view
 		<= Add $mol_button_open
 			hint <= attach_hint @ \Upload files
 			files? <=> attach_new? null
+			multiple <= multiple false
+			accept <= accept \
+			enabled <= enabled true
 			Icon <= Add_icon $mol_icon_attachment
 
 $yuf_attach_item $mol_button_minor

@@ -1,7 +1,14 @@
 namespace $.$$ {
 	export class $yuf_attach extends $.$yuf_attach {
-		
+
+		override enabled() {
+			return this.serial_uploads() ? this.ids().length === 0 : true
+		}
+
+		@ $mol_action
 		override attach_new( files: readonly File[] ) {
+			if (! this.enabled() ) return
+
 			const next = {} as Record<string, File>
 
 			for (const file of files) {
@@ -30,7 +37,9 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override items_content() { return this.ids().map( id => this.Item(id) ) }
+		override items_content() {
+			return this.ids().map( id => this.Item(id) )
+		}
 
 		override item_drop( id: string, event?: Event | null) {
 			this.removing(id)
