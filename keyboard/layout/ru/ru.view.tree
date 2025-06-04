@@ -1,0 +1,38 @@
+$yuf_keyboard_layout_ru $yuf_keyboard_layout_en
+	before_space /string
+		\Х
+		\Ъ
+		\Э
+	alpha_1 /string
+		\Й
+		\Ц
+		\У
+		\К
+		\Е
+		\Н
+		\Г
+		\Ш
+		\Щ
+		\З
+	alpha_2 /string
+		\Ф
+		\Ы
+		\В
+		\А
+		\П
+		\Р
+		\О
+		\Л
+		\Д
+		\Ж
+	alpha_3 /string
+		\Я
+		\Ч
+		\С
+		\М
+		\И
+		\Т
+		\Ь
+		\Б
+		\Ю
+		\Ё

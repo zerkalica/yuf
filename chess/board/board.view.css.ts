@@ -23,7 +23,7 @@ namespace $ {
 			direction: 'column',
 			grow: 0,
 			shrink: 1,
-			basis: vmin(90),
+			basis: '80vh',
 		},
 		Toolbar: {
 			padding: {

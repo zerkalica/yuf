@@ -17,7 +17,7 @@ namespace $ {
 			return next ?? []
 		}
 
-		protected promise = null as null | ReturnType<typeof $mol_promise<readonly string[]>>
+		protected promise = null as null | $mol_promise<readonly string[]>
 
 		protected async send_raw(cmd: string) {
 			let current
@@ -26,7 +26,7 @@ namespace $ {
 				try { await current } catch (e) {}
 			} while (current !== this.promise)
 
-			const promise = this.promise = $mol_promise<readonly string[]>()
+			const promise = this.promise = new $mol_promise<readonly string[]>()
 
 			const handler = setTimeout(() => promise.done([]), this.deadline())
 

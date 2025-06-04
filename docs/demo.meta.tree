@@ -1,0 +1,10 @@
+
+deploy \/mol/logo/logo.svg
+deploy \/mol/app/docs/manifest.json
+
+include \/mol/offline/install
+include \/mol/app/demo
+
+include \/yuf/chess/demo
+include \/yuf/keyboard/demo
+include \/yuf/attach/demo

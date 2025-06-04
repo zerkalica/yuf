@@ -1,0 +1,21 @@
+$yuf_attach_demo $mol_example_small
+	title \Attach with status track
+	ids? /string
+	sub /
+		<= List $mol_list rows /
+			<= Filled $yuf_attach
+				multiple true
+				item_drop* => item_drop*
+				file* => file*
+				uploading* <=> uploading* false
+			<= Uploads $mol_list
+				rows <= uploads /
+					<= Uploaded* $mol_view sub /
+						<= upload_name* \
+	tags /
+		\file
+		\image
+		\upload
+	aspects /
+		\Widget/Control
+		\Type/File

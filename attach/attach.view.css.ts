@@ -14,6 +14,7 @@ namespace $.$$ {
 			},
 			padding: 0,
 		},
+		gap: $mol_gap.block,
 		Content: {
 			gap: $mol_gap.block,
 		},

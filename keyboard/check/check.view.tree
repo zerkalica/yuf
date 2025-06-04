@@ -1,0 +1,4 @@
+$yuf_keyboard_check $mol_check_icon
+	Icon $mol_icon_keyboard
+	Input $mol_view
+	Target? null

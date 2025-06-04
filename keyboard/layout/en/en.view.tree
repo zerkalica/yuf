@@ -1,0 +1,111 @@
+$yuf_keyboard_layout_en $mol_view
+	variants *string[][]
+		\
+			/
+				<= digits
+				<= alpha_1
+				<= alpha_2
+				<= alpha_3
+				<= controls /
+					\⇑
+					<= lang_key \lang
+					\,.;
+					^ before_space /string
+					\ 
+					\⌫
+					\◀
+					\▶
+		special /
+			<= digits
+			<= special_1
+			<= special_2
+			<= special_3
+			<= special_4
+	digits /
+		\1
+		\2
+		\3
+		\4
+		\5
+		\6
+		\7
+		\8
+		\9
+		\0
+	alpha_1 /
+		\Q
+		\W
+		\E
+		\R
+		\T
+		\Y
+		\U
+		\I
+		\O
+		\P
+	alpha_2 /
+		\A
+		\S
+		\D
+		\F
+		\G
+		\H
+		\J
+		\K
+		\L
+		\;
+	alpha_3 /
+		\Z
+		\X
+		\C
+		\V
+		\B
+		\N
+		\M
+		^ alpha3_end /
+			\,
+			\.
+			\@
+	special_1 /
+		\!
+		\@
+		\#
+		\$
+		\%
+		\^
+		\&
+		\*
+		\(
+		\)
+	special_2 /
+		\-
+		\+
+		\=
+		\_
+		\~
+		\`
+		\{
+		\}
+		\[
+		\]
+	special_3 /
+		\/
+		\\
+		\|
+		\'
+		\"
+		\~
+		\<
+		\>
+		\:
+		\;
+	special_4 /
+		\.
+		\,
+		\abc
+		\?
+		^ special_4_end /
+			\ 
+			\⌫
+			\◀
+			\▶
