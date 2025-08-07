@@ -14,11 +14,14 @@ namespace $ {
 			let ws
 
 			try {
-				url = url
+				if (! url.startsWith('ws')) {
+					url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url
+				}
+
 				ws = new WebSocket( url, protocols )
 			} catch (e) {
 				if (e instanceof Error && ! (e instanceof $mol_error_mix)) {
-					e = new $mol_error_mix('Cant create socket', this, e as Error)
+					e = new $mol_error_mix('Cant create socket, ' + e.message + ': ' + url, this, e as Error)
 				}
 				$mol_fail_hidden(e)
 			}

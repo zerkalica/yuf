@@ -34,6 +34,34 @@ namespace $.$$ {
 			overflow: 'hidden',
 			padding: $mol_gap.space,
 		},
+
+		Camera_pick: {
+			Trigger_icon: {
+				width: '100%',
+				height: '100%',
+			},
+
+			Bubble: {
+				width: '700px',
+				aspectRatio: 16/9,
+			},
+
+			Trigger: {
+
+				width: '6rem',
+				height: '6rem',
+				background: {
+					color: $mol_theme.card,
+				},
+				border: {
+					radius: $mol_gap.round,
+				},
+				justifyContent: 'center',
+				alignItems: 'center',
+				overflow: 'hidden',
+				padding: $mol_gap.space,
+			}
+		}
 	} )
 
 	$mol_style_define( $yuf_attach_item, {

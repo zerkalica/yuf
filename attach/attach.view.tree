@@ -16,6 +16,10 @@ $yuf_attach $mol_view
 			accept <= accept \
 			enabled <= enabled true
 			Icon <= Add_icon $mol_icon_attachment
+		^ camera_content /
+			<= Camera_pick $yuf_camera_pick
+				showed? => camera_pick_showed?
+				file? <=> camera_file? null
 
 $yuf_attach_item $mol_button_minor
 	attr *

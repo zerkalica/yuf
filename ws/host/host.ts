@@ -76,7 +76,7 @@ namespace $ {
 				this.on_data(task)
 			} catch (e) {
 				if( $mol_promise_like( e ) ) $mol_fail_hidden( e )
-				const val = $mol_wire_sync($mol_error_mix).make('Can\'t parse message', { task }, e as Error)
+				const val = new $mol_error_mix('Can\'t parse message ', { task }, e as Error)
 				this.error(val)
 			}
 		}

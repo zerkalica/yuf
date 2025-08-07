@@ -22,6 +22,12 @@ namespace $.$$ {
 			})
 		}
 
+		override camera_file( next?: File ) {
+			if (! next) return null
+			this.attach_new([ next ])
+			this.camera_pick_showed(false)
+		}
+
 		override file(id: string) { return this.files()[id]! } 
 
 		@ $mol_mem

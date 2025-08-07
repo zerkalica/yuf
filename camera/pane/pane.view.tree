@@ -1,0 +1,20 @@
+$yuf_camera_pane $mol_view
+	file_name_template \\cam-{{date}}.jpeg
+	canvas $yuf_canvas_image
+		image_type <= image_type \image/jpeg
+		node <= camera_node
+	file? null
+	sub /
+		<= Camera $yuf_camera_pane_video
+			dom_node => camera_node
+			facing <= facing \environment
+			width <= desirable_width 1280
+			height <= desirable_height 720
+			click? <=> camera_click? null
+		<= Controls $mol_view
+			sub <= controls /$mol_view_content
+
+$yuf_camera_pane_video $mol_video_camera
+	event *
+		^
+		click? <=> click? null

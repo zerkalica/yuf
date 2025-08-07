@@ -1,0 +1,3 @@
+$yuf_portal $mol_view
+	sub /
+		^ modals /$mol_view

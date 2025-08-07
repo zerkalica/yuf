@@ -1,0 +1,11 @@
+$yuf_camera_pick $mol_pick
+	trigger_content /
+		<= Trigger_icon $mol_icon_camera
+	bubble_content /
+		<= Camera $yuf_camera_pane
+			file? <=> file? null
+			controls /
+				<= Close $mol_button_minor
+					hint <= close_hint @ \Close
+					sub / <= Close_icon $mol_icon_close
+					click? <=> close_click? null
