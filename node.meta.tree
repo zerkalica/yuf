@@ -14,10 +14,21 @@
 	pack rise git \https://github.com/stan-donarise/mam_rise.git
 	pack yuf git \https://github.com/zerkalica/yuf.git
 	pack apxu git \https://github.com/ApxuTechTop/apxu
+	pack mpk git \ssh://git@dev.mpksoft.ru:2222/tsnk/mss/mam_mpk_kit.git
 \/mol
 	pack icon git \https://github.com/nin-jin/mol_icon.git
 \/mol/view
 	include \/mol/view/tree/test
+\/mol/app/demo/main
+	deploy \/mol/readme.md
 \/yuf/chess/model/stockfish
 	deploy \/yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.wasm
 	deploy \/yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.js
+\/yuf/docs
+	deploy \/mol/logo/logo.svg
+	deploy \/mol/app/docs/manifest.json
+	include \/mol/offline/install
+	include \/mol/app/demo
+	include \/yuf/chess/demo
+	include \/yuf/keyboard/demo
+	include \/yuf/attach/demo
