@@ -1473,6 +1473,7 @@ $yuf_attach $mol_view
 			<= Camera_pick $yuf_camera_pick
 				showed? => camera_pick_showed?
 				file? <=> camera_file? null
+				align <= camera_pick_align \top_center
 
 $yuf_attach_item $mol_button_minor
 	attr *

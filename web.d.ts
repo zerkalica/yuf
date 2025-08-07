@@ -6942,6 +6942,11 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_camera_pick['file'] >
 	>
+	type $yuf_camera_pick__align_yuf_attach_13 = $mol_type_enforce<
+		ReturnType< $yuf_attach['camera_pick_align'] >
+		,
+		ReturnType< $yuf_camera_pick['align'] >
+	>
 	export class $yuf_attach extends $mol_view {
 		item_drop( id: any, next?: any ): any
 		file( id: any): File
@@ -6958,6 +6963,7 @@ declare namespace $ {
 		Add( ): $mol_button_open
 		camera_pick_showed( next?: ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] > ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >
 		camera_file( next?: any ): any
+		camera_pick_align( ): string
 		Camera_pick( ): $yuf_camera_pick
 		camera_content( ): readonly(any)[]
 		files( next?: Record<string, File|null> ): Record<string, File|null>

@@ -16231,9 +16231,13 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		camera_pick_align(){
+			return "top_center";
+		}
 		Camera_pick(){
 			const obj = new this.$.$yuf_camera_pick();
 			(obj.file) = (next) => ((this.camera_file(next)));
+			(obj.align) = () => ((this.camera_pick_align()));
 			return obj;
 		}
 		camera_content(){
