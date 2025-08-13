@@ -35,15 +35,15 @@ $yuf_catalog_demo_foods $yuf_catalog
 	spreads *
 		pizza <= Pizza $mol_page
 			title \🍕 Pizzas
-			addon_tools / ^ spread_close_content
+			tools / ^ spread_close_content
 			body / <= Empty
 		hot_dogs <= Hot_dogs $mol_page
 			title \🌭 Hot Dogs
-			addon_tools / ^ spread_close_content
+			tools / ^ spread_close_content
 			body / <= Empty
 		fries <= Fries $mol_page
 			title \🍟 Fries
-			addon_tools / ^ spread_close_content
+			tools / ^ spread_close_content
 			body / <= Empty
 
 $yuf_catalog_demo_animals $yuf_catalog
