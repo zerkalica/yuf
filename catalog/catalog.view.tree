@@ -10,4 +10,4 @@ $yuf_catalog $mol_book2_catalog
 		unselectable false
 		default <= menu_link_default* false
 		content <= menu_link_content*
-		hint <= menu_link_hint*
+		hint <= menu_link_hint* null
