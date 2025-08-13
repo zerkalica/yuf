@@ -11,7 +11,7 @@ namespace $.$$ {
 		override menu_link_default(id: string) {
 			return this.spread_default() === id
 		}
-		
+
 		override spread( next?: string ) {
 			return super.spread(next) || this.spread_default()
 		}
@@ -20,7 +20,7 @@ namespace $.$$ {
 			const spread_default = this.spread_default()
 			const current = this.spread()
 
-			return spread_default && ( ! current || current === spread_default )
+			return current === spread_default || (spread_default && ! current)
 				? []
 				: super.spread_close_content()
 		}

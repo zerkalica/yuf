@@ -22,10 +22,10 @@ $yuf_catalog_demo_catalog $yuf_catalog
 	spreads *
 		foods <= Foods $yuf_catalog_demo_foods
 			param_prefix <= param
-			addon_tools / <= Spread_close
+			addon_tools / ^ spread_close_content
 		animals <= Animals $yuf_catalog_demo_animals
 			param_prefix <= param
-			addon_tools / <= Spread_close
+			addon_tools / ^ spread_close_content
 
 $yuf_catalog_demo_foods $yuf_catalog
 	param_suffix \foods
