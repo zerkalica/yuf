@@ -1,0 +1,5 @@
+$yuf_link_close $yuf_link
+	param_value null
+	hint @ \Close
+	title \
+	Icon $mol_icon_close

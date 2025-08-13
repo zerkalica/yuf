@@ -1,0 +1,13 @@
+$yuf_catalog $mol_book2_catalog
+	spread_default \
+	param_prefix \
+	param_suffix \
+	spread_close_content /$mol_view
+		<= Spread_close $yuf_link_close
+			link_arg <= spread_close_arg
+	Menu_link* $yuf_link
+		arg <= arg*
+		unselectable false
+		default <= menu_link_default* false
+		content <= menu_link_content*
+		hint <= menu_link_hint*

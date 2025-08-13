@@ -1,0 +1,74 @@
+$yuf_catalog_demo $mol_example_large
+	title \Catalog of pages
+	param \app
+	sub /
+		<= Calatog $yuf_catalog_demo_catalog
+			param_prefix <= param
+	tags /
+		\app
+		\page
+		\menu
+		\navigation
+		\transition
+		\multipage
+	aspects /
+		\Navigation
+		\Widget/Layout
+
+$yuf_catalog_demo_catalog $yuf_catalog
+	param_suffix \catalog
+	menu_title \Catalog
+	spread_default \foods
+	spreads *
+		foods <= Foods $yuf_catalog_demo_foods
+			param_prefix <= param
+			addon_tools / <= Spread_close
+		animals <= Animals $yuf_catalog_demo_animals
+			param_prefix <= param
+			addon_tools / <= Spread_close
+
+$yuf_catalog_demo_foods $yuf_catalog
+	param_suffix \foods
+	menu_title \Foods
+	spread_default \pizza
+	Empty $mol_status
+	spreads *
+		pizza <= Pizza $mol_page
+			title \🍕 Pizzas
+			addon_tools / ^ spread_close_content
+			body / <= Empty
+		hot_dogs <= Hot_dogs $mol_page
+			title \🌭 Hot Dogs
+			addon_tools / ^ spread_close_content
+			body / <= Empty
+		fries <= Fries $mol_page
+			title \🍟 Fries
+			addon_tools / ^ spread_close_content
+			body / <= Empty
+
+$yuf_catalog_demo_animals $yuf_catalog
+	param_suffix \animals
+	menu_title \Animals
+	spread_default \dogs
+	Content $mol_filler
+	Empty $mol_status
+	menu_tools /
+		<= Extra_enable $yuf_link
+			sub / <= Extra_enable_icon $mol_icon_plus
+			param_name <= extra_param_name \extra
+	extra_content /
+		<= Extra_page $mol_page
+			tools /
+				<= Extra_close $yuf_link_close
+					param_name <= extra_param_name
+			body /
+				\Extra page
+	spreads *
+		cats <= Cats $mol_page
+			title \🐱 Cats
+			tools / ^ spread_close_content
+			body / <= Content
+		dogs <= Dogs $mol_page
+			title \🐶 Dogs
+			tools / ^ spread_close_content
+			body / <= Empty

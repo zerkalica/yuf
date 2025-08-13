@@ -1,0 +1,10 @@
+$yuf_link $mol_link
+	param_name \
+	param_value \
+	default false
+	unselectable true
+	arg <= link_arg *
+	sub /
+		<= Icon null
+		^ content /$mol_view_content
+			<= title

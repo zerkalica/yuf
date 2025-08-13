@@ -8,3 +8,4 @@ include \/mol/app/demo
 include \/yuf/chess/demo
 include \/yuf/keyboard/demo
 include \/yuf/attach/demo
+include \/yuf/catalog/demo
