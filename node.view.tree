@@ -1521,3 +1521,288 @@ $yuf_attach_demo $mol_example_small
 	aspects /
 		\Widget/Control
 		\Type/File
+
+$mol_book2_catalog $mol_book2
+	param \
+	spread? \
+	spreads *
+	Spread* $mol_view
+	Spread_default null
+	spread_ids /string
+	menu_filter_enabled false
+	spread_ids_filtered /string
+	spread_current null
+	menu_tools /
+	addon_tools /
+	pages /
+		<= Menu $mol_page
+			Title => Menu_title
+			title <= menu_title \
+			Tools => Menu_tools
+			Logo <= Menu_logo null
+			tools /
+				^ menu_tools
+				^ addon_tools
+			head <= menu_head /$mol_view_content
+				<= Menu_title
+				<= Menu_tools
+			body <= menu_body /$mol_view
+				<= Menu_filter $mol_search
+					query? <=> menu_filter? \
+				<= Menu_links $mol_list
+					Empty <= Menu_links_empty $mol_view
+					rows <= menu_links /$mol_view
+						<= Menu_item*0 $mol_view
+							sub <= menu_item_content* /$mol_view
+								<= Menu_link* $mol_link
+									arg <= menu_link_arg* <= arg* *
+									sub <= menu_link_content* /$mol_view_content
+										<= Menu_link_title* $mol_dimmer
+											needle <= menu_filter
+											haystack <= spread_title* \
+			foot <= menu_foot /$mol_view
+	Spread_close $mol_link
+		arg <= spread_close_arg *
+		hint @ \Close page
+		sub /
+			<= Spread_close_icon $mol_icon_close
+
+$yuf_link $mol_link
+	param_name \
+	param_value \
+	default false
+	unselectable true
+	arg <= link_arg *
+	sub /
+		<= Icon null
+		^ content /$mol_view_content
+			<= title
+
+$yuf_link_close $yuf_link
+	param_value null
+	hint @ \Close
+	title \
+	Icon $mol_icon_close
+
+$yuf_catalog $mol_book2_catalog
+	spread_default \
+	param_prefix \
+	param_suffix \
+	spread_close_content /$mol_view
+		<= Spread_close $yuf_link_close
+			link_arg <= spread_close_arg
+	Menu_link* $yuf_link
+		arg <= arg*
+		unselectable false
+		default <= menu_link_default* false
+		content <= menu_link_content*
+		hint <= menu_link_hint* null
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$mol_filler $mol_paragraph
+	min_symbols 7000
+	sub <= filler_lines /string
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+		\Donec a diam lectus. 
+		\Sed sit amet ipsum mauris. 
+		\Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. 
+		\Donec et mollis dolor. 
+		\Praesent et diam eget libero egestas mattis sit amet vitae augue. 
+		\Nam tincidunt congue enim, ut porta lorem lacinia consectetur. 
+		\Donec ut libero sed arcu vehicula ultricies a non tortor. 
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+		\Aenean ut gravida lorem. 
+		\Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. 
+		\Pellentesque auctor nisi id magna consequat sagittis. 
+		\Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. 
+		\Ut convallis libero in urna ultrices accumsan. 
+		\Donec sed odio eros. 
+		\Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. 
+		\Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+		\In rutrum accumsan ultricies. 
+		\Mauris vitae nisi at sem facilisis semper ac in est. 
+		\Vivamus fermentum semper porta. 
+		\Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. 
+		\Maecenas convallis ullamcorper ultricies. 
+		\Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. 
+		\Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. 
+		\Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. 
+		\Fusce eget orci a orci congue vestibulum. 
+		\Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. 
+		\Curabitur venenatis pulvinar tellus gravida ornare. 
+		\Sed et erat faucibus nunc euismod ultricies ut id justo. 
+		\Nullam cursus suscipit nisi, et ultrices justo sodales nec. 
+		\Fusce venenatis facilisis lectus ac semper. 
+		\Aliquam at massa ipsum. 
+		\Quisque bibendum purus convallis nulla ultrices ultricies. 
+		\Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. 
+		\Fusce vel volutpat elit. 
+		\Nam sagittis nisi dui. 
+		\Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. 
+		\Etiam luctus porttitor lorem, sed suscipit est rutrum non. 
+		\Curabitur lobortis nisl a enim congue semper. 
+		\Aenean commodo ultrices imperdiet. 
+		\Vestibulum ut justo vel sapien venenatis tincidunt. 
+		\Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. 
+		\Aliquam ut massa in turpis dapibus convallis. 
+		\Praesent elit lacus, vestibulum at malesuada et, ornare et est. 
+		\Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. 
+		\Mauris ut placerat justo. 
+		\Mauris in ultricies enim. 
+		\Quisque nec est eleifend nulla ultrices egestas quis ut quam. 
+		\Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. 
+		\Cras quis ligula sem, vel elementum mi. 
+		\Phasellus non ullamcorper urna. 
+		\Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+		\In euismod ultrices facilisis. 
+		\Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. 
+		\Proin quis dictum nisl. 
+		\Morbi id quam sapien, sed vestibulum sem. 
+		\Duis elementum rutrum mauris sed convallis. 
+		\Proin vestibulum magna mi. 
+		\Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. 
+		\Sed non tortor sodales quam auctor elementum. 
+		\Donec hendrerit nunc eget elit pharetra pulvinar. 
+		\Suspendisse id tempus tortor. 
+		\Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. 
+		\Donec vel. 
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+		\Donec a diam lectus. 
+		\Sed sit amet ipsum mauris. 
+		\Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. 
+		\Donec et mollis dolor. 
+		\Praesent et diam eget libero egestas mattis sit amet vitae augue. 
+		\Nam tincidunt congue enim, ut porta lorem lacinia consectetur. 
+		\Donec ut libero sed arcu vehicula ultricies a non tortor. 
+		\Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+		\Aenean ut gravida lorem. 
+		\Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. 
+		\Pellentesque auctor nisi id magna consequat sagittis. 
+		\Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. 
+		\Ut convallis libero in urna ultrices accumsan. 
+		\Donec sed odio eros. 
+		\Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. 
+		\Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+		\In rutrum accumsan ultricies. 
+		\Mauris vitae nisi at sem facilisis semper ac in est. 
+		\Vivamus fermentum semper porta. 
+		\Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. 
+		\Maecenas convallis ullamcorper ultricies. 
+		\Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. 
+		\Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. 
+		\Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. 
+		\Fusce eget orci a orci congue vestibulum. 
+		\Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. 
+		\Curabitur venenatis pulvinar tellus gravida ornare. 
+		\Sed et erat faucibus nunc euismod ultricies ut id justo. 
+		\Nullam cursus suscipit nisi, et ultrices justo sodales nec. 
+		\Fusce venenatis facilisis lectus ac semper. 
+		\Aliquam at massa ipsum. 
+		\Quisque bibendum purus convallis nulla ultrices ultricies. 
+		\Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. 
+		\Fusce vel volutpat elit. 
+		\Nam sagittis nisi dui. 
+		\Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. 
+		\Etiam luctus porttitor lorem, sed suscipit est rutrum non. 
+		\Curabitur lobortis nisl a enim congue semper. 
+		\Aenean commodo ultrices imperdiet. 
+		\Vestibulum ut justo vel sapien venenatis tincidunt. 
+		\Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. 
+		\Aliquam ut massa in turpis dapibus convallis. 
+		\Praesent elit lacus, vestibulum at malesuada et, ornare et est. 
+		\Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. 
+		\Mauris ut placerat justo. 
+		\Mauris in ultricies enim. 
+		\Quisque nec est eleifend nulla ultrices egestas quis ut quam. 
+		\Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. 
+		\Cras quis ligula sem, vel elementum mi. 
+		\Phasellus non ullamcorper urna. 
+		\Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. 
+		\In euismod ultrices facilisis. 
+		\Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. 
+		\Proin quis dictum nisl. 
+		\Morbi id quam sapien, sed vestibulum sem. 
+		\Duis elementum rutrum mauris sed convallis. 
+		\Proin vestibulum magna mi. 
+		\Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. 
+		\Sed non tortor sodales quam auctor elementum. 
+		\Donec hendrerit nunc eget elit pharetra pulvinar. 
+		\Suspendisse id tempus tortor. 
+		\Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. 
+		\Donec vel. 
+
+$yuf_catalog_demo $mol_example_large
+	title \Catalog of pages
+	param \app
+	sub /
+		<= Calatog $yuf_catalog_demo_catalog
+			param_prefix <= param
+	tags /
+		\app
+		\page
+		\menu
+		\navigation
+		\transition
+		\multipage
+	aspects /
+		\Navigation
+		\Widget/Layout
+
+$yuf_catalog_demo_catalog $yuf_catalog
+	param_suffix \catalog
+	menu_title \Catalog
+	spread_default \foods
+	spreads *
+		foods <= Foods $yuf_catalog_demo_foods
+			param_prefix <= param
+			addon_tools / ^ spread_close_content
+		animals <= Animals $yuf_catalog_demo_animals
+			param_prefix <= param
+			addon_tools / ^ spread_close_content
+
+$yuf_catalog_demo_foods $yuf_catalog
+	param_suffix \foods
+	menu_title \Foods
+	spread_default \pizza
+	Empty $mol_status
+	spreads *
+		pizza <= Pizza $mol_page
+			title \🍕 Pizzas
+			tools / ^ spread_close_content
+			body / <= Empty
+		hot_dogs <= Hot_dogs $mol_page
+			title \🌭 Hot Dogs
+			tools / ^ spread_close_content
+			body / <= Empty
+		fries <= Fries $mol_page
+			title \🍟 Fries
+			tools / ^ spread_close_content
+			body / <= Empty
+
+$yuf_catalog_demo_animals $yuf_catalog
+	param_suffix \animals
+	menu_title \Animals
+	spread_default \dogs
+	Content $mol_filler
+	Empty $mol_status
+	menu_tools /
+		<= Extra_enable $yuf_link
+			sub / <= Extra_enable_icon $mol_icon_plus
+			param_name <= extra_param_name \extra
+	extra_content /
+		<= Extra_page $mol_page
+			tools /
+				<= Extra_close $yuf_link_close
+					param_name <= extra_param_name
+			body /
+				\Extra page
+	spreads *
+		cats <= Cats $mol_page
+			title \🐱 Cats
+			tools / ^ spread_close_content
+			body / <= Content
+		dogs <= Dogs $mol_page
+			title \🐶 Dogs
+			tools / ^ spread_close_content
+			body / <= Empty

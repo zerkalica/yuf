@@ -306,7 +306,16 @@
     "$mol_icon_camera_off",
     "$mol_icon_close_circle",
     "$yuf_url_object",
-    "$yuf_url"
+    "$yuf_url",
+    "$yuf_catalog_demo",
+    "$yuf_catalog",
+    "$mol_book2_catalog",
+    "$yuf_link_close",
+    "$yuf_link",
+    "$mol_icon_plus",
+    "$mol_filler",
+    "$mol_array_lottery",
+    "$mol_array"
   ],
   "dependencies": {
     "jsdom": "*"

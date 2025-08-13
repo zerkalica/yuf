@@ -9,6 +9,7 @@
 	"$mol_app_demo_readme_Not_found_caption": "Readme not found",
 	"$mol_app_demo_readme_source_hint": "Source code of this demo",
 	"$mol_app_demo_readme_title": "Readme",
+	"$mol_book2_catalog_Spread_close_hint": "Close page",
 	"$mol_chat_title": "Discussion",
 	"$mol_lights_toggle_hint": "Toggle lights",
 	"$mol_link_source_hint": "Source code",
@@ -34,5 +35,6 @@
 	"$yuf_chess_board_move_title": "Move",
 	"$yuf_chess_board_reset_title": "Reset",
 	"$yuf_chess_board_undo_title": "Undo",
-	"$yuf_chess_board_win_title": "Win"
+	"$yuf_chess_board_win_title": "Win",
+	"$yuf_link_close_hint": "Close"
 }

@@ -16848,6 +16848,910 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_book2_catalog) = class $mol_book2_catalog extends ($.$mol_book2) {
+		Menu_title(){
+			return (this.Menu().Title());
+		}
+		menu_title(){
+			return "";
+		}
+		Menu_tools(){
+			return (this.Menu().Tools());
+		}
+		Menu_logo(){
+			return null;
+		}
+		menu_head(){
+			return [(this.Menu_title()), (this.Menu_tools())];
+		}
+		menu_filter(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Menu_filter(){
+			const obj = new this.$.$mol_search();
+			(obj.query) = (next) => ((this.menu_filter(next)));
+			return obj;
+		}
+		Menu_links_empty(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		arg(id){
+			return {};
+		}
+		menu_link_arg(id){
+			return (this.arg(id));
+		}
+		spread_title(id){
+			return "";
+		}
+		Menu_link_title(id){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.haystack) = () => ((this.spread_title(id)));
+			return obj;
+		}
+		menu_link_content(id){
+			return [(this.Menu_link_title(id))];
+		}
+		Menu_link(id){
+			const obj = new this.$.$mol_link();
+			(obj.arg) = () => ((this.menu_link_arg(id)));
+			(obj.sub) = () => ((this.menu_link_content(id)));
+			return obj;
+		}
+		menu_item_content(id){
+			return [(this.Menu_link(id))];
+		}
+		Menu_item(id){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.menu_item_content(id)));
+			return obj;
+		}
+		menu_links(){
+			return [(this.Menu_item("0"))];
+		}
+		Menu_links(){
+			const obj = new this.$.$mol_list();
+			(obj.Empty) = () => ((this.Menu_links_empty()));
+			(obj.rows) = () => ((this.menu_links()));
+			return obj;
+		}
+		menu_body(){
+			return [(this.Menu_filter()), (this.Menu_links())];
+		}
+		menu_foot(){
+			return [];
+		}
+		Menu(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ((this.menu_title()));
+			(obj.Logo) = () => ((this.Menu_logo()));
+			(obj.tools) = () => ([...(this.menu_tools()), ...(this.addon_tools())]);
+			(obj.head) = () => ((this.menu_head()));
+			(obj.body) = () => ((this.menu_body()));
+			(obj.foot) = () => ((this.menu_foot()));
+			return obj;
+		}
+		spread_close_arg(){
+			return {};
+		}
+		Spread_close_icon(){
+			const obj = new this.$.$mol_icon_close();
+			return obj;
+		}
+		param(){
+			return "";
+		}
+		spread(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		spreads(){
+			return {};
+		}
+		Spread(id){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		Spread_default(){
+			return null;
+		}
+		spread_ids(){
+			return [];
+		}
+		menu_filter_enabled(){
+			return false;
+		}
+		spread_ids_filtered(){
+			return [];
+		}
+		spread_current(){
+			return null;
+		}
+		menu_tools(){
+			return [];
+		}
+		addon_tools(){
+			return [];
+		}
+		pages(){
+			return [(this.Menu())];
+		}
+		Spread_close(){
+			const obj = new this.$.$mol_link();
+			(obj.arg) = () => ((this.spread_close_arg()));
+			(obj.hint) = () => ((this.$.$mol_locale.text("$mol_book2_catalog_Spread_close_hint")));
+			(obj.sub) = () => ([(this.Spread_close_icon())]);
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_book2_catalog.prototype), "menu_filter"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Menu_filter"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Menu_links_empty"));
+	($mol_mem_key(($.$mol_book2_catalog.prototype), "Menu_link_title"));
+	($mol_mem_key(($.$mol_book2_catalog.prototype), "Menu_link"));
+	($mol_mem_key(($.$mol_book2_catalog.prototype), "Menu_item"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Menu_links"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Menu"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Spread_close_icon"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "spread"));
+	($mol_mem_key(($.$mol_book2_catalog.prototype), "Spread"));
+	($mol_mem(($.$mol_book2_catalog.prototype), "Spread_close"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_book2_catalog extends $.$mol_book2_catalog {
+            spread_current() {
+                return this.spread() === '' ? this.Spread_default() : this.Spread(this.spread());
+            }
+            pages() {
+                const spread = this.spread_current();
+                return [
+                    this.Menu(),
+                    ...spread
+                        ? spread instanceof $mol_book2
+                            ? spread.pages_deep()
+                            : [spread]
+                        : [],
+                ];
+            }
+            auto() {
+                const spread = this.spread_current();
+                if (spread instanceof $mol_book2)
+                    spread.auto();
+            }
+            spread_ids() {
+                return Object.keys(this.spreads());
+            }
+            menu_body() {
+                return [
+                    ...this.menu_filter_enabled() ? [this.Menu_filter()] : [],
+                    this.Menu_links(),
+                ];
+            }
+            menu_filter_enabled() {
+                return this.spread_ids().length >= 10;
+            }
+            menu_links() {
+                return this.spread_ids_filtered()
+                    .map(spread => this.Menu_item(spread));
+            }
+            spread_ids_filtered() {
+                return this.spread_ids()
+                    .filter($mol_match_text(this.menu_filter(), spread => [this.spread_title(spread)]));
+            }
+            Spread(id) {
+                return this.spreads()[id];
+            }
+            Spread_default() {
+                return this.spreads()[''];
+            }
+            spread(next) {
+                return this.$.$mol_state_arg.value(this.param(), next) ?? '';
+            }
+            arg(spread) {
+                return { [this.param()]: spread || null };
+            }
+            spread_close_arg() {
+                return { [this.param()]: null };
+            }
+            spread_title(spread) {
+                const page = this.Spread(spread);
+                return page instanceof $mol_book2
+                    && page.menu_title()
+                    || page.title()
+                    || spread;
+            }
+            spread_current_book() {
+                const spread = this.spread_current();
+                return spread instanceof $mol_book2 ? spread : null;
+            }
+            placeholders() {
+                const spread_placeholders = this.spread_current_book()?.placeholders() ?? [];
+                return spread_placeholders.length ? spread_placeholders : super.placeholders();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "pages", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "spread_ids", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "menu_body", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "menu_links", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "spread_ids_filtered", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "spread", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book2_catalog.prototype, "placeholders", null);
+        $$.$mol_book2_catalog = $mol_book2_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($mol_book2_catalog, {
+            Menu_filter: {
+                flex: {
+                    shrink: 0,
+                    grow: 0,
+                },
+                alignSelf: 'stretch',
+            },
+            Menu_item: {
+                align: {
+                    items: 'flex-start',
+                },
+            },
+            Menu_link: {
+                flex: {
+                    grow: 1,
+                    shrink: 1,
+                    wrap: 'wrap',
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_link) = class $yuf_link extends ($.$mol_link) {
+		link_arg(){
+			return {};
+		}
+		Icon(){
+			return null;
+		}
+		content(){
+			return [(this.title())];
+		}
+		param_name(){
+			return "";
+		}
+		param_value(){
+			return "";
+		}
+		default(){
+			return false;
+		}
+		unselectable(){
+			return true;
+		}
+		arg(){
+			return (this.link_arg());
+		}
+		sub(){
+			return [(this.Icon()), ...(this.content())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_link extends $.$yuf_link {
+            link_arg() {
+                return {
+                    [this.param_name()]: this.param_value()
+                };
+            }
+            dict() {
+                const self_args = this.arg();
+                const dict = this.$.$mol_state_arg.dict();
+                const result = {};
+                for (let dict_key in dict) {
+                    for (let self_key in self_args) {
+                        if (!dict_key.startsWith(self_key)) {
+                            result[dict_key] = dict[dict_key];
+                        }
+                    }
+                }
+                return result;
+            }
+            default_selected() {
+                const args = this.$.$mol_state_arg;
+                return this.default() && Object.keys(this.arg()).every(key => !args.value(key));
+            }
+            current() {
+                return this.default_selected() || super.current();
+            }
+            click(e) {
+                if ((this.default_selected() || !this.unselectable()) && this.current() && e) {
+                    this.$.$mol_dom_event.wrap(e).prevented(true);
+                }
+                return super.click(e);
+            }
+            uri() {
+                return this.$.$mol_state_arg.make_link({ ...this.dict(), ...this.arg() });
+            }
+            uri_off() {
+                const result = { ...this.dict() };
+                for (let key in this.arg())
+                    result[key] = null;
+                return this.$.$mol_state_arg.make_link(result);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_link.prototype, "link_arg", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_link.prototype, "default_selected", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_link.prototype, "uri", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_link.prototype, "uri_off", null);
+        $$.$yuf_link = $yuf_link;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_link, {
+            gap: $mol_gap.block,
+            alignSelf: 'stretch',
+            ':active': {
+                color: $mol_theme.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_link_close) = class $yuf_link_close extends ($.$yuf_link) {
+		param_value(){
+			return null;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_link_close_hint"));
+		}
+		title(){
+			return "";
+		}
+		Icon(){
+			const obj = new this.$.$mol_icon_close();
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_link_close.prototype), "Icon"));
+
+
+;
+"use strict";
+
+;
+	($.$yuf_catalog) = class $yuf_catalog extends ($.$mol_book2_catalog) {
+		Spread_close(){
+			const obj = new this.$.$yuf_link_close();
+			(obj.link_arg) = () => ((this.spread_close_arg()));
+			return obj;
+		}
+		menu_link_default(id){
+			return false;
+		}
+		menu_link_hint(id){
+			return null;
+		}
+		spread_default(){
+			return "";
+		}
+		param_prefix(){
+			return "";
+		}
+		param_suffix(){
+			return "";
+		}
+		spread_close_content(){
+			return [(this.Spread_close())];
+		}
+		Menu_link(id){
+			const obj = new this.$.$yuf_link();
+			(obj.arg) = () => ((this.arg(id)));
+			(obj.unselectable) = () => (false);
+			(obj.default) = () => ((this.menu_link_default(id)));
+			(obj.content) = () => ((this.menu_link_content(id)));
+			(obj.hint) = () => ((this.menu_link_hint(id)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_catalog.prototype), "Spread_close"));
+	($mol_mem_key(($.$yuf_catalog.prototype), "Menu_link"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_catalog extends $.$yuf_catalog {
+            param() {
+                return [
+                    this.param_prefix(),
+                    this.param_suffix()
+                ].filter(Boolean).join('_');
+            }
+            menu_link_default(id) {
+                return this.spread_default() === id;
+            }
+            spread(next) {
+                return super.spread(next) || this.spread_default();
+            }
+            spread_close_content() {
+                const spread_default = this.spread_default();
+                const current = this.spread();
+                return current === spread_default || (spread_default && !current)
+                    ? []
+                    : super.spread_close_content();
+            }
+        }
+        $$.$yuf_catalog = $yuf_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_plus) = class $mol_icon_plus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_filler) = class $mol_filler extends ($.$mol_paragraph) {
+		filler_lines(){
+			return [
+				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ", 
+				"Donec a diam lectus. ", 
+				"Sed sit amet ipsum mauris. ", 
+				"Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. ", 
+				"Donec et mollis dolor. ", 
+				"Praesent et diam eget libero egestas mattis sit amet vitae augue. ", 
+				"Nam tincidunt congue enim, ut porta lorem lacinia consectetur. ", 
+				"Donec ut libero sed arcu vehicula ultricies a non tortor. ", 
+				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ", 
+				"Aenean ut gravida lorem. ", 
+				"Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. ", 
+				"Pellentesque auctor nisi id magna consequat sagittis. ", 
+				"Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. ", 
+				"Ut convallis libero in urna ultrices accumsan. ", 
+				"Donec sed odio eros. ", 
+				"Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. ", 
+				"Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ", 
+				"In rutrum accumsan ultricies. ", 
+				"Mauris vitae nisi at sem facilisis semper ac in est. ", 
+				"Vivamus fermentum semper porta. ", 
+				"Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. ", 
+				"Maecenas convallis ullamcorper ultricies. ", 
+				"Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. ", 
+				"Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. ", 
+				"Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. ", 
+				"Fusce eget orci a orci congue vestibulum. ", 
+				"Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. ", 
+				"Curabitur venenatis pulvinar tellus gravida ornare. ", 
+				"Sed et erat faucibus nunc euismod ultricies ut id justo. ", 
+				"Nullam cursus suscipit nisi, et ultrices justo sodales nec. ", 
+				"Fusce venenatis facilisis lectus ac semper. ", 
+				"Aliquam at massa ipsum. ", 
+				"Quisque bibendum purus convallis nulla ultrices ultricies. ", 
+				"Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. ", 
+				"Fusce vel volutpat elit. ", 
+				"Nam sagittis nisi dui. ", 
+				"Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. ", 
+				"Etiam luctus porttitor lorem, sed suscipit est rutrum non. ", 
+				"Curabitur lobortis nisl a enim congue semper. ", 
+				"Aenean commodo ultrices imperdiet. ", 
+				"Vestibulum ut justo vel sapien venenatis tincidunt. ", 
+				"Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. ", 
+				"Aliquam ut massa in turpis dapibus convallis. ", 
+				"Praesent elit lacus, vestibulum at malesuada et, ornare et est. ", 
+				"Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. ", 
+				"Mauris ut placerat justo. ", 
+				"Mauris in ultricies enim. ", 
+				"Quisque nec est eleifend nulla ultrices egestas quis ut quam. ", 
+				"Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. ", 
+				"Cras quis ligula sem, vel elementum mi. ", 
+				"Phasellus non ullamcorper urna. ", 
+				"Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ", 
+				"In euismod ultrices facilisis. ", 
+				"Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. ", 
+				"Proin quis dictum nisl. ", 
+				"Morbi id quam sapien, sed vestibulum sem. ", 
+				"Duis elementum rutrum mauris sed convallis. ", 
+				"Proin vestibulum magna mi. ", 
+				"Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. ", 
+				"Sed non tortor sodales quam auctor elementum. ", 
+				"Donec hendrerit nunc eget elit pharetra pulvinar. ", 
+				"Suspendisse id tempus tortor. ", 
+				"Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. ", 
+				"Donec vel. ", 
+				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ", 
+				"Donec a diam lectus. ", 
+				"Sed sit amet ipsum mauris. ", 
+				"Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. ", 
+				"Donec et mollis dolor. ", 
+				"Praesent et diam eget libero egestas mattis sit amet vitae augue. ", 
+				"Nam tincidunt congue enim, ut porta lorem lacinia consectetur. ", 
+				"Donec ut libero sed arcu vehicula ultricies a non tortor. ", 
+				"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ", 
+				"Aenean ut gravida lorem. ", 
+				"Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. ", 
+				"Pellentesque auctor nisi id magna consequat sagittis. ", 
+				"Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. ", 
+				"Ut convallis libero in urna ultrices accumsan. ", 
+				"Donec sed odio eros. ", 
+				"Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. ", 
+				"Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ", 
+				"In rutrum accumsan ultricies. ", 
+				"Mauris vitae nisi at sem facilisis semper ac in est. ", 
+				"Vivamus fermentum semper porta. ", 
+				"Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. ", 
+				"Maecenas convallis ullamcorper ultricies. ", 
+				"Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. ", 
+				"Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. ", 
+				"Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. ", 
+				"Fusce eget orci a orci congue vestibulum. ", 
+				"Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. ", 
+				"Curabitur venenatis pulvinar tellus gravida ornare. ", 
+				"Sed et erat faucibus nunc euismod ultricies ut id justo. ", 
+				"Nullam cursus suscipit nisi, et ultrices justo sodales nec. ", 
+				"Fusce venenatis facilisis lectus ac semper. ", 
+				"Aliquam at massa ipsum. ", 
+				"Quisque bibendum purus convallis nulla ultrices ultricies. ", 
+				"Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. ", 
+				"Fusce vel volutpat elit. ", 
+				"Nam sagittis nisi dui. ", 
+				"Suspendisse lectus leo, consectetur in tempor sit amet, placerat quis neque. ", 
+				"Etiam luctus porttitor lorem, sed suscipit est rutrum non. ", 
+				"Curabitur lobortis nisl a enim congue semper. ", 
+				"Aenean commodo ultrices imperdiet. ", 
+				"Vestibulum ut justo vel sapien venenatis tincidunt. ", 
+				"Phasellus eget dolor sit amet ipsum dapibus condimentum vitae quis lectus. ", 
+				"Aliquam ut massa in turpis dapibus convallis. ", 
+				"Praesent elit lacus, vestibulum at malesuada et, ornare et est. ", 
+				"Ut augue nunc, sodales ut euismod non, adipiscing vitae orci. ", 
+				"Mauris ut placerat justo. ", 
+				"Mauris in ultricies enim. ", 
+				"Quisque nec est eleifend nulla ultrices egestas quis ut quam. ", 
+				"Donec sollicitudin lectus a mauris pulvinar id aliquam urna cursus. ", 
+				"Cras quis ligula sem, vel elementum mi. ", 
+				"Phasellus non ullamcorper urna. ", 
+				"Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ", 
+				"In euismod ultrices facilisis. ", 
+				"Vestibulum porta sapien adipiscing augue congue id pretium lectus molestie. ", 
+				"Proin quis dictum nisl. ", 
+				"Morbi id quam sapien, sed vestibulum sem. ", 
+				"Duis elementum rutrum mauris sed convallis. ", 
+				"Proin vestibulum magna mi. ", 
+				"Aenean tristique hendrerit magna, ac facilisis nulla hendrerit ut. ", 
+				"Sed non tortor sodales quam auctor elementum. ", 
+				"Donec hendrerit nunc eget elit pharetra pulvinar. ", 
+				"Suspendisse id tempus tortor. ", 
+				"Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. ", 
+				"Donec vel. "
+			];
+		}
+		min_symbols(){
+			return 7000;
+		}
+		sub(){
+			return (this.filler_lines());
+		}
+	};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_array_lottery(list) {
+        return list[Math.floor(Math.random() * list.length)];
+    }
+    $.$mol_array_lottery = $mol_array_lottery;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/filler/filler.view.css", "[mol_filler] {\n\ttext-align: left;\n\tpadding: var(--mol_gap_text);\n\tflex-shrink: 0;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_filler extends $.$mol_filler {
+            filler_lines() {
+                const lines = [];
+                let len_cur = 0;
+                while (len_cur < this.min_symbols()) {
+                    const line = this.$.$mol_array_lottery(super.filler_lines());
+                    len_cur += line.length;
+                    lines.push(line);
+                }
+                return lines;
+            }
+        }
+        $$.$mol_filler = $mol_filler;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_catalog_demo) = class $yuf_catalog_demo extends ($.$mol_example_large) {
+		Calatog(){
+			const obj = new this.$.$yuf_catalog_demo_catalog();
+			(obj.param_prefix) = () => ((this.param()));
+			return obj;
+		}
+		title(){
+			return "Catalog of pages";
+		}
+		param(){
+			return "app";
+		}
+		sub(){
+			return [(this.Calatog())];
+		}
+		tags(){
+			return [
+				"app", 
+				"page", 
+				"menu", 
+				"navigation", 
+				"transition", 
+				"multipage"
+			];
+		}
+		aspects(){
+			return ["Navigation", "Widget/Layout"];
+		}
+	};
+	($mol_mem(($.$yuf_catalog_demo.prototype), "Calatog"));
+	($.$yuf_catalog_demo_catalog) = class $yuf_catalog_demo_catalog extends ($.$yuf_catalog) {
+		Foods(){
+			const obj = new this.$.$yuf_catalog_demo_foods();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.addon_tools) = () => ([...(this.spread_close_content())]);
+			return obj;
+		}
+		Animals(){
+			const obj = new this.$.$yuf_catalog_demo_animals();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.addon_tools) = () => ([...(this.spread_close_content())]);
+			return obj;
+		}
+		param_suffix(){
+			return "catalog";
+		}
+		menu_title(){
+			return "Catalog";
+		}
+		spread_default(){
+			return "foods";
+		}
+		spreads(){
+			return {"foods": (this.Foods()), "animals": (this.Animals())};
+		}
+	};
+	($mol_mem(($.$yuf_catalog_demo_catalog.prototype), "Foods"));
+	($mol_mem(($.$yuf_catalog_demo_catalog.prototype), "Animals"));
+	($.$yuf_catalog_demo_foods) = class $yuf_catalog_demo_foods extends ($.$yuf_catalog) {
+		Pizza(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ("🍕 Pizzas");
+			(obj.tools) = () => ([...(this.spread_close_content())]);
+			(obj.body) = () => ([(this.Empty())]);
+			return obj;
+		}
+		Hot_dogs(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ("🌭 Hot Dogs");
+			(obj.tools) = () => ([...(this.spread_close_content())]);
+			(obj.body) = () => ([(this.Empty())]);
+			return obj;
+		}
+		Fries(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ("🍟 Fries");
+			(obj.tools) = () => ([...(this.spread_close_content())]);
+			(obj.body) = () => ([(this.Empty())]);
+			return obj;
+		}
+		param_suffix(){
+			return "foods";
+		}
+		menu_title(){
+			return "Foods";
+		}
+		spread_default(){
+			return "pizza";
+		}
+		Empty(){
+			const obj = new this.$.$mol_status();
+			return obj;
+		}
+		spreads(){
+			return {
+				"pizza": (this.Pizza()), 
+				"hot_dogs": (this.Hot_dogs()), 
+				"fries": (this.Fries())
+			};
+		}
+	};
+	($mol_mem(($.$yuf_catalog_demo_foods.prototype), "Pizza"));
+	($mol_mem(($.$yuf_catalog_demo_foods.prototype), "Hot_dogs"));
+	($mol_mem(($.$yuf_catalog_demo_foods.prototype), "Fries"));
+	($mol_mem(($.$yuf_catalog_demo_foods.prototype), "Empty"));
+	($.$yuf_catalog_demo_animals) = class $yuf_catalog_demo_animals extends ($.$yuf_catalog) {
+		Extra_enable_icon(){
+			const obj = new this.$.$mol_icon_plus();
+			return obj;
+		}
+		extra_param_name(){
+			return "extra";
+		}
+		Extra_enable(){
+			const obj = new this.$.$yuf_link();
+			(obj.sub) = () => ([(this.Extra_enable_icon())]);
+			(obj.param_name) = () => ((this.extra_param_name()));
+			return obj;
+		}
+		Extra_close(){
+			const obj = new this.$.$yuf_link_close();
+			(obj.param_name) = () => ((this.extra_param_name()));
+			return obj;
+		}
+		Extra_page(){
+			const obj = new this.$.$mol_page();
+			(obj.tools) = () => ([(this.Extra_close())]);
+			(obj.body) = () => (["Extra page"]);
+			return obj;
+		}
+		Cats(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ("🐱 Cats");
+			(obj.tools) = () => ([...(this.spread_close_content())]);
+			(obj.body) = () => ([(this.Content())]);
+			return obj;
+		}
+		Dogs(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ("🐶 Dogs");
+			(obj.tools) = () => ([...(this.spread_close_content())]);
+			(obj.body) = () => ([(this.Empty())]);
+			return obj;
+		}
+		param_suffix(){
+			return "animals";
+		}
+		menu_title(){
+			return "Animals";
+		}
+		spread_default(){
+			return "dogs";
+		}
+		Content(){
+			const obj = new this.$.$mol_filler();
+			return obj;
+		}
+		Empty(){
+			const obj = new this.$.$mol_status();
+			return obj;
+		}
+		menu_tools(){
+			return [(this.Extra_enable())];
+		}
+		extra_content(){
+			return [(this.Extra_page())];
+		}
+		spreads(){
+			return {"cats": (this.Cats()), "dogs": (this.Dogs())};
+		}
+	};
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Extra_enable_icon"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Extra_enable"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Extra_close"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Extra_page"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Cats"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Dogs"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Content"));
+	($mol_mem(($.$yuf_catalog_demo_animals.prototype), "Empty"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_catalog_demo_animals extends $.$yuf_catalog_demo_animals {
+            extra_param_name() {
+                return `${this.param()}_${super.extra_param_name()}`;
+            }
+            extra_enabled() {
+                return this.$.$mol_state_arg.value(this.extra_param_name()) !== null;
+            }
+            pages() {
+                return [
+                    ...super.pages(),
+                    ...this.extra_enabled() ? this.extra_content() : [],
+                ];
+            }
+        }
+        $$.$yuf_catalog_demo_animals = $yuf_catalog_demo_animals;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 "use strict";
 var $;
 (function ($_1) {
