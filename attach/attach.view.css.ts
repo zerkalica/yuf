@@ -36,16 +36,16 @@ namespace $.$$ {
 		},
 
 		Camera_pick: {
-			Trigger_icon: {
-				width: '100%',
-				height: '100%',
-			},
 
 			Bubble: {
 				width: '700px',
 				aspectRatio: 16/9,
 			},
 
+			Trigger_icon: {
+				width: '100%',
+				height: '100%',
+			},
 			Trigger: {
 
 				width: '6rem',

@@ -13,6 +13,12 @@ $yuf_camera_pane $mol_view
 			click? <=> camera_click? null
 		<= Controls $mol_view
 			sub <= controls /$mol_view_content
+				^ controls_main /$mol_view_content
+				^ controls_close /$mol_view_content
+					<= Close $mol_button_minor
+						hint <= close_hint @ \Close
+						sub / <= Close_icon $mol_icon_close
+						click? <=> close_click? null
 
 $yuf_camera_pane_video $mol_video_camera
 	event *
