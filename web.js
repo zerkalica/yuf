@@ -15442,8 +15442,32 @@ var $;
 			(obj.click) = (next) => ((this.camera_click(next)));
 			return obj;
 		}
-		controls(){
+		controls_main(){
 			return [];
+		}
+		close_hint(){
+			return (this.$.$mol_locale.text("$yuf_camera_pane_close_hint"));
+		}
+		Close_icon(){
+			const obj = new this.$.$mol_icon_close();
+			return obj;
+		}
+		close_click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Close(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.close_hint()));
+			(obj.sub) = () => ([(this.Close_icon())]);
+			(obj.click) = (next) => ((this.close_click(next)));
+			return obj;
+		}
+		controls_close(){
+			return [(this.Close())];
+		}
+		controls(){
+			return [...(this.controls_main()), ...(this.controls_close())];
 		}
 		Controls(){
 			const obj = new this.$.$mol_view();
@@ -15469,6 +15493,9 @@ var $;
 	};
 	($mol_mem(($.$yuf_camera_pane.prototype), "camera_click"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Camera"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "Close_icon"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "close_click"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "Close"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Controls"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "canvas"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "file"));
@@ -16212,28 +16239,14 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
-		close_hint(){
-			return (this.$.$mol_locale.text("$yuf_camera_pick_close_hint"));
-		}
-		Close_icon(){
-			const obj = new this.$.$mol_icon_close();
-			return obj;
-		}
 		close_click(next){
 			if(next !== undefined) return next;
 			return null;
 		}
-		Close(){
-			const obj = new this.$.$mol_button_minor();
-			(obj.hint) = () => ((this.close_hint()));
-			(obj.sub) = () => ([(this.Close_icon())]);
-			(obj.click) = (next) => ((this.close_click(next)));
-			return obj;
-		}
 		Camera(){
 			const obj = new this.$.$yuf_camera_pane();
 			(obj.file) = (next) => ((this.file(next)));
-			(obj.controls) = () => ([(this.Close())]);
+			(obj.close_click) = (next) => ((this.close_click(next)));
 			return obj;
 		}
 		trigger_content(){
@@ -16245,9 +16258,7 @@ var $;
 	};
 	($mol_mem(($.$yuf_camera_pick.prototype), "Trigger_icon"));
 	($mol_mem(($.$yuf_camera_pick.prototype), "file"));
-	($mol_mem(($.$yuf_camera_pick.prototype), "Close_icon"));
 	($mol_mem(($.$yuf_camera_pick.prototype), "close_click"));
-	($mol_mem(($.$yuf_camera_pick.prototype), "Close"));
 	($mol_mem(($.$yuf_camera_pick.prototype), "Camera"));
 
 
@@ -16569,13 +16580,13 @@ var $;
                 padding: $mol_gap.space,
             },
             Camera_pick: {
-                Trigger_icon: {
-                    width: '100%',
-                    height: '100%',
-                },
                 Bubble: {
                     width: '700px',
                     aspectRatio: 16 / 9,
+                },
+                Trigger_icon: {
+                    width: '100%',
+                    height: '100%',
                 },
                 Trigger: {
                     width: '6rem',

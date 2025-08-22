@@ -20,6 +20,7 @@
 	"$mol_text_code_Copy_hint": "Скопировать весь код",
 	"$mol_text_header_Link_hint": "Ссылка на эту секцию",
 	"$yuf_attach_attach_hint": "Загрузить файлы",
+	"$yuf_camera_pane_close_hint": "Закрыть",
 	"$yuf_chess_board_active_value_black": "черные",
 	"$yuf_chess_board_active_value_white": "белые",
 	"$yuf_chess_board_draw_title": "Ничья",

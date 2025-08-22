@@ -6755,17 +6755,42 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_camera_pane_video['click'] >
 	>
-	type $mol_view__sub_yuf_camera_pane_5 = $mol_type_enforce<
+	type $mol_button_minor__hint_yuf_camera_pane_5 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['close_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__sub_yuf_camera_pane_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_yuf_camera_pane_7 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['close_click'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $yuf_camera_pane_controls__8 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['controls_main'] >[number]
+		,
+		$mol_view_content
+	>
+	type $yuf_camera_pane_controls__9 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['controls_close'] >[number]
+		,
+		$mol_view_content
+	>
+	type $mol_view__sub_yuf_camera_pane_10 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_canvas_image__image_type_yuf_camera_pane_6 = $mol_type_enforce<
+	type $yuf_canvas_image__image_type_yuf_camera_pane_11 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['image_type'] >
 		,
 		ReturnType< $yuf_canvas_image['image_type'] >
 	>
-	type $yuf_canvas_image__node_yuf_camera_pane_7 = $mol_type_enforce<
+	type $yuf_canvas_image__node_yuf_camera_pane_12 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['camera_node'] >
 		,
 		ReturnType< $yuf_canvas_image['node'] >
@@ -6778,6 +6803,12 @@ declare namespace $ {
 		desirable_height( ): number
 		camera_click( next?: any ): any
 		Camera( ): $yuf_camera_pane_video
+		controls_main( ): readonly($mol_view_content)[]
+		close_hint( ): string
+		Close_icon( ): $mol_icon_close
+		close_click( next?: any ): any
+		Close( ): $mol_button_minor
+		controls_close( ): readonly($mol_view_content)[]
 		controls( ): readonly($mol_view_content)[]
 		Controls( ): $mol_view
 		file_name_template( ): string
@@ -6807,38 +6838,20 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_button_minor__hint_yuf_camera_pick_1 = $mol_type_enforce<
-		ReturnType< $yuf_camera_pick['close_hint'] >
-		,
-		ReturnType< $mol_button_minor['hint'] >
-	>
-	type $mol_button_minor__sub_yuf_camera_pick_2 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_button_minor['sub'] >
-	>
-	type $mol_button_minor__click_yuf_camera_pick_3 = $mol_type_enforce<
-		ReturnType< $yuf_camera_pick['close_click'] >
-		,
-		ReturnType< $mol_button_minor['click'] >
-	>
-	type $yuf_camera_pane__file_yuf_camera_pick_4 = $mol_type_enforce<
+	type $yuf_camera_pane__file_yuf_camera_pick_1 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pick['file'] >
 		,
 		ReturnType< $yuf_camera_pane['file'] >
 	>
-	type $yuf_camera_pane__controls_yuf_camera_pick_5 = $mol_type_enforce<
-		readonly(any)[]
+	type $yuf_camera_pane__close_click_yuf_camera_pick_2 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pick['close_click'] >
 		,
-		ReturnType< $yuf_camera_pane['controls'] >
+		ReturnType< $yuf_camera_pane['close_click'] >
 	>
 	export class $yuf_camera_pick extends $mol_pick {
 		Trigger_icon( ): $mol_icon_camera
 		file( next?: any ): any
-		close_hint( ): string
-		Close_icon( ): $mol_icon_close
 		close_click( next?: any ): any
-		Close( ): $mol_button_minor
 		Camera( ): $yuf_camera_pane
 		trigger_content( ): readonly(any)[]
 		bubble_content( ): readonly(any)[]
