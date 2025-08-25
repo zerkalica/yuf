@@ -16626,15 +16626,6 @@ var $;
 			(obj.Icon) = () => ((this.Add_icon()));
 			return obj;
 		}
-		Camera_trigger(){
-			return (this.Camera_pick().Trigger());
-		}
-		camera_sub(){
-			return (this.Camera_pick().sub_visible());
-		}
-		Camera_anchor(){
-			return (this.Camera_trigger());
-		}
 		camera_showed(next){
 			return (this.Camera_pick().showed(next));
 		}
@@ -16643,11 +16634,10 @@ var $;
 			return null;
 		}
 		camera_pick_align(){
-			return "top_center";
+			return "center";
 		}
 		Camera_pick(){
 			const obj = new this.$.$yuf_camera_pick();
-			(obj.Anchor) = () => ((this.Camera_anchor()));
 			(obj.file) = (next) => ((this.camera_file(next)));
 			(obj.align) = () => ((this.camera_pick_align()));
 			return obj;
@@ -17050,6 +17040,10 @@ var $;
 
 ;
 	($.$yuf_attach_demo) = class $yuf_attach_demo extends ($.$mol_example_small) {
+		Portal(){
+			const obj = new this.$.$yuf_portal();
+			return obj;
+		}
 		item_drop(id){
 			return (this.Filled().item_drop(id));
 		}
@@ -17094,7 +17088,7 @@ var $;
 			return [];
 		}
 		sub(){
-			return [(this.List())];
+			return [(this.Portal()), (this.List())];
 		}
 		tags(){
 			return [
@@ -17107,6 +17101,7 @@ var $;
 			return ["Widget/Control", "Type/File"];
 		}
 	};
+	($mol_mem(($.$yuf_attach_demo.prototype), "Portal"));
 	($mol_mem(($.$yuf_attach_demo.prototype), "Filled"));
 	($mol_mem_key(($.$yuf_attach_demo.prototype), "Uploaded"));
 	($mol_mem(($.$yuf_attach_demo.prototype), "Uploads"));

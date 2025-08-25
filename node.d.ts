@@ -7104,17 +7104,12 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >[0]
 	>
-	type $yuf_camera_pick__Anchor_yuf_attach_12 = $mol_type_enforce<
-		ReturnType< $yuf_attach['Camera_anchor'] >
-		,
-		ReturnType< $yuf_camera_pick['Anchor'] >
-	>
-	type $yuf_camera_pick__file_yuf_attach_13 = $mol_type_enforce<
+	type $yuf_camera_pick__file_yuf_attach_12 = $mol_type_enforce<
 		ReturnType< $yuf_attach['camera_file'] >
 		,
 		ReturnType< $yuf_camera_pick['file'] >
 	>
-	type $yuf_camera_pick__align_yuf_attach_14 = $mol_type_enforce<
+	type $yuf_camera_pick__align_yuf_attach_13 = $mol_type_enforce<
 		ReturnType< $yuf_attach['camera_pick_align'] >
 		,
 		ReturnType< $yuf_camera_pick['align'] >
@@ -7133,9 +7128,6 @@ declare namespace $ {
 		enabled( ): boolean
 		Add_icon( ): $mol_icon_attachment
 		Add( ): $mol_button_open
-		Camera_trigger( ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['Trigger'] >
-		camera_sub( ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['sub_visible'] >
-		Camera_anchor( ): ReturnType< $yuf_attach['Camera_trigger'] >
 		camera_showed( next?: ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] > ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >
 		camera_file( next?: any ): any
 		camera_pick_align( ): string
@@ -7272,6 +7264,7 @@ declare namespace $ {
 		ReturnType< $mol_list['rows'] >
 	>
 	export class $yuf_attach_demo extends $mol_example_small {
+		Portal( ): $yuf_portal
 		item_drop( id: any): ReturnType< ReturnType< $yuf_attach_demo['Filled'] >['item_drop'] >
 		file( id: any): ReturnType< ReturnType< $yuf_attach_demo['Filled'] >['file'] >
 		uploading( id: any): boolean

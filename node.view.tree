@@ -1497,12 +1497,9 @@ $yuf_attach $mol_view
 			Icon <= Add_icon $mol_icon_attachment
 		^ camera_content <= camera_content_inner /$mol_view_content
 			<= Camera_pick $yuf_camera_pick
-				Trigger => Camera_trigger
-				sub_visible => camera_sub
-				Anchor <= Camera_anchor <= Camera_trigger
 				showed? => camera_showed?
 				file? <=> camera_file? null
-				align <= camera_pick_align \top_center
+				align <= camera_pick_align \center
 
 $yuf_attach_item $mol_button_minor
 	attr *
@@ -1533,6 +1530,7 @@ $yuf_attach_demo $mol_example_small
 	title \Attach with status track
 	ids? /string
 	sub /
+		<= Portal $yuf_portal
 		<= List $mol_list rows /
 			<= Filled $yuf_attach
 				multiple true
