@@ -1,9 +1,4 @@
 namespace $.$$ {
-	export type $yuf_portal_popup = {
-		showed(next?: boolean): boolean
-		Bubble(): $mol_view
-	}
-
 	export class $yuf_portal extends $.$yuf_portal {
 
 		static _ = null as null | $yuf_portal
@@ -35,7 +30,7 @@ namespace $.$$ {
 		@ $mol_action
 		override popup_remove( next: $yuf_portal_popup ) {
 			this.popups(this.popups().filter(popup => popup !== next ))
-			return null
+			return next
 		}
 
 		@ $mol_mem
