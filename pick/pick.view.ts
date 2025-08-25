@@ -10,12 +10,12 @@ namespace $.$$ {
 		@ $mol_mem
 		override sub_visible() {
 			const portal = this.portal()
-			portal?.popup_add(this)
 
-			return [
-				this.Anchor() ,
-				... this.showed() && ! portal ? [ this.Bubble() ] : [] ,
-			]
+			if (! portal) return super.sub_visible()
+
+			portal.popup_add(this)
+
+			return [ this.Anchor() ]
 		}
 
 		override destructor() {
