@@ -2,6 +2,7 @@ $yuf_attach_demo $mol_example_small
 	title \Attach with status track
 	ids? /string
 	sub /
+		<= Portal $yuf_portal
 		<= List $mol_list rows /
 			<= Filled $yuf_attach
 				multiple true
