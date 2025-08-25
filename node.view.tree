@@ -1367,6 +1367,30 @@ $mol_button_open_native $mol_view
 	event *
 		change?next <=> picked?next null
 
+$yuf_pick $mol_pick
+	portal null
+
+$yuf_blend $mol_view
+	attr *
+		^
+		yuf_blend_direction <= direction \left-right
+	sub /$mol_view
+		<= Back $mol_view
+			event *
+				click? <=> click? null
+		<= Content $mol_view
+			sub <= content /$mol_view_content
+
+$yuf_portal $yuf_blend
+	showed? false
+	style *
+		^
+		display <= display null
+	content <= bubbles /$mol_view
+	popup_add? $yuf_portal_popup
+	popup_remove? $yuf_portal_popup
+	popups? /$yuf_portal_popup
+
 $mol_icon_camera $mol_icon path \M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z
 
 $mol_video_player $mol_view
@@ -1441,7 +1465,7 @@ $yuf_camera_pane_video $mol_video_camera
 		^
 		click? <=> click? null
 
-$yuf_camera_pick $mol_pick
+$yuf_camera_pick $yuf_pick
 	trigger_content /
 		<= Trigger_icon $mol_icon_camera
 	bubble_content /
@@ -1471,9 +1495,12 @@ $yuf_attach $mol_view
 			accept <= accept \
 			enabled <= enabled true
 			Icon <= Add_icon $mol_icon_attachment
-		^ camera_content /
+		^ camera_content <= camera_content_inner /$mol_view_content
 			<= Camera_pick $yuf_camera_pick
-				showed? => camera_pick_showed?
+				Trigger => Camera_trigger
+				sub_visible => camera_sub
+				Anchor <= Camera_anchor <= Camera_trigger
+				showed? => camera_showed?
 				file? <=> camera_file? null
 				align <= camera_pick_align \top_center
 

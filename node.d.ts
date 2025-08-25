@@ -6,6 +6,7 @@ declare class $ extends _$_ {
 declare namespace $ {
     export type $ = typeof $$;
     export class $$ extends $ {
+        static $: $;
     }
     namespace $$ {
         type $$ = $;
@@ -6476,6 +6477,106 @@ declare namespace $ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $mol_view__event_yuf_blend_1 = $mol_type_enforce<
+		({ 
+			click( next?: ReturnType< $yuf_blend['click'] > ): ReturnType< $yuf_blend['click'] >,
+		}) 
+		,
+		ReturnType< $mol_view['event'] >
+	>
+	type $mol_view__sub_yuf_blend_2 = $mol_type_enforce<
+		ReturnType< $yuf_blend['content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_blend extends $mol_view {
+		direction( ): string
+		click( next?: any ): any
+		Back( ): $mol_view
+		content( ): readonly($mol_view_content)[]
+		Content( ): $mol_view
+		attr( ): ({ 
+			'yuf_blend_direction': ReturnType< $yuf_blend['direction'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		sub( ): readonly($mol_view)[]
+	}
+	
+}
+
+//# sourceMappingURL=blend.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    type $yuf_portal_popup = {
+        showed(next?: boolean): boolean;
+        Bubble(): $mol_view;
+    };
+}
+
+declare namespace $ {
+    class $mol_dom_event<EventType extends Event> extends $mol_object {
+        readonly native: EventType;
+        constructor(native: EventType);
+        prevented(next?: boolean): boolean;
+        static wrap<EventType extends Event>(event: EventType): $mol_dom_event<EventType>;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_portal extends $yuf_blend {
+		display( ): any
+		bubbles( ): readonly($mol_view)[]
+		showed( next?: boolean ): boolean
+		style( ): ({ 
+			'display': ReturnType< $yuf_portal['display'] >,
+		})  & ReturnType< $yuf_blend['style'] >
+		content( ): ReturnType< $yuf_portal['bubbles'] >
+		popup_add( next?: $yuf_portal_popup ): $yuf_portal_popup
+		popup_remove( next?: $yuf_portal_popup ): $yuf_portal_popup
+		popups( next?: readonly($yuf_portal_popup)[] ): readonly($yuf_portal_popup)[]
+	}
+	
+}
+
+//# sourceMappingURL=portal.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_portal extends $.$yuf_portal {
+        static _: null | $yuf_portal;
+        destructor(): void;
+        showed(next?: boolean): boolean;
+        display(): "none" | null;
+        click(e?: Event): void;
+        popup_add(next: $yuf_portal_popup): $yuf_portal_popup;
+        popup_remove(next: $yuf_portal_popup): $yuf_portal_popup;
+        bubbles(): $mol_view[];
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_pick extends $mol_pick {
+		portal( ): any
+	}
+	
+}
+
+//# sourceMappingURL=pick.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_pick extends $.$yuf_pick {
+        portal(): $yuf_portal | null;
+        showed(next?: boolean): boolean;
+        sub_visible(): ($mol_pop_bubble | $.$mol_check)[];
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
 
 	export class $mol_icon_camera extends $mol_icon {
 		path( ): string
@@ -6648,15 +6749,6 @@ declare namespace $.$$ {
         };
         dom_node_actual(): HTMLVideoElement;
         transform(): string;
-    }
-}
-
-declare namespace $ {
-    class $mol_dom_event<EventType extends Event> extends $mol_object {
-        readonly native: EventType;
-        constructor(native: EventType);
-        prevented(next?: boolean): boolean;
-        static wrap<EventType extends Event>(event: EventType): $mol_dom_event<EventType>;
     }
 }
 
@@ -6905,7 +6997,7 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_camera_pane['close_click'] >
 	>
-	export class $yuf_camera_pick extends $mol_pick {
+	export class $yuf_camera_pick extends $yuf_pick {
 		Trigger_icon( ): $mol_icon_camera
 		file( next?: any ): any
 		close_click( next?: any ): any
@@ -7008,16 +7100,21 @@ declare namespace $ {
 		ReturnType< $mol_button_open['Icon'] >
 	>
 	type __yuf_attach_11 = $mol_type_enforce<
-		Parameters< $yuf_attach['camera_pick_showed'] >[0]
+		Parameters< $yuf_attach['camera_showed'] >[0]
 		,
 		Parameters< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >[0]
 	>
-	type $yuf_camera_pick__file_yuf_attach_12 = $mol_type_enforce<
+	type $yuf_camera_pick__Anchor_yuf_attach_12 = $mol_type_enforce<
+		ReturnType< $yuf_attach['Camera_anchor'] >
+		,
+		ReturnType< $yuf_camera_pick['Anchor'] >
+	>
+	type $yuf_camera_pick__file_yuf_attach_13 = $mol_type_enforce<
 		ReturnType< $yuf_attach['camera_file'] >
 		,
 		ReturnType< $yuf_camera_pick['file'] >
 	>
-	type $yuf_camera_pick__align_yuf_attach_13 = $mol_type_enforce<
+	type $yuf_camera_pick__align_yuf_attach_14 = $mol_type_enforce<
 		ReturnType< $yuf_attach['camera_pick_align'] >
 		,
 		ReturnType< $yuf_camera_pick['align'] >
@@ -7036,11 +7133,15 @@ declare namespace $ {
 		enabled( ): boolean
 		Add_icon( ): $mol_icon_attachment
 		Add( ): $mol_button_open
-		camera_pick_showed( next?: ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] > ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >
+		Camera_trigger( ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['Trigger'] >
+		camera_sub( ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['sub_visible'] >
+		Camera_anchor( ): ReturnType< $yuf_attach['Camera_trigger'] >
+		camera_showed( next?: ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] > ): ReturnType< ReturnType< $yuf_attach['Camera_pick'] >['showed'] >
 		camera_file( next?: any ): any
 		camera_pick_align( ): string
 		Camera_pick( ): $yuf_camera_pick
-		camera_content( ): readonly(any)[]
+		camera_content_inner( ): readonly($mol_view_content)[]
+		camera_content( ): ReturnType< $yuf_attach['camera_content_inner'] >
 		files( next?: Record<string, File|null> ): Record<string, File|null>
 		removing( id: any, next?: boolean ): boolean
 		ids( ): readonly(string)[]

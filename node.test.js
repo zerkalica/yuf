@@ -429,7 +429,7 @@ var $;
             if (typeof val === 'function') {
                 return $mol_dev_format_native(val);
             }
-            if (Error.isError(val)) {
+            if (val instanceof Error) {
                 return $mol_dev_format_span({}, $mol_dev_format_native(val), ' ', $mol_dev_format_button('throw', () => $mol_fail_hidden(val)));
             }
             if (val instanceof Promise) {
@@ -1253,7 +1253,7 @@ var $;
 var $;
 (function ($) {
     function $mol_log3_area_lazy(event) {
-        const self = this;
+        const self = this.$;
         const stack = self.$mol_log3_stack;
         const deep = stack.length;
         let logged = false;
@@ -15045,6 +15045,289 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$yuf_pick) = class $yuf_pick extends ($.$mol_pick) {
+		portal(){
+			return null;
+		}
+	};
+
+
+;
+	($.$yuf_blend) = class $yuf_blend extends ($.$mol_view) {
+		direction(){
+			return "left-right";
+		}
+		click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Back(){
+			const obj = new this.$.$mol_view();
+			(obj.event) = () => ({"click": (next) => (this.click(next))});
+			return obj;
+		}
+		content(){
+			return [];
+		}
+		Content(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.content()));
+			return obj;
+		}
+		attr(){
+			return {...(super.attr()), "yuf_blend_direction": (this.direction())};
+		}
+		sub(){
+			return [(this.Back()), (this.Content())];
+		}
+	};
+	($mol_mem(($.$yuf_blend.prototype), "click"));
+	($mol_mem(($.$yuf_blend.prototype), "Back"));
+	($mol_mem(($.$yuf_blend.prototype), "Content"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/blend/blend.view.css", "@keyframes yuf_blend_anim {\n  100% {\n    opacity: 1;\n\tleft: 0;\n  }\n}\n\n@keyframes yuf_blend_anim_reverse {\n  100% {\n    opacity: 1;\n\tright: 0;\n  }\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_blend, {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            zIndex: $mol_layer.speck,
+            background: {
+                color: 'transparent',
+            },
+            '@media': {
+                print: {
+                    display: 'none'
+                }
+            },
+            Back: {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: $mol_layer.float,
+                background: {
+                    color: '#00000030',
+                },
+            },
+            Content: {
+                position: 'relative',
+                zIndex: $mol_layer.popup,
+                top: 0,
+                left: '-200px',
+                opacity: 0,
+                animation: 'yuf_blend_anim .3s forwards',
+                height: '100%',
+                pointerEvents: 'none',
+                flex: {
+                    shrink: 1,
+                    grow: 1,
+                },
+                '>': {
+                    $mol_view: {
+                        pointerEvents: 'auto',
+                        background: {
+                            color: $mol_theme.back,
+                        },
+                    }
+                }
+            },
+            '@': {
+                yuf_blend_direction: {
+                    'right-left': {
+                        Content: {
+                            left: 'auto',
+                            right: '-200px',
+                            justifyContent: 'end',
+                            animation: 'yuf_blend_anim_reverse .3s forwards',
+                        }
+                    }
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$yuf_portal) = class $yuf_portal extends ($.$yuf_blend) {
+		display(){
+			return null;
+		}
+		bubbles(){
+			return [];
+		}
+		showed(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		style(){
+			return {...(super.style()), "display": (this.display())};
+		}
+		content(){
+			return (this.bubbles());
+		}
+		popup_add(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$yuf_portal_popup();
+			return obj;
+		}
+		popup_remove(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$yuf_portal_popup();
+			return obj;
+		}
+		popups(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+	};
+	($mol_mem(($.$yuf_portal.prototype), "showed"));
+	($mol_mem(($.$yuf_portal.prototype), "popup_add"));
+	($mol_mem(($.$yuf_portal.prototype), "popup_remove"));
+	($mol_mem(($.$yuf_portal.prototype), "popups"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_dom_event extends $mol_object {
+        native;
+        constructor(native) {
+            super();
+            this.native = native;
+        }
+        prevented(next) {
+            if (next)
+                this.native.preventDefault();
+            return this.native.defaultPrevented;
+        }
+        static wrap(event) {
+            return new this.$.$mol_dom_event(event);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_dom_event.prototype, "prevented", null);
+    __decorate([
+        $mol_action
+    ], $mol_dom_event, "wrap", null);
+    $.$mol_dom_event = $mol_dom_event;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_portal extends $.$yuf_portal {
+            static _ = null;
+            destructor() {
+                this.$.$yuf_portal._ = null;
+            }
+            showed(next) {
+                return this.popups().some(popup => popup.showed(next));
+            }
+            display() {
+                return !this.showed() ? 'none' : null;
+            }
+            click(e) {
+                e && $mol_dom_event.wrap(e).prevented(true);
+                this.showed(false);
+            }
+            popup_add(next) {
+                this.popups([...this.popups(), next]);
+                return next;
+            }
+            popup_remove(next) {
+                this.popups(this.popups().filter(popup => popup !== next));
+                return next;
+            }
+            bubbles() {
+                this.$.$yuf_portal._ = this;
+                return this.popups().filter(popup => popup.showed()).map(pop => pop.Bubble());
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_portal.prototype, "showed", null);
+        __decorate([
+            $mol_action
+        ], $yuf_portal.prototype, "popup_add", null);
+        __decorate([
+            $mol_action
+        ], $yuf_portal.prototype, "popup_remove", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_portal.prototype, "bubbles", null);
+        $$.$yuf_portal = $yuf_portal;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_pick extends $.$yuf_pick {
+            portal() { return this.$.$yuf_portal._; }
+            showed(next) {
+                return this.portal() ? (next ?? false) : super.showed(next);
+            }
+            sub_visible() {
+                const portal = this.portal();
+                portal?.popup_add(this);
+                return [
+                    this.Anchor(),
+                    ...this.showed() && !portal ? [this.Bubble()] : [],
+                ];
+            }
+            destructor() {
+                this.portal()?.popup_remove(this);
+                super.destructor();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_pick.prototype, "showed", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_pick.prototype, "sub_visible", null);
+        $$.$yuf_pick = $yuf_pick;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$mol_icon_camera) = class $mol_icon_camera extends ($.$mol_icon) {
 		path(){
 			return "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z";
@@ -15619,34 +15902,6 @@ var $;
 	};
 	($mol_mem(($.$yuf_camera_pane_video.prototype), "click"));
 
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_dom_event extends $mol_object {
-        native;
-        constructor(native) {
-            super();
-            this.native = native;
-        }
-        prevented(next) {
-            if (next)
-                this.native.preventDefault();
-            return this.native.defaultPrevented;
-        }
-        static wrap(event) {
-            return new this.$.$mol_dom_event(event);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_dom_event.prototype, "prevented", null);
-    __decorate([
-        $mol_action
-    ], $mol_dom_event, "wrap", null);
-    $.$mol_dom_event = $mol_dom_event;
-})($ || ($ = {}));
 
 ;
 "use strict";
@@ -16339,7 +16594,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_camera_pick) = class $yuf_camera_pick extends ($.$mol_pick) {
+	($.$yuf_camera_pick) = class $yuf_camera_pick extends ($.$yuf_pick) {
 		Trigger_icon(){
 			const obj = new this.$.$mol_icon_camera();
 			return obj;
@@ -16480,7 +16735,16 @@ var $;
 			(obj.Icon) = () => ((this.Add_icon()));
 			return obj;
 		}
-		camera_pick_showed(next){
+		Camera_trigger(){
+			return (this.Camera_pick().Trigger());
+		}
+		camera_sub(){
+			return (this.Camera_pick().sub_visible());
+		}
+		Camera_anchor(){
+			return (this.Camera_trigger());
+		}
+		camera_showed(next){
 			return (this.Camera_pick().showed(next));
 		}
 		camera_file(next){
@@ -16492,12 +16756,16 @@ var $;
 		}
 		Camera_pick(){
 			const obj = new this.$.$yuf_camera_pick();
+			(obj.Anchor) = () => ((this.Camera_anchor()));
 			(obj.file) = (next) => ((this.camera_file(next)));
 			(obj.align) = () => ((this.camera_pick_align()));
 			return obj;
 		}
-		camera_content(){
+		camera_content_inner(){
 			return [(this.Camera_pick())];
+		}
+		camera_content(){
+			return (this.camera_content_inner());
 		}
 		files(next){
 			if(next !== undefined) return next;
@@ -16813,7 +17081,7 @@ var $;
                 if (!next)
                     return null;
                 this.attach_new([next]);
-                this.camera_pick_showed(false);
+                this.camera_showed(false);
             }
             file(id) { return this.files()[id]; }
             ids() {
