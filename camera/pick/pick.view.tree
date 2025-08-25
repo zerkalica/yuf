@@ -1,4 +1,4 @@
-$yuf_camera_pick $mol_pick
+$yuf_camera_pick $yuf_pick
 	trigger_content /
 		<= Trigger_icon $mol_icon_camera
 	bubble_content /

@@ -1,0 +1,10 @@
+$yuf_blend $mol_view
+	attr *
+		^
+		yuf_blend_direction <= direction \left-right
+	sub /$mol_view
+		<= Back $mol_view
+			event *
+				click? <=> click? null
+		<= Content $mol_view
+			sub <= content /$mol_view_content

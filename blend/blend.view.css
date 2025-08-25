@@ -1,0 +1,13 @@
+@keyframes yuf_blend_anim {
+  100% {
+    opacity: 1;
+	left: 0;
+  }
+}
+
+@keyframes yuf_blend_anim_reverse {
+  100% {
+    opacity: 1;
+	right: 0;
+  }
+}

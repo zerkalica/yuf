@@ -16,9 +16,12 @@ $yuf_attach $mol_view
 			accept <= accept \
 			enabled <= enabled true
 			Icon <= Add_icon $mol_icon_attachment
-		^ camera_content /
+		^ camera_content <= camera_content_inner /$mol_view_content
 			<= Camera_pick $yuf_camera_pick
-				showed? => camera_pick_showed?
+				Trigger => Camera_trigger
+				sub_visible => camera_sub
+				Anchor <= Camera_anchor <= Camera_trigger
+				showed? => camera_showed?
 				file? <=> camera_file? null
 				align <= camera_pick_align \top_center
 

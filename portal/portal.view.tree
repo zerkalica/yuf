@@ -1,3 +1,9 @@
-$yuf_portal $mol_view
-	sub /
-		^ modals /$mol_view
+$yuf_portal $yuf_blend
+	showed? false
+	style *
+		^
+		display <= display null
+	content <= bubbles /$mol_view
+	popup_add? $yuf_portal_popup
+	popup_remove? $yuf_portal_popup
+	popups? /$yuf_portal_popup
