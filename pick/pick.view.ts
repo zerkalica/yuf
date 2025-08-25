@@ -7,6 +7,11 @@ namespace $.$$ {
 			return this.portal() ? (next ?? false) : super.showed(next)
 		}
 
+		override height_max() {
+			const viewport = this.$.$mol_window.size()
+			return this.portal() ? viewport.height : super.height_max()
+		}
+
 		@ $mol_mem
 		override sub_visible() {
 			const portal = this.portal()
