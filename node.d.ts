@@ -6571,7 +6571,7 @@ declare namespace $.$$ {
     class $yuf_pick extends $.$yuf_pick {
         portal(): $yuf_portal | null;
         showed(next?: boolean): boolean;
-        sub_visible(): ($mol_pop_bubble | $.$mol_check)[];
+        sub_visible(): readonly any[];
         destructor(): void;
     }
 }
