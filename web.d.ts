@@ -6514,6 +6514,7 @@ declare namespace $.$$ {
     class $yuf_pick extends $.$yuf_pick {
         portal(): $yuf_portal | null;
         showed(next?: boolean): boolean;
+        height_max(): number;
         sub_visible(): readonly any[];
         destructor(): void;
     }

@@ -15195,6 +15195,10 @@ var $;
             showed(next) {
                 return this.portal() ? (next ?? false) : super.showed(next);
             }
+            height_max() {
+                const viewport = this.$.$mol_window.size();
+                return this.portal() ? viewport.height : super.height_max();
+            }
             sub_visible() {
                 const portal = this.portal();
                 if (!portal)
