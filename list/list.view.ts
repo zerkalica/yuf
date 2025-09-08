@@ -16,6 +16,10 @@ namespace $.$$ {
 			return null
 		}
 
+		ensure_visible_item(item: $mol_view) {
+			
+		}
+
 
 	}
 }

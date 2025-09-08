@@ -31,13 +31,18 @@ namespace $ {
 						},
 					}
 				},
-			},
-			yuf_chess_cell_hilite: {
-				true: {
-					background: {
-						// @ts-ignore
-						color: 'color-mix(in hsl, var(--yuf_chess_cell_hilite), var(--yuf_chess_cell_white) 50%)',
-					},
+				w: {
+					'@': {
+
+						yuf_chess_cell_hilite: {
+							true: {
+								background: {
+									// @ts-ignore
+									color: 'color-mix(in hsl, var(--yuf_chess_cell_hilite), var(--yuf_chess_cell_white) 50%)',
+								},
+							}
+						},
+					}
 				}
 			},
 		}
