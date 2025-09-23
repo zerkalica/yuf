@@ -2,41 +2,50 @@ namespace $ {
 	export class $yuf_ws_socket extends $mol_object {
 		protected destructing = false
 
-		readonly native: WebSocket
 		readonly id = $mol_guid()
+		protected _native: WebSocket | null = null
 
-		constructor(
-			readonly url: string,
-			readonly protocols = [] as string[]
-		) {
-			super()
+		url() { return '' }
+		protocols() { return [] as string[] }
 
-			let ws
+		native() {
+			if (this._native) return this._native
+			let url = this.url()
+
+			if (! url.match(/^wss?\:/)) {
+				url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url
+			}
 
 			try {
-				if (! url.startsWith('ws')) {
-					url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url
-				}
+				url = this.url()
+				const ws = this._native = new WebSocket( url, this.protocols() )
 
-				ws = new WebSocket( url, protocols )
+				ws.onerror = e => this.destructing ? null : this.onerror(e)
+				ws.onclose = e => this.destructing ? null : this.onclose(e)
+				ws.onmessage = message => this.destructing ? null : this.onmessage(message)
+				ws.onopen = () => this.destructing ? null : this.onopen()
+
+				return ws
 			} catch (e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+
 				if (e instanceof Error && ! (e instanceof $mol_error_mix)) {
 					e = new $mol_error_mix('Cant create socket, ' + e.message + ': ' + url, this, e as Error)
 				}
-				$mol_fail_hidden(e)
+
+				this.onerror({
+					code: 1007,
+					wasClean: false,
+					target: e,
+				} as CloseEvent)
+
+				return null
 			}
-
-			ws.onerror = e => this.destructing ? null : this.onerror(e)
-			ws.onclose = e => this.destructing ? null : this.onclose(e)
-			ws.onmessage = message => this.destructing ? null : this.onmessage(message)
-			ws.onopen = () => this.destructing ? null : this.onopen()
-
-			this.native = ws
 		}
 
-		send(data: Parameters<WebSocket['send']>[0]) { return this.native.send(data) }
+		send(data: Parameters<WebSocket['send']>[0]) { return this.native()?.send(data) }
 
-		get readyState() { return this.native.readyState }
+		get readyState() { return this.native()?.readyState ?? WebSocket.CLOSED }
 
 		onerror(error: Event) {}
 		onclose(error: CloseEvent) {}
@@ -47,7 +56,7 @@ namespace $ {
 			if (this.destructing) return
 			this.destructing = true
 
-			this.native.close()
+			this._native?.close()
 		}
 	}
 

@@ -25,19 +25,14 @@ namespace $ {
 
 			if (! this.enabled()) return null
 
-			try {
-				const ws = new this.$.$yuf_ws_socket(this.url(), this.protocols())
-				ws.onclose = e => this.on_close(e)
-				ws.onerror = e => this.on_error(e)
-				ws.onopen = () => this.on_open()
-				ws.onmessage = e => this.on_message(e)
-
-				return ws
-			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-				this.error(e as Error)
-				return null
-			}
+			return this.$.$yuf_ws_socket.make({
+				url: () => this.url(),
+				protocols: () => this.protocols(),
+				onclose: e => this.on_close(e),
+				onerror: e => this.on_error(e),
+				onopen: () => this.on_open(),
+				onmessage: e => this.on_message(e),
+			})
 		}
 
 		restartable(event: Event & { code?: number }) {
@@ -81,17 +76,6 @@ namespace $ {
 			}
 		}
 
-		protected sends_flush(sends: Parameters<WebSocket['send']>[0][]) {
-			const ws = this.ws()
-			while (ws?.readyState === WebSocket.OPEN && sends.length) {
-				const blob = sends[0]
-				ws.send(blob)
-				sends.shift()
-			}
-
-			return sends.length === 0
-		}
-
 		@ $mol_action
 		send(data: Parameters<WebSocket['send']>[0]) {
 			const ws = this.ws()
@@ -117,7 +101,9 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		protected opened(reset?: null) { return this.ws()?.readyState === WebSocket.OPEN }
+		protected opened(reset?: null) {
+			return this.ws()?.readyState === WebSocket.OPEN
+		}
 
 		heatbeat_enabled() { return true }
 

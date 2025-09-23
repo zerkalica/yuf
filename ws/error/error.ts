@@ -19,7 +19,7 @@ namespace $ {
 			let code = e.code
 			if (! code) code = e.wasClean ? 1000 : 1006
 			const code_str = `${this.code_description(code)} [${code}]`
-			const readyStateText = this.ready_state_info[(e.target as WebSocket).readyState] ?? 'unknown'
+			const readyStateText = this.ready_state_info[(e.target as WebSocket)?.readyState] ?? 'unknown'
 
 			return [
 				code_str,
