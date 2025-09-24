@@ -1,0 +1,13 @@
+$yuf_time_card $mol_view
+	format \normal
+	formats *string
+		normal \DD Month YYг hh:mm:ss
+		short \DD.MM.YY hh:mm
+		hint \DD Month YYYY hh:mm:ss
+	local false
+	moment $mol_time_moment|null
+	attr *
+		^
+		title <= hint \
+	sub /
+		<= formatted_date \

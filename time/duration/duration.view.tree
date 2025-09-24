@@ -1,0 +1,17 @@
+$yuf_time_duration $mol_view
+	value $mol_time_duration
+	template /string
+		\year
+		\month
+		\day
+		\hour
+		\minute
+		\second
+	year @ \year|years|years
+	month @ \month|months|months
+	day @ \day|days|days
+	hour @ \hour|hours|hours
+	minute @ \minute|minutes|minutes
+	second @ \second|seconds|seconds
+	sub /
+		<= formatted \
