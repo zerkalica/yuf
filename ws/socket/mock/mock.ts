@@ -11,6 +11,10 @@ namespace $ {
 
 			const native = {
 				readyState: WebSocket.CONNECTING as number,
+				close: () => {
+					native.readyState = WebSocket.CLOSED
+					this.onclose({} as CloseEvent)
+				}
 			}
 
 			this._native = native as WebSocket

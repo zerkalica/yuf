@@ -6,7 +6,7 @@
 	"$yuf_form_bid_list_min_msg": "минимум {list_min_val}",
 	"$yuf_form_bid_list_max_msg": "максимум {list_max_val}",
 	"$yuf_form_bid_json_invalid_msg": "{json_error}",
-	"$yuf_form_bid_ip4_msg": "Не валидный ip4",
+	"$yuf_form_bid_ip4_msg": "Не ip4",
 	"$yuf_form_bid_latin_digits_msg": "Только лат. символы и числа",
 	"$yuf_form_bid_value_in_range": "{range}"
 }
