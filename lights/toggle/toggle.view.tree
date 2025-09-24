@@ -1,0 +1,3 @@
+$yuf_lights_toggle $mol_check
+	Icon $mol_icon_brightness_4
+	hint @ \Dark / Light mode

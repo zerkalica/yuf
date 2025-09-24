@@ -1,0 +1,7 @@
+$yuf_locale_switch $mol_select
+	Filter null
+	model $yuf_locale_model
+		langs_available => langs_available
+		lang? => lang?
+	dictionary <= langs_available
+	value? <=> lang?

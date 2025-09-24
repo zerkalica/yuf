@@ -1,7 +1,7 @@
 $yuf_time_card $mol_view
 	format \normal
 	formats *string
-		normal \DD Month YYг hh:mm:ss
+		normal \DD Month YY hh:mm:ss
 		short \DD.MM.YY hh:mm
 		hint \DD Month YYYY hh:mm:ss
 	local false
