@@ -135,6 +135,15 @@ namespace $ {
 		@ $mol_mem
 		error(error?: null | Error) { return error ?? null }
 
+		error_message() {
+			try {
+				this.error()
+				return ''
+			} catch (e) {
+				return (e as Error).message ?? 'Unknown ws error'
+			}
+		}
+
 		@ $mol_mem
 		ready() {
 			this.heartbeat()

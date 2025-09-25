@@ -1,0 +1,12 @@
+$yuf_ws_status $mol_view
+	attr *
+		^
+		title <= title
+	ws $yuf_ws_host
+		error_message => error_message
+	title @ \Socket {status}
+	sub /
+		^ ws_error_content /
+			<= Ws_error $mol_speck value <= error_message
+		<= Icon $yuf_ws_icon
+			status <= status \

@@ -33,7 +33,7 @@ namespace $.$$ {
 			padding: $mol_gap.block,
 		},
 
-		Lights_locale: {
+		Foot_second: {
 			justifyContent: 'space-between',
 			padding: {
 				right: $mol_gap.space
