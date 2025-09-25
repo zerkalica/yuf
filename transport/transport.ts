@@ -21,6 +21,16 @@ namespace $ {
 
 	export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {}
 
+	export class $yuf_transport_error_timeout extends $yuf_transport_error {
+		constructor(cause: $yuf_transport_error_response) {
+			super('Client timeout: ' + cause.input, {
+				http_code: 408,
+				code: 'TIMEOUT',
+				...cause
+			})
+		}
+	}
+
 	export function $yuf_transport_pass(data: unknown) { return data }
 
 	export class $yuf_transport extends $mol_fetch {
@@ -383,13 +393,7 @@ namespace $ {
 			const deadline = init?.deadline ?? this.deadline()
 			if (! deadline) return res
 
-			const err_deadline = new $yuf_transport_error('Client timeout', {
-				init,
-				input,
-				http_code: 408,
-				code: 'Timeout',
-				message: `Deadline ${deadline} ms`
-			})
+			const err_deadline = new $yuf_transport_error_timeout({ init, input })
 
 			const deadlined = Promise.race([
 				new Promise<Awaited<typeof res>>(
