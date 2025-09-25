@@ -1,4 +1,3 @@
 $yuf_button_logout $mol_button_minor
 	hint @ \Exit
-	sub /
-		<= Add_icon $mol_icon_logout
+	sub / <= Icon $mol_icon_logout

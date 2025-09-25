@@ -1,3 +1,3 @@
 $yuf_button_save $mol_button_minor
 	hint @ \Save
-	sub / <= Save_icon $mol_icon_content_save
+	sub / <= Icon $mol_icon_content_save

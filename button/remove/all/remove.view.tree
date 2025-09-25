@@ -1,4 +1,4 @@
 $yuf_button_remove_all $mol_button_minor
 	hint @ \Remove all
 	sub /
-		<= Delete_icon $mol_icon_delete_forever
+		<= Icon $mol_icon_delete_forever

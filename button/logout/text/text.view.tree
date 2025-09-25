@@ -1,4 +1,4 @@
 $yuf_button_logout_text $yuf_button_logout
 	sub /
-		<= Add_icon $mol_icon_logout
+		<= Icon
 		<= hint

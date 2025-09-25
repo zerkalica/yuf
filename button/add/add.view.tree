@@ -1,3 +1,3 @@
 $yuf_button_add $mol_button_minor
 	hint @ \Add
-	sub / <= Add_icon $mol_icon_plus
+	sub / <= Icon $mol_icon_plus

@@ -1,4 +1,4 @@
 $yuf_button_remove $mol_button_minor
 	hint @ \Remove
 	sub /
-		<= Delete_icon $mol_icon_trash_can_outline
+		<= Icon $mol_icon_trash_can_outline

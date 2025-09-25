@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_ws_socket_mock<Message extends { data?: unknown } = { data: unknown }> extends $yuf_ws_socket {
+	export class $yuf_ws_socket_mock<Message = unknown> extends $yuf_ws_socket {
 		open_timeout() { return 1000 }
 
 		answer_timeout() { return 500 }
@@ -12,8 +12,12 @@ namespace $ {
 			const native = {
 				readyState: WebSocket.CONNECTING as number,
 				close: () => {
-					native.readyState = WebSocket.CLOSED
-					this.onclose({} as CloseEvent)
+					native.readyState = WebSocket.CLOSING
+					this.periodically_timer?.destructor()
+					new this.$.$mol_after_timeout(this.open_timeout(), () => {
+						native.readyState = WebSocket.CLOSED
+						this.onclose({} as CloseEvent)
+					})
 				}
 			}
 
@@ -23,7 +27,7 @@ namespace $ {
 				native.readyState = WebSocket.OPEN
 
 				this.$.$mol_log3_rise({
-					place: `${this}.native()`,
+					place: `${this.factory()}.native()`,
 					message: 'opened'
 				})
 				this.onopen()
@@ -45,16 +49,9 @@ namespace $ {
 			for (const sub of this.subs) {
 				const answer = this.answer(sub)
 				if (! answer) continue
-				const data = Object.assign(sub, { data: answer } )
-
-				this.$.$mol_log3_rise({
-					place: `${this}.periodically()`,
-					message: 'answer',
-					data,
-				})
 
 				this.onmessage({
-					data: JSON.stringify(data),
+					data: JSON.stringify(answer),
 				} as MessageEvent)
 
 			}
@@ -68,8 +65,8 @@ namespace $ {
 			super.destructor()
 		}
 
-		answer(obj: Message): null | {} {
-			return null as null | {}
+		answer(obj: Message): null | Message {
+			return null
 		}
 
 		protected subs = [] as Message[]
@@ -82,25 +79,26 @@ namespace $ {
 			const obj = JSON.parse(raw.toString()) as Message
 
 			this.$.$mol_log3_come({
-				place: `${this}.send()`,
+				place: `${this.factory()}.send()`,
 				message: 'req',
 				data: obj
 			})
 
-			const answer = this.answer(obj)
-			if (! answer) return
+			const data = this.answer(obj)
+			if (! data) return
 
 			this.subs = this.subs.filter(sub => ! this.message_equal(obj, sub) )
 
-			const data = { ...obj, data: answer }
 			this.subs.push(data)
 
 			new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive(data))
 		}
 
+		factory() { return this.constructor as typeof $yuf_ws_socket_mock }
+
 		receive(data: unknown) {
 			this.$.$mol_log3_done({
-				place: `${this}.answer_receive()`,
+				place: `${this.factory()}.answer_receive()`,
 				message: 'answer',
 				data,
 			})

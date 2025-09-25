@@ -1,4 +1,4 @@
 $yuf_button_edit $mol_button_minor
 	hint @ \Edit
-	sub / <= Edit_icon $mol_icon_file_document_edit_outline
+	sub / <= Icon $mol_icon_file_document_edit_outline
 

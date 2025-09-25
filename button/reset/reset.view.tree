@@ -1,2 +1,3 @@
 $yuf_button_reset $mol_button_minor
 	title @ \Reset
+	sub / <= Icon $mol_icon_refresh

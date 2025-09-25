@@ -9,6 +9,7 @@ namespace $.$$ {
 				shrink: 0,
 			},
 			Foot: {
+				padding: 0,
 				flex: {
 					direction: 'column',
 				},
@@ -21,6 +22,7 @@ namespace $.$$ {
 				basis: '16rem',
 			},
 			Foot: {
+				padding: 0,
 				flex: {
 					direction: 'column',
 				},
