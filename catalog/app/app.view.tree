@@ -5,20 +5,24 @@ $yuf_catalog_app $yuf_catalog
 	Login $mol_page
 		title <= login_title @ \Login
 		body <= login_body /$mol_view
-		foot /
-			<= Foot_second
+		foot <= menu_foot_public
 	menu_foot /$mol_view
-		<= User_name $mol_view sub / <= user_name \
-		<= Foot_second $mol_view sub /
-			<= Lights $yuf_lights_toggle
-				hint <= version \
-			<= Locale_switch $yuf_locale_switch
-			^ foot_second_post /
-	menu_links /
-		^
-		<= Log_out $mol_button_minor
-			sub / <= log_out_title @ \Exit
-			click? <=> logout_click? null
+		^ menu_foot_public /$mol_view
+			<= User_name $mol_view sub / <= user_name \
+			<= Foot_second $mol_view sub /
+				<= Lights $yuf_lights_toggle
+					hint <= version \
+				<= Locale_switch $yuf_locale_switch
+				^ foot_second_post /$mol_view
+	Menu_links $mol_list
+		Empty <= Menu_links_empty
+		rows /$mol_view
+			^ menu_links_no_authorized /$mol_view
+			^ menu_links_authorized /$mol_view
+				^ menu_links
+				<= Log_out $mol_button_minor
+					sub / <= log_out_title @ \Exit
+					click? <=> logout_click? null
 	menu_filter_enabled false
 	plugins /
 		<= Theme $mol_theme_auto
