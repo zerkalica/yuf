@@ -5,7 +5,10 @@ namespace $.$$ {
 			return this.ws().error_message() ? super.ws_error_content() : []
 		}
 
-		override title() { return this.status() }
+		override title_formatted() {
+			const message = this.status_message()[this.status()] || this.status_message().error
+			return super.title().replace('{status}', message)
+		}
 
 		override status() {
 			const ws = this.ws()

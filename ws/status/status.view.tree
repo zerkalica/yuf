@@ -1,10 +1,14 @@
 $yuf_ws_status $mol_view
 	attr *
 		^
-		title <= title
+		title <= title_formatted <= title
 	ws $yuf_ws_host
 		error_message => error_message
-	title @ \Socket {status}
+	title @ \Server: {status}
+	status_message *
+		error @ \error
+		open @ \online
+		connecting @ \connecting
 	sub /
 		^ ws_error_content /
 			<= Ws_error $mol_speck value <= error_message
