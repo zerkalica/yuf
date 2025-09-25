@@ -133,16 +133,13 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		error(error?: null | Error) { return error ?? null }
+		error_packed(error?: null | [Error]) { return error ?? null }
 
-		error_message() {
-			try {
-				this.error()
-				return ''
-			} catch (e) {
-				return (e as Error).message ?? 'Unknown ws error'
-			}
+		error(error?: null | Error) {
+			return this.error_packed( error ? [ error ] : error )?.[0] ?? null
 		}
+
+		error_message() { return this.error()?.message ?? '' }
 
 		@ $mol_mem
 		ready() {

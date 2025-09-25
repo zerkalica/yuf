@@ -1,0 +1,6 @@
+$yuf_check_icon2 $mol_check_icon
+	icon_disabled false
+	hint_checked \
+	hint_unchecked \
+	Icon_checked $mol_icon_eye
+	Icon_unchecked $mol_icon_eye_off
