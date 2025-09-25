@@ -139,13 +139,36 @@ namespace $ {
 			return this.error_packed( error ? [ error ] : error )?.[0] ?? null
 		}
 
-		error_message() { return this.error()?.message ?? '' }
-
 		@ $mol_mem
 		ready() {
 			this.heartbeat()
 			this.watchdog()
 			return this.opened()
+		}
+
+		syncing() { return false }
+
+		error_message() {
+			try {
+				this.status()
+				return this.error()?.message ?? ''
+			} catch (e) {
+				if ( ! $mol_promise_like(e) ) return (e as Error).message ?? ''
+			}
+
+			return ''
+		}
+
+		@ $mol_mem
+		status() {
+			const ready = this.ready()
+			const syncing = this.syncing()
+			const err = this.error()
+
+			if (ready) return syncing ? 'syncing' : 'open'
+			if ( err ) return 'error'
+
+			return 'connecting'
 		}
 
 	}
