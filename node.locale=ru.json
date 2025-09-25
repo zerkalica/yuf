@@ -34,5 +34,6 @@
 	"$yuf_chess_board_move_title": "Ходят",
 	"$yuf_chess_board_reset_title": "Сбросить",
 	"$yuf_chess_board_undo_title": "Отмена хода",
-	"$yuf_chess_board_win_title": "Победили"
+	"$yuf_chess_board_win_title": "Победили",
+	"$yuf_link_close_hint": "Закрыть"
 }
