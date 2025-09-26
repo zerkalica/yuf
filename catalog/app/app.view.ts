@@ -28,7 +28,14 @@ namespace $.$$ {
 		}
 
 		override placeholders() {
-			return this.spread() || ! this.logged() ? [] : super.placeholders()
+			if ( this.spread() ) return this.placeholders_page()
+			if (! this.logged() ) return this.placeholders_no_authorized()
+
+			return super.placeholders()
+		}
+
+		override login_title() {
+			return [ this.menu_title(), super.login_title() ].filter(Boolean).join(' | ')
 		}
 
 	}

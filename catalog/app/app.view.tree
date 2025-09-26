@@ -2,14 +2,18 @@ $yuf_catalog_app $yuf_catalog
 	logged? false
 	logout? null
 	enter? null
+	placeholders_page /$mol_view
+	placeholders_no_authorized /$mol_view
+		<= Placeholder_no_authorized $mol_view
 	Login $mol_page
+		Logo <= Menu_logo
 		title <= login_title @ \Login
 		body <= login_body /$mol_view
 		foot <= menu_foot_public
 	menu_foot /$mol_view
 		^ menu_foot_public /$mol_view
-			<= User_name $mol_view sub / <= user_name \
-			<= Foot_second $mol_view sub /
+			<= Foot_first $mol_view sub <= foot_first_content /$mol_view
+			<= Foot_second $mol_view sub <= foot_second_content /$mol_view
 				<= Lights $yuf_lights_toggle
 					hint <= version \
 				<= Locale_switch $yuf_locale_switch

@@ -9,7 +9,7 @@ namespace $.$$ {
 				shrink: 0,
 			},
 			Foot: {
-				padding: 0,
+				padding: $mol_gap.space,
 				flex: {
 					direction: 'column',
 				},
@@ -22,22 +22,15 @@ namespace $.$$ {
 				basis: '16rem',
 			},
 			Foot: {
-				padding: 0,
+				padding: $mol_gap.space,
 				flex: {
 					direction: 'column',
 				},
 			}
 		},
 
-		User_name: {
-			padding: $mol_gap.block,
-		},
-
 		Foot_second: {
-			justifyContent: 'space-between',
-			padding: {
-				right: $mol_gap.space
-			}
+			gap: $mol_gap.space,
 		},
 
 	} )

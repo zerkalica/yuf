@@ -4,6 +4,7 @@ namespace $.$$ {
 		
 		flex: {
 			shrink: 1,
+			grow: 1,
 		},
 
 		Show: {
