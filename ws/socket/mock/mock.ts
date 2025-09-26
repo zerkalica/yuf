@@ -49,6 +49,8 @@ namespace $ {
 			for (const sub of this.subs) {
 				const answer = this.answer(sub)
 				if (! answer) continue
+				if (! sub ) continue
+				Object.assign(sub, answer)
 
 				this.onmessage({
 					data: JSON.stringify(answer),
