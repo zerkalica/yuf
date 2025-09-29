@@ -148,6 +148,7 @@ namespace $ {
 
 		syncing() { return false }
 
+		@ $mol_mem
 		error_message() {
 			try {
 				this.status()

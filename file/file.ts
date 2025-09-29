@@ -17,6 +17,11 @@ namespace $ {
 			return new Uint8Array($mol_wire_sync(this.native).arrayBuffer())
 		}
 
+		@ $mol_mem
+		blob() {
+			return new Blob([ this.bytes() ])
+		}
+
 		@ $mol_mem_key
 		checksum(algo: 'SHA-384' | 'SHA-512' | 'SHA-256' | 'SHA-1') {
 			const data = this.bytes()
