@@ -19027,10 +19027,13 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
+		submit_activate_fork(next){
+			return (this.submit_activate(next));
+		}
 		Login(){
 			const obj = new this.$.$mol_string();
 			(obj.value) = (next) => ((this.login(next)));
-			(obj.submit) = (next) => ((this.submit_activate(next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
 			return obj;
 		}
 		Login_field(){
@@ -19054,7 +19057,7 @@ var $;
 		Password(){
 			const obj = new this.$.$yuf_password();
 			(obj.value) = (next) => ((this.password(next)));
-			(obj.submit) = (next) => ((this.submit_activate(next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
 			return obj;
 		}
 		Password_field(){
@@ -19468,6 +19471,9 @@ var $;
                     }
                     $mol_fail_hidden(e);
                 }
+            }
+            submit_activate_fork(e) {
+                return $mol_wire_async(this).submit_activate(e);
             }
         }
         __decorate([

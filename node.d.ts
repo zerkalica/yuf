@@ -8831,7 +8831,7 @@ declare namespace $ {
 		ReturnType< $mol_string['value'] >
 	>
 	type $mol_string__submit_yuf_login_form_5 = $mol_type_enforce<
-		ReturnType< $yuf_login_form['submit_activate'] >
+		ReturnType< $yuf_login_form['submit_activate_fork'] >
 		,
 		ReturnType< $mol_string['submit'] >
 	>
@@ -8856,7 +8856,7 @@ declare namespace $ {
 		ReturnType< $yuf_password['value'] >
 	>
 	type $yuf_password__submit_yuf_login_form_10 = $mol_type_enforce<
-		ReturnType< $yuf_login_form['submit_activate'] >
+		ReturnType< $yuf_login_form['submit_activate_fork'] >
 		,
 		ReturnType< $yuf_password['submit'] >
 	>
@@ -8887,6 +8887,7 @@ declare namespace $ {
 		str_max( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['str_max'] >
 		login_label( ): string
 		login( next?: string ): string
+		submit_activate_fork( next?: ReturnType< $yuf_login_form['submit_activate'] > ): ReturnType< $yuf_login_form['submit_activate'] >
 		Login( ): $mol_string
 		Login_field( ): $mol_form_field
 		password_label( ): string
@@ -8911,6 +8912,7 @@ declare namespace $.$$ {
         protected login_focus(): void;
         auto(): any;
         save(next?: Event): void;
+        submit_activate_fork(e: Event): any;
     }
 }
 
