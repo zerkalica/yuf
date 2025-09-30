@@ -31,5 +31,10 @@ namespace $.$$ {
 				$mol_fail_hidden(e)
 			}
 		}
+
+		override submit_activate_fork(e: Event) {
+			// prevent cancelling save task if other button pressed, while saving
+			return $mol_wire_async(this).submit_activate(e)
+		}
 	}
 }

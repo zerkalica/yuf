@@ -16,7 +16,7 @@ $yuf_login_form $mol_form
 			name <= login_label @ \User name
 			control <= Login $mol_string
 				value? <=> login? \
-				submit? <=> submit_activate?
+				submit? <=> submit_activate_fork? <=> submit_activate?
 		<= Password_field $mol_form_field
 			bids /
 				<= required*password
@@ -25,6 +25,6 @@ $yuf_login_form $mol_form
 			name <= password_label @ \Password
 			control <= Password $yuf_password
 				value? <=> password? \
-				submit? <=> submit_activate?
+				submit? <=> submit_activate_fork? <=> submit_activate?
 		^ form_fields_end /$mol_view
 	submit_title @ \Log In
