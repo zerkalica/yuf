@@ -1,0 +1,30 @@
+$yuf_login_form $mol_form
+	login_error @ \Wrong login or password
+	unknown_error @ \Server error
+	enter? null
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+		str_min* => str_min*
+		str_max* => str_max*
+	form_fields /
+		<= Login_field $mol_form_field
+			bids /
+				<= required*login
+				<= str_min*login
+				<= str_max*login
+			name <= login_label @ \User name
+			control <= Login $mol_string
+				value? <=> login? \
+				submit? <=> submit_activate?
+		<= Password_field $mol_form_field
+			bids /
+				<= required*password
+				<= str_min*password
+				<= str_max*password
+			name <= password_label @ \Password
+			control <= Password $yuf_password
+				value? <=> password? \
+				submit? <=> submit_activate?
+		^ form_fields_end /$mol_view
+	submit_title @ \Log In

@@ -1,0 +1,12 @@
+$yuf_login_form_demo $mol_example_small
+	title \Login form example
+	sub /
+		<= Login_form $yuf_login_form
+			enter? <=> enter? null
+			login => login
+			password => password
+	tags /
+		\form
+		\login
+	aspects /
+		\Widget/Control

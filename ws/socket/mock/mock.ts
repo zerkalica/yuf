@@ -99,6 +99,7 @@ namespace $ {
 		factory() { return this.constructor as typeof $yuf_ws_socket_mock }
 
 		receive(data: unknown) {
+			if (data === undefined) return
 			this.$.$mol_log3_done({
 				place: `${this.factory()}.answer_receive()`,
 				message: 'answer',
@@ -108,6 +109,7 @@ namespace $ {
 			this.onmessage({
 				data: JSON.stringify(data),
 			} as MessageEvent)
+
 		}
 
 	}

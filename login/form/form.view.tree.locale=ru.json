@@ -1,0 +1,7 @@
+{
+	"$yuf_login_form_login_label": "Имя",
+	"$yuf_login_form_password_label": "Пароль",
+	"$yuf_login_form_login_error": "Неправильный логин или пароль",
+	"$yuf_login_form_unknown_error": "Ошибка сервера",
+	"$yuf_login_form_submit_title": "Войти"
+}
