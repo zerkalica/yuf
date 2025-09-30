@@ -183,9 +183,9 @@ $mol_button $mol_view
 	event_click?event null
 	event *
 		^
-		click?event <=> event_activate?event null
+		click?event <=> activate?event <=> event_activate?event null
 		dblclick?event <=> clicks?event null
-		keydown?event <=> event_key_press?event null 
+		keydown?event <=> key_press?event <=> event_key_press?event null
 	attr *
 		^
 		disabled <= disabled false
@@ -1834,3 +1834,127 @@ $yuf_catalog_demo_animals $yuf_catalog
 			title \🐶 Dogs
 			tools / ^ spread_close_content
 			body / <= Empty
+
+$mol_button_major $mol_button_minor
+	theme \$mol_theme_base
+
+$mol_row $mol_view
+
+$mol_form $mol_list
+	submit_allowed true
+	submit_blocked false
+	event *
+		^
+		keydown?event <=> keydown?event null
+	save?event null
+	message_done @ \Saved
+	message_invalid @ \Form is not valid
+	rows /
+		<= Body $mol_list
+			sub <= body <= form_fields /$mol_form_field
+		<= Foot $mol_row
+			sub <= foot <= buttons /$mol_view
+				<= Submit $mol_button_major
+					title <= submit_title @ \Save
+					hint <= submit_hint \
+					activate? => submit_activate?
+					click? <=> submit? null
+				<= Result $mol_status
+					message <= result? null
+
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
+
+$mol_icon_eye_off $mol_icon path \M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z
+
+$yuf_check_icon2 $mol_check_icon
+	icon_disabled false
+	hint_checked \
+	hint_unchecked \
+	Icon_checked $mol_icon_eye
+	Icon_unchecked $mol_icon_eye_off
+
+$yuf_password $mol_password
+	Show $yuf_password_check
+		checked? <=> checked?
+
+$yuf_password_check $yuf_check_icon2
+	attr *
+		^
+		tabIndex <= tab_index -1
+	Icon_checked $mol_icon_eye
+	Icon_unchecked $mol_icon_eye_off
+
+$yuf_form_bid $mol_view
+	value* null
+	-
+	str_min_val* 2
+	str_max_val* 200
+	rows_max_val* 5
+	-
+	list_min_val* 1
+	list_max_val* 10
+	-
+	required* <= required_msg @ \*
+	str_min* <= str_min_msg @ \From {str_min_val}
+	str_max* <= str_max_msg @ \To {str_max_val}
+	rows_max* <= rows_max_msg @ \No more {rows_max_val} rows
+	-
+	list_min* <= list_min_msg @ \Min {list_min_val}
+	list_max* <= list_max_msg @ \Max {list_max_val}
+	-
+	json_invalid* <= json_invalid_msg @ \{json_error}
+	ip4* <= ip4_msg @ \Not valid ip4
+	ip4_mask* <= ip4_msg
+	latin_digits* <= latin_digits_msg @ \Only latin and digits
+	value_in_range*? @ \{range}
+	value_limits* /readonly(number)[]
+
+$yuf_login_form $mol_form
+	login_error @ \Wrong login or password
+	unknown_error @ \Server error
+	enter? null
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+		str_min* => str_min*
+		str_max* => str_max*
+	form_fields /
+		<= Login_field $mol_form_field
+			bids /
+				<= required*login
+				<= str_min*login
+				<= str_max*login
+			name <= login_label @ \User name
+			control <= Login $mol_string
+				value? <=> login? \
+				submit? <=> submit_activate?
+		<= Password_field $mol_form_field
+			bids /
+				<= required*password
+				<= str_min*password
+				<= str_max*password
+			name <= password_label @ \Password
+			control <= Password $yuf_password
+				value? <=> password? \
+				submit? <=> submit_activate?
+		^ form_fields_end /$mol_view
+	submit_title @ \Log In
+
+$yuf_login_form_demo $mol_example_small
+	title \Login form example
+	sub /
+		<= Login_form $yuf_login_form
+			enter? <=> enter? null
+			login => login
+			password => password
+	tags /
+		\form
+		\login
+	aspects /
+		\Widget/Control

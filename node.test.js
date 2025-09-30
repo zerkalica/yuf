@@ -6452,6 +6452,9 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		activate(next){
+			return (this.event_activate(next));
+		}
 		clicks(next){
 			if(next !== undefined) return next;
 			return null;
@@ -6459,6 +6462,9 @@ var $;
 		event_key_press(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		key_press(next){
+			return (this.event_key_press(next));
 		}
 		disabled(){
 			return false;
@@ -6489,9 +6495,9 @@ var $;
 		event(){
 			return {
 				...(super.event()), 
-				"click": (next) => (this.event_activate(next)), 
+				"click": (next) => (this.activate(next)), 
 				"dblclick": (next) => (this.clicks(next)), 
-				"keydown": (next) => (this.event_key_press(next))
+				"keydown": (next) => (this.key_press(next))
 			};
 		}
 		attr(){
@@ -6551,7 +6557,7 @@ var $;
             }
             event_key_press(event) {
                 if (event.keyCode === $mol_keyboard_code.enter) {
-                    return this.event_activate(event);
+                    return this.activate(event);
                 }
             }
             tab_index() {
@@ -18327,6 +18333,1218 @@ var $;
             }
         }
         $$.$yuf_catalog_demo_animals = $yuf_catalog_demo_animals;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_button_major) = class $mol_button_major extends ($.$mol_button_minor) {
+		theme(){
+			return "$mol_theme_base";
+		}
+	};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/button/major/major.view.css", "[mol_button_major] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$mol_row) = class $mol_row extends ($.$mol_view) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: var(--mol_gap_block);\n\tgap: var(--mol_gap_block);\n\tflex: 0 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmax-width: 100%;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$mol_form) = class $mol_form extends ($.$mol_list) {
+		keydown(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		form_fields(){
+			return [];
+		}
+		body(){
+			return (this.form_fields());
+		}
+		Body(){
+			const obj = new this.$.$mol_list();
+			(obj.sub) = () => ((this.body()));
+			return obj;
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$mol_form_submit_title"));
+		}
+		submit_hint(){
+			return "";
+		}
+		submit_activate(next){
+			return (this.Submit().activate(next));
+		}
+		submit(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Submit(){
+			const obj = new this.$.$mol_button_major();
+			(obj.title) = () => ((this.submit_title()));
+			(obj.hint) = () => ((this.submit_hint()));
+			(obj.click) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		result(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Result(){
+			const obj = new this.$.$mol_status();
+			(obj.message) = () => ((this.result()));
+			return obj;
+		}
+		buttons(){
+			return [(this.Submit()), (this.Result())];
+		}
+		foot(){
+			return (this.buttons());
+		}
+		Foot(){
+			const obj = new this.$.$mol_row();
+			(obj.sub) = () => ((this.foot()));
+			return obj;
+		}
+		submit_allowed(){
+			return true;
+		}
+		submit_blocked(){
+			return false;
+		}
+		event(){
+			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
+		}
+		save(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		message_done(){
+			return (this.$.$mol_locale.text("$mol_form_message_done"));
+		}
+		message_invalid(){
+			return (this.$.$mol_locale.text("$mol_form_message_invalid"));
+		}
+		rows(){
+			return [(this.Body()), (this.Foot())];
+		}
+	};
+	($mol_mem(($.$mol_form.prototype), "keydown"));
+	($mol_mem(($.$mol_form.prototype), "Body"));
+	($mol_mem(($.$mol_form.prototype), "submit"));
+	($mol_mem(($.$mol_form.prototype), "Submit"));
+	($mol_mem(($.$mol_form.prototype), "result"));
+	($mol_mem(($.$mol_form.prototype), "Result"));
+	($mol_mem(($.$mol_form.prototype), "Foot"));
+	($mol_mem(($.$mol_form.prototype), "save"));
+
+
+;
+	($.$mol_form_field) = class $mol_form_field extends ($.$mol_labeler) {
+		name(){
+			return "";
+		}
+		bid(){
+			return "";
+		}
+		Bid(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.bid())]);
+			return obj;
+		}
+		control(){
+			return null;
+		}
+		bids(){
+			return [];
+		}
+		label(){
+			return [(this.name()), (this.Bid())];
+		}
+		content(){
+			return [(this.control())];
+		}
+	};
+	($mol_mem(($.$mol_form_field.prototype), "Bid"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form_field extends $.$mol_form_field {
+            bid() {
+                return this.bids().filter(Boolean)[0] ?? '';
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form_field.prototype, "bid", null);
+        $$.$mol_form_field = $mol_form_field;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/field/field.view.css", "[mol_form_field] {\n\talign-items: stretch;\n}\n\n[mol_form_field_bid] {\n\tcolor: var(--mol_theme_focus);\n\tdisplay: inline-block;\n\ttext-shadow: 0 0;\n}\n\n[mol_form_field_content] {\n\tborder-radius: var(--mol_gap_round);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form extends $.$mol_form {
+            form_fields() {
+                return [...this.view_find(view => view instanceof $mol_form_field)]
+                    .map(path => path[path.length - 1]);
+            }
+            submit_allowed() {
+                return this.form_fields().every(field => !field.bid());
+            }
+            submit_blocked() {
+                return !this.submit_allowed();
+            }
+            keydown(next) {
+                if (next.ctrlKey && next.keyCode === $mol_keyboard_code.enter && !this.submit_blocked())
+                    this.submit(next);
+            }
+            result(next) {
+                if (next instanceof Error)
+                    next = next.message || this.message_invalid();
+                return next ?? '';
+            }
+            buttons() {
+                return [
+                    this.Submit(),
+                    ...this.result() ? [this.Result()] : [],
+                ];
+            }
+            submit(next) {
+                try {
+                    if (!this.submit_allowed()) {
+                        throw new Error(this.message_invalid());
+                    }
+                    this.save(next);
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    $mol_fail_log(e);
+                    this.result(e);
+                    return false;
+                }
+                this.result(this.message_done());
+                return true;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "form_fields", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "submit_allowed", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "result", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "buttons", null);
+        __decorate([
+            $mol_action
+        ], $mol_form.prototype, "submit", null);
+        $$.$mol_form = $mol_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/form.view.css", "[mol_form] {\r\n\tgap: var(--mol_gap_block);\r\n}\r\n\r\n[mol_form_body] {\r\n\tgap: var(--mol_gap_block);\r\n}");
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_eye_off) = class $mol_icon_eye_off extends ($.$mol_icon) {
+		path(){
+			return "M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_check_icon2) = class $yuf_check_icon2 extends ($.$mol_check_icon) {
+		icon_disabled(){
+			return false;
+		}
+		hint_checked(){
+			return "";
+		}
+		hint_unchecked(){
+			return "";
+		}
+		Icon_checked(){
+			const obj = new this.$.$mol_icon_eye();
+			return obj;
+		}
+		Icon_unchecked(){
+			const obj = new this.$.$mol_icon_eye_off();
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_check_icon2.prototype), "Icon_checked"));
+	($mol_mem(($.$yuf_check_icon2.prototype), "Icon_unchecked"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_check_icon2 extends $.$yuf_check_icon2 {
+            hint() {
+                return this.checked() ? this.hint_checked() : this.hint_unchecked();
+            }
+            Icon() {
+                if (this.icon_disabled())
+                    return null;
+                return this.checked() ? this.Icon_checked() : this.Icon_unchecked();
+            }
+        }
+        $$.$yuf_check_icon2 = $yuf_check_icon2;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_check_icon2, {
+            '@': {
+                mol_check_checked: {
+                    true: {
+                        color: 'inherit',
+                    }
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_password) = class $yuf_password extends ($.$mol_password) {
+		Show(){
+			const obj = new this.$.$yuf_password_check();
+			(obj.checked) = (next) => ((this.checked(next)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_password.prototype), "Show"));
+	($.$yuf_password_check) = class $yuf_password_check extends ($.$yuf_check_icon2) {
+		tab_index(){
+			return -1;
+		}
+		attr(){
+			return {...(super.attr()), "tabIndex": (this.tab_index())};
+		}
+		Icon_checked(){
+			const obj = new this.$.$mol_icon_eye();
+			return obj;
+		}
+		Icon_unchecked(){
+			const obj = new this.$.$mol_icon_eye_off();
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_password_check.prototype), "Icon_checked"));
+	($mol_mem(($.$yuf_password_check.prototype), "Icon_unchecked"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_password, {
+            flex: {
+                shrink: 1,
+                grow: 1,
+            },
+            Show: {
+                position: 'relative',
+                zIndex: $mol_layer.speck,
+                cursor: 'pointer',
+                margin: {
+                    left: '-3rem',
+                },
+                $mol_icon: {
+                    width: '1.5rem',
+                },
+                color: $mol_theme.control,
+                ':hover': {
+                    zIndex: $mol_layer.speck,
+                    boxShadow: 'none',
+                    color: $mol_theme.text,
+                },
+                ':focus': {
+                    zIndex: $mol_layer.speck,
+                    boxShadow: 'none',
+                },
+            },
+            Pass: {
+                order: '-1',
+                padding: {
+                    right: '3rem',
+                },
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_form_bid) = class $yuf_form_bid extends ($.$mol_view) {
+		required_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_required_msg"));
+		}
+		str_min_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_str_min_msg"));
+		}
+		str_max_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_str_max_msg"));
+		}
+		rows_max_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_rows_max_msg"));
+		}
+		list_min_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_list_min_msg"));
+		}
+		list_max_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_list_max_msg"));
+		}
+		json_invalid_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_json_invalid_msg"));
+		}
+		ip4_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_ip4_msg"));
+		}
+		latin_digits_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_latin_digits_msg"));
+		}
+		value(id){
+			return null;
+		}
+		str_min_val(id){
+			return 2;
+		}
+		str_max_val(id){
+			return 200;
+		}
+		rows_max_val(id){
+			return 5;
+		}
+		list_min_val(id){
+			return 1;
+		}
+		list_max_val(id){
+			return 10;
+		}
+		required(id){
+			return (this.required_msg());
+		}
+		str_min(id){
+			return (this.str_min_msg());
+		}
+		str_max(id){
+			return (this.str_max_msg());
+		}
+		rows_max(id){
+			return (this.rows_max_msg());
+		}
+		list_min(id){
+			return (this.list_min_msg());
+		}
+		list_max(id){
+			return (this.list_max_msg());
+		}
+		json_invalid(id){
+			return (this.json_invalid_msg());
+		}
+		ip4(id){
+			return (this.ip4_msg());
+		}
+		ip4_mask(id){
+			return (this.ip4_msg());
+		}
+		latin_digits(id){
+			return (this.latin_digits_msg());
+		}
+		value_in_range(id, next){
+			if(next !== undefined) return next;
+			return (this.$.$mol_locale.text("$yuf_form_bid_value_in_range"));
+		}
+		value_limits(id){
+			return [];
+		}
+	};
+	($mol_mem_key(($.$yuf_form_bid.prototype), "value_in_range"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_form_bid extends $.$yuf_form_bid {
+            value_str(field) {
+                const val = this.value(field);
+                if (typeof val !== 'string')
+                    throw new Error('Not a string: ' + field);
+                return val;
+            }
+            value_bool(field) {
+                const val = this.value(field);
+                if (typeof val !== 'boolean')
+                    throw new Error('Not a boolean: ' + field);
+                return val;
+            }
+            value_number(field) {
+                const val = this.value(field);
+                if (typeof val !== 'number')
+                    throw new Error('Not a number: ' + field);
+                return val;
+            }
+            list_string(field) {
+                const val = this.value(field);
+                if (Array.isArray(val))
+                    throw new Error('Not an array: ' + field);
+                return val;
+            }
+            dictionary_bool(field) {
+                const val = this.value(field);
+                if (Array.isArray(val) || !val || typeof val !== 'object')
+                    throw new Error('Not an object: ' + field);
+                return val;
+            }
+            format(key, str) {
+                return str.replace(/{([\d\w_]+)}/g, (_, val) => this[val]?.(key) || '');
+            }
+            list_min(field) {
+                const len = this.list_string(field)?.length ?? 0;
+                if (len >= this.list_min_val(field))
+                    return '';
+                return this.format(field, this.list_min_msg());
+            }
+            list_max(field) {
+                const len = this.list_string(field)?.length ?? 0;
+                if (len <= this.list_max_val(field))
+                    return '';
+                return this.format(field, this.list_max_msg());
+            }
+            required(field) {
+                const val = this.value(field);
+                if (typeof val === 'boolean')
+                    return '';
+                if (typeof val === 'number' && !Number.isNaN(val))
+                    return '';
+                if (typeof val === 'string' && val)
+                    return '';
+                if (Array.isArray(val) && val.length)
+                    return '';
+                if (!Array.isArray(val) && val && typeof val === 'object' && Object.keys(val).length)
+                    return '';
+                return this.format(field, this.required_msg());
+            }
+            str_min(field) {
+                const len = this.value_str(field).length;
+                if (!len)
+                    return '';
+                if (len >= this.str_min_val(field))
+                    return '';
+                return this.format(field, this.str_min_msg());
+            }
+            str_max(field) {
+                const len = this.value_str(field).length;
+                if (len <= this.str_max_val(field))
+                    return '';
+                return this.format(field, this.str_max_msg());
+            }
+            rows_max(field) {
+                const val = this.value_str(field);
+                const rows = val.split('\n').length;
+                if (!val)
+                    return '';
+                if (rows <= this.rows_max_val(field))
+                    return '';
+                return this.format(field, this.rows_max_msg());
+            }
+            json_invalid(field) {
+                const val = this.value_str(field);
+                try {
+                    if (val)
+                        JSON.parse(val);
+                    return '';
+                }
+                catch (e) {
+                    return this.json_invalid_msg().replace('{error}', e.message);
+                }
+            }
+            ip4(field, mask_allowed = false) {
+                const val = this.value(field);
+                if (!val)
+                    return '';
+                const match = val.match(/^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::(\d{1,4}))?(?:\/(\d{1,2}))?$/);
+                if (match) {
+                    const [_, ip_str, port, mask] = match;
+                    const parts = ip_str.split('.').map(Number);
+                    const msk = Number(mask || 0);
+                    if (parts.every(num => num <= 255)
+                        && Number(port || 0) < 65535
+                        && (mask_allowed ? (msk >= 0 && msk <= 32) : msk === 0))
+                        return '';
+                }
+                return super.ip4(field);
+            }
+            ip4_mask(field) {
+                return this.ip4(field, true);
+            }
+            latin_digits(field) {
+                const val = this.value_str(field);
+                if (!val)
+                    return '';
+                if (val.match(/^[\w\d]+$/))
+                    return '';
+                return this.format(field, this.latin_digits_msg());
+            }
+            value_in_range(key) {
+                const val = this.value_number(key);
+                const ranges = this.value_limits(key);
+                let range;
+                for (const [min, max] of ranges) {
+                    range = [min, max];
+                    if (val >= min && val <= max)
+                        return '';
+                }
+                return super.value_in_range(key).replace('{range}', range?.join(' - ') ?? '-');
+            }
+        }
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "list_min", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "list_max", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "required", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "str_min", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "str_max", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_form_bid.prototype, "rows_max", null);
+        $$.$yuf_form_bid = $yuf_form_bid;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_login_form) = class $yuf_login_form extends ($.$mol_form) {
+		value_str(id, next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		required(id){
+			return (this.Bid().required(id));
+		}
+		str_min(id){
+			return (this.Bid().str_min(id));
+		}
+		str_max(id){
+			return (this.Bid().str_max(id));
+		}
+		login_label(){
+			return (this.$.$mol_locale.text("$yuf_login_form_login_label"));
+		}
+		login(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Login(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.login(next)));
+			(obj.submit) = (next) => ((this.submit_activate(next)));
+			return obj;
+		}
+		Login_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([
+				(this.required("login")), 
+				(this.str_min("login")), 
+				(this.str_max("login"))
+			]);
+			(obj.name) = () => ((this.login_label()));
+			(obj.control) = () => ((this.Login()));
+			return obj;
+		}
+		password_label(){
+			return (this.$.$mol_locale.text("$yuf_login_form_password_label"));
+		}
+		password(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Password(){
+			const obj = new this.$.$yuf_password();
+			(obj.value) = (next) => ((this.password(next)));
+			(obj.submit) = (next) => ((this.submit_activate(next)));
+			return obj;
+		}
+		Password_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([
+				(this.required("password")), 
+				(this.str_min("password")), 
+				(this.str_max("password"))
+			]);
+			(obj.name) = () => ((this.password_label()));
+			(obj.control) = () => ((this.Password()));
+			return obj;
+		}
+		form_fields_end(){
+			return [];
+		}
+		login_error(){
+			return (this.$.$mol_locale.text("$yuf_login_form_login_error"));
+		}
+		unknown_error(){
+			return (this.$.$mol_locale.text("$yuf_login_form_unknown_error"));
+		}
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		form_fields(){
+			return [
+				(this.Login_field()), 
+				(this.Password_field()), 
+				...(this.form_fields_end())
+			];
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$yuf_login_form_submit_title"));
+		}
+	};
+	($mol_mem_key(($.$yuf_login_form.prototype), "value_str"));
+	($mol_mem(($.$yuf_login_form.prototype), "login"));
+	($mol_mem(($.$yuf_login_form.prototype), "Login"));
+	($mol_mem(($.$yuf_login_form.prototype), "Login_field"));
+	($mol_mem(($.$yuf_login_form.prototype), "password"));
+	($mol_mem(($.$yuf_login_form.prototype), "Password"));
+	($mol_mem(($.$yuf_login_form.prototype), "Password_field"));
+	($mol_mem(($.$yuf_login_form.prototype), "enter"));
+	($mol_mem(($.$yuf_login_form.prototype), "Bid"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_transport_error extends $mol_error_mix {
+    }
+    $.$yuf_transport_error = $yuf_transport_error;
+    class $yuf_transport_error_timeout extends $yuf_transport_error {
+        constructor(cause) {
+            super('Client timeout: ' + cause.input, {
+                http_code: 408,
+                code: 'TIMEOUT',
+                ...cause
+            });
+        }
+    }
+    $.$yuf_transport_error_timeout = $yuf_transport_error_timeout;
+    function $yuf_transport_pass(data) { return data; }
+    $.$yuf_transport_pass = $yuf_transport_pass;
+    class $yuf_transport extends $mol_fetch {
+        static base_url(next) {
+            const url = this.$.$mol_state_arg.value('api_url', next);
+            if (url)
+                return url;
+            return '';
+        }
+        static base_url_full() {
+            const url = this.base_url();
+            if (url.match(/^\w+\:/))
+                return url;
+            const loc = this.$.$mol_dom_context.location;
+            let normalized = url.replace(/^\/+/, '');
+            if (normalized)
+                normalized = '/' + normalized;
+            return `${loc.origin}${normalized}`;
+        }
+        static base_url_ws() {
+            return this.base_url_full().replace(/^http/, 'ws');
+        }
+        static token_key() {
+            return 'kc_token';
+        }
+        static loggedin() {
+            return Boolean(this.token()) && !this.logining();
+        }
+        static token(next) {
+            if (next)
+                this.logining(false);
+            return this.$.$mol_state_local.value(this.token_key(), next) ?? null;
+        }
+        static headers_auth(token) {
+            return {
+                'Authorization': `Bearer ${token}`
+            };
+        }
+        static client_id() {
+            return `${this}`;
+        }
+        static headers_default() {
+            return {
+                'X-Request-ID': $mol_guid(),
+                'X-Client-ID': this.client_id(),
+                'Content-Type': 'application/json',
+            };
+        }
+        static get(path, params) {
+            return this.success2(path, { ...params, method: 'GET' });
+        }
+        static head(path, params) {
+            return this.success2(path, { ...params, method: 'HEAD' });
+        }
+        static range(path, raw) {
+            const { count_prefer, ...params } = raw ?? {};
+            const res = this.head(path, {
+                ...params,
+                headers: {
+                    ...params?.headers,
+                    'Range-Unit': 'items',
+                    Prefer: `count=${count_prefer ?? 'exact'}`,
+                },
+            });
+            const headers = res.headers();
+            const range_str = headers.get('Content-Range');
+            const [all, from, to, total] = range_str?.match(/(?:(?:(\d+)\-(\d+))|(?:\*))\/((?:\d+)|(?:\*))$/) ?? [];
+            const count = !total || total === '*' ? to : total;
+            if (count === '*')
+                return 0;
+            if (!count?.match(/^\d+$/)) {
+                this.$.$mol_log3_warn({
+                    place: '$yuf_transport.count()',
+                    message: 'Cant get count of range',
+                    hint: 'check backend'
+                });
+                return undefined;
+            }
+            return Number(count);
+        }
+        static put(path, params) {
+            return this.success2(path, { ...params, method: 'PUT' });
+        }
+        static post(path, params) {
+            return this.success2(path, { ...params, method: 'POST' });
+        }
+        static delete(path, params) {
+            return this.success2(path, { ...params, method: 'DELETE' });
+        }
+        static data(params) {
+            let json;
+            let text;
+            const input = params.input;
+            const init = { ...params, input: undefined, assert: undefined };
+            const res = this.success2(input, init);
+            try {
+                text = res.text();
+                json = JSON.parse(text);
+                return params.assert(json);
+            }
+            catch (e) {
+                if ($mol_promise_like(e))
+                    $mol_fail_hidden(e);
+                throw new $yuf_transport_error(`Invalid ${json ? 'object' : 'json'} ${e.message}`, {
+                    input,
+                    init,
+                    code: json ? 'InvalidObject' : 'InvalidJson',
+                    message: e.message,
+                    json
+                }, e);
+            }
+        }
+        static object_url_ref(path) {
+            return new this.$.$yuf_url_object(this.get(path).blob());
+        }
+        static object_url(path) {
+            return this.object_url_ref(path).url;
+        }
+        static auth_need(res) {
+            if (res.code() === 403)
+                return this.relogin();
+            if (res.code() === 401)
+                return this.refresh();
+            return false;
+        }
+        static refresh() {
+            throw new Error('Implement refresh');
+            return true;
+        }
+        static relogin() {
+            this.block();
+            $mol_wire_sync(this).blocker();
+            return true;
+        }
+        static block() {
+            this.blocker(true);
+            this.logining(true);
+        }
+        static _promise = null;
+        static blocker(next) {
+            if (next === false) {
+                this._promise?.done(null);
+                this._promise = null;
+            }
+            if (next && !this._promise) {
+                this._promise = new $mol_promise_blocker();
+            }
+            return this._promise?.then(() => true) ?? null;
+        }
+        static logining(next) {
+            this.blocker(next);
+            return next ?? false;
+        }
+        static deadline() {
+            return 300000;
+        }
+        static token_cut() { return this.token(); }
+        static init_normalize(params) {
+            const token = params.auth_token === null ? null : (params.auth_token ?? this.token_cut());
+            const headers = {
+                ...this.headers_default(),
+                ...(token ? this.headers_auth(token) : null),
+                ...params.headers,
+            };
+            for (const key of Object.keys(headers)) {
+                if (headers[key] === null)
+                    delete headers[key];
+            }
+            const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined);
+            return { ...params, body, headers };
+        }
+        static response(input, init) {
+            return new $mol_fetch_response($mol_wire_sync(this).request(input, init));
+        }
+        static auth_fails() { return false; }
+        static success2(path, params) {
+            const input = typeof path === 'string' && !path.match(/^(\w+:)?\/\//)
+                ? this.base_url() + path
+                : path;
+            let error;
+            let response;
+            let init;
+            do {
+                const token = params.auth_token === null ? null : (params.auth_token ?? this.token_cut());
+                init = this.init_normalize(params);
+                try {
+                    if (params.auth_token !== null && !token)
+                        this.relogin();
+                    response = this.response(input, init);
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    error = e;
+                }
+                if (!response)
+                    break;
+                if (response?.status() === 'success')
+                    return response;
+                if (params.auth_token === null)
+                    break;
+                if (params.auth_fails || this.auth_fails())
+                    break;
+                if (!this.auth_need(response))
+                    break;
+            } while (true);
+            const response_json = this.response_json(response);
+            const message = response_json?.message ?? error?.message ?? 'Unknown';
+            throw new $yuf_transport_error(message, { input, init, ...response_json }, error ?? new Error(message));
+        }
+        static response_json(res) {
+            if (!res)
+                return null;
+            let text;
+            let data;
+            try {
+                text = res.text();
+                let json = JSON.parse(text);
+                text = null;
+                if (!json)
+                    json = {};
+                if (typeof json !== 'object')
+                    data = { code: 'Unknown', message: text };
+                else
+                    data = this.code_from_json(json);
+            }
+            catch (e) {
+                if ($mol_promise_like(e))
+                    $mol_fail_hidden(e);
+                data = { code: 'Unknown', message: text || 'Unknown', };
+            }
+            let http_message = res.message();
+            let http_code = res.code();
+            if (res.native.type === 'opaqueredirect' && !http_code) {
+                http_code = 302;
+                http_message = 'Redirect: ' + res.native.url;
+            }
+            const message = `${data.message}${data.message ? ', ' : ''}${http_message}`;
+            return { ...data, message, http_code };
+        }
+        static code_from_json(json) {
+            const error_as_code = json.error && !json.error.includes(' ') ? json.error : null;
+            const code = error_as_code || json.code || json.type || json.error || 'Unknown';
+            const message = json.message || json.error || '';
+            delete json.type;
+            delete json.code;
+            delete json.message;
+            delete json.error;
+            return { ...json, code, message };
+        }
+        static request(input, init) {
+            const res = super.request(input, init);
+            Object.assign(res, { init });
+            const deadline = init?.deadline ?? this.deadline();
+            if (!deadline)
+                return res;
+            const err_deadline = new $yuf_transport_error_timeout({ init, input });
+            const deadlined = Promise.race([
+                new Promise((res, rej) => setTimeout(() => rej(err_deadline), deadline)),
+                res
+            ]);
+            return Object.assign(deadlined, { destructor: () => res.destructor() });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_transport, "base_url", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_transport, "loggedin", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_transport, "token", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "headers_auth", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "headers_default", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_transport, "object_url_ref", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "refresh", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "relogin", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "block", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_transport, "logining", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "token_cut", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "response", null);
+    __decorate([
+        $mol_action
+    ], $yuf_transport, "success2", null);
+    $.$yuf_transport = $yuf_transport;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_login_form extends $.$yuf_login_form {
+            value_str(field) {
+                return this[field]();
+            }
+            login_focus() {
+                new $mol_after_timeout(100, () => {
+                    this.Login().focused(true);
+                });
+            }
+            auto() {
+                this.login_focus();
+                return super.auto();
+            }
+            save(next) {
+                try {
+                    this.enter({
+                        login: this.login(),
+                        password: this.password(),
+                    });
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    if (e instanceof $yuf_transport_error && e.cause.code === 'AUTH_FAILED') {
+                        e.message = this.login_error() + ': ' + e.message;
+                    }
+                    $mol_fail_hidden(e);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_login_form.prototype, "login_focus", null);
+        $$.$yuf_login_form = $yuf_login_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { rem, px, per } = $mol_style_unit;
+        $mol_style_define($yuf_login_form, {
+            Result: {
+                padding: 0,
+            },
+            Foot: {
+                flex: {
+                    direction: 'column',
+                }
+            },
+            Submit: {
+                flex: {
+                    grow: 1,
+                },
+                justifyContent: 'center',
+                gap: $mol_gap.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_login_form_demo) = class $yuf_login_form_demo extends ($.$mol_example_small) {
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		login(){
+			return (this.Login_form().login());
+		}
+		password(){
+			return (this.Login_form().password());
+		}
+		Login_form(){
+			const obj = new this.$.$yuf_login_form();
+			(obj.enter) = (next) => ((this.enter(next)));
+			return obj;
+		}
+		title(){
+			return "Login form example";
+		}
+		sub(){
+			return [(this.Login_form())];
+		}
+		tags(){
+			return ["form", "login"];
+		}
+		aspects(){
+			return ["Widget/Control"];
+		}
+	};
+	($mol_mem(($.$yuf_login_form_demo.prototype), "enter"));
+	($mol_mem(($.$yuf_login_form_demo.prototype), "Login_form"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_login_form_demo extends $.$yuf_login_form_demo {
+            enter(e) {
+                this.$.$mol_wait_timeout(1000);
+                console.log('Logged:', this.login(), this.password());
+            }
+        }
+        $$.$yuf_login_form_demo = $yuf_login_form_demo;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

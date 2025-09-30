@@ -1463,7 +1463,7 @@ declare namespace $ {
     class $mol_fetch_response extends $mol_object2 {
         readonly native: Response;
         constructor(native: Response);
-        status(): "success" | "unknown" | "inform" | "redirect" | "wrong" | "failed";
+        status(): "success" | "unknown" | "redirect" | "inform" | "wrong" | "failed";
         code(): number;
         message(): string;
         headers(): Headers;
@@ -1936,8 +1936,10 @@ declare namespace $ {
 	>
 	export class $mol_button extends $mol_view {
 		event_activate( next?: any ): any
+		activate( next?: ReturnType< $mol_button['event_activate'] > ): ReturnType< $mol_button['event_activate'] >
 		clicks( next?: any ): any
 		event_key_press( next?: any ): any
+		key_press( next?: ReturnType< $mol_button['event_key_press'] > ): ReturnType< $mol_button['event_key_press'] >
 		disabled( ): boolean
 		tab_index( ): number
 		hint( ): string
@@ -1947,9 +1949,9 @@ declare namespace $ {
 		click( next?: any ): any
 		event_click( next?: any ): any
 		event( ): ({ 
-			click( next?: ReturnType< $mol_button['event_activate'] > ): ReturnType< $mol_button['event_activate'] >,
+			click( next?: ReturnType< $mol_button['activate'] > ): ReturnType< $mol_button['activate'] >,
 			dblclick( next?: ReturnType< $mol_button['clicks'] > ): ReturnType< $mol_button['clicks'] >,
-			keydown( next?: ReturnType< $mol_button['event_key_press'] > ): ReturnType< $mol_button['event_key_press'] >,
+			keydown( next?: ReturnType< $mol_button['key_press'] > ): ReturnType< $mol_button['key_press'] >,
 		})  & ReturnType< $mol_view['event'] >
 		attr( ): ({ 
 			'disabled': ReturnType< $mol_button['disabled'] >,
@@ -1969,7 +1971,7 @@ declare namespace $.$$ {
         status(next?: any[]): any[];
         disabled(): boolean;
         event_activate(next: Event): void;
-        event_key_press(event: KeyboardEvent): void;
+        event_key_press(event: KeyboardEvent): any;
         tab_index(): number;
         error(): string;
         hint_safe(): string;
@@ -8404,6 +8406,484 @@ declare namespace $.$$ {
         extra_param_name(): string;
         extra_enabled(): boolean;
         pages(): any[];
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_button_major extends $mol_button_minor {
+		theme( ): string
+	}
+	
+}
+
+//# sourceMappingURL=major.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_row extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=row.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_view__sub_mol_form_field_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $mol_form_field extends $mol_labeler {
+		name( ): string
+		bid( ): string
+		Bid( ): $mol_view
+		control( ): any
+		bids( ): readonly(string)[]
+		label( ): readonly(any)[]
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=field.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_form_field extends $.$mol_form_field {
+        bid(): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $mol_list__sub_mol_form_1 = $mol_type_enforce<
+		ReturnType< $mol_form['body'] >
+		,
+		ReturnType< $mol_list['sub'] >
+	>
+	type __mol_form_2 = $mol_type_enforce<
+		Parameters< $mol_form['submit_activate'] >[0]
+		,
+		Parameters< ReturnType< $mol_form['Submit'] >['activate'] >[0]
+	>
+	type $mol_button_major__title_mol_form_3 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__hint_mol_form_4 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_hint'] >
+		,
+		ReturnType< $mol_button_major['hint'] >
+	>
+	type $mol_button_major__click_mol_form_5 = $mol_type_enforce<
+		ReturnType< $mol_form['submit'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_status__message_mol_form_6 = $mol_type_enforce<
+		ReturnType< $mol_form['result'] >
+		,
+		ReturnType< $mol_status['message'] >
+	>
+	type $mol_row__sub_mol_form_7 = $mol_type_enforce<
+		ReturnType< $mol_form['foot'] >
+		,
+		ReturnType< $mol_row['sub'] >
+	>
+	export class $mol_form extends $mol_list {
+		keydown( next?: any ): any
+		form_fields( ): readonly($mol_form_field)[]
+		body( ): ReturnType< $mol_form['form_fields'] >
+		Body( ): $mol_list
+		submit_title( ): string
+		submit_hint( ): string
+		submit_activate( next?: ReturnType< ReturnType< $mol_form['Submit'] >['activate'] > ): ReturnType< ReturnType< $mol_form['Submit'] >['activate'] >
+		submit( next?: any ): any
+		Submit( ): $mol_button_major
+		result( next?: any ): any
+		Result( ): $mol_status
+		buttons( ): readonly($mol_view)[]
+		foot( ): ReturnType< $mol_form['buttons'] >
+		Foot( ): $mol_row
+		submit_allowed( ): boolean
+		submit_blocked( ): boolean
+		event( ): ({ 
+			keydown( next?: ReturnType< $mol_form['keydown'] > ): ReturnType< $mol_form['keydown'] >,
+		})  & ReturnType< $mol_list['event'] >
+		save( next?: any ): any
+		message_done( ): string
+		message_invalid( ): string
+		rows( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_form extends $.$mol_form {
+        form_fields(): readonly $mol_form_field[];
+        submit_allowed(): boolean;
+        submit_blocked(): boolean;
+        keydown(next: KeyboardEvent): void;
+        result(next?: string | Error): string;
+        buttons(): ($.$mol_status | $mol_button_major)[];
+        submit(next?: Event): boolean;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_eye_off extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=off.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_check_icon2 extends $mol_check_icon {
+		icon_disabled( ): boolean
+		hint_checked( ): string
+		hint_unchecked( ): string
+		Icon_checked( ): $mol_icon_eye
+		Icon_unchecked( ): $mol_icon_eye_off
+	}
+	
+}
+
+//# sourceMappingURL=check.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_check_icon2 extends $.$yuf_check_icon2 {
+        hint(): string;
+        Icon(): $mol_icon_eye | $mol_icon_eye_off | null;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_password_check__checked_yuf_password_1 = $mol_type_enforce<
+		ReturnType< $yuf_password['checked'] >
+		,
+		ReturnType< $yuf_password_check['checked'] >
+	>
+	export class $yuf_password extends $mol_password {
+		Show( ): $yuf_password_check
+	}
+	
+	export class $yuf_password_check extends $yuf_check_icon2 {
+		tab_index( ): number
+		attr( ): ({ 
+			'tabIndex': ReturnType< $yuf_password_check['tab_index'] >,
+		})  & ReturnType< $yuf_check_icon2['attr'] >
+		Icon_checked( ): $mol_icon_eye
+		Icon_unchecked( ): $mol_icon_eye_off
+	}
+	
+}
+
+//# sourceMappingURL=password.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_form_bid extends $mol_view {
+		required_msg( ): string
+		str_min_msg( ): string
+		str_max_msg( ): string
+		rows_max_msg( ): string
+		list_min_msg( ): string
+		list_max_msg( ): string
+		json_invalid_msg( ): string
+		ip4_msg( ): string
+		latin_digits_msg( ): string
+		value( id: any): any
+		str_min_val( id: any): number
+		str_max_val( id: any): number
+		rows_max_val( id: any): number
+		list_min_val( id: any): number
+		list_max_val( id: any): number
+		required( id: any): ReturnType< $yuf_form_bid['required_msg'] >
+		str_min( id: any): ReturnType< $yuf_form_bid['str_min_msg'] >
+		str_max( id: any): ReturnType< $yuf_form_bid['str_max_msg'] >
+		rows_max( id: any): ReturnType< $yuf_form_bid['rows_max_msg'] >
+		list_min( id: any): ReturnType< $yuf_form_bid['list_min_msg'] >
+		list_max( id: any): ReturnType< $yuf_form_bid['list_max_msg'] >
+		json_invalid( id: any): ReturnType< $yuf_form_bid['json_invalid_msg'] >
+		ip4( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
+		ip4_mask( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
+		latin_digits( id: any): ReturnType< $yuf_form_bid['latin_digits_msg'] >
+		value_in_range( id: any, next?: string ): string
+		value_limits( id: any): readonly(readonly(number)[])[]
+	}
+	
+}
+
+//# sourceMappingURL=bid.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_form_bid extends $.$yuf_form_bid {
+        value_str(field: string): string;
+        value_bool(field: string): boolean;
+        value_number(field: string): number;
+        list_string(field: string): readonly string[];
+        dictionary_bool(field: string): any;
+        format(key: string, str: string): string;
+        list_min(field: string): string;
+        list_max(field: string): string;
+        required(field: string): string;
+        str_min(field: string): string;
+        str_max(field: string): string;
+        rows_max(field: string): string;
+        json_invalid(field: string): string;
+        ip4(field: string, mask_allowed?: boolean): string;
+        ip4_mask(field: string): string;
+        latin_digits(field: string): string;
+        value_in_range(key: string): string;
+    }
+}
+
+declare namespace $ {
+    type $yuf_transport_req = Omit<RequestInit, 'headers'> & {
+        deadline?: number;
+        headers?: Record<string, string | null>;
+        auth_token?: string | null;
+        auth_fails?: boolean;
+        body_object?: object;
+        redirect?: 'follow' | 'manual' | 'error';
+    };
+    type $yuf_transport_error_response = {
+        input?: RequestInfo;
+        init?: $yuf_transport_req;
+        http_code?: number | null;
+        message?: string | null;
+        code?: string | null;
+        json?: unknown;
+    };
+    class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {
+    }
+    class $yuf_transport_error_timeout extends $yuf_transport_error {
+        constructor(cause: $yuf_transport_error_response);
+    }
+    function $yuf_transport_pass(data: unknown): unknown;
+    class $yuf_transport extends $mol_fetch {
+        static base_url(next?: string): string;
+        static base_url_full(): string;
+        static base_url_ws(): string;
+        static token_key(): string;
+        static loggedin(): boolean;
+        static token(next?: string | null): string | null;
+        static headers_auth(token: string): Record<string, string> | null;
+        static client_id(): string;
+        static headers_default(): Record<string, string>;
+        static get(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static head(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static range(path: string, raw?: $yuf_transport_req & {
+            count_prefer?: 'exact' | 'planned';
+        }): number | undefined;
+        static put(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static post(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static delete(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static data<Result>(params: $yuf_transport_req & {
+            input: RequestInfo;
+            assert: (obj: any) => Result;
+        }): Result;
+        static object_url_ref(path: string): $yuf_url_object;
+        static object_url(path: string): string;
+        protected static auth_need(res: $mol_fetch_response): boolean;
+        static refresh(): boolean;
+        protected static relogin(): boolean;
+        protected static block(): void;
+        protected static _promise: null | $mol_promise_blocker<null>;
+        static blocker(next?: boolean): Promise<boolean> | null;
+        static logining(next?: boolean): boolean;
+        static deadline(): number;
+        protected static token_cut(): string | null;
+        protected static init_normalize(params: $yuf_transport_req): {
+            body: BodyInit | undefined;
+            headers: Record<string, string>;
+            cache?: RequestCache | undefined;
+            window?: null | undefined;
+            credentials?: RequestCredentials | undefined;
+            referrer?: string | undefined;
+            referrerPolicy?: ReferrerPolicy | undefined;
+            integrity?: string | undefined;
+            keepalive?: boolean | undefined;
+            method?: string | undefined;
+            mode?: RequestMode | undefined;
+            priority?: RequestPriority | undefined;
+            redirect?: "follow" | "manual" | "error";
+            signal?: (AbortSignal | null) | undefined;
+            deadline?: number;
+            auth_token?: string | null;
+            auth_fails?: boolean;
+            body_object?: object;
+        };
+        static response(input: RequestInfo, init?: Omit<$yuf_transport_req, 'headers'> & {
+            headers: Record<string, string>;
+        }): $mol_fetch_response;
+        static auth_fails(): boolean;
+        static success2(path: RequestInfo, params: $yuf_transport_req): $mol_fetch_response;
+        static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null;
+        static code_from_json(json: Record<string, string | undefined>): {
+            code: string;
+            message: string;
+        };
+        static request(input: RequestInfo, init?: $yuf_transport_req & {
+            headers: Record<string, string>;
+        }): Promise<Response> & {
+            destructor: () => void;
+        };
+    }
+}
+
+declare namespace $ {
+
+	type __yuf_login_form_1 = $mol_type_enforce<
+		Parameters< $yuf_login_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_login_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_login_form_2 = $mol_type_enforce<
+		Parameters< $yuf_login_form['str_min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_login_form['Bid'] >['str_min'] >[0]
+	>
+	type __yuf_login_form_3 = $mol_type_enforce<
+		Parameters< $yuf_login_form['str_max'] >[0]
+		,
+		Parameters< ReturnType< $yuf_login_form['Bid'] >['str_max'] >[0]
+	>
+	type $mol_string__value_yuf_login_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['login'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_string__submit_yuf_login_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['submit_activate'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_form_field__bids_yuf_login_form_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_login_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['login_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_login_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['Login'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_password__value_yuf_login_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['password'] >
+		,
+		ReturnType< $yuf_password['value'] >
+	>
+	type $yuf_password__submit_yuf_login_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['submit_activate'] >
+		,
+		ReturnType< $yuf_password['submit'] >
+	>
+	type $mol_form_field__bids_yuf_login_form_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_login_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['password_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_login_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['Password'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_form_bid__value_yuf_login_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_login_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_login_form extends $mol_form {
+		value_str( id: any, next?: string ): string
+		required( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['required'] >
+		str_min( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['str_min'] >
+		str_max( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['str_max'] >
+		login_label( ): string
+		login( next?: string ): string
+		Login( ): $mol_string
+		Login_field( ): $mol_form_field
+		password_label( ): string
+		password( next?: string ): string
+		Password( ): $yuf_password
+		Password_field( ): $mol_form_field
+		form_fields_end( ): readonly($mol_view)[]
+		login_error( ): string
+		unknown_error( ): string
+		enter( next?: any ): any
+		Bid( ): $yuf_form_bid
+		form_fields( ): readonly(any)[]
+		submit_title( ): string
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_login_form extends $.$yuf_login_form {
+        value_str(field: 'login' | 'password'): string;
+        protected login_focus(): void;
+        auto(): any;
+        save(next?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_login_form__enter_yuf_login_form_demo_1 = $mol_type_enforce<
+		ReturnType< $yuf_login_form_demo['enter'] >
+		,
+		ReturnType< $yuf_login_form['enter'] >
+	>
+	export class $yuf_login_form_demo extends $mol_example_small {
+		enter( next?: any ): any
+		login( ): ReturnType< ReturnType< $yuf_login_form_demo['Login_form'] >['login'] >
+		password( ): ReturnType< ReturnType< $yuf_login_form_demo['Login_form'] >['password'] >
+		Login_form( ): $yuf_login_form
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_login_form_demo extends $.$yuf_login_form_demo {
+        enter(e?: Event): void;
     }
 }
 

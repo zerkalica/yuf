@@ -323,7 +323,21 @@
     "$mol_icon_plus",
     "$mol_filler",
     "$mol_array_lottery",
-    "$mol_array"
+    "$mol_array",
+    "$yuf_login_form_demo",
+    "$yuf_login_form",
+    "$yuf_login",
+    "$mol_form",
+    "$mol_button_major",
+    "$mol_row",
+    "$mol_form_field",
+    "$yuf_password",
+    "$yuf_check_icon2",
+    "$yuf_check",
+    "$mol_icon_eye_off",
+    "$yuf_form_bid",
+    "$yuf_form",
+    "$yuf_transport"
   ],
   "dependencies": {
     "jsdom": "*"
