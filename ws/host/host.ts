@@ -86,7 +86,10 @@ namespace $ {
 			return ws.send(data)
 		}
 
-		send_object(data: Send) { return this.send(JSON.stringify(data)) }
+		send_object(data: Send) {
+			const str = JSON.stringify(data)
+			return this.send(str)
+		}
 
 		protected on_data(data: unknown) {
 			const object = typeof data === 'string' ? JSON.parse(data) : null
