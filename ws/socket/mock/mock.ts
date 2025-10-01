@@ -87,9 +87,10 @@ namespace $ {
 			})
 
 			const data = this.answer(obj)
-			if (! data) return
 
 			this.subs = this.subs.filter(sub => ! this.message_equal(obj, sub) )
+
+			if (! data) return
 
 			this.subs.push(data)
 
