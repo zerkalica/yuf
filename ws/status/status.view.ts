@@ -6,12 +6,11 @@ namespace $.$$ {
 		}
 
 		override status() {
-			try {
-				return super.status()
-			} catch (e) {
-				if (! $mol_promise_like(e)) return 'error'
-				$mol_fail_hidden(e)
-			}
+			const ws = this.ws()
+			if (ws.error_message()) return 'error'
+			if (ws.syncing()) return 'syncing'
+			if (ws.ready()) return 'open'
+			return 'connecting'
 		}
 
 		override title_formatted() {

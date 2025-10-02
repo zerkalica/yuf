@@ -3,7 +3,6 @@ $yuf_ws_status $mol_view
 		^
 		title <= title_formatted <= title
 	ws $yuf_ws_host
-		status => status
 		error_message => error_message
 	title @ \Server: {status}
 	status_message *
@@ -14,4 +13,4 @@ $yuf_ws_status $mol_view
 	sub /
 		^ ws_error_content /
 			<= Ws_error $mol_speck value <= error_message
-		<= Icon $yuf_ws_icon status <= status
+		<= Icon $yuf_ws_icon status <= status \error

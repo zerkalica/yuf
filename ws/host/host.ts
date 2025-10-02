@@ -48,12 +48,10 @@ namespace $ {
 		protected on_close(event: CloseEvent) {
 			const delay = this.restart_delay()
 			const restartable = delay && event && this.restartable(event)
-			const err = new this.$.$yuf_ws_error(event)
-
 			this.$.$mol_log3_rise({
 				place: '$yuf_ws_host.on_close()',
 				socket_id: this.id(),
-				message: err.message,
+				message: new this.$.$yuf_ws_error(event).message,
 				hint: restartable ? `reconnecting after ${delay} ms` : 'sleep',
 			})
 
@@ -62,18 +60,21 @@ namespace $ {
 			if (restartable) this.watchdog(null, delay)
 		}
 
-		protected on_open() { this.opened(null) }
+		protected on_open() {
+			this.opened(null)
+			this.error(null)
+		}
 
-		protected on_message(e: MessageEvent) {
-			const task = e.data
+		protected on_message(event: MessageEvent) {
+			const task = event.data
 
 			try {
 				this.on_data(task)
-			} catch (e) {
-				if( $mol_promise_like( e ) ) $mol_fail_hidden( e )
-				$mol_fail_log(e)
-				const val = new $mol_error_mix((e as Error).message || 'Can\'t parse message ', { task }, e as Error)
-				this.error(val)
+			} catch (err) {
+				if( $mol_promise_like( err ) ) $mol_fail_hidden( err )
+				;(err as Error).cause = (err as Error).cause || event
+				$mol_fail_log(err)
+				this.error(err as Error)
 			}
 		}
 
@@ -129,8 +130,10 @@ namespace $ {
 
 		@ $mol_mem
 		protected watchdog(reason?: null, timeout = this.watchdog_deadline()) {
-			if (! this.watchdog_enabled() ) return null
 			if (! timeout) return null
+
+			// if watchdog disabled still reconnect if socket not opened
+			if (! this.watchdog_enabled() && this.opened()) return null
 			if (! this.ws()) return null
 
 			return new this.$.$mol_after_timeout(timeout, () => this.restarts(null))
@@ -155,25 +158,14 @@ namespace $ {
 		@ $mol_mem
 		error_message() {
 			try {
-				this.status()
+				this.ready()
+				this.syncing()
 				return this.error()?.message ?? ''
 			} catch (e) {
 				if ( ! $mol_promise_like(e) ) return (e as Error).message ?? ''
 			}
 
 			return ''
-		}
-
-		@ $mol_mem
-		status() {
-			const ready = this.ready()
-			const syncing = this.syncing()
-			const err = this.error()
-
-			if (ready) return syncing ? 'syncing' : 'open'
-			if ( err ) return 'error'
-
-			return 'connecting'
 		}
 
 	}

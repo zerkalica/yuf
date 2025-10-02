@@ -1,7 +1,5 @@
 namespace $ {
 	export class $yuf_ws_socket extends $mol_object {
-		protected destructing = false
-
 		readonly id = $mol_guid()
 		protected _native: WebSocket | null = null
 
@@ -19,15 +17,15 @@ namespace $ {
 
 			const ws = this._native = new WebSocket( url, this.protocols() )
 
-			ws.onerror = e => this.destructing ? null : this.onerror(e)
-			ws.onclose = e => this.destructing ? null : this.onclose(e)
-			ws.onmessage = message => this.destructing ? null : this.onmessage(message)
-			ws.onopen = () => this.destructing ? null : this.onopen()
+			ws.onerror = e => this.onerror(e)
+			ws.onclose = e => this.onclose(e)
+			ws.onmessage = message => this.onmessage(message)
+			ws.onopen = () => this.onopen()
 
 			return ws
 		}
 
-		send(data: Parameters<WebSocket['send']>[0]) { return this.native()?.send(data) }
+		send(data: Parameters<WebSocket['send']>[0]) { return this.native().send(data) }
 
 		get readyState() { return this.native()?.readyState ?? WebSocket.CLOSED }
 
@@ -37,10 +35,13 @@ namespace $ {
 		onopen() {}
 
 		override destructor() {
-			if (this.destructing) return
-			this.destructing = true
-
-			this._native?.close()
+			const ws = this._native
+			if (! ws) return
+			ws.onerror = null
+			ws.onclose = null
+			ws.onmessage = null
+			ws.onopen = null
+			ws.close()
 		}
 	}
 
