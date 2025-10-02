@@ -66,7 +66,6 @@ namespace $ {
 				this.on_data(task)
 			} catch (err) {
 				if( $mol_promise_like( err ) ) $mol_fail_hidden( err )
-				;(err as Error).cause = (err as Error).cause || event
 				$mol_fail_log(err)
 				this.error(err as Error)
 			}
