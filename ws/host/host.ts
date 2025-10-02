@@ -133,7 +133,10 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		error_packed(error?: null | [Error]) { return error ?? null }
+		error_packed(error?: null | [Error]) {
+			this.restarts()
+			return error ?? null
+		}
 
 		error(error?: null | Error) {
 			return this.error_packed( error ? [ error ] : error )?.[0] ?? null
