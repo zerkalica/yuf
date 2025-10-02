@@ -12,17 +12,11 @@ namespace $ {
 
 		protocols() { return [] as string[] }
 
-		@ $mol_mem
-		restarts(reset?: null): number {
-			let prev = $mol_wire_probe( () => this.restarts()) ?? 0
-			if (reset === null) prev++
-			return prev
-		}
+		restarts() {}
 
 		@ $mol_mem
-		protected ws() {
+		protected ws(reset?: null) {
 			this.restarts()
-
 			if (! this.enabled()) return null
 
 			return this.$.$yuf_ws_socket.make({
@@ -136,7 +130,7 @@ namespace $ {
 			if (! this.watchdog_enabled() && this.opened()) return null
 			if (! this.ws()) return null
 
-			return new this.$.$mol_after_timeout(timeout, () => this.restarts(null))
+			return new this.$.$mol_after_timeout(timeout, () => this.ws(null))
 		}
 
 		@ $mol_mem
