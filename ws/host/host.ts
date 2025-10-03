@@ -1,6 +1,11 @@
 namespace $ {
 	export class $yuf_ws_host<Send = Object> extends $mol_object {
 
+		@ $mol_memo.field
+		static get _() {
+			return new this()
+		}
+
 		watchdog_deadline() { return 30000 }
 		restart_delay() { return 5000 }
 		ping_interval() { return 3000 }
@@ -93,7 +98,7 @@ namespace $ {
 		protected on_object(e: Object) {}
 
 		@ $mol_action
-		ping() {
+		send_ping() {
 			const buf = new Uint8Array([ 0x9 ])
 			this.send(buf)
 		}
@@ -112,7 +117,7 @@ namespace $ {
 			if (! timeout) return null
 			if ( ! this.opened() ) return null
 
-			this.ping()
+			this.send_ping()
 
 			this.$.$mol_state_time.now( timeout )
 
