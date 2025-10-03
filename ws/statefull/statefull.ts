@@ -1,5 +1,30 @@
 namespace $ {
-	export class $yuf_ws_host_statefull extends $yuf_ws_host {
+	type Value = string | number | boolean | null
+
+	export type $yuf_ws_statefull_message = {
+		// entity or list type
+		type: string
+
+		// entity id
+		id?: string | number
+		// list search params
+		query?: Record<string, Value | readonly Value[]> | null
+
+		// optional target server paths
+		device?: readonly string[] | null
+
+		// to server: undefined - get and subscribe, null - delete, object - replace
+		// from server: null - deleted, object - new data
+		data?: unknown
+
+		// Error enum, null - unsubscribe
+		error?: string | null
+
+		// Optional error message
+		message?: string | null
+	}
+
+	export class $yuf_ws_statefull extends $yuf_ws_host {
 		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
 
 		@ $mol_mem
@@ -14,12 +39,67 @@ namespace $ {
 		logged() { return Boolean(this.token()) }
 		logout() { this.token(null) }
 
-		send_pong() {}
-		send_auth(token: string) {}
-		send_unsubscribe(signature: {}) {}
-		is_subscription(message: {}) { return false }
-		is_ping(msg: {}) { return false }
-		is_pong(msg: {}) { return false }
+		send_auth(token: string) { this.send_object({ type: 'auth', data: { token } }) }
+		send_pong() { this.send_object({ type: 'pong' }) }
+		send_ping() { this.send_object({ type: 'ping' }) }
+		send_unsubscribe(signature: { type?: string }) {
+			signature.type && this.send_object({ ... signature, error: null, data: null })
+		}
+
+		is_subscription(message: { data?: unknown }) { return message.data === undefined }
+		is_ping(msg: { type?: string }) { return msg.type === 'ping' }
+		is_pong(msg: { type?: string }) { return msg.type === 'pong' }
+
+		message_key({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
+			let url_query = ''
+
+			if (query) {
+				const params = new URLSearchParams()
+
+				for (const key of Object.keys(query)) {
+					const item = query[key]
+					for (const sub of Array.isArray(item) ? item : [ item ] ) {
+						params.append(key, sub)
+					}
+				}
+
+				url_query = params.toString()
+			}
+
+			const t = type?.startsWith('/') ? type.slice(1) : type
+
+			return `${device?.length ? `/device/${device.join('~')}` : ''
+				}${t ? `/${t}` :''
+				}${id ? `/${id}` :''
+				}${url_query ? `?${url_query}` : ''
+				}`
+		}
+
+		/**
+		 * @throws if error field in message object is not empty
+		 * @returns undefined - not recognized message, null - delete patch
+		 */
+		message_data(obj: Partial<$yuf_ws_statefull_message>) {
+			if (Array.isArray(obj)) return undefined
+			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return undefined
+			if ((obj as { error?: string | null }).error === null) return undefined
+
+			if (! obj.error) return obj.data === undefined ? {} : obj.data
+
+			let message = obj.message ?? ''
+
+			if (obj.error) message += `${message ? ' ' : ''}[${obj.error}]`
+			if (obj.type) message += `${message ? ' ' : ''}/${obj.type}/`
+
+			if (! message) message = JSON.stringify(obj) || 'Unknown'
+
+			throw new $yuf_transport_error(message, {
+				message: obj.message,
+				code: obj.error,
+				http_code: obj.error === 'AUTH_FAILED' ? 403 : undefined,
+				json: obj
+			})
+		}
 
 		protected registered = {} as Record<string, ($yuf_entity2 | null)[] | null>
 		protected subscribed = {} as Record<string, boolean | null>
@@ -27,10 +107,6 @@ namespace $ {
 		@ $mol_mem
 		subs_all(reset?: null) {
 			return Object.values(this.registered)
-		}
-
-		message_key(message: {}) {
-			return JSON.stringify({ ...message, data: undefined })
 		}
 
 		sub_add(signature: {}, sub: $yuf_entity2) {
@@ -148,14 +224,6 @@ namespace $ {
 
 		auth_need(error: { cause?: { http_code?: number } }) {
 			return error.cause?.http_code === 403
-		}
-
-		/**
-		 * @throws if error field in message object is not empty
-		 * @returns undefined - not recognized message, null - delete patch
-		 */
-		message_data(message: {}): {} | null | undefined {
-			throw new Error('Implement')
 		}
 
 		protected messages = [] as {}[]
