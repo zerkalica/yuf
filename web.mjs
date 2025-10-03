@@ -19003,7 +19003,7 @@ var $;
     $.$yuf_transport_error = $yuf_transport_error;
     class $yuf_transport_error_timeout extends $yuf_transport_error {
         constructor(cause) {
-            super('Client timeout: ' + cause.input, {
+            super(`Timeout${cause.input ? ` ${cause.input}` : ''}`, {
                 http_code: 408,
                 code: 'TIMEOUT',
                 ...cause
