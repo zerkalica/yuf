@@ -78,13 +78,45 @@ namespace $ {
 			this.subscribed[this.message_key(message)] = true
 		}
 
+		deadline_timeout() { return 20000 }
+
+		protected request_promises = {} as Record<string, $yuf_entity2_promise<unknown> | null>
+
+		request({ signature, body_object, need_auth, deadline }: {
+			signature: {}
+			body_object: undefined | {} | null
+			need_auth?: boolean
+			deadline?: number
+		}) {
+			const request_promises = this.request_promises
+			const key = this.message_key(signature)
+
+			// Resend on auth token or ws connection change
+			const ready = need_auth ? this.authorized() : this.ready()
+			if (ready) this.send_object({ ... signature, data: body_object })
+
+			request_promises[key] = request_promises[key] ?? new $yuf_entity2_promise<unknown>(
+				undefined,
+				deadline ?? this.deadline_timeout(),
+				new $yuf_transport_error_timeout({ input: key })
+			)
+
+			const value = request_promises[key].value as NonNullable<typeof body_object> | Error | undefined | null
+			if (value === undefined) $mol_fail_hidden(request_promises[key])
+			delete request_promises[key]
+
+			if (value instanceof Error) $mol_fail_hidden(value)
+
+			return value
+		}
+
 		protected override on_object( obj: {} ) {
 			this.log_raw_add(obj)
 
-			let data, subs
+			let data, key
 
 			try {
-				subs = this.registered[this.message_key(obj)]
+				key = this.message_key(obj)
 				data = this.message_data(obj)
 				if (data === undefined) return
 
@@ -92,15 +124,19 @@ namespace $ {
 				if (this.is_pong(obj)) return this.watchdog(null)
 			} catch (error) {
 				if (this.auth_need(error as {})) this.logout()
-				if (! subs?.some(Boolean) ) $mol_fail_hidden(error)
+				if (! key || ! this.registered[key]?.some(Boolean) ) $mol_fail_hidden(error)
 				data = error as {}
 			}
 
+			const promise = this.request_promises[key]
+
+			if (promise) return promise.set(data)
+
 			let push_error
 
-			for (const sub of subs ?? []) {
+			for (const sub of this.registered[key] ?? []) {
 				try {
-					sub?.actual(data, 'cache')
+					sub?.data(data, 'cache')
 				} catch (err) {
 					// Error from socket pushed to mem causes exception, ignore it
 					if (err !== data) push_error = err
@@ -115,10 +151,10 @@ namespace $ {
 		}
 
 		/**
-		 * Throws error if error field in message is not empty
+		 * @throws if error field in message object is not empty
 		 * @returns undefined - not recognized message, null - delete patch
 		 */
-		message_data(obj: {}): {} | null | undefined {
+		message_data(message: {}): {} | null | undefined {
 			throw new Error('Implement')
 		}
 

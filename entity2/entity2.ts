@@ -35,33 +35,9 @@ namespace $ {
 			return next ?? false
 		}
 
-		data_send(data?: Partial<ReturnType<this['defaults']>> | null) {}
-
-		protected actual_promise = null as null | $yuf_entity2_promise<unknown>
-
-		actual(next?: Partial<ReturnType<this['defaults']>> | null, cache?: 'cache') {
-			if (cache) {
-				this.actual_promise?.set(next)
-				if (! this.actual_promise) this.data(next, cache)
-
-				return next
-			}
-
-			this.data_send(next)
-
-			this.actual_promise = this.actual_promise ?? new $yuf_entity2_promise<unknown>(
-				undefined,
-				this.deadline_timeout(),
-				new $yuf_transport_error_timeout({ input: this.toString() })
-			)
-
-			const value = this.actual_promise.value as Partial<ReturnType<this['defaults']>> | Error | undefined | null
-			if (value === undefined) $mol_fail_hidden(this.actual_promise)
-			this.actual_promise = null
-
-			if (value instanceof Error) $mol_fail_hidden(value)
-
-			return value
+		actual(next?: Partial<ReturnType<this['defaults']>> | null) {
+			// sync logic
+			return next ?? null
 		}
 
 		protected registered() {}
