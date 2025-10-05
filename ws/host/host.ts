@@ -1,10 +1,8 @@
 namespace $ {
-	export class $yuf_ws_host<Send = Object> extends $mol_object {
+	export class $yuf_ws_host extends $mol_object {
 
 		@ $mol_memo.field
-		static get _() {
-			return new this()
-		}
+		static get _() { return new this() }
 
 		watchdog_deadline() { return 30000 }
 		restart_delay() { return 5000 }
@@ -85,9 +83,8 @@ namespace $ {
 			return ws.send(data)
 		}
 
-		send_object(data: Send) {
-			const str = JSON.stringify(data)
-			return this.send(str)
+		send_object(data: {}) {
+			return this.send(JSON.stringify(data))
 		}
 
 		protected on_data(data: unknown) {
@@ -95,7 +92,28 @@ namespace $ {
 			if (object) this.on_object(object)
 		}
 
-		protected on_object(e: Object) {}
+		protected on_object(e: {}) {
+			this.debug_add(e)
+		}
+
+		protected messages = [] as {}[]
+
+		@ $mol_mem
+		protected debug_last_at(reset?: null) { return Date.now() }
+
+		protected debug_add(message: {}) {
+			if ( ! $mol_wire_probe(() => this.messages_grab()) ) return
+			this.messages.push(message)
+			this.debug_last_at(null)
+		}
+
+		@ $mol_mem
+		messages_grab() {
+			this.debug_last_at()
+			const messages = this.messages
+			this.messages = []
+			return messages
+		}
 
 		@ $mol_action
 		send_ping() {
@@ -151,7 +169,7 @@ namespace $ {
 		ready() {
 			this.heartbeat()
 			this.watchdog()
-			return this.opened()
+			return this.opened() ? Date.now() : null
 		}
 
 		syncing() { return false }

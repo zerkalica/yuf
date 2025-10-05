@@ -47,7 +47,7 @@ namespace $ {
 
 		protected periodically() {
 			for (const sub of this.subs) {
-				const answer = this.answer(sub)
+				const answer = this.answer(sub, true)
 				if (! answer) continue
 				if (! sub ) continue
 				Object.assign(sub, answer)
@@ -67,14 +67,18 @@ namespace $ {
 			super.destructor()
 		}
 
-		answer(obj: Message): null | Message {
+		answer(obj: Message, periodically = false): null | Message {
 			return null
 		}
 
 		protected subs = [] as Message[]
 
 		message_equal(a: Message, b: Message) {
-			return $mol_compare_deep(a, b)
+			return $mol_compare_deep(this.message_normalize(a), this.message_normalize(b))
+		}
+
+		message_normalize(msg: Partial<Message>) {
+			return msg
 		}
 
 		override send(raw: Parameters<WebSocket['send']>[0]) {

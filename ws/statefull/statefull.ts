@@ -25,16 +25,10 @@ namespace $ {
 	}
 
 	export class $yuf_ws_statefull extends $yuf_ws_host {
-		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
+		@ $mol_memo.field
+		static get _() { return new this() }
 
-		@ $mol_mem
-		authorized() {
-			if (! this.ready()) return false
-			const token = this.token()
-			if (! token) return false
-			this.send_auth(token)
-			return true
-		}
+		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
 
 		logged() { return Boolean(this.token()) }
 		logout() { this.token(null) }
@@ -45,34 +39,16 @@ namespace $ {
 		send_unsubscribe(signature: { type?: string }) {
 			signature.type && this.send_object({ ... signature, error: null, data: null })
 		}
+		send_data(signature: { type?: string }, data?: {} | null) {
+			this.send_object({ ... signature, data })
+		}
 
-		is_subscription(message: { data?: unknown }) { return message.data === undefined }
 		is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		is_pong(msg: { type?: string }) { return msg.type === 'pong' }
 
-		message_key({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
-			let url_query = ''
-
-			if (query) {
-				const params = new URLSearchParams()
-
-				for (const key of Object.keys(query)) {
-					const item = query[key]
-					for (const sub of Array.isArray(item) ? item : [ item ] ) {
-						params.append(key, sub)
-					}
-				}
-
-				url_query = params.toString()
-			}
-
-			const t = type?.startsWith('/') ? type.slice(1) : type
-
-			return `${device?.length ? `/device/${device.join('~')}` : ''
-				}${t ? `/${t}` :''
-				}${id ? `/${id}` :''
-				}${url_query ? `?${url_query}` : ''
-				}`
+		message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
+			if (! type ) return null
+			return { type, id, query, device }
 		}
 
 		/**
@@ -101,170 +77,43 @@ namespace $ {
 			})
 		}
 
-		protected registered = {} as Record<string, ($yuf_entity2 | null)[] | null>
-		protected subscribed = {} as Record<string, boolean | null>
-
-		@ $mol_mem
-		subs_all(reset?: null) {
-			return Object.values(this.registered)
-		}
-
-		sub_add(signature: {}, sub: $yuf_entity2) {
-			const key = this.message_key(signature)
-
-			const registered = this.registered
-
-			registered[key] = registered[key] ?? []
-			const index = registered[key].length
-			registered[key].push(sub)
-			this.subs_all(null)
-
-			return { destructor: () => this.sub_remove(signature, index) }
-		}
-
-		protected sub_remove(signature: {}, index: number) {
-			const registered = this.registered
-
-			const key = this.message_key(signature)
-
-			if (! registered[key]?.[index]) return
-
-			registered[key][index] = null
-			this.subs_all(null)
-
-			if (! registered[key].some(Boolean)) delete registered[key]
-
-			if ( ! this.subscribed[key] ) return
-			delete this.subscribed[key]
-
-			try {
-				// unsubscribe on umount or on signature changes
-				this.send_unsubscribe(signature)
-			} catch (e) {
-				$mol_fail_log(e)
-				// ignore errors
-			}
-		}
-
-		override send_object( message: {} ) {
-			super.send_object(message)
-
-			if (! this.is_subscription(message)) return
-
-			this.subscribed[this.message_key(message)] = true
-		}
-
 		deadline_timeout() { return 20000 }
 
-		protected request_promises = {} as Record<string, $yuf_entity2_promise<unknown> | null>
+		@ $mol_mem_key
+		channel<Val>(signature: $yuf_ws_statefull_message) {
+			return new this.$.$yuf_ws_statefull_channel<Val>(this, signature)
+		}
 
-		request({ signature, body_object, need_auth, deadline }: {
-			signature: {}
-			body_object: undefined | {} | null
-			need_auth?: boolean
-			deadline?: number
-		}) {
-			const request_promises = this.request_promises
-			const key = this.message_key(signature)
-
-			// Resend on auth token or ws connection change
-			const ready = need_auth ? this.authorized() : this.ready()
-			if (ready) this.send_object({ ... signature, data: body_object })
-
-			request_promises[key] = request_promises[key] ?? new $yuf_entity2_promise<unknown>(
-				undefined,
-				deadline ?? this.deadline_timeout(),
-				new $yuf_transport_error_timeout({ input: key })
-			)
-
-			const value = request_promises[key].value as NonNullable<typeof body_object> | Error | undefined | null
-			if (value === undefined) $mol_fail_hidden(request_promises[key])
-			delete request_promises[key]
-
-			if (value instanceof Error) $mol_fail_hidden(value)
-
-			return value
+		@ $mol_mem
+		authorized() {
+			const token = this.token()
+			if (! this.ready() || ! token) return null
+			this.send_auth(token)
+			return Date.now()
 		}
 
 		protected override on_object( obj: {} ) {
-			this.log_raw_add(obj)
+			super.on_object(obj)
 
-			let data, key
+			const signature = this.message_signature(obj)
+			const channel = signature ? $mol_wire_probe(() => this.channel(signature)) : null
 
 			try {
-				key = this.message_key(obj)
-				data = this.message_data(obj)
-				if (data === undefined) return
-
 				if (this.is_ping(obj)) return this.send_pong()
 				if (this.is_pong(obj)) return this.watchdog(null)
+				const data = this.message_data(obj)
+				if (data !== undefined) channel?.receive(data)
 			} catch (error) {
 				if (this.auth_need(error as {})) this.logout()
-				if (! key || ! this.registered[key]?.some(Boolean) ) $mol_fail_hidden(error)
-				data = error as {}
+				if ( ! channel ) $mol_fail_hidden(error)
+				channel.receive(error as {})
 			}
-
-			const promise = this.request_promises[key]
-
-			if (promise) return promise.set(data)
-
-			let push_error
-
-			for (const sub of this.registered[key] ?? []) {
-				try {
-					sub?.data(data, 'cache')
-				} catch (err) {
-					// Error from socket pushed to mem causes exception, ignore it
-					if (err !== data) push_error = err
-				}
-			}
-
-			if (push_error) $mol_fail_hidden(push_error)
 		}
 
 		auth_need(error: { cause?: { http_code?: number } }) {
 			return error.cause?.http_code === 403
 		}
 
-		protected messages = [] as {}[]
-
-		@ $mol_mem
-		protected last_message_at(reset?: null) { return Date.now() }
-
-		protected log_raw_add(message: {}) {
-			if ( ! $mol_wire_probe(() => this.messages_grab()) ) return
-			this.messages.push(message)
-			this.last_message_at(null)
-		}
-
-		@ $mol_mem
-		messages_grab() {
-			this.last_message_at()
-			const messages = this.messages
-			this.messages = []
-			return messages
-		}
-
-		@ $mol_mem
-		override syncing() {
-			let overall
-
-			const subs_all = this.subs_all()
-
-			// need to pool pushing tasks in root app
-			for (const subs of subs_all) {
-				for (const sub of subs ?? []) {
-					try {
-						sub?.pushing()
-					} catch (e) {
-						if (e instanceof Error) overall = e
-						else if ( ! (overall instanceof Error) ) overall = e
-					}
-				}
-			}
-
-			return $mol_promise_like(overall)
-		}
 	}
 
 }

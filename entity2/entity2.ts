@@ -1,12 +1,51 @@
 namespace $ {
 	export class $yuf_entity2 extends $mol_object {
+		protected static pushing = new $mol_wire_set<$yuf_entity2>()
+
+		@ $mol_mem
+		static syncing() {
+			let syncing = false
+			for (const model of this.pushing) {
+				try {
+					model?.pushing()
+				} catch (e) {
+					if ($mol_promise_like(e)) syncing = true
+				}
+			}
+			return syncing
+		}
+
+		protected factory() {
+			return this.constructor as typeof $yuf_entity2
+		}
+
+		protected static active = {} as Record<string, $yuf_entity2>
+
+		static active_model(signature: {}) {
+			return this.active[JSON.stringify(signature)] ?? null
+		}
+
+		protected propagate() {
+			if (this.$.$yuf_entity2.prototype.mock === this.mock) return
+			this.factory().active[this.toString()] = this
+		}
+
+		override destructor() {
+			if (this.$.$yuf_entity2.prototype.mock === this.mock) return
+			delete this.factory().active[this.toString()]
+		}
+
 		id() { return '' }
 
 		defaults(raw?: {}) { return {} }
 
+		need_auth() { return false }
+		deadline() { return 10000 }
 		mock(prev?: ReturnType<this['defaults']> | null): ReturnType<this['defaults']> | null {
 			return null
 		}
+
+		mock_periodically() { return false }
 
 		@ $mol_mem_key
 		value<
@@ -40,7 +79,14 @@ namespace $ {
 			return next ?? null
 		}
 
-		protected registered() {}
+		receive(next: Partial<ReturnType<this['defaults']>> | null) {
+			try {
+				this.data(next, 'cache')
+			} catch (err) {
+				// Error from socket pushed to mem causes exception, ignore it
+				if (err !== next) $mol_fail_hidden(err)
+			}
+		}
 
 		@ $mol_mem
 		data(
@@ -49,7 +95,6 @@ namespace $ {
 		): ReturnType<this['defaults']> | null {
 			let actual = cache ? next : undefined
 
-			this.registered()
 			if (next === undefined) {
 				// undefined - subscribe to entity changes
 				actual = this.actual()
@@ -65,8 +110,7 @@ namespace $ {
 
 			if (actual === null || actual instanceof Error) return actual as ReturnType<this['defaults']>
 
-			const result = this.merge_prev(actual)
-			return result
+			return this.merge_prev(actual)
 		}
 
 		merge(actual: Partial<ReturnType<this['defaults']>> | undefined, prev?: typeof actual | null) {
@@ -91,16 +135,20 @@ namespace $ {
 			if (debounce_timeout) this.$.$yuf_wait_timeout(debounce_timeout)
 
 			const data = removing || ! draft ? null : this.merge_prev(draft)
+			const pushing = this.factory().pushing
 
 			try {
+				pushing.add(this)
 				const actual = this.actual(data)
 				const result = actual ? this.merge(actual, draft) : null
 
+				pushing.delete(this)
 				this.draft(null)
 				this.removing(false)
 				return result
 			} catch (e) {
 				if ( ! $mol_promise_like(e) ) {
+					pushing.delete(this)
 					this.draft(null)
 					this.removing(false)
 				}
