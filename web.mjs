@@ -19349,8 +19349,11 @@ var $;
                 catch (e) {
                     if ($mol_promise_like(e))
                         $mol_fail_hidden(e);
-                    if (e instanceof $yuf_transport_error && e.cause.code === 'AUTH_FAILED') {
-                        e.message = this.login_error() + ': ' + e.message;
+                    if (e instanceof $yuf_transport_error
+                        && e.cause.code === 'AUTH_FAILED') {
+                        const msg = this.login_error();
+                        if (!e.message.startsWith(msg))
+                            e.message = msg + ': ' + e.message;
                     }
                     $mol_fail_hidden(e);
                 }
