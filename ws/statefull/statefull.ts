@@ -29,25 +29,28 @@ namespace $ {
 		static get _() { return new this() }
 
 		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
-
 		logged() { return Boolean(this.token()) }
 		logout() { this.token(null) }
 
-		send_auth(token: string) { this.send_object({ type: 'auth', data: { token } }) }
-		send_pong() { this.send_object({ type: 'pong' }) }
-		send_ping() { this.send_object({ type: 'ping' }) }
-		send_unsubscribe(signature: { type?: string }) {
-			signature.type && this.send_object({ ... signature, error: null, data: null })
-		}
-		send_data(signature: { type?: string }, data?: {} | null) {
-			this.send_object({ ... signature, data })
+		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
+		override send_pong() { this.send_object({ type: 'pong' }) }
+		override send_ping() { this.send_object({ type: 'ping' }) }
+
+		@ $mol_mem
+		protected token_sended() {
+			const token = this.token()
+			token && this.send_data({ type: 'auth' }, { token })
+			return null
 		}
 
-		is_ping(msg: { type?: string }) { return msg.type === 'ping' }
-		is_pong(msg: { type?: string }) { return msg.type === 'pong' }
+		send_data(signature: {}, data?: {} | null, op?: 'unsubscribe') {
+			if (! this.ready()) return null
+			if (data === undefined) this.token_sended()
+			this.send_object({ ... signature, data, error: op === 'unsubscribe' ? null : undefined })
+			return data
+		}
 
 		message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
-			if (! type ) return null
 			return { type, id, query, device }
 		}
 
@@ -62,12 +65,15 @@ namespace $ {
 
 			if (! obj.error) return obj.data === undefined ? {} : obj.data
 
-			let message = obj.message ?? ''
+			let message = `${obj.message ? `${obj.message} ` : ''}[${obj.error}]`
 
-			if (obj.error) message += `${message ? ' ' : ''}[${obj.error}]`
-			if (obj.type) message += `${message ? ' ' : ''}/${obj.type}/`
+			if (obj.type) message += '/' + obj.type
+			if (obj.id) message += '/' + obj.id
+			if (obj.device?.length) message += `/device/${obj.device.join('~')}`
 
-			if (! message) message = JSON.stringify(obj) || 'Unknown'
+			if (obj.query) message += '?' + new URLSearchParams(
+				Object.entries(obj.query as Record<string, string>)
+			).toString()
 
 			throw new $yuf_transport_error(message, {
 				message: obj.message,
@@ -80,27 +86,15 @@ namespace $ {
 		deadline_timeout() { return 20000 }
 
 		@ $mol_mem_key
-		channel<Val>(signature: $yuf_ws_statefull_message) {
+		channel<Val>(signature: {}) {
 			return new this.$.$yuf_ws_statefull_channel<Val>(this, signature)
 		}
 
-		@ $mol_mem
-		authorized() {
-			const token = this.token()
-			if (! this.ready() || ! token) return null
-			this.send_auth(token)
-			return Date.now()
-		}
-
 		protected override on_object( obj: {} ) {
-			super.on_object(obj)
-
 			const signature = this.message_signature(obj)
-			const channel = signature ? $mol_wire_probe(() => this.channel(signature)) : null
+			const channel = signature.type ? $mol_wire_probe(() => this.channel(signature)) : null
 
 			try {
-				if (this.is_ping(obj)) return this.send_pong()
-				if (this.is_pong(obj)) return this.watchdog(null)
 				const data = this.message_data(obj)
 				if (data !== undefined) channel?.receive(data)
 			} catch (error) {

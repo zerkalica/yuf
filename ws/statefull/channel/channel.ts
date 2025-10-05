@@ -25,26 +25,25 @@ namespace $ {
 
 	export class $yuf_ws_statefull_channel<Val = unknown> extends $mol_object {
 		constructor(
-			protected ws: $yuf_ws_statefull,
-			readonly signature: $yuf_ws_statefull_message,
+			protected host: {
+				send_data(signature: {}, data?: Val | null, op?: 'unsubscribe'): void
+				deadline_timeout(): number
+			},
+			readonly signature: {},
 		) {
 			super()
 		}
 
-		send_data(data?: Val | null) { this.ws.send_data(this.signature, data)}
-		send_unsubscribe() { this.ws.send_unsubscribe(this.signature) }
-		ready() { return this.ws.ready() }
-		authorized() { return this.ws.authorized() }
-		deadline_timeout() { return this.ws.deadline_timeout() }
+		send_data(data?: Val | null, op?: 'unsubscribe') { this.host.send_data(this.signature, data, op)}
+		deadline_timeout() { return this.host.deadline_timeout() }
 
-		subscribed = false
-		response = null as null | Response_promise<unknown>
+		protected response = null as null | Response_promise<unknown>
 
 		receive(next: Val | null) {
 			if (this.response) return this.response.set(next)
 
 			try {
-				this.data_inner(next, 'cache')
+				this.data(next, 'cache')
 			} catch (err) {
 				// Error from socket pushed to mem causes exception, ignore it
 				if (err !== next) $mol_fail_hidden(err)
@@ -52,26 +51,11 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data_authorized(next?: Val | null, cache?: 'cache') {
-			return this.data_inner(next, cache, true)
-		}
-
-		@ $mol_mem
 		data(next?: Val | null, cache?: 'cache') {
-			return this.data_inner(next, cache)
-		}
-
-		protected data_inner(next?: Val | null, cache?: 'cache', need_auth = false) {
 			if (next !== undefined && cache) return next
 
 			// Resend on auth token or ws connection change
-			const ready = need_auth ? this.authorized() : this.ready()
-
-			if (next !== undefined || ready) {
-				this.send_data(next)
-			}
-
-			if (next === undefined) this.subscribed = true
+			this.send_data(next)
 
 			if (! this.response) {
 				this.response = new Response_promise<unknown>(
@@ -93,9 +77,10 @@ namespace $ {
 		}
 
 		override destructor() {
-			if (! this.subscribed) return
+			const prev = $mol_wire_probe(() => this.data())
+			if (prev === undefined) return
 			try {
-				this.send_unsubscribe()
+				this.send_data(null, 'unsubscribe')
 			} catch (e) {
 				$mol_fail_log(e)
 			}

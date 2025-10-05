@@ -39,8 +39,6 @@ namespace $ {
 
 		defaults(raw?: {}) { return {} }
 
-		need_auth() { return false }
-		deadline() { return 10000 }
 		mock(prev?: ReturnType<this['defaults']> | null): ReturnType<this['defaults']> | null {
 			return null
 		}

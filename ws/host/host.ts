@@ -87,38 +87,38 @@ namespace $ {
 			return this.send(JSON.stringify(data))
 		}
 
+		is_ping(obj: {}) { return false }
+		send_ping() {}
+		send_pong() {}
+
 		protected on_data(data: unknown) {
 			const object = typeof data === 'string' ? JSON.parse(data) : null
-			if (object) this.on_object(object)
+			if (! object ) return
+			this.watchdog(null)
+			if (this.is_ping(object)) return this.send_pong()
+			this.message_add(object)
+			this.on_object(object)
 		}
 
-		protected on_object(e: {}) {
-			this.debug_add(e)
-		}
+		protected on_object(e: {}) {}
 
-		protected messages = [] as {}[]
+		protected debug_messages = [] as {}[]
 
 		@ $mol_mem
-		protected debug_last_at(reset?: null) { return Date.now() }
+		protected message_last_at(reset?: null) { return Date.now() }
 
-		protected debug_add(message: {}) {
+		protected message_add(message: {}) {
 			if ( ! $mol_wire_probe(() => this.messages_grab()) ) return
-			this.messages.push(message)
-			this.debug_last_at(null)
+			this.debug_messages.push(message)
+			this.message_last_at(null)
 		}
 
 		@ $mol_mem
 		messages_grab() {
-			this.debug_last_at()
-			const messages = this.messages
-			this.messages = []
+			this.message_last_at()
+			const messages = this.debug_messages
+			this.debug_messages = []
 			return messages
-		}
-
-		@ $mol_action
-		send_ping() {
-			const buf = new Uint8Array([ 0x9 ])
-			this.send(buf)
 		}
 
 		@ $mol_mem
