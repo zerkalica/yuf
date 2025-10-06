@@ -92,10 +92,12 @@ namespace $ {
 		send_pong() {}
 
 		protected on_data(data: unknown) {
+			this.watchdog(null)
 			const object = typeof data === 'string' ? JSON.parse(data) : null
 			if (! object ) return
-			this.watchdog(null)
+
 			if (this.is_ping(object)) return this.send_pong()
+
 			this.message_add(object)
 			this.on_object(object)
 		}
@@ -169,7 +171,7 @@ namespace $ {
 		ready() {
 			this.heartbeat()
 			this.watchdog()
-			return this.opened() ? Date.now() : null
+			return this.opened()
 		}
 
 		syncing() { return false }

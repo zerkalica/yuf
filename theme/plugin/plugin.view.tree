@@ -1,0 +1,3 @@
+$yuf_theme_plugin $mol_theme_auto
+	light \$yuf_theme_light
+	dark \$yuf_theme_dark
