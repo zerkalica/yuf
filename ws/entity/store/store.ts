@@ -24,8 +24,9 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache' | 'append' | 'prepend'): readonly string[] {
+		ids(next?: readonly string[], cache?: 'cache' | 'append' | 'prepend' | 'remove'): readonly string[] {
 			const prev = $mol_wire_probe(() => this.ids()) ?? []
+			if (next && cache === 'remove') next = prev.filter(id => ! next?.includes(id))
 			if (next && cache === 'append') next = [ ...prev, ...next ]
 			if (next && cache === 'prepend') next = [ ...next, ...prev ]
 
@@ -54,6 +55,15 @@ namespace $ {
 				ws: () => this.ws(),
 				device: () => this.device(),
 			})
+		}
+
+		remove_all() {
+			this.data(null)
+		}
+
+		remove(id: string) {
+			this.by_id(id).data(null)
+			this.ids([ id ], 'remove')
 		}
 	}
 }
