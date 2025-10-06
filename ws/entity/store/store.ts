@@ -10,13 +10,27 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		protected tmp_id(next?: string | null) {
+		tmp_id(next?: string | null) {
 			return next ?? null
 		}
 
+		@ $mol_action
+		draft_saved() {
+			const id = this.tmp_id()
+			if (! id ) return null
+			this.tmp_id(null)
+			this.ids([... this.ids(), id ])
+			return null
+		}
+
 		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache') {
-			const ids = this.data(next as ReturnType<this['defaults']>, cache) ?? [] as readonly string[]
+		ids(next?: readonly string[], cache?: 'cache' | 'append' | 'prepend'): readonly string[] {
+			const prev = $mol_wire_probe(() => this.ids()) ?? []
+			if (next && cache === 'append') next = [ ...prev, ...next ]
+			if (next && cache === 'prepend') next = [ ...next, ...prev ]
+
+			const ids = this.data(next as ReturnType<this['defaults']>, cache ? 'cache' : undefined) ?? [] as readonly string[]
+
 			let tmp_id = this.tmp_id()
 			if (tmp_id && ids.includes(tmp_id)) tmp_id = this.tmp_id(null)
 			return tmp_id ? [ tmp_id, ... ids ] : ids
@@ -30,7 +44,7 @@ namespace $ {
 			item.data({}, 'cache')
 			this.tmp_id(id)
 
-			return item
+			return item as ReturnType<this['by_id']>
 		}
 
 		@ $mol_mem_key

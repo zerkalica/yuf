@@ -1,7 +1,7 @@
 namespace $ {
 	export class $yuf_ws_entity extends $yuf_entity2 {
 		type() { return '' }
-		query() { return {} as Record<string, string> }
+		query() { return {} as Record<string, string | null> }
 		device() { return [] as readonly string[] }
 
 		@ $mol_mem

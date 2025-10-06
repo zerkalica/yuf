@@ -30,7 +30,9 @@ namespace $ {
 
 		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
 		logged() { return Boolean(this.token()) }
-		logout() { this.token(null) }
+		logout() {
+			this.token(null)
+		}
 
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		override send_pong() { this.send_object({ type: 'pong' }) }

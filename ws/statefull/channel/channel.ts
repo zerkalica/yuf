@@ -39,6 +39,7 @@ namespace $ {
 
 		protected response = null as null | Response_promise<unknown>
 
+		protected subscribed = false
 		receive(next: Val | null) {
 			if (this.response) return this.response.set(next)
 
@@ -56,6 +57,7 @@ namespace $ {
 
 			// Resend on auth token or ws connection change
 			this.send_data(next)
+			if (next === undefined) this.subscribed = true
 
 			if (! this.response) {
 				this.response = new Response_promise<unknown>(
@@ -77,8 +79,7 @@ namespace $ {
 		}
 
 		override destructor() {
-			const prev = $mol_wire_probe(() => this.data())
-			if (prev === undefined) return
+			if (! this.subscribed) return
 			try {
 				this.send_data(null, 'unsubscribe')
 			} catch (e) {
