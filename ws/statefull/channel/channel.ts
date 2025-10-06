@@ -35,7 +35,11 @@ namespace $ {
 			super()
 		}
 
-		send_data(data?: Val | null, op?: 'unsubscribe') { return this.host.send_data(this.signature, data, op)}
+		ready() { return this.host.ready() }
+		send_data(data?: Val | null, op?: 'unsubscribe') {
+			this.host.send_data(this.signature, data, op)
+		}
+
 		deadline_timeout() { return this.host.deadline_timeout() }
 
 		protected response = null as null | Response_promise<unknown>
@@ -59,7 +63,8 @@ namespace $ {
 			const prev = $mol_wire_probe(() => this.data())
 
 			// Resend subscription on auth token or ws connection change
-			if (this.host.ready() && this.send_data(next)) {
+			if (this.ready()) {
+				this.send_data(next)
 				if (next === undefined) this.subscribed = true
 			}
 
@@ -86,6 +91,7 @@ namespace $ {
 
 		override destructor() {
 			if (! this.subscribed) return
+
 			try {
 				this.send_data(null, 'unsubscribe')
 			} catch (e) {

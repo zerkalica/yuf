@@ -109,9 +109,10 @@ namespace $ {
 
 			this.subs.push(message)
 
-			new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive({
-				...message, data: obj.data? undefined : message.data
-			}))
+			new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive(
+				message
+				// { ...message, data: obj.data? undefined : message.data }
+			))
 		}
 
 		factory() { return this.constructor as typeof $yuf_ws_socket_mock }
