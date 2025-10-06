@@ -30,26 +30,21 @@ namespace $ {
 
 		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
 		logged() { return Boolean(this.token()) }
-		logout() {
-			this.token(null)
-		}
+		logout() { this.token(null) }
 
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		override send_pong() { this.send_object({ type: 'pong' }) }
 		override send_ping() { this.send_object({ type: 'ping' }) }
 
 		@ $mol_mem
-		protected token_sended() {
-			const token = this.token()
+		override token_sended() {
+			const token = this.opened() ? this.token() : null
 			token && this.send_data({ type: 'auth' }, { token })
-			return null
+			return token
 		}
 
 		send_data(signature: {}, data?: {} | null, op?: 'unsubscribe') {
-			if (! this.ready()) return null
-			if (data === undefined) this.token_sended()
 			this.send_object({ ... signature, data, error: op === 'unsubscribe' ? null : undefined })
-			return data
 		}
 
 		message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {

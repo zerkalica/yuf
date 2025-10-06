@@ -26,6 +26,7 @@ namespace $ {
 	export class $yuf_ws_statefull_channel<Val = unknown> extends $mol_object {
 		constructor(
 			protected host: {
+				ready(): boolean
 				send_data(signature: {}, data?: Val | null, op?: 'unsubscribe'): void
 				deadline_timeout(): number
 			},
@@ -34,13 +35,13 @@ namespace $ {
 			super()
 		}
 
-		send_data(data?: Val | null, op?: 'unsubscribe') { this.host.send_data(this.signature, data, op)}
+		send_data(data?: Val | null, op?: 'unsubscribe') { return this.host.send_data(this.signature, data, op)}
 		deadline_timeout() { return this.host.deadline_timeout() }
 
 		protected response = null as null | Response_promise<unknown>
 
 		protected subscribed = false
-		receive(next: Val | null) {
+		receive(next: Val | null | undefined) {
 			if (this.response) return this.response.set(next)
 
 			try {
@@ -52,12 +53,17 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data(next?: Val | null, cache?: 'cache') {
+		data(next?: Val | null, cache?: 'cache'): Val | null {
 			if (next !== undefined && cache) return next
 
-			// Resend on auth token or ws connection change
-			this.send_data(next)
-			if (next === undefined) this.subscribed = true
+			const prev = $mol_wire_probe(() => this.data())
+
+			// Resend subscription on auth token or ws connection change
+			if (this.host.ready() && this.send_data(next)) {
+				if (next === undefined) this.subscribed = true
+			}
+
+			if (next === undefined && prev !== undefined) return prev
 
 			if (! this.response) {
 				this.response = new Response_promise<unknown>(

@@ -5,7 +5,7 @@ namespace $ {
 		static get _() { return new this() }
 
 		watchdog_deadline() { return 30000 }
-		restart_delay() { return 5000 }
+		restart_delay() { return 3000 }
 		ping_interval() { return 3000 }
 		url() { return '' }
 
@@ -91,6 +91,8 @@ namespace $ {
 		send_ping() {}
 		send_pong() {}
 
+		token_sended() { return null as null | string }
+
 		protected on_data(data: unknown) {
 			this.watchdog(null)
 			const object = typeof data === 'string' ? JSON.parse(data) : null
@@ -171,6 +173,7 @@ namespace $ {
 		ready() {
 			this.heartbeat()
 			this.watchdog()
+			this.token_sended()
 			return this.opened()
 		}
 

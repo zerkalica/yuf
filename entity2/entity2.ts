@@ -112,13 +112,21 @@ namespace $ {
 		}
 
 		merge(actual: Partial<ReturnType<this['defaults']>> | undefined, prev?: typeof actual | null) {
-			if (actual instanceof Array) return actual
+			// broken back returns undefined data on push, it converts to empty object in ws statefull
+			// convert it to prev value
+			if (this.defaults() instanceof Array) {
+				if (actual instanceof Array) return actual as ReturnType<this['defaults']>
+				return prev ?? [] as ReturnType<this['defaults']>
+			}
+
 			return { ...prev, ...actual }
 		}
 
 		merge_prev(patch: Partial<ReturnType<this['defaults']>> | undefined) {
 			const prev = $mol_wire_probe(() => this.data())
-			return this.defaults(this.merge(patch, prev)) as ReturnType<this['defaults']>
+			const merged = this.merge(patch, prev)
+
+			return this.defaults(merged) as ReturnType<this['defaults']>
 		}
 
 		debounce_timeout() { return 100 }

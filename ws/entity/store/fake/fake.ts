@@ -32,21 +32,12 @@ namespace $ {
 			return result
 		}
 
-		override merge(actual: Partial<ReturnType<this['defaults']>> | undefined, prev?: typeof actual | null) {
-			if ( !(actual instanceof Array)) throw new Error('Not an array ' + this.type())
-
-			return actual.map((item, index) => ({
-				...(prev as unknown as typeof item[])?.[index],
-				... item
-			}))
-		}
-
 		@ $mol_mem_key
 		protected row_data(id: string, patch?: Partial<Item> | null, cache?: 'cache'): Item | null {
 			const prev = this.data_normalized()
 			if (patch === undefined) return prev?.[id] ?? null
 
-			const next = patch === null ? null : { ...patch as Item, id: patch?.id ?? id }
+			const next = patch === null ? null : { ...patch as Item, id: patch?.id || id }
 
 			return this.data_normalized({ [id]: next }, cache)?.[id] ?? null
 		}

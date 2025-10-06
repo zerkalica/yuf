@@ -4,19 +4,20 @@ namespace $ {
 
 		answer_timeout() { return 500 }
 
-		periodically_timeout() { return 5000 }
+		periodically_timeout() { return 1000 }
+		close_on_every_tick() { return 100_000 }
 
 		override native() {
 			if (this._native) return this._native
 
 			const native = {
 				readyState: WebSocket.CONNECTING as number,
-				close: () => {
+				close: (code = 1000) => {
 					native.readyState = WebSocket.CLOSING
 					this.periodically_timer?.destructor()
 					new this.$.$mol_after_timeout(this.open_timeout(), () => {
 						native.readyState = WebSocket.CLOSED
-						this.onclose({} as CloseEvent)
+						this.onclose({ type: code > 1000 ? 'error' : 'close' } as CloseEvent)
 					})
 				}
 			}
@@ -45,7 +46,17 @@ namespace $ {
 			)
 		}
 
+		protected periodically_tick = 0
+
 		protected periodically() {
+			const tick = this.close_on_every_tick()
+			if (((++this.periodically_tick) % tick) === 0) {
+				this.native().close(1006)
+				return
+			}
+
+			if (this.native().readyState !== WebSocket.OPEN) return
+
 			for (const sub of this.subs) {
 				const answer = this.answer(sub, true)
 				if (! answer) continue
@@ -90,29 +101,32 @@ namespace $ {
 				data: obj
 			})
 
-			const data = this.answer(obj)
+			const message = this.answer(obj)
 
 			this.subs = this.subs.filter(sub => ! this.message_equal(obj, sub) )
 
-			if (! data) return
+			if (! message) return
 
-			this.subs.push(data)
+			this.subs.push(message)
 
-			new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive(data))
+			new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive({
+				...message, data: obj.data? undefined : message.data
+			}))
 		}
 
 		factory() { return this.constructor as typeof $yuf_ws_socket_mock }
 
-		receive(data: unknown) {
-			if (data === undefined) return
+		receive(message: unknown) {
+			if (message === undefined) return
+			if (this.native().readyState !== WebSocket.OPEN) return
 			this.$.$mol_log3_done({
 				place: `${this.factory()}.answer_receive()`,
 				message: 'answer',
-				data,
+				data: message,
 			})
 
 			this.onmessage({
-				data: JSON.stringify(data),
+				data: JSON.stringify(message),
 			} as MessageEvent)
 
 		}
