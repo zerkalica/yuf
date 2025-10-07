@@ -1,0 +1,20 @@
+{
+  "name": "yuf-npm",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "exports": {
+    ".": "./-/.app.js"
+  },
+  "types": "./-/.app.d.ts",
+  "main": "./-/.app.js",
+  "scripts": {
+    "build": "node --enable-source-maps --trace-uncaught ./.build.mjs",
+    "watch": "node --enable-source-maps --trace-uncaught ./.build.mjs --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "keycloak-js": "^26.2.0"
+  }
+}

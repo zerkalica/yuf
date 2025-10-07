@@ -8,8 +8,8 @@ namespace $ {
 			if (obj.type === 'ping') return { type: 'pong' }
 
 			if (obj.error === null) return null // unsubscribe
-			try {
 
+			try {
 				const first = this.message_sub(obj)
 				if (! first) return null
 

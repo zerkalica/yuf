@@ -60,13 +60,6 @@ namespace $ {
 		}
 
 		/**
-		 * Access token local storage key.
-		 */
-		static token_key() {
-			return 'kc_token'
-		}
-
-		/**
 		 * Is user logged in.
 		 *
 		 * Token can be exists but obsolete.
@@ -82,7 +75,7 @@ namespace $ {
 		@ $mol_mem
 		static token( next? : string | null ) {
 			if (next) this.logining(false)
-			return this.$.$mol_state_local.value(this.token_key(), next) ?? null
+			return this.$.$yuf_session._.token(next)
 		}
 
 		/**

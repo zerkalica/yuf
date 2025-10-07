@@ -1,0 +1,25 @@
+{
+  "name": "yuf-npm",
+  "version": "1.0.0",
+  "description": "",
+  "type": "commonjs",
+  "exports": {
+    ".": "./-/.app.js"
+  },
+  "types": "./-/.app.d.ts",
+  "main": "./-/.app.js",
+  "scripts": {
+    "build": "node --enable-source-maps --trace-uncaught ./.build.mjs",
+    "watch": "node --enable-source-maps --trace-uncaught ./.build.mjs --watch",
+    "update": "npx npm-check-updates -u && npm install",
+    "test": "echo \"Error: no test specified\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.7.0",
+    "empty": "^0.10.1",
+    "esbuild": "^0.25.10",
+    "esbuild-plugin-resolve": "^2.0.0"
+  }
+}

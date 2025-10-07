@@ -28,9 +28,11 @@ namespace $ {
 		@ $mol_memo.field
 		static get _() { return new this() }
 
-		token(next?: string | null) { return this.$.$yuf_transport.token(next) }
-		logged() { return Boolean(this.token()) }
-		logout() { this.token(null) }
+		session() { return this.$.$yuf_session._ }
+
+		token(next?: string | null, refresh?: 'refresh') { return this.session().token(next, refresh) }
+		logged() { return this.session().logged() }
+		logout() { this.session().logout() }
 
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		override send_pong() { this.send_object({ type: 'pong' }) }

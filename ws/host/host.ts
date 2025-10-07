@@ -6,7 +6,7 @@ namespace $ {
 
 		watchdog_deadline() { return 30000 }
 		restart_delay() { return 3000 }
-		ping_interval() { return 3000 }
+		ping_interval() { return 5000 }
 		url() { return '' }
 
 		enabled() { return true }
@@ -94,7 +94,7 @@ namespace $ {
 		token_sended() { return null as null | string }
 
 		protected on_data(data: unknown) {
-			this.watchdog(null)
+			if (this.watchdog_enabled()) this.watchdog(null)
 			const object = typeof data === 'string' ? JSON.parse(data) : null
 			if (! object ) return
 
@@ -135,7 +135,6 @@ namespace $ {
 		@ $mol_mem
 		protected heartbeat() {
 			const timeout = this.ping_interval()
-			if (! this.heatbeat_enabled()) return null
 			if (! timeout) return null
 			if ( ! this.opened() ) return null
 
@@ -152,8 +151,7 @@ namespace $ {
 		protected watchdog(reason?: null, timeout = this.watchdog_deadline()) {
 			if (! timeout) return null
 
-			// if watchdog disabled still reconnect if socket not opened
-			if (! this.watchdog_enabled() && this.opened()) return null
+			// Do not reconnect if socket disabled
 			if (! this.ws()) return null
 
 			return new this.$.$mol_after_timeout(timeout, () => this.ws(null))
@@ -171,8 +169,8 @@ namespace $ {
 
 		@ $mol_mem
 		ready() {
-			this.heartbeat()
-			this.watchdog()
+			if (this.heatbeat_enabled()) this.heartbeat()
+			if (this.watchdog_enabled()) this.watchdog()
 			this.token_sended()
 			return this.opened()
 		}
