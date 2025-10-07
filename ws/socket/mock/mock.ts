@@ -4,7 +4,7 @@ namespace $ {
 
 		answer_timeout() { return 500 }
 
-		periodically_timeout() { return 1000 }
+		periodically_timeout() { return 3000 }
 		close_on_every_tick() { return 100_000 }
 
 		override native() {
