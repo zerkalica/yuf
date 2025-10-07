@@ -19003,6 +19003,41 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $yuf_session extends $mol_object {
+        static get _() { return new this(); }
+        token_key() {
+            return 'kc_token';
+        }
+        token_stored(next) {
+            return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
+        }
+        token(next, refresh) {
+            return this.token_stored(next);
+        }
+        logged() {
+            return Boolean(this.token());
+        }
+        logout() {
+            this.token(null);
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_session.prototype, "logged", null);
+    __decorate([
+        $mol_action
+    ], $yuf_session.prototype, "logout", null);
+    __decorate([
+        $mol_memo.field
+    ], $yuf_session, "_", null);
+    $.$yuf_session = $yuf_session;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     class $yuf_transport_error extends $mol_error_mix {
     }
     $.$yuf_transport_error = $yuf_transport_error;
@@ -19038,16 +19073,13 @@ var $;
         static base_url_ws() {
             return this.base_url_full().replace(/^http/, 'ws');
         }
-        static token_key() {
-            return 'kc_token';
-        }
         static loggedin() {
             return Boolean(this.token()) && !this.logining();
         }
         static token(next) {
             if (next)
                 this.logining(false);
-            return this.$.$mol_state_local.value(this.token_key(), next) ?? null;
+            return this.$.$yuf_session._.token(next);
         }
         static headers_auth(token) {
             return {

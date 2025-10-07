@@ -337,7 +337,8 @@
     "$mol_icon_eye_off",
     "$yuf_form_bid",
     "$yuf_form",
-    "$yuf_transport"
+    "$yuf_transport",
+    "$yuf_session"
   ],
   "dependencies": {
     "jsdom": "*"

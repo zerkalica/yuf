@@ -8659,6 +8659,17 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    class $yuf_session extends $mol_object {
+        static get _(): $yuf_session;
+        token_key(): string;
+        token_stored(next?: string | null): string | null;
+        token(next?: string | null, refresh?: 'refresh'): string | null;
+        logged(): boolean;
+        logout(): null;
+    }
+}
+
+declare namespace $ {
     type $yuf_transport_req = Omit<RequestInit, 'headers'> & {
         deadline?: number;
         headers?: Record<string, string | null>;
@@ -8685,7 +8696,6 @@ declare namespace $ {
         static base_url(next?: string): string;
         static base_url_full(): string;
         static base_url_ws(): string;
-        static token_key(): string;
         static loggedin(): boolean;
         static token(next?: string | null): string | null;
         static headers_auth(token: string): Record<string, string> | null;
