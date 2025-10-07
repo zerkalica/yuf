@@ -46,11 +46,32 @@ namespace $ {
 		mock_periodically() { return false }
 
 		@ $mol_mem_key
+		value_draft<
+			Field extends keyof ReturnType< this['defaults'] >
+		>(
+			field: Field,
+			next?: ReturnType< this['defaults'] >[ Field ] | null
+		): ReturnType< this['defaults'] >[ Field ] {
+			const patch = next === undefined
+				? undefined
+				: { [field]: next } as Partial<ReturnType<this['defaults']>>
+
+			const draft = this.draft(patch)
+			const value = draft?.[ field as never ] as ReturnType< this['defaults'] >[ Field ]
+			if ( value !== undefined) return value
+
+			const data = this.data( patch )
+
+			return data?.[ field as never ] as ReturnType< this['defaults'] >[ Field ]
+		}
+
+		@ $mol_mem_key
 		value<
 			Field extends keyof ReturnType< this['defaults'] >
 		>(
 			field: Field,
 			next?: ReturnType< this['defaults'] >[ Field ] | null,
+			draft?: 'draft'
 		): ReturnType< this['defaults'] >[ Field ] {
 			const data = this.data( next === undefined
 				? undefined
@@ -99,7 +120,7 @@ namespace $ {
 			}
 
 			if ( (next || next === null) && ! cache ) {
-				if (next) this.draft(next)
+				this.draft(next)
 				if (next === null) this.removing(true)
 				actual = this.pushing()
 			}
@@ -131,6 +152,8 @@ namespace $ {
 
 		debounce_timeout() { return 100 }
 
+		patch_enabled() { return false }
+
 		@ $mol_mem
 		pushing() {
 			const draft = this.draft()
@@ -140,7 +163,10 @@ namespace $ {
 			const debounce_timeout = this.debounce_timeout()
 			if (debounce_timeout) this.$.$yuf_wait_timeout(debounce_timeout)
 
-			const data = removing || ! draft ? null : this.merge_prev(draft)
+			const data = removing || ! draft
+				? null
+				: (this.patch_enabled() ? draft : this.merge_prev(draft))
+
 			const pushing = this.factory().pushing
 
 			try {
@@ -162,8 +188,6 @@ namespace $ {
 				$mol_fail_hidden(e)
 			}
 		}
-
-		deadline_timeout() { return 5000 }
 
 	}
 }
