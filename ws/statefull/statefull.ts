@@ -51,6 +51,10 @@ namespace $ {
 			return { type, id, query, device }
 		}
 
+		code_to_error(error: string | number) {
+			return '' + error
+		}
+
 		/**
 		 * @throws if error field in message object is not empty
 		 * @returns undefined - not recognized message, null - delete patch
@@ -60,9 +64,11 @@ namespace $ {
 			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return undefined
 			if ((obj as { error?: string | null }).error === null) return undefined
 
-			if (! obj.error) return obj.data === undefined ? {} : obj.data
+			const error = obj.error ? (this.code_to_error(obj.error) || obj.error) : null
 
-			let message = `${obj.message ? `${obj.message} ` : ''}[${obj.error}]`
+			if (! error) return obj.data === undefined ? {} : obj.data
+
+			let message = `${obj.message ? `${obj.message} ` : ''}[${error}]`
 
 			if (obj.type) message += '/' + obj.type
 			if (obj.id) message += '/' + obj.id
@@ -74,8 +80,8 @@ namespace $ {
 
 			throw new $yuf_transport_error(message, {
 				message: obj.message,
-				code: obj.error,
-				http_code: obj.error === 'AUTH_FAILED' ? 403 : undefined,
+				code: error,
+				http_code: error === 'AUTH_FAILED' ? 403 : undefined,
 				json: obj
 			})
 		}
