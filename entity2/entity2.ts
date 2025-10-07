@@ -30,10 +30,7 @@ namespace $ {
 			this.factory().active[this.toString()] = this
 		}
 
-		protected destructed = false
-
 		override destructor() {
-			this.destructed = true
 			if (this.$.$yuf_entity2.prototype.mock === this.mock) return
 			delete this.factory().active[this.toString()]
 		}
@@ -95,12 +92,6 @@ namespace $ {
 			cache?: 'cache'
 		): ReturnType<this['defaults']> | null {
 			let actual = cache ? next : undefined
-			if (this.destructed) {
-				// Restarts after destruction
-				// Bug in https://github.com/hyoo-ru/mam_mol/commit/0b4b1c9e2bcd252fde21f43c9d092885c104aebe
-				// https://t.me/mam_mol/166228
-				return null
-			}
 
 			if (next === undefined) {
 				// undefined - subscribe to entity changes
