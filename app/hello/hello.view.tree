@@ -1,4 +1,7 @@
-$yuf_app_hello $mol_view
-	dom_name \pre
-	sub /
-		^ logs /string
+$yuf_app_hello $mol_page
+	body /
+		<= List $mol_list
+			rows <= rows /$mol_view
+				<= Log*0 $mol_dimmer
+					minimal_height 40
+					haystack <= log_row* \
