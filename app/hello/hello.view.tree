@@ -1,17 +1,13 @@
 $yuf_app_hello $mol_example_small
 	title \Test app
 	sub /
-		<= Page $yuf_app_hello_page
-	tags /
-		\app
-		\list
-	aspects /
-		\App
-
-$yuf_app_hello_page $mol_page
-	body /
 		<= List $mol_list
 			rows <= rows /$mol_view
 				<= Log*0 $mol_view
 					minimal_height 40
 					sub / <= log_row* \
+	tags /
+		\app
+		\list
+	aspects /
+		\App
