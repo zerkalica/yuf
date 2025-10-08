@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $yuf_app_hello extends $.$yuf_app_hello {
+	export class $yuf_app_hello_page extends $.$yuf_app_hello_page {
 		@ $mol_mem
 		logs(next?: readonly string[]): readonly string[] {
 			const prev = $mol_wire_probe(() => this.logs()) ?? []
