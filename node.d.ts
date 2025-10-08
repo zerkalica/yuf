@@ -9002,42 +9002,37 @@ declare namespace $ {
 
 declare namespace $ {
 
+	type $mol_view__minimal_height_yuf_app_hello_1 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_view['minimal_height'] >
+	>
+	type $mol_view__sub_yuf_app_hello_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_list__rows_yuf_app_hello_3 = $mol_type_enforce<
+		ReturnType< $yuf_app_hello['rows'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
 	export class $yuf_app_hello extends $mol_example_small {
-		Page( ): $yuf_app_hello_page
+		log_row( id: any): string
+		Log( id: any): $mol_view
+		rows( ): readonly($mol_view)[]
+		List( ): $mol_list
 		title( ): string
 		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
 	}
 	
-	type $mol_view__minimal_height_yuf_app_hello_page_1 = $mol_type_enforce<
-		number
-		,
-		ReturnType< $mol_view['minimal_height'] >
-	>
-	type $mol_view__sub_yuf_app_hello_page_2 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_view['sub'] >
-	>
-	type $mol_list__rows_yuf_app_hello_page_3 = $mol_type_enforce<
-		ReturnType< $yuf_app_hello_page['rows'] >
-		,
-		ReturnType< $mol_list['rows'] >
-	>
-	export class $yuf_app_hello_page extends $mol_page {
-		log_row( id: any): string
-		Log( id: any): $mol_view
-		rows( ): readonly($mol_view)[]
-		List( ): $mol_list
-		body( ): readonly(any)[]
-	}
-	
 }
 
 //# sourceMappingURL=hello.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_app_hello_page extends $.$yuf_app_hello_page {
+    class $yuf_app_hello extends $.$yuf_app_hello {
         logs(next?: readonly string[]): readonly string[];
         log_add(): null;
         rows(): $mol_view[];

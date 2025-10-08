@@ -19489,25 +19489,6 @@ var $;
 
 ;
 	($.$yuf_app_hello) = class $yuf_app_hello extends ($.$mol_example_small) {
-		Page(){
-			const obj = new this.$.$yuf_app_hello_page();
-			return obj;
-		}
-		title(){
-			return "Test app";
-		}
-		sub(){
-			return [(this.Page())];
-		}
-		tags(){
-			return ["app", "list"];
-		}
-		aspects(){
-			return ["App"];
-		}
-	};
-	($mol_mem(($.$yuf_app_hello.prototype), "Page"));
-	($.$yuf_app_hello_page) = class $yuf_app_hello_page extends ($.$mol_page) {
 		log_row(id){
 			return "";
 		}
@@ -19525,12 +19506,21 @@ var $;
 			(obj.rows) = () => ((this.rows()));
 			return obj;
 		}
-		body(){
+		title(){
+			return "Test app";
+		}
+		sub(){
 			return [(this.List())];
 		}
+		tags(){
+			return ["app", "list"];
+		}
+		aspects(){
+			return ["App"];
+		}
 	};
-	($mol_mem_key(($.$yuf_app_hello_page.prototype), "Log"));
-	($mol_mem(($.$yuf_app_hello_page.prototype), "List"));
+	($mol_mem_key(($.$yuf_app_hello.prototype), "Log"));
+	($mol_mem(($.$yuf_app_hello.prototype), "List"));
 
 
 ;
@@ -19698,7 +19688,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_app_hello_page extends $.$yuf_app_hello_page {
+        class $yuf_app_hello extends $.$yuf_app_hello {
             logs(next) {
                 const prev = $mol_wire_probe(() => this.logs()) ?? [];
                 return [...next ?? [], ...prev];
@@ -19720,14 +19710,14 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $yuf_app_hello_page.prototype, "logs", null);
+        ], $yuf_app_hello.prototype, "logs", null);
         __decorate([
             $mol_mem
-        ], $yuf_app_hello_page.prototype, "log_add", null);
+        ], $yuf_app_hello.prototype, "log_add", null);
         __decorate([
             $mol_mem
-        ], $yuf_app_hello_page.prototype, "rows", null);
-        $$.$yuf_app_hello_page = $yuf_app_hello_page;
+        ], $yuf_app_hello.prototype, "rows", null);
+        $$.$yuf_app_hello = $yuf_app_hello;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
