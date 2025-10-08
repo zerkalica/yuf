@@ -41,6 +41,9 @@ namespace $ {
 			ws.onclose = null
 			ws.onmessage = null
 			ws.onopen = null
+			const state = ws.readyState
+			if (state === WebSocket.CLOSED) return null
+			if (state === WebSocket.CLOSING) return null
 			ws.close()
 		}
 	}
