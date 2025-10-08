@@ -338,7 +338,12 @@
     "$yuf_form_bid",
     "$yuf_form",
     "$yuf_transport",
-    "$yuf_session"
+    "$yuf_session",
+    "$yuf_app_hello",
+    "$yuf_app",
+    "$mol_stub",
+    "$mol_unit_money",
+    "$mol_unit"
   ],
   "dependencies": {
     "jsdom": "*"

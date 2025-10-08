@@ -8958,5 +8958,93 @@ declare namespace $.$$ {
     }
 }
 
+declare namespace $ {
+    class $mol_unit extends $mol_object {
+        'valueOf()': number;
+        constructor(value?: number);
+        prefix(): string;
+        postfix(): string;
+        [Symbol.toPrimitive](hint: 'number' | 'string' | 'default'): string | number;
+        valueOf(): number;
+        delimiter(): string;
+        value_view(): string;
+        toString(): string;
+        static summ(a: $mol_unit, b: $mol_unit): any;
+        mult(m: number): this;
+    }
+}
+
+declare namespace $ {
+    class $mol_unit_money extends $mol_unit {
+    }
+    class $mol_unit_money_usd extends $mol_unit_money {
+        prefix(): string;
+    }
+    class $mol_unit_money_rub extends $mol_unit_money {
+        postfix(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_stub_strings(prefix?: string, count?: number, length?: number): any[];
+    function $mol_stub_code(length?: number): string;
+    function $mol_stub_price(max?: number): $mol_unit_money_usd;
+    function $mol_stub_product_name(): string;
+    function $mol_stub_company_name_big(): string;
+    function $mol_stub_company_name_small(): string;
+    function $mol_stub_company_name(): string;
+    function $mol_stub_person_name(): string;
+    function $mol_stub_person_avatar(size?: number): string;
+    function $mol_stub_city(): string;
+    function $mol_stub_time(maxShift?: number): $mol_time_moment;
+    function $mol_stub_message(max_length: number): string;
+}
+
+declare namespace $ {
+
+	export class $yuf_app_hello extends $mol_example_small {
+		Page( ): $yuf_app_hello_page
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $mol_view__minimal_height_yuf_app_hello_page_1 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_view['minimal_height'] >
+	>
+	type $mol_view__sub_yuf_app_hello_page_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_list__rows_yuf_app_hello_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_app_hello_page['rows'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	export class $yuf_app_hello_page extends $mol_page {
+		log_row( id: any): string
+		Log( id: any): $mol_view
+		rows( ): readonly($mol_view)[]
+		List( ): $mol_list
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=hello.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_app_hello_page extends $.$yuf_app_hello_page {
+        logs(next?: readonly string[]): readonly string[];
+        log_add(): null;
+        rows(): $mol_view[];
+        log_row(index: number): string;
+        auto(): void;
+    }
+}
+
 export = $;
 //# sourceMappingURL=node.d.ts.map
