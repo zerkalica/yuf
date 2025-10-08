@@ -19807,19 +19807,29 @@ var $;
     (function ($$) {
         class $yuf_app_hello extends $.$yuf_app_hello {
             logs(next) {
-                const prev = $mol_wire_probe(() => this.logs()) ?? [];
+                const prev = $mol_wire_probe(() => this.logs()) ?? this.make_rows(50);
                 return [...next ?? [], ...prev];
             }
+            make_rows(count = 1) {
+                const result = [];
+                for (let i = 0; i < count; i++) {
+                    result.push(new Date().toISOString() + ': ' + $mol_stub_message(500) + i);
+                }
+                return result;
+            }
             log_add() {
-                this.logs([new Date().toISOString() + ': ' + $mol_stub_message(500)]);
-                this.$.$mol_state_time.now(200);
+                this.logs(this.make_rows(1));
+                let ms = Number(this.$.$mol_state_arg.value('log_delay') || 0) || 1000;
+                if (Number.isNaN(ms))
+                    ms = 1000;
+                this.$.$mol_state_time.now(ms);
                 return null;
             }
             rows() {
-                return this.logs().map((_, i) => this.Log(i));
+                return this.logs().map(_ => this.Log(_));
             }
-            log_row(index) {
-                return this.logs()[index];
+            log_row(val) {
+                return val;
             }
             auto() {
                 this.log_add();
@@ -19835,6 +19845,20 @@ var $;
             $mol_mem
         ], $yuf_app_hello.prototype, "rows", null);
         $$.$yuf_app_hello = $yuf_app_hello;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_app_hello, {
+            Log: {
+                padding: $mol_gap.block,
+            }
+        });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

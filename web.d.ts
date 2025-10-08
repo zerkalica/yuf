@@ -8977,11 +8977,15 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_app_hello extends $.$yuf_app_hello {
         logs(next?: readonly string[]): readonly string[];
+        make_rows(count?: number): string[];
         log_add(): null;
         rows(): $mol_view[];
-        log_row(index: number): string;
+        log_row(val: string): string;
         auto(): void;
     }
+}
+
+declare namespace $.$$ {
 }
 
 export = $;
