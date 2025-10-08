@@ -48,7 +48,7 @@ namespace $ {
 		}
 
 		@ $mol_action
-		create_draft() {
+		draft_create() {
 			const id = this.id_pick()
 			const item = this.by_id(id) as ReturnType<this['by_id']>
 			// prevent fetching on read prop

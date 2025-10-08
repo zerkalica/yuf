@@ -91,8 +91,12 @@ namespace $ {
 		deadline_timeout() { return 20000 }
 
 		@ $mol_mem_key
-		channel<Val>(signature: {}) {
+		protected channel<Val>(signature: {}) {
 			return new this.$.$yuf_ws_statefull_channel<Val>(this, signature)
+		}
+
+		data<Val>(signature: {}, data?: null | Val) {
+			return this.channel<Val>(signature).data(data)
 		}
 
 		protected override on_object( obj: {} ) {

@@ -9,18 +9,13 @@ namespace $ {
 			return this.id() ? [ this.id() ] : []
 		}
 
-		@ $mol_mem
-		tmp_id(next?: string | null) {
-			return next ?? null
+		protected factory() {
+			return this.constructor as typeof $yuf_ws_entity_store
 		}
 
 		@ $mol_action
-		draft_saved() {
-			const id = this.tmp_id()
-			if (! id ) return null
-			this.tmp_id(null)
-			this.ids([... this.ids(), id ])
-			return null
+		pick_id() {
+			return $mol_guid()
 		}
 
 		@ $mol_mem
@@ -30,22 +25,18 @@ namespace $ {
 			if (next && cache === 'append') next = [ ...prev, ...next ]
 			if (next && cache === 'prepend') next = [ ...next, ...prev ]
 
-			const ids = this.data(next as ReturnType<this['defaults']>, cache ? 'cache' : undefined) ?? [] as readonly string[]
-
-			let tmp_id = this.tmp_id()
-			if (tmp_id && ids.includes(tmp_id)) tmp_id = this.tmp_id(null)
-			return tmp_id ? [ tmp_id, ... ids ] : ids
+			return this.data(
+				next as ReturnType<this['defaults']>,
+				cache ? 'cache' : undefined
+			) ?? [] as readonly string[]
 		}
 
 		@ $mol_action
-		create_draft() {
-			const id = $mol_guid()
-			const item = this.by_id(id)
-			// prevent fetching on read prop
-			item.data({}, 'cache')
-			this.tmp_id(id)
+		draft_create() {
+			const model = this.by_id(this.pick_id())
+			model.draft(null, 'creating')
 
-			return item as ReturnType<this['by_id']>
+			return model
 		}
 
 		@ $mol_mem_key
