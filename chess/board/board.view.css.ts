@@ -11,6 +11,13 @@ namespace $ {
 		},
 		gap: $mol_gap.space,
 		padding: $mol_gap.text,
+
+		Label: {
+			minHeight: '1.5rem'
+		},
+		Content: {
+			minHeight: '1.5rem'
+		},
 	})
 
 	$mol_style_define( $yuf_chess_board , {
@@ -26,6 +33,7 @@ namespace $ {
 			basis: '80vh',
 		},
 		Toolbar: {
+			minHeight: '2.5rem',
 			padding: {
 				left: rem(1),
 			},

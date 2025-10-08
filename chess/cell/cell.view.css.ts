@@ -1,18 +1,17 @@
 namespace $ {
-	const { rem, px, em, per, vw, vh, s } = $mol_style_unit
-	const { calc, hsla, vary, steps } = $mol_style_func
+	const { vary } = $mol_style_func
 
 	$mol_style_define( $yuf_chess_cell , {
-		minWidth: px(40),
-		minHeight: px(40),
+		minWidth: '2.25rem',
+		minHeight: '2.25rem',
 		// aspectRatio: 1,
 		background: {
 			color: vary('--yuf_chess_cell_white'),
 		},
 		border: { radius: 0 },
 		$mol_icon: {
-			width: per(100),
-			height: per(100),
+			width: '100%',
+			height: '100%',
 		},
 		'@': {
 			yuf_chess_cell_color: {
