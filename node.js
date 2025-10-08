@@ -4464,7 +4464,6 @@ var $;
         }
         dom_node_actual() {
             const node = this.dom_node();
-            $mol_dom_render_styles(node, this.style_size());
             const attr = this.attr();
             const style = this.style();
             $mol_dom_render_attributes(node, attr);
@@ -4563,12 +4562,6 @@ var $;
         attr() {
             return {
                 mol_theme: this.theme() ?? undefined,
-            };
-        }
-        style_size() {
-            return {
-                minHeight: this.minimal_height(),
-                minWidth: this.minimal_width(),
             };
         }
         style() {
@@ -9437,7 +9430,8 @@ var $;
                 ];
             }
             row_content(path) {
-                return this.tokens(path).map((t, i) => this.Token([...path, i]));
+                const content = this.tokens(path).map((t, i) => this.Token([...path, i]));
+                return content.length ? content : ['\n'];
             }
             Token(path) {
                 return this.token_type(path) === 'code-link' ? this.Token_link(path) : super.Token(path);
@@ -9852,6 +9846,7 @@ var $;
             },
             Rows: {
                 padding: $mol_gap.text,
+                minWidth: 0,
             },
             Row: {
                 font: {
@@ -13249,18 +13244,17 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    const { rem, px, em, per, vw, vh, s } = $mol_style_unit;
-    const { calc, hsla, vary, steps } = $mol_style_func;
+    const { vary } = $mol_style_func;
     $mol_style_define($yuf_chess_cell, {
-        minWidth: px(40),
-        minHeight: px(40),
+        minWidth: '2.25rem',
+        minHeight: '2.25rem',
         background: {
             color: vary('--yuf_chess_cell_white'),
         },
         border: { radius: 0 },
         $mol_icon: {
-            width: per(100),
-            height: per(100),
+            width: '100%',
+            height: '100%',
         },
         '@': {
             yuf_chess_cell_color: {
@@ -13980,6 +13974,12 @@ var $;
         },
         gap: $mol_gap.space,
         padding: $mol_gap.text,
+        Label: {
+            minHeight: '1.5rem'
+        },
+        Content: {
+            minHeight: '1.5rem'
+        },
     });
     $mol_style_define($yuf_chess_board, {
         background: {
@@ -13994,6 +13994,7 @@ var $;
             basis: '80vh',
         },
         Toolbar: {
+            minHeight: '2.5rem',
             padding: {
                 left: rem(1),
             },
