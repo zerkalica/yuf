@@ -69,13 +69,15 @@ namespace $ {
 			return Boolean(this.token()) && ! this.logining()
 		}
 
+		static session () { return this.$.$yuf_session._ }
+
 		/**
 		 * Access token, placed in local storage by default.
 		 */
 		@ $mol_mem
 		static token( next? : string | null ) {
 			if (next) this.logining(false)
-			return this.$.$yuf_session._.token(next)
+			return this.session().token(next)
 		}
 
 		/**
