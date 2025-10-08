@@ -8697,6 +8697,7 @@ declare namespace $ {
         static base_url_full(): string;
         static base_url_ws(): string;
         static loggedin(): boolean;
+        static session(): $yuf_session;
         static token(next?: string | null): string | null;
         static headers_auth(token: string): Record<string, string> | null;
         static client_id(): string;

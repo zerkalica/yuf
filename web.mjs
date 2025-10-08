@@ -19076,10 +19076,11 @@ var $;
         static loggedin() {
             return Boolean(this.token()) && !this.logining();
         }
+        static session() { return this.$.$yuf_session._; }
         static token(next) {
             if (next)
                 this.logining(false);
-            return this.$.$yuf_session._.token(next);
+            return this.session().token(next);
         }
         static headers_auth(token) {
             return {
