@@ -5,13 +5,22 @@ namespace $ {
 		@ $mol_mem
 		static syncing() {
 			let syncing = false
+			const errors = [] as Error[]
+
 			for (const model of this.pushing) {
 				try {
 					model?.pushing()
 				} catch (e) {
 					if ($mol_promise_like(e)) syncing = true
+					else errors.push(e as Error)
 				}
 			}
+
+			if (errors.length) {
+				if (errors.length === 1) throw errors[0]
+				throw new $mol_error_mix(errors[0].message, errors[0].cause ?? {}, ...errors)
+			}
+
 			return syncing
 		}
 
@@ -31,6 +40,8 @@ namespace $ {
 		}
 
 		override destructor() {
+			// remove itself from this.factory().pushing set
+			this.draft(null)
 			if (this.$.$yuf_entity2.prototype.mock === this.mock) return
 			delete this.factory().active[this.toString()]
 		}
@@ -72,7 +83,8 @@ namespace $ {
 		draft(
 			next?: Partial<ReturnType<this['defaults']>> | null,
 			flag?: 'removing' | 'creating'
-		): Partial<ReturnType<this['defaults']>> | null {
+		): NonNullable<typeof next> | null {
+
 			if (next === undefined) return null
 
 			this.removing(flag === 'removing')
@@ -81,9 +93,16 @@ namespace $ {
 				this.data(next, 'cache')
 			}
 
-			if (next === null) return null
+			const pushing = this.factory().pushing
 
-			const prev = $mol_wire_probe(() => this.draft())
+			if (next === null) {
+				pushing.delete(this)
+				return null
+			}
+			pushing.add(this)
+
+			const prev = $mol_wire_probe(() => this.draft()) ?? null
+
 			// merge with prev object, while debouncing
 			return this.merge(next, prev)
 		}
@@ -98,53 +117,46 @@ namespace $ {
 			next?: Partial<ReturnType<this['defaults']>> | null,
 			cache?: 'cache'
 		): ReturnType<this['defaults']> | null {
-			let actual = cache ? next : undefined
+			let actual
 
 			if (next === undefined) {
 				actual = this.actual()
-			}
-
-			if ( (next || next === null) && ! cache ) {
+			} else if (cache) {
+				actual = next
+			} else {
 				this.draft(next, next === null ? 'removing' : undefined)
 				actual = this.pushing()
 			}
 
-			if (next instanceof Error) {
-				return next as ReturnType<this['defaults']>
-			}
+			if (actual === null) return null
 
-			if (actual === null || actual instanceof Error) {
+			if (actual instanceof Error) {
 				return actual as ReturnType<this['defaults']>
 			}
 
-			return this.merge_prev(actual)
+			return this.defaults(this.merge(actual)) as ReturnType<this['defaults']>
 		}
 
-		merge(actual: Partial<ReturnType<this['defaults']>> | undefined, prev?: typeof actual | null) {
-			// broken back returns undefined data on push, it converts to empty object in ws statefull
-			// convert it to prev value
+		merge(
+			actual: Partial<ReturnType<this['defaults']>>,
+			prev: typeof actual | undefined | null = $mol_wire_probe(() => this.data())
+		) {
+			// broken backend returns undefined data on push,
+			// it converts to empty object in $yuf_ws_statefull.message_data
+			// convert it to right type or return prev value if not undefined
 			if (this.defaults() instanceof Array) {
-				if (actual instanceof Array) return actual as ReturnType<this['defaults']>
-				return prev ?? [] as ReturnType<this['defaults']>
+				if (actual instanceof Array) return actual
+				return prev ?? [] as unknown as typeof actual
 			}
 
 			return { ...prev, ...actual }
 		}
 
-		merge_prev(patch: Partial<ReturnType<this['defaults']>> | undefined) {
-			const prev = $mol_wire_probe(() => this.data())
-			const merged = this.merge(patch, prev)
-
-			try {
-				return this.defaults(merged) as ReturnType<this['defaults']>
-			} catch (e) {
-				;(e as Error).message += `, ${this}`
-				$mol_fail_hidden(e)
-			}
-		}
-
 		debounce_timeout() { return 100 }
 
+		/**
+		 * True if backend supports partial push
+		 */
 		patch_enabled() { return false }
 
 		// Always pulled somewhere in app to track pushing status of each model
@@ -161,25 +173,20 @@ namespace $ {
 				this.$.$yuf_wait_timeout(debounce_timeout)
 			}
 
-			const data = removing || ! draft
-				? null
-				: (this.patch_enabled() ? draft : this.merge_prev(draft))
-
-			const pushing = this.factory().pushing
-
 			try {
-				pushing.add(this)
+				const data = removing || ! draft ? null :
+					this.patch_enabled() ? draft : this.defaults(this.merge(draft))
+
 				const actual = this.actual(data)
-				const result = actual ? this.merge(actual, draft) : null
-				pushing.delete(this)
+				// broken backend returns undefined data on push,
+				// it converts to empty object in $yuf_ws_statefull.message_data
+				// if removing true - do not merge with prev value, assume null - object deleted
+				const result = actual && ! removing ? this.merge(actual, draft) : null
 				this.draft(null)
+
 				return result
 			} catch (e) {
-				if ( ! $mol_promise_like(e) ) {
-					pushing.delete(this)
-					this.draft(null)
-				}
-
+				if ( ! $mol_promise_like(e) ) this.draft(null)
 				$mol_fail_hidden(e)
 			}
 		}
