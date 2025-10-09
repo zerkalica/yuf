@@ -8976,8 +8976,9 @@ declare namespace $.$$ {
         logs(next?: readonly string[]): readonly string[];
         make_rows(count?: number): string[];
         log_add(): null;
+        indices(): number[];
         rows(): $mol_view[];
-        log_row(val: string): string;
+        log_row(index: number): string;
         auto(): void;
     }
 }

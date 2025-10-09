@@ -19814,7 +19814,7 @@ var $;
         class $yuf_app_hello extends $.$yuf_app_hello {
             logs(next) {
                 const prev = $mol_wire_probe(() => this.logs()) ?? this.make_rows(50);
-                return [...next ?? [], ...prev];
+                return [...prev, ...next ?? []];
             }
             make_rows(count = 1) {
                 const result = [];
@@ -19831,11 +19831,14 @@ var $;
                 this.$.$mol_state_time.now(ms);
                 return null;
             }
-            rows() {
-                return this.logs().map(_ => this.Log(_));
+            indices() {
+                return this.logs().map((_, index) => index).reverse();
             }
-            log_row(val) {
-                return val;
+            rows() {
+                return this.indices().map((index) => this.Log(index));
+            }
+            log_row(index) {
+                return this.logs()[index];
             }
             auto() {
                 this.log_add();
@@ -19847,6 +19850,9 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_app_hello.prototype, "log_add", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_app_hello.prototype, "indices", null);
         __decorate([
             $mol_mem
         ], $yuf_app_hello.prototype, "rows", null);
