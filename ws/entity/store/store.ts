@@ -33,8 +33,9 @@ namespace $ {
 
 		@ $mol_action
 		draft_create() {
-			const model = this.by_id(this.pick_id())
-			model.draft(null, 'creating')
+			const id = this.pick_id()
+			const model = this.by_id(id)
+			model.draft({ id }, 'creating')
 
 			return model
 		}

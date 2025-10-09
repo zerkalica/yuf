@@ -14,7 +14,6 @@ namespace $ {
 			super(executor)
 		}
 
-
 		set(next: Result | Error) {
 			this.value = next
 			this.timer.destructor()
@@ -79,7 +78,10 @@ namespace $ {
 
 			const value = this.response.value as Val | null | Error
 
-			if (value === undefined) $mol_fail_hidden(this.response)
+			// without .catch mol wire system hangs up on restart
+			if (value === undefined) {
+				$mol_fail_hidden(this.response.catch(e => null))
+			}
 
 			this.response = null
 
