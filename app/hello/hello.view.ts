@@ -3,7 +3,7 @@ namespace $.$$ {
 		@ $mol_mem
 		logs(next?: readonly string[]): readonly string[] {
 			const prev = $mol_wire_probe(() => this.logs()) ?? this.make_rows(50)
-			return [ ...next ?? [], ...prev ]
+			return [ ...prev, ...next ?? [] ]
 		}
 
 		make_rows(count = 1) {
@@ -24,12 +24,17 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override rows() {
-			return this.logs().map(_ => this.Log(_))
+		indices() {
+			return this.logs().map((_, index) => index).reverse()
 		}
 
-		log_row(val: string) {
-			return val
+		@ $mol_mem
+		override rows() {
+			return this.indices().map((index) => this.Log(index))
+		}
+
+		log_row(index: number) {
+			return this.logs()[index]
 		}
 
 		auto() {
