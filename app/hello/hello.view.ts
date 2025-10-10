@@ -8,8 +8,10 @@ namespace $.$$ {
 
 		make_rows(count = 1) {
 			const result = [] as string[]
+			let str_len = Number(this.$.$mol_state_arg.value('str_len') || 0) || 1000
+			if (Number.isNaN(str_len)) str_len = 500
 			for (let i = 0; i < count; i++) {
-				result.push(new Date().toISOString() + ': ' + $mol_stub_message(2500) + i)
+				result.push(new Date().toISOString() + ': ' + $mol_stub_message(str_len) + i)
 			}
 			return result
 		}
