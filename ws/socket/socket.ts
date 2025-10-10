@@ -43,7 +43,11 @@ namespace $ {
 			ws.onopen = null
 			const state = ws.readyState
 			if (state === WebSocket.CLOSED || state === WebSocket.CLOSING) return
-			ws.close()
+			try {
+				ws.close()
+			} catch (e) {
+				$mol_fail_log(e)
+			}
 		}
 	}
 

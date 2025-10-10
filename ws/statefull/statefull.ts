@@ -70,15 +70,8 @@ namespace $ {
 
 			if (! error) return obj.data === undefined ? {} : obj.data
 
-			let message = `${obj.message ? `${obj.message} ` : ''}[${error}]`
-
-			if (obj.type) message += '/' + obj.type
-			if (obj.id) message += '/' + obj.id
-			if (obj.device?.length) message += `/device/${obj.device.join('~')}`
-
-			if (obj.query) message += '?' + new URLSearchParams(
-				Object.entries(obj.query as Record<string, string>)
-			).toString()
+			const signature = this.message_signature(obj)
+			const message = `${obj.message ? `${obj.message} ` : ''} [${error}] ${JSON.stringify(signature)}`
 
 			throw new $yuf_transport_error(message, {
 				message: obj.message,

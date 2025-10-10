@@ -9,7 +9,7 @@ namespace $.$$ {
 		make_rows(count = 1) {
 			const result = [] as string[]
 			for (let i = 0; i < count; i++) {
-				result.push(new Date().toISOString() + ': ' + $mol_stub_message(500) + i)
+				result.push(new Date().toISOString() + ': ' + $mol_stub_message(2500) + i)
 			}
 			return result
 		}
