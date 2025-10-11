@@ -10,14 +10,9 @@ namespace $ {
 
 		state() { return this.$.$mol_state_local }
 
-		@ $mol_mem
-		protected token_refresh(next?: string | null) {
-			return this.state().value(`kc_refreshToken`, next === '' ? null : next) ?? null
-		}
-
-		@ $mol_mem
-		protected token_idt(next?: string | null) {
-			return this.state().value(`kc_id_token`, next === '' ? null : next) ?? null
+		@ $mol_mem_key
+		protected token_extra(key: 'refresh' | 'id', next?: string | null) {
+			return this.state().value(`${this.token_key()}_${key}`, next === '' ? null : next) || null
 		}
 
 		login_goto() {

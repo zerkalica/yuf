@@ -66,7 +66,7 @@ namespace $ {
 		 */
 		@ $mol_mem
 		static loggedin() {
-			return Boolean(this.token()) && ! this.logining()
+			return Boolean(this.session().logged()) && ! this.logining()
 		}
 
 		static session () { return this.$.$yuf_session._ }
@@ -74,10 +74,8 @@ namespace $ {
 		/**
 		 * Access token, placed in local storage by default.
 		 */
-		@ $mol_mem
-		static token( next? : string | null ) {
-			if (next) this.logining(false)
-			return this.session().token(next)
+		static token() {
+			return this.session().token()
 		}
 
 		/**
@@ -220,9 +218,8 @@ namespace $ {
 		/**
 		 * If obsolete access token, get it via refresh token.
 		 */
-		@ $mol_action
 		static refresh() {
-			throw new Error('Implement refresh')
+			this.session().refresh()
 			return true
 		}
 

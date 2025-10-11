@@ -1,14 +1,6 @@
 namespace $ {
 	type $yuf_keycloak_web_bundle = typeof import('./.npm/.app')
 
-	type $yuf_keycloak_web_config =
-		ConstructorParameters<typeof import('./.npm/.app').Keycloak>[0]
-		& Parameters<InstanceType<typeof import('./.npm/.app').Keycloak>['init']>[0]
-
-	type KCCOnfig = $yuf_keycloak_web_config & {
-		minValidity?: number
-	}
-
 	export class $yuf_keycloak_web extends $yuf_keycloak {
 		@ $mol_memo.field
 		static get _() { return new this() }
@@ -30,49 +22,38 @@ namespace $ {
 			return loc.href
 		}
 
-		async kc_raw(params: KCCOnfig) {
-			const { Keycloak } = this.factory().module()
-			const kc = $yuf_error_safe(new Keycloak(params))
-
-			kc.onAuthRefreshSuccess = $mol_wire_async(() => this.on_refresh_success())
-			kc.onAuthRefreshError = $mol_wire_async(() => this.on_refresh_error())
-			kc.onTokenExpired = $mol_wire_async(() => this.on_expired())
-
-			await kc.init(params)
-			return kc
+		protected Keycloak() {
+			return this.factory().module().Keycloak
 		}
 
-
-		@ $mol_mem
 		@ $mol_action
-		kc() {
-			const params: KCCOnfig = {
+		protected kc_instance() {
+			const Keycloak = this.Keycloak()
+
+			const kc = new Keycloak({
 				url: this.url(),
 				realm: this.realm(),
 				clientId: this.client_id(),
-				token: this.token_stored() || undefined,
-				idToken: this.token_idt() || undefined,
-				refreshToken: this.token_refresh() || undefined,
+			})
+
+			kc.init = kc.init.bind(kc, {
+				token: this.token() || undefined,
+				idToken: this.token_extra('id') || undefined,
+				refreshToken: this.token_extra('refresh') || undefined,
 				redirectUri: this.redirect_url(),
 				enableLogging: true,
 				timeSkew: 0,
 				minValidity: this.min_validity()
-			}
-
-			const kc_raw = $mol_wire_sync(this).kc_raw(params)
-
-			const kc = $mol_wire_sync(kc_raw)
-
-			this.token_stored(kc.authenticated ? kc.token : '')
-			this.token_refresh(kc.refreshToken)
-			this.token_idt(kc.idToken)
-
-			this.$.$mol_log3_rise({
-				place: `${this.factory()}.kc()`,
-				message: `start`,
-				...this.kc_debug_context(kc)
 			})
 
+			return $mol_wire_sync($yuf_error_safe(kc))
+		}
+
+		@ $mol_mem
+		protected kc() {
+			const kc = this.kc_instance()
+			const inited = kc.init()
+			if (! inited) throw new Error('Cant\'t init keycloak')
 			return kc
 		}
 
@@ -80,7 +61,12 @@ namespace $ {
 			return this.constructor as typeof $yuf_keycloak_web
 		}
 
-		protected kc_debug_context(kc: ReturnType<typeof this.kc>) {
+		protected kc_debug_context(
+			kc: Pick<
+				InstanceType<ReturnType<typeof this.Keycloak>>,
+				'authenticated' | 'token' | 'refreshToken' | 'idToken' | 'isTokenExpired'
+			>
+		) {
 			const num = -5
 
 			return {
@@ -94,52 +80,6 @@ namespace $ {
 			}
 		}
 
-		protected on_expired() { this.update() }
-
-		@ $mol_action
-		protected update(validity = this.min_validity()) {
-			const kc = this.kc()
-			const updated = kc.updateToken(validity)
-
-			this.$.$mol_log3_rise({
-				place: `${this.factory()}.update()`,
-				message: `valid ${validity} sec`,
-				updated: updated ? 'updated' : 'not updated',
-				...this.kc_debug_context(kc)
-			})
-
-			return updated
-		}
-
-		@ $mol_action
-		on_refresh_success() {
-			const kc = this.kc()
-			this.$.$mol_log3_rise({
-				place: `${this.factory()}.success()`,
-				message: 'Token refreshed',
-				...this.kc_debug_context(kc)
-			})
-			this.token_stored(kc.authenticated ? kc.token : '')
-			this.token_refresh(kc.refreshToken)
-			this.token_idt(kc.idToken)
-		}
-
-		@ $mol_action
-		on_refresh_error() {
-			const kc = this.kc()
-
-			this.$.$mol_log3_warn({
-				place: `${this.factory()}.error()`,
-				message: 'Token refresh error',
-				hint: 'see keycloak.onAuthRefreshError',
-				...this.kc_debug_context(kc)
-			})
-
-			this.token_stored(null)
-			this.token_refresh(null)
-			this.token_idt(null)
-		}
-
 		register_url() {
 			return this.kc().createRegisterUrl({ redirectUri: this.redirect_url() })
 		}
@@ -148,39 +88,56 @@ namespace $ {
 			return this.kc().createLoginUrl({ redirectUri: this.redirect_url() })
 		}
 
+		register() {
+			this.$.$mol_dom_context.location.replace(this.register_url())
+		}
+
 		@ $mol_action
 		override login_goto() {
 			this.$.$mol_dom_context.location.replace(this.login_url())
 		}
 
-		register() {
-			this.$.$mol_dom_context.location.replace(this.register_url())
+		@ $mol_mem
+		override token(next?: string | null, op?: 'logout' | 'refreshed') {
+			let kc = $mol_wire_probe(() => this.kc())
+
+			if (next === null) {
+				const logout = op === 'logout'
+				// if kc not loaded and calling logout - just delete all tokens
+				// Do not wait logout - just delete all keys
+				if (logout) {
+					kc && $mol_wire_async(kc).logout()
+					kc = undefined
+				} else {
+					kc = this.kc()
+					if (op !== 'refreshed' && ! kc.updateToken(-1) ) kc = undefined
+				}
+			}
+
+			if (next === undefined) {
+				try {
+					kc = this.kc()
+				} catch (e) {
+					// in pull mode - return token from local storage, while kc loading
+					if ( $mol_promise_like(e) ) return super.token(next)
+					$mol_fail_hidden(e)
+				}
+			}
+
+			next = kc?.authenticated && kc.token ? kc.token : null
+			const id_token = kc?.idToken || null
+			const refresh_token = kc?.refreshToken || null
+
+			this.token_extra('id') !== id_token && this.token_extra('id', id_token)
+			this.token_extra('refresh') !== refresh_token && this.token_extra('refresh', refresh_token)
+
+			return super.token() === next ? next : super.token(next)
 		}
 
 		@ $mol_mem
-		override token(next?: string | null, refresh?: 'refresh') {
-			const kc = this.kc()
-			if (next !== undefined && refresh) {
-				this.update(-1)
-			}
-
-			if (next === undefined && kc.authenticated && kc.isTokenExpired(this.min_validity())) {
-				this.update()
-			}
-
-			if (next === null && kc.authenticated) {
-				kc.logout()
-			}
-
-			const stored = this.token_stored(next)
-
-			if (kc.token && kc.token !== stored) this.token_stored(kc.token)
-
-			if (! kc.authenticated) return null
-
-			return kc.token ?? stored ?? null
+		override logged(reset?: null) {
+			return this.kc().authenticated ?? false
 		}
-
 	}
 
 	function clean_url(url: string) {
