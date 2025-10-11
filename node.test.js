@@ -19115,29 +19115,17 @@ var $;
 (function ($) {
     class $yuf_session extends $mol_object {
         static get _() { return new this(); }
-        token_key() {
-            return 'kc_token';
-        }
-        token_stored(next) {
+        token_key() { return 'kc_token'; }
+        token(next, op) {
             return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
         }
-        token(next, refresh) {
-            return this.token_stored(next);
-        }
-        logged() {
-            return Boolean(this.token());
-        }
-        logout() {
-            this.token(null);
-            return null;
-        }
+        logged() { return Boolean(this.token()); }
+        refresh() { return this.token(null); }
+        logout() { return this.token(null, 'logout'); }
     }
     __decorate([
         $mol_mem
     ], $yuf_session.prototype, "logged", null);
-    __decorate([
-        $mol_action
-    ], $yuf_session.prototype, "logout", null);
     __decorate([
         $mol_memo.field
     ], $yuf_session, "_", null);
@@ -19184,13 +19172,11 @@ var $;
             return this.base_url_full().replace(/^http/, 'ws');
         }
         static loggedin() {
-            return Boolean(this.token()) && !this.logining();
+            return Boolean(this.session().logged()) && !this.logining();
         }
         static session() { return this.$.$yuf_session._; }
-        static token(next) {
-            if (next)
-                this.logining(false);
-            return this.session().token(next);
+        static token() {
+            return this.session().token();
         }
         static headers_auth(token) {
             return {
@@ -19285,7 +19271,7 @@ var $;
             return false;
         }
         static refresh() {
-            throw new Error('Implement refresh');
+            this.session().refresh();
             return true;
         }
         static relogin() {
@@ -19430,9 +19416,6 @@ var $;
         $mol_mem
     ], $yuf_transport, "loggedin", null);
     __decorate([
-        $mol_mem
-    ], $yuf_transport, "token", null);
-    __decorate([
         $mol_action
     ], $yuf_transport, "headers_auth", null);
     __decorate([
@@ -19441,9 +19424,6 @@ var $;
     __decorate([
         $mol_mem_key
     ], $yuf_transport, "object_url_ref", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "refresh", null);
     __decorate([
         $mol_action
     ], $yuf_transport, "relogin", null);

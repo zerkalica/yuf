@@ -8659,10 +8659,10 @@ declare namespace $ {
     class $yuf_session extends $mol_object {
         static get _(): $yuf_session;
         token_key(): string;
-        token_stored(next?: string | null): string | null;
-        token(next?: string | null, refresh?: 'refresh'): string | null;
+        token(next?: string | null, op?: 'logout' | 'refreshed'): string | null;
         logged(): boolean;
-        logout(): null;
+        refresh(): string | null;
+        logout(): string | null;
     }
 }
 
@@ -8695,7 +8695,7 @@ declare namespace $ {
         static base_url_ws(): string;
         static loggedin(): boolean;
         static session(): $yuf_session;
-        static token(next?: string | null): string | null;
+        static token(): string | null;
         static headers_auth(token: string): Record<string, string> | null;
         static client_id(): string;
         static headers_default(): Record<string, string>;
