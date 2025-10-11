@@ -108,44 +108,51 @@ export class YufNpmBuilder {
     static commands(args) {
         const files = args.filter(arg => !arg.startsWith('--'))
         const watch = args.some(arg => arg.includes('--watch'))
-        return { files, watch }
+        const polyfill = args.some(arg => arg.includes('--polyfill'))
+        return { files, watch, polyfill }
     }
 
     /**
      * @param {{watch?: boolean, args?: readonly string[], cwd?: string} | undefined} rec
      */
     static async run(rec) {
-        const cwd = rec?.cwd || this.cwd()
-        const { files, watch } = this.commands(rec?.args?.length ? rec?.args : this.args)
+        const root = rec?.cwd || this.cwd()
+        const { files, watch, polyfill } = this.commands(rec?.args?.length ? rec?.args : this.args)
 
-        const allArgs = [join('gd', 'snap'), ...files]
-        if (files.some(arg => arg.includes('gd/demo'))) allArgs.push('gd/avatar')
+		const selfPath = this.selfPath
+
+		await this.spawn(['npm', 'install'], { cwd: selfPath })
+		if (polyfill) {
+			await this.spawn(['npm', 'install', 'core-js'], { cwd: selfPath })
+		}
 
         const npmDirs = (
             await Promise.all(
-                allArgs.map(arg =>
-                    stat(join(cwd, arg + '.npm'))
-                        .then(stat => (stat.isDirectory() ? arg + '.npm' : null))
+                files.map(arg =>
+                    stat(join(root, join(arg, '.npm')))
+                        .then(stat => (stat.isDirectory() ? join(arg, '.npm') : null))
                         .catch(() => null)
                 )
             )
         ).filter(dir => dir !== null && dir !== undefined)
 
         for (const path of npmDirs) {
-            const dir = join(cwd, path)
-            await this.spawn(['npm', 'install'], { cwd: dir })
-            if (!watch) await this.spawn(['npm', 'run', 'build'], { cwd: dir })
+            const dir = join(root, path)
+			await this.spawn(['npm', 'install'], { cwd: dir })
+
+			if (watch) continue
+			await this.spawn(['npm', 'run', 'build'], { cwd: dir })
         }
 
         if (!watch) {
-            await this.spawn(['npm', 'start', ...files], { cwd })
-            await this.polyfill({ args: files, cwd })
+            await this.spawn(['npm', 'start', ...files], { cwd: root })
+            if (polyfill) await this.polyfill({ args: files, cwd: root })
             return
         }
 
         return Promise.all([
-            ...npmDirs.map(npmDir => (npmDir ? this.spawn(['npm', 'run', 'watch'], { cwd: join(cwd, npmDir) }) : null)),
-            this.spawn(['npm', 'start'], { cwd }),
+            ...npmDirs.map(npmDir => (npmDir ? this.spawn(['npm', 'run', 'watch'], { cwd: join(root, npmDir) }) : null)),
+            this.spawn(['npm', 'start'], { cwd: root }),
         ])
     }
 
