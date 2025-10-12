@@ -2025,17 +2025,18 @@ declare namespace $ {
 		ReturnType< $mol_view['style'] >
 	>
 	export class $mol_list extends $mol_view {
-		rows( ): readonly($mol_view)[]
 		gap_before( ): number
+		Gap_before( ): $mol_view
+		Empty( ): $mol_view
 		gap_after( ): number
+		Gap_after( ): $mol_view
+		rows( ): readonly($mol_view)[]
 		render_visible_only( ): boolean
 		render_over( ): number
 		sub( ): ReturnType< $mol_list['rows'] >
-		Empty( ): $mol_view
-		Gap_before( ): $mol_view
-		Gap_after( ): $mol_view
 		item_height_min( id: any): number
 		item_width_min( id: any): number
+		view_window_shift( next?: number ): number
 		view_window( ): readonly(any)[]
 	}
 	
@@ -8658,16 +8659,17 @@ declare namespace $.$$ {
 declare namespace $ {
     class $yuf_session extends $mol_object {
         static get _(): $yuf_session;
+        client_id(): string;
         token_key(): string;
-        token(next?: string | null, op?: 'logout' | 'refreshed'): string | null;
+        token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
+        token_cut(reset?: 'refresh'): string | null;
         logged(): boolean;
-        refresh(): string | null;
         logout(): string | null;
     }
 }
 
 declare namespace $ {
-    type $yuf_transport_req = Omit<RequestInit, 'headers'> & {
+    type $yuf_transport_req = RequestInit & {
         deadline?: number;
         headers?: Record<string, string | null>;
         auth_token?: string | null;
@@ -8693,14 +8695,12 @@ declare namespace $ {
         static base_url(next?: string): string;
         static base_url_full(): string;
         static base_url_ws(): string;
-        static loggedin(): boolean;
         static session(): $yuf_session;
-        static token(): string | null;
         static headers_auth(token: string): Record<string, string> | null;
-        static client_id(): string;
         static headers_default(): Record<string, string>;
         static get(path: string, params?: $yuf_transport_req): $mol_fetch_response;
         static head(path: string, params?: $yuf_transport_req): $mol_fetch_response;
+        static headers_merge(headers: RequestInit['headers'], extra?: Record<string, string | null | undefined> | null): Record<string, string>;
         static range(path: string, raw?: $yuf_transport_req & {
             count_prefer?: 'exact' | 'planned';
         }): number | undefined;
@@ -8714,39 +8714,12 @@ declare namespace $ {
         static object_url_ref(path: string): $yuf_url_object;
         static object_url(path: string): string;
         protected static auth_need(res: $mol_fetch_response): boolean;
-        static refresh(): boolean;
-        protected static relogin(): boolean;
-        protected static block(): void;
-        protected static _promise: null | $mol_promise_blocker<null>;
-        static blocker(next?: boolean): Promise<boolean> | null;
-        static logining(next?: boolean): boolean;
         static deadline(): number;
-        protected static token_cut(): string | null;
-        protected static init_normalize(params: $yuf_transport_req): {
-            body: BodyInit | undefined;
-            headers: Record<string, string>;
-            cache?: RequestCache | undefined;
-            window?: null | undefined;
-            credentials?: RequestCredentials | undefined;
-            referrer?: string | undefined;
-            referrerPolicy?: ReferrerPolicy | undefined;
-            integrity?: string | undefined;
-            keepalive?: boolean | undefined;
-            method?: string | undefined;
-            mode?: RequestMode | undefined;
-            priority?: RequestPriority | undefined;
-            redirect?: "follow" | "manual" | "error";
-            signal?: (AbortSignal | null) | undefined;
-            deadline?: number;
-            auth_token?: string | null;
-            auth_fails?: boolean;
-            body_object?: object;
-        };
         static response(input: RequestInfo, init?: Omit<$yuf_transport_req, 'headers'> & {
             headers: Record<string, string>;
         }): $mol_fetch_response;
         static auth_fails(): boolean;
-        static success2(path: RequestInfo, params: $yuf_transport_req): $mol_fetch_response;
+        static success(path: RequestInfo, params: $yuf_transport_req): $mol_fetch_response;
         static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null;
         static code_from_json(json: Record<string, string | undefined>): {
             code: string;

@@ -5262,6 +5262,7 @@ var $;
             },
             Body_content: {
                 padding: $mol_gap.block,
+                minHeight: 0,
                 flex: {
                     direction: 'column',
                     shrink: 1,
@@ -6274,37 +6275,41 @@ var $;
 
 ;
 	($.$mol_list) = class $mol_list extends ($.$mol_view) {
-		rows(){
-			return [];
-		}
 		gap_before(){
 			return 0;
-		}
-		gap_after(){
-			return 0;
-		}
-		render_visible_only(){
-			return true;
-		}
-		render_over(){
-			return 0;
-		}
-		sub(){
-			return (this.rows());
-		}
-		Empty(){
-			const obj = new this.$.$mol_view();
-			return obj;
 		}
 		Gap_before(){
 			const obj = new this.$.$mol_view();
 			(obj.style) = () => ({"paddingTop": (this.gap_before())});
 			return obj;
 		}
+		Empty(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		gap_after(){
+			return 0;
+		}
 		Gap_after(){
 			const obj = new this.$.$mol_view();
 			(obj.style) = () => ({"paddingTop": (this.gap_after())});
 			return obj;
+		}
+		rows(){
+			return [
+				(this.Gap_before()), 
+				(this.Empty()), 
+				(this.Gap_after())
+			];
+		}
+		render_visible_only(){
+			return true;
+		}
+		render_over(){
+			return 0.1;
+		}
+		sub(){
+			return (this.rows());
 		}
 		item_height_min(id){
 			return 1;
@@ -6312,13 +6317,18 @@ var $;
 		item_width_min(id){
 			return 1;
 		}
+		view_window_shift(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
 		view_window(){
 			return [0, 0];
 		}
 	};
-	($mol_mem(($.$mol_list.prototype), "Empty"));
 	($mol_mem(($.$mol_list.prototype), "Gap_before"));
+	($mol_mem(($.$mol_list.prototype), "Empty"));
 	($mol_mem(($.$mol_list.prototype), "Gap_after"));
+	($mol_mem(($.$mol_list.prototype), "view_window_shift"));
 
 
 ;
@@ -6344,7 +6354,15 @@ var $;
         class $mol_list extends $.$mol_list {
             sub() {
                 const rows = this.rows();
-                return (rows.length === 0) ? [this.Empty()] : rows;
+                const next = (rows.length === 0) ? [this.Empty()] : rows;
+                const prev = $mol_mem_cached(() => this.sub());
+                const [start, end] = $mol_mem_cached(() => this.view_window()) ?? [0, 0];
+                if (prev && $mol_mem_cached(() => prev[start] !== next[start])) {
+                    const index = $mol_mem_cached(() => next.indexOf(prev[start])) ?? -1;
+                    if (index >= 0)
+                        this.view_window_shift(index - start);
+                }
+                return next;
             }
             render_visible_only() {
                 return this.$.$mol_support_css_overflow_anchor();
@@ -6359,6 +6377,9 @@ var $;
                 if (next)
                     return next;
                 let [min, max] = $mol_mem_cached(() => this.view_window()) ?? [0, 0];
+                const shift = this.view_window_shift();
+                min += shift;
+                max += shift;
                 let max2 = max = Math.min(max, kids.length);
                 let min2 = min = Math.max(0, Math.min(min, max - 1));
                 const anchoring = this.render_visible_only();
@@ -6502,7 +6523,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/list/list.view.css", "[mol_list] {\n\twill-change: contents;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-shrink: 0;\n\tmax-width: 100%;\n\t/* display: flex;\n\talign-items: stretch;\n\talign-content: stretch; */\n\ttransition: none;\n\tmin-height: 1.5rem;\n}\n\n[mol_list_gap_before] ,\n[mol_list_gap_after] {\n\tdisplay: block !important;\n\tflex: none;\n\ttransition: none;\n\toverflow-anchor: none;\n}\n");
+    $mol_style_attach("mol/list/list.view.css", "[mol_list] {\n\twill-change: contents;\n\tdisplay: flex;\n\tflex-direction: column;\n\tflex-shrink: 0;\n\tmax-width: 100%;\n\t/* display: flex;\n\talign-items: stretch;\n\talign-content: stretch; */\n\ttransition: none;\n\tmin-height: 1.5rem;\n\t/* will-change: contents; */\n}\n\n[mol_list_gap_before] ,\n[mol_list_gap_after] {\n\tdisplay: block !important;\n\tflex: none;\n\ttransition: none;\n\toverflow-anchor: none;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -8387,7 +8408,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmin-width: 0;\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n\tborder: none;\n}\n");
+    $mol_style_attach("mol/embed/native/native.view.css", "[mol_embed_native] {\n\tmin-width: 0;\n\tmin-height: 0;\n\tmax-width: 100%;\n\tmax-height: 100vh;\n\tobject-fit: cover;\n\tdisplay: flex;\n\tflex: 1 1 auto;\n\tobject-position: top left;\n\tborder-radius: var(--mol_gap_round);\n\taspect-ratio: 4/3;\n\tborder: none;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -19007,14 +19028,18 @@ var $;
 (function ($) {
     class $yuf_session extends $mol_object {
         static get _() { return new this(); }
+        client_id() { return this.$.$mol_dom_context.location.hostname; }
         token_key() { return 'kc_token'; }
         token(next, op) {
             return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
         }
+        token_cut(reset) { return this.token(reset ? null : undefined, reset); }
         logged() { return Boolean(this.token()); }
-        refresh() { return this.token(null); }
         logout() { return this.token(null, 'logout'); }
     }
+    __decorate([
+        $mol_action
+    ], $yuf_session.prototype, "token_cut", null);
     __decorate([
         $mol_mem
     ], $yuf_session.prototype, "logged", null);
@@ -19063,43 +19088,47 @@ var $;
         static base_url_ws() {
             return this.base_url_full().replace(/^http/, 'ws');
         }
-        static loggedin() {
-            return Boolean(this.session().logged()) && !this.logining();
-        }
         static session() { return this.$.$yuf_session._; }
-        static token() {
-            return this.session().token();
-        }
         static headers_auth(token) {
             return {
                 'Authorization': `Bearer ${token}`
             };
         }
-        static client_id() {
-            return `${this}`;
-        }
         static headers_default() {
             return {
                 'X-Request-ID': $mol_guid(),
-                'X-Client-ID': this.client_id(),
+                'X-Client-ID': this.session().client_id(),
                 'Content-Type': 'application/json',
             };
         }
         static get(path, params) {
-            return this.success2(path, { ...params, method: 'GET' });
+            return this.success(path, { ...params, method: 'GET' });
         }
         static head(path, params) {
-            return this.success2(path, { ...params, method: 'HEAD' });
+            return this.success(path, { ...params, method: 'HEAD' });
+        }
+        static headers_merge(headers, extra) {
+            const entries = headers instanceof Headers
+                ? headers.entries()
+                : Array.isArray(headers) ? headers : null;
+            let result = (entries ? {} : headers);
+            for (const [key, val] of entries ?? [])
+                result[key] = val;
+            result = { ...result, ...extra };
+            for (const key of Object.keys(result)) {
+                if (result[key] === null || result[key] === undefined)
+                    delete result[key];
+            }
+            return result;
         }
         static range(path, raw) {
             const { count_prefer, ...params } = raw ?? {};
             const res = this.head(path, {
                 ...params,
-                headers: {
-                    ...params?.headers,
+                headers: this.headers_merge(params?.headers, {
                     'Range-Unit': 'items',
                     Prefer: `count=${count_prefer ?? 'exact'}`,
-                },
+                }),
             });
             const headers = res.headers();
             const range_str = headers.get('Content-Range');
@@ -19118,20 +19147,20 @@ var $;
             return Number(count);
         }
         static put(path, params) {
-            return this.success2(path, { ...params, method: 'PUT' });
+            return this.success(path, { ...params, method: 'PUT' });
         }
         static post(path, params) {
-            return this.success2(path, { ...params, method: 'POST' });
+            return this.success(path, { ...params, method: 'POST' });
         }
         static delete(path, params) {
-            return this.success2(path, { ...params, method: 'DELETE' });
+            return this.success(path, { ...params, method: 'DELETE' });
         }
         static data(params) {
             let json;
             let text;
             const input = params.input;
             const init = { ...params, input: undefined, assert: undefined };
-            const res = this.success2(input, init);
+            const res = this.success(input, init);
             try {
                 text = res.text();
                 json = JSON.parse(text);
@@ -19156,96 +19185,41 @@ var $;
             return this.object_url_ref(path).url;
         }
         static auth_need(res) {
-            if (res.code() === 403)
-                return this.relogin();
-            if (res.code() === 401)
-                return this.refresh();
-            return false;
-        }
-        static refresh() {
-            this.session().refresh();
-            return true;
-        }
-        static relogin() {
-            this.block();
-            $mol_wire_sync(this).blocker();
-            return true;
-        }
-        static block() {
-            this.blocker(true);
-            this.logining(true);
-        }
-        static _promise = null;
-        static blocker(next) {
-            if (next === false) {
-                this._promise?.done(null);
-                this._promise = null;
-            }
-            if (next && !this._promise) {
-                this._promise = new $mol_promise_blocker();
-            }
-            return this._promise?.then(() => true) ?? null;
-        }
-        static logining(next) {
-            this.blocker(next);
-            return next ?? false;
+            return res.code() === 403 || res.code() === 401;
         }
         static deadline() {
-            return 300000;
-        }
-        static token_cut() { return this.token(); }
-        static init_normalize(params) {
-            const token = params.auth_token === null ? null : (params.auth_token ?? this.token_cut());
-            const headers = {
-                ...this.headers_default(),
-                ...(token ? this.headers_auth(token) : null),
-                ...params.headers,
-            };
-            for (const key of Object.keys(headers)) {
-                if (headers[key] === null)
-                    delete headers[key];
-            }
-            const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined);
-            return { ...params, body, headers };
+            return 300_000;
         }
         static response(input, init) {
             return new $mol_fetch_response($mol_wire_sync(this).request(input, init));
         }
         static auth_fails() { return false; }
-        static success2(path, params) {
+        static success(path, params) {
             const input = typeof path === 'string' && !path.match(/^(\w+:)?\/\//)
                 ? this.base_url() + path
                 : path;
-            let error;
             let response;
             let init;
+            const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined);
+            const headers_default = this.headers_merge(this.headers_default(), params.headers);
+            let refresh = undefined;
             do {
-                const token = params.auth_token === null ? null : (params.auth_token ?? this.token_cut());
-                init = this.init_normalize(params);
-                try {
-                    if (params.auth_token !== null && !token)
-                        this.relogin();
-                    response = this.response(input, init);
-                }
-                catch (e) {
-                    if ($mol_promise_like(e))
-                        $mol_fail_hidden(e);
-                    error = e;
-                }
-                if (!response)
-                    break;
-                if (response?.status() === 'success')
+                const auth_token = (params.auth_token || params.auth_token === null) && !refresh
+                    ? params.auth_token
+                    : this.session().token_cut(refresh);
+                const headers = auth_token
+                    ? this.headers_merge(headers_default, this.headers_auth(auth_token))
+                    : headers_default;
+                response = this.response(input, init = { ...params, body, headers });
+                if (response.status() === 'success')
                     return response;
-                if (params.auth_token === null)
+                if (!this.auth_need(response) || refresh)
                     break;
-                if (params.auth_fails || this.auth_fails())
-                    break;
-                if (!this.auth_need(response))
-                    break;
+                refresh = 'refresh';
             } while (true);
             const response_json = this.response_json(response);
-            const message = response_json?.message ?? error?.message ?? 'Unknown';
-            throw new $yuf_transport_error(message, { input, init, ...response_json }, error ?? new Error(message));
+            const message = response_json?.message ?? 'Unknown';
+            throw new $yuf_transport_error(message, { input, init, ...response_json });
         }
         static response_json(res) {
             if (!res)
@@ -19305,9 +19279,6 @@ var $;
         $mol_mem
     ], $yuf_transport, "base_url", null);
     __decorate([
-        $mol_mem
-    ], $yuf_transport, "loggedin", null);
-    __decorate([
         $mol_action
     ], $yuf_transport, "headers_auth", null);
     __decorate([
@@ -19318,22 +19289,10 @@ var $;
     ], $yuf_transport, "object_url_ref", null);
     __decorate([
         $mol_action
-    ], $yuf_transport, "relogin", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "block", null);
-    __decorate([
-        $mol_mem
-    ], $yuf_transport, "logining", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "token_cut", null);
-    __decorate([
-        $mol_action
     ], $yuf_transport, "response", null);
     __decorate([
         $mol_action
-    ], $yuf_transport, "success2", null);
+    ], $yuf_transport, "success", null);
     $.$yuf_transport = $yuf_transport;
 })($ || ($ = {}));
 
