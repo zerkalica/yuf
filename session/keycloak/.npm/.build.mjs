@@ -1,5 +1,5 @@
 // @ts-check
-import { YufNpmBuilder } from '../../.npm/.builder.mjs'
+import { YufNpmBuilder } from '../../../.npm/.builder.mjs'
 import { copyFile } from 'node:fs/promises'
 import { join } from 'node:path'
 

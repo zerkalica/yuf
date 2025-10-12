@@ -30,7 +30,7 @@ namespace $ {
 
 		session() { return this.$.$yuf_session._ }
 
-		token(next?: string | null, refresh?: 'refresh') { return this.session().token(next, refresh) }
+		token(next?: string | null) { return this.session().token(next) }
 		logged() { return this.session().logged() }
 		logout() { this.session().logout() }
 
@@ -40,8 +40,12 @@ namespace $ {
 
 		@ $mol_mem
 		override token_sended() {
-			const token = this.opened() ? this.token() : null
-			token && this.send_data({ type: 'auth' }, { token })
+			if (! this.opened() ) return null
+			const token = this.token()
+			if (! token ) return null
+
+			this.send_data({ type: 'auth' }, { token })
+
 			return token
 		}
 

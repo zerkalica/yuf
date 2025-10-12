@@ -1,6 +1,6 @@
 namespace $ {
 
-	export type $yuf_transport_req = Omit<RequestInit, 'headers'> & {
+	export type $yuf_transport_req = RequestInit & {
 		deadline?: number
 		headers?: Record<string, string | null>
 		auth_token?: string | null // null - auth disabled
@@ -59,24 +59,7 @@ namespace $ {
 			return this.base_url_full().replace(/^http/, 'ws')
 		}
 
-		/**
-		 * Is user logged in.
-		 *
-		 * Token can be exists but obsolete.
-		 */
-		@ $mol_mem
-		static loggedin() {
-			return Boolean(this.session().logged()) && ! this.logining()
-		}
-
-		static session () { return this.$.$yuf_session._ }
-
-		/**
-		 * Access token, placed in local storage by default.
-		 */
-		static token() {
-			return this.session().token()
-		}
+		static session() { return this.$.$yuf_session._ }
 
 		/**
 		 * Custom auth headers.
@@ -92,13 +75,6 @@ namespace $ {
 		}
 
 		/**
-		 * X-Client-ID header
-		 */
-		static client_id() {
-			return `${this}`
-		}
-
-		/**
 		 * Default hears, merged to every request,
 		 * Values can be overrided from call arguments.
 		 */
@@ -106,17 +82,38 @@ namespace $ {
 		static headers_default(): Record<string, string> {
 			return {
 				'X-Request-ID': $mol_guid(),
-				'X-Client-ID': this.client_id(),
+				'X-Client-ID': this.session().client_id(),
 				'Content-Type': 'application/json',
 			}
 		}
 
 		static get(path: string, params?: $yuf_transport_req) {
-			return this.success2(path, { ...params, method: 'GET' })
+			return this.success(path, { ...params, method: 'GET' })
 		}
 
 		static head(path: string, params?: $yuf_transport_req) {
-			return this.success2(path, { ...params, method: 'HEAD' })
+			return this.success(path, { ...params, method: 'HEAD' })
+		}
+
+		static headers_merge(
+			headers: RequestInit['headers'],
+			extra?: Record<string, string | null | undefined> | null
+		) {
+			const entries = headers instanceof Headers
+				? headers.entries()
+				: Array.isArray(headers) ? headers : null
+
+			let result = (entries ? {} : headers) as NonNullable<typeof extra>
+
+			for (const [key, val] of entries ?? []) result[key] = val
+
+			result = { ... result, ...extra }
+
+			for (const key of Object.keys(result)) {
+				if (result[key] === null || result[key] === undefined) delete result[key]
+			}
+
+			return result as Record<string, string>
 		}
 
 		// custom range headers
@@ -124,11 +121,10 @@ namespace $ {
 			const { count_prefer, ...params } = raw ?? {}
 			const res = this.head(path, {
 				...params,
-				headers: {
-					...params?.headers,
+				headers: this.headers_merge(params?.headers, {
 					'Range-Unit': 'items',
 					Prefer: `count=${count_prefer ?? 'exact'}`,
-				},
+				}),
 			})
 
 			const headers = res.headers()
@@ -153,15 +149,15 @@ namespace $ {
 		}
 
 		static put(path: string, params?: $yuf_transport_req) {
-			return this.success2(path, { ...params, method: 'PUT' })
+			return this.success(path, { ...params, method: 'PUT' })
 		}
 
 		static post(path: string, params?: $yuf_transport_req) {
-			return this.success2(path, { ...params, method: 'POST' })
+			return this.success(path, { ...params, method: 'POST' })
 		}
 
 		static delete(path: string, params?: $yuf_transport_req) {
-			return this.success2(path, { ...params, method: 'DELETE' })
+			return this.success(path, { ...params, method: 'DELETE' })
 		}
 
 		static data<Result>(params: $yuf_transport_req & {
@@ -174,7 +170,7 @@ namespace $ {
 			const input = params.input
 			const init = { ...params, input: undefined, assert: undefined } as $yuf_transport_req
 
-			const res = this.success2(input, init)
+			const res = this.success(input, init)
 
 			try {
 				text = res.text()
@@ -209,83 +205,14 @@ namespace $ {
 		 * If return false - throw error
 		 */
 		protected static auth_need(res: $mol_fetch_response) {
-			if (res.code() === 403) return this.relogin()
-			if (res.code() === 401) return this.refresh()
-
-			return false
-		}
-
-		/**
-		 * If obsolete access token, get it via refresh token.
-		 */
-		static refresh() {
-			this.session().refresh()
-			return true
-		}
-
-		/**
-		 * If access token obsolete - pause response, ask user to login and retry fetch.
-		 */
-		@ $mol_action
-		protected static relogin() {
-			this.block()
-			$mol_wire_sync(this).blocker()
-			return true
-		}
-
-		@ $mol_action
-		protected static block() {
-			this.blocker(true)
-			this.logining(true)
-		}
-
-		protected static _promise = null as null | $mol_promise_blocker<null>
-
-		static blocker(next?: boolean) {
-			if (next === false) {
-				this._promise?.done(null)
-				this._promise = null
-			}
-
-			if ( next && ! this._promise) {
-				this._promise = new $mol_promise_blocker<null>()
-			}
-
-			return this._promise?.then(() => true) ?? null
-		}
-
-		@ $mol_mem
-		static logining(next?: boolean) {
-			this.blocker(next)
-			return next ?? false
+			return res.code() === 403 || res.code() === 401
 		}
 
 		/**
 		 * Client throws timeout error if no response in dedline ms.
 		 */
 		static deadline() {
-			return 300000
-		}
-
-		@ $mol_action
-		protected static token_cut() { return this.token() }
-
-		protected static init_normalize(params: $yuf_transport_req) {
-			const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
-
-			const headers = {
-				... this.headers_default(),
-				... ( token ? this.headers_auth(token) : null ),
-				... params.headers,
-			} as Record<string, string>
-
-			for (const key of Object.keys(headers)) {
-				if (headers[key] === null) delete headers[key]
-			}
-
-			const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
-
-			return { ...params, body, headers }
+			return 300_000
 		}
 
 		@ $mol_action
@@ -296,40 +223,41 @@ namespace $ {
 		static auth_fails() { return false }
 
 		@ $mol_action
-		static success2(path: RequestInfo, params: $yuf_transport_req ) {
+		static override success(path: RequestInfo, params: $yuf_transport_req ) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
 				? this.base_url() + path
 				: path
 
-			let error
 			let response
 			let init
 
-			do {
-				const token = params.auth_token === null ? null : ( params.auth_token ?? this.token_cut() )
-				init = this.init_normalize(params)
-				try {
-					if (params.auth_token !== null && ! token) this.relogin()
-					response = this.response(input, init)
-				} catch (e) {
-					if ($mol_promise_like(e)) $mol_fail_hidden(e)
-					error = e as Error
-				}
+			const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
+			const headers_default = this.headers_merge(this.headers_default(), params.headers)
 
-				if (! response) break
-				if ( response?.status() === 'success' ) return response
-				if (params.auth_token === null) break
-				if ( params.auth_fails || this.auth_fails() ) break
-				if (! this.auth_need(response) ) break
-			} while (true)
+			let refresh = undefined as undefined | 'refresh'
+
+			do {
+				const auth_token = (params.auth_token || params.auth_token === null) && ! refresh
+					? params.auth_token
+					: this.session().token_cut(refresh)
+
+				const headers = auth_token
+					? this.headers_merge(headers_default, this.headers_auth(auth_token))
+					: headers_default
+	
+				response = this.response(input, init = { ... params, body, headers })
+
+				if ( response.status() === 'success' ) return response
+				if (! this.auth_need(response) || refresh ) break
+				refresh = 'refresh'
+			} while( true )
 
 			const response_json = this.response_json(response)
-			const message = response_json?.message ?? error?.message ?? 'Unknown'
+			const message = response_json?.message ?? 'Unknown'
 
 			throw new $yuf_transport_error(
 				message,
-				{ input, init, ... response_json },
-				error ?? new Error(message)
+				{ input, init, ... response_json }
 			)
 		}
 
