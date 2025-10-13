@@ -1,61 +1,32 @@
 namespace $ {
 
-	export class $yuf_ws_entity_store extends $yuf_ws_entity {
-		override defaults( raw?: [] ) {
-			return [ ...raw ?? [] ] as readonly string[]
-		}
-
-		override device() {
+	export class $yuf_ws_entity_store extends $yuf_entity2_store {
+		type() { return '' }
+		query() { return {} as Record<string, string | null> }
+		device() {
 			return this.id() ? [ this.id() ] : []
 		}
 
-		protected factory() {
-			return this.constructor as typeof $yuf_ws_entity_store
-		}
-
-		@ $mol_action
-		pick_id() {
-			return $mol_guid()
-		}
-
 		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache' | 'append' | 'prepend' | 'remove'): readonly string[] {
-			const prev = $mol_wire_probe(() => this.ids()) ?? []
-			if (next && cache === 'remove') next = prev.filter(id => ! next?.includes(id))
-			if (next && cache === 'append') next = [ ...prev, ...next ]
-			if (next && cache === 'prepend') next = [ ...next, ...prev ]
+		signature() {
+			const query = this.query()
+			const device = this.device()
 
-			return this.data(
-				next as ReturnType<this['defaults']>,
-				cache ? 'cache' : undefined
-			) ?? [] as readonly string[]
+			return {
+				type: this.type(),
+				id: this.id() || undefined,
+				query: Object.keys(query).length ? query : undefined,
+				device: device.length ? device : undefined,
+			}
 		}
 
-		@ $mol_action
-		draft_create() {
-			const id = this.pick_id()
-			const model = this.by_id(id)
-			model.draft({ id }, 'creating')
+		ws() { return this.$.$yuf_ws_statefull._ }
 
-			return model
+		override actual(next?: Partial<ReturnType<this['defaults']>> | null) {
+			this.propagate()
+			return this.ws().data<Partial<ReturnType<this['defaults']>>>(this.signature(), next)
 		}
 
-		@ $mol_mem_key
-		by_id(id: string) {
-			return this.$.$yuf_ws_entity.make({
-				id: $mol_const(id),
-				ws: () => this.ws(),
-				device: () => this.device(),
-			})
-		}
-
-		remove_all() {
-			this.data(null)
-		}
-
-		remove(id: string) {
-			this.by_id(id).data(null)
-			this.ids([ id ], 'remove')
-		}
+		override toString() { return JSON.stringify(this.signature()) }
 	}
 }

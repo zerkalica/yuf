@@ -56,6 +56,8 @@ namespace $ {
 
 		mock_periodically() { return false }
 
+		is_draft() { return this.id().startsWith('draft') }
+
 		@ $mol_mem_key
 		value<
 			Field extends keyof ReturnType< this['defaults'] >
@@ -120,7 +122,7 @@ namespace $ {
 			let actual
 
 			if (next === undefined) {
-				actual = this.actual()
+				actual = this.is_draft() ? {} : this.actual()
 			} else if (cache) {
 				actual = next
 			} else {
@@ -189,6 +191,11 @@ namespace $ {
 				if ( ! $mol_promise_like(e) ) this.draft(null)
 				$mol_fail_hidden(e)
 			}
+		}
+
+		remove() {
+			if (this.is_draft()) return
+			this.data(null)
 		}
 
 	}

@@ -129,7 +129,9 @@ namespace $ {
 				+ ( use_query ? location.hash : new_part )
 
 			if (next === null) {
-                history.replaceState(history.state, '', new_url)
+				location.replace(new_url)
+				// replaceState - brokes mol links
+                // history.replaceState(history.state, '', new_url)
 				return null
 			}
 
@@ -179,15 +181,21 @@ namespace $ {
 			const token = this.token()
 			if (! token) return null
 
-			return { Authorization: 'bearer ' + token }
+			return {
+				Accept: 'application/json',
+				Authorization: 'bearer ' + token,
+			}
 		}
 
 		@ $mol_mem
-		user_profile() {
+		protected user_profile() {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.$.$mol_fetch.json(this.realm_url() + '/account', { headers }) as null | {
+			return this.$.$mol_fetch.json(this.realm_url() + '/account', {
+				headers,
+				credentials: 'include'
+			}) as null | {
 				id?: string
 				username?: string
 				email?: string
@@ -201,12 +209,15 @@ namespace $ {
 			}
 		}
 
+		user_id() { return this.user_profile()?.id ?? '' }
+		user_name() { return this.user_profile()?.username ?? '' }
+
 		@ $mol_mem
-		user_info() {
+		protected user_info() {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.$.$mol_fetch.json(this.endpoint('userinfo'), { headers }) as {
+			return this.$.$mol_fetch.json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
 				sub: string
 				[key: string]: any
 			}
@@ -412,15 +423,6 @@ namespace $ {
 		update() {
 			const refresh_token = this.token_refresh()
 			const url_params = refresh_token ? null  : this.url_params()
-			const flow = this.flow()
-
-			if (flow === 'implicit' && url_params?.access_token && url_params?.id_token) {
-				return {
-					access_token: url_params.access_token,
-					id_token: url_params.id_token,
-				}
-			}
-
 			const error = url_params?.error_description
 
 			if (error) {
@@ -429,8 +431,6 @@ namespace $ {
 
 			const code = url_params?.code
 			if (! refresh_token && ! code) return null
-
-			const url = this.endpoint('token')
 
 			const redirect_pair = refresh_token ? null : this.redirect_params()
 			const [redirect_uri, state, nonce, code_verifier ] = redirect_pair ?? []
@@ -442,35 +442,58 @@ namespace $ {
 				}})
 			}
 
-			const result = this.$.$mol_fetch.json(url, {
-				method: 'POST',
-				credentials: 'include',
-				body: this.search_params({
-					code,
-					grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
-					refresh_token,
-					client_id: this.client_id(),
-					redirect_uri,
-					code_verifier,
-				}),
-				headers: {
-                    'Content-type': 'application/x-www-form-urlencoded',
-				}
-			}) as {
+			let result = null as {
 				access_token?: string
 				id_token?: string
 				refresh_token?: string
 			} | null
 
-			const id_token_params = nonce && result?.id_token
-				? this.token_decode(result.id_token)
-				: null
+			const url = this.endpoint('token')
+			const flow = this.flow()
+			const start_time = $mol_wire_sync(new Date()).getTime()
 
-			if (id_token_params && id_token_params.nonce !== nonce) {
+			if (flow === 'implicit' && url_params?.access_token && url_params?.id_token) {
+				result = {
+					access_token: url_params.access_token,
+					id_token: url_params.id_token,
+				}
+			} else {
+				result = this.$.$mol_fetch.json(url, {
+					method: 'POST',
+					credentials: 'include',
+					body: this.search_params({
+						code,
+						grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
+						refresh_token,
+						client_id: this.client_id(),
+						redirect_uri,
+						code_verifier,
+					}),
+					headers: {
+						'Content-type': 'application/x-www-form-urlencoded',
+					}
+				}) as typeof result
+			}
+
+			const id_token = nonce && result?.id_token ? this.token_decode(result.id_token) : null
+
+			if (id_token && id_token.nonce !== nonce) {
 				throw new Error('Invalid nonce', { cause: {
 					stored: nonce?.slice(0, 3),
-					server: id_token_params.nonce?.slice(0, 3)
+					server: id_token.nonce?.slice(0, 3)
 				} })
+			}
+
+			const end_time = $mol_wire_sync(new Date()).getTime()
+
+			const average_time = (start_time + end_time) / 2
+			const iat = result?.access_token ? this.token_decode(result?.access_token)?.iat : null
+			const skew = iat ? Math.floor(average_time - iat * 1000) : 0
+
+			this.time_skew = skew
+
+			if ( result?.access_token && this.is_expired(result.access_token, skew) ) {
+				throw new Error('Auth token expired')
 			}
 
 			return result
@@ -483,6 +506,10 @@ namespace $ {
 			else loc.reload()
 		}
 
+		min_validity() { return 5000 }
+
+		protected time_skew = 0
+
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
 			const checker = this.checker()
@@ -494,7 +521,9 @@ namespace $ {
 
 			if (next === undefined) {
 				const token = super.token()
-				if (token) return token
+				if (token && ! this.is_expired(token) ) {
+					return token
+				}
 			}
 
 			if (op === 'logout') {
@@ -531,6 +560,14 @@ namespace $ {
 			this.token_id(actual.id_token)
 
 			return super.token(actual.access_token)
+		}
+
+		is_expired(token: string, skew = this.time_skew) {
+			const params = this.token_decode(token)
+			const min_validity = this.min_validity()
+			const end_time = $mol_wire_sync(new Date()).getTime()
+			const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
+			return expires_in <= 0
 		}
 	}
 }
