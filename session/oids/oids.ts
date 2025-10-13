@@ -247,6 +247,9 @@ namespace $ {
 
 		scope() { return null as string | null }
 
+		/**
+		 * Set the OpenID Connect flow.
+		 */
 		flow() {
 			return 'standard' as 'standard' | 'implicit' | 'hybrid'
 		}
@@ -298,8 +301,16 @@ namespace $ {
 		 */
 		acr_values() { return null as null | string }
 
+		/**
+		 * Adds a [cryptographic nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce)
+		 * to verify that the authentication response matches the request.
+		 */
 		use_nonse() { return true }
 
+		/**
+		 * Configures the Proof Key for Code Exchange (PKCE) method to use. This will default to 'SHA-256'.
+		 * Can be disabled by passing `null`.
+		 */
 		pkce_method() {
 			return null as null | 'SHA-256'
 		}
