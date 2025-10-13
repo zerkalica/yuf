@@ -1,3 +1,0 @@
-build $yuf_session_keycloak_npm_build_out \node ./.npm/.build.mjs
-deploy \/yuf/session/keycloak/.npm/-/app.js
-deploy \/yuf/session/keycloak/.npm/-/app.js.map

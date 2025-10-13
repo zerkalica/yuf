@@ -23,7 +23,7 @@ namespace $ {
 
 			if (key === 'status') {
 				const version = this.status_iframe_version()
-				str = `login-status-iframe.html${version ? '?' + new URLSearchParams({ version }) : ''}`
+				str = `login-status-iframe.html${version ? '?' + this.search_params({ version }) : ''}`
 			}
 
 			return `${this.realm_url()}/protocol/openid-connect/${str}`
@@ -73,7 +73,7 @@ namespace $ {
 			return null as null | string
 		}
 
-		callback_in_search() { return false }
+		use_query() { return false }
 
 		params_hybrid() {
 			return [ 
@@ -106,8 +106,8 @@ namespace $ {
 		@ $mol_mem
 		url_params(next?: null) {
 			const { location, history } = this.$.$mol_dom_context
-			const search = this.callback_in_search()
-			const raw = search ? location.search : location.hash
+			const use_query = this.use_query()
+			const raw = use_query ? location.search : location.hash
 
 			const known = this.params_hybrid()
 			const pairs = raw.slice(1).split('&').map(rec => rec.split('='))
@@ -125,8 +125,8 @@ namespace $ {
 
 			const new_url = location.origin
 				+ location.pathname
-				+ ( search ? new_part : location.search )
-				+ ( search ? location.hash : new_part )
+				+ ( use_query ? new_part : location.search )
+				+ ( use_query ? location.hash : new_part )
 
 			if (next === null) {
                 history.replaceState(history.state, '', new_url)
@@ -139,16 +139,13 @@ namespace $ {
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
+			if (next || next === null) this.redirect_params(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
 
-		@ $mol_mem
-		protected token_params() {
-			const token = this.token()
-			if (! token) return null
-
-			return ($mol_jwt_decode(token).payload || null) as null | {
+		protected token_decode(token: string) {
+			return (this.$.$mol_jwt_decode(token).payload || null) as null | {
 				iss?: string
 				sub?: string
 				sid?: string
@@ -164,6 +161,12 @@ namespace $ {
 				realm_access?: { roles: readonly string[] }
 				resource_access?: Record<string, { roles: readonly string[] }>
 			}
+		}
+
+		@ $mol_mem
+		protected token_params() {
+			const token = this.token()
+			return token ? this.token_decode(token) : null
 		}
 
 		realm_roles() { return this.token_params()?.realm_access?.roles ?? [] }
@@ -212,7 +215,6 @@ namespace $ {
 		@ $mol_mem
 		protected token_refresh(next?: string | null) {
 			if (next === null) this.token_id(null)
-			if (next || next === null) this.redirect_pair(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
@@ -230,43 +232,132 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		redirect_pair(next?: [url: string, state: string] | null, refresh?: 'refresh') {
-			if ( refresh ) next = [ this.redirect_uri(), $mol_guid() ]
+		redirect_params(next?: [ url: string, state: string, nonce?: string | null, verifier?: string | null ] | null, refresh?: 'refresh') {
+			if ( refresh ) next = [
+				this.redirect_uri(),
+				$mol_guid(36),
+				this.use_nonse() ? $mol_guid(36) : null,
+				this.pkce_method() ? $mol_guid(96) : null,
+			]
+
 			if (next === null) this.url_params(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_redirect`, next)
 		}
 
-		scope() { return '' }
+		scope() { return null as string | null }
 
 		flow() {
 			return 'standard' as 'standard' | 'implicit' | 'hybrid'
 		}
+
+		/**
+		 * Sets the 'ui_locales' query param in compliance with section 3.1.2.1
+		 * of the OIDC 1.0 specification.
+		 */
+		kc_locale() { return this.$.$mol_locale.lang() }
+
+		/**
+		 * By default the login screen is displayed if the user is not logged into
+		 * Keycloak. To only authenticate to the application if the user is already
+		 * logged in and not display the login page if the user is not logged in, set
+		 * this option to `'none'`. To always require re-authentication and ignore
+		 * SSO, set this option to `'login'`. To always prompt the user for consent,
+		 * set this option to `'consent'`. This ensures that consent is requested,
+		 * even if it has been given previously.
+		 */
+		login_promt() { return null as null | 'none' | 'login' | 'consent' }
+
+		/**
+		 * Used just if user is already authenticated. Specifies maximum time since
+		 * the authentication of user happened. If user is already authenticated for
+		 * longer time than `'maxAge'`, the SSO is ignored and he will need to
+		 * authenticate again.
+		 */
+		max_age() { return null as null | number }
+
+		/**
+		 * Used to pre-fill the username/email field on the login form.
+		 */
+		login_hint() { return null as null | string }
+
+		/**
+		 * Used to tell Keycloak which IDP the user wants to authenticate with.
+		 */
+		kc_idp_hint() { return null as null | string }
+
+		/**
+		 * Sets the `acr` claim of the ID token sent inside the `claims` parameter. See section 5.5.1 of the OIDC 1.0 specification.
+		 */
+		acr() { return null as null | string }
+
+		/**
+		 * Configures the 'acr_values' query param in compliance with section 3.1.2.1
+		 * of the OIDC 1.0 specification.
+		 * Used to tell Keycloak what level of authentication the user needs.
+		 */
+		acr_values() { return null as null | string }
+
+		use_nonse() { return true }
+
+		pkce_method() {
+			return null as null | 'SHA-256'
+		}
+
+		@ $mol_action
+		pkce_generate(code: string) {
+			const algo = this.pkce_method()
+			if (! algo) return null
+			const data = $mol_wire_sync(this.$).$mol_charset_encode(code)
+			const hash_buf = $mol_wire_sync(this.$.$mol_crypto_native.subtle).digest( algo, data )
+			const str = this.$.$mol_base64_encode(new Uint8Array(hash_buf))
+
+			return str
+				.replace(/\+/g, '-')
+				.replace(/\//g, '_')
+				.replace(/\=/g, '')
+		}
+
+		protected search_params(params: Record<string, string | number | null | undefined>) {
+			for (let key in params) {
+				if (typeof params[key] === 'number') params[key] = String(params[key])
+				if (params[key] === undefined || params[key] === null) delete params[key]
+			}
+			return new URLSearchParams(params as Record<string, string>)
+		}
+
 		@ $mol_mem
 		protected action_query() {
-			const [ redirect_uri, state ] = this.redirect_pair(null, 'refresh')!
-			const client_id = this.client_id()
-			const scope_suffix = this.scope()
-			const scope = `openid${scope_suffix ? ` ${scope_suffix}` : ''}`
-			const response_mode = this.callback_in_search() ? 'query' : 'fragment'
+			const [ redirect_uri, state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
+			const scope = this.scope()
 			const flow = this.flow()
-			const response_type = flow === 'standard'
-				? 'code'
-				: flow === 'implicit' ? 'id_token token' : 'code id_token token'
 
-			return new URLSearchParams({
-				client_id,
+			return this.search_params({
+				client_id: this.client_id(),
 				redirect_uri,
 				state,
-				response_mode,
-				response_type,
-				scope,
+				response_mode: this.use_query() ? 'query' : 'fragment',
+
+				response_type: flow === 'standard' ? 'code'
+					: (flow === 'implicit' ? 'id_token token' : 'code id_token token'),
+
+				scope: scope?.startsWith('openid') ? scope : `openid${scope ? ` ${scope}` : ''}`,
+				nonce,
+				prompt: this.login_promt(),
+				max_age: this.max_age(),
+				login_hint: this.login_hint(),
+				kc_idp_hint: this.kc_idp_hint(),
+				ui_locales: this.kc_locale(),
+				claims: this.acr() ? JSON.stringify({ id_token: { acr: this.acr() } }) : null,
+				acr_values: this.acr_values(),
+				code_challenge: code_verifier ? this.pkce_generate(code_verifier) : null,
+				code_challenge_method: code_verifier ? this.pkce_method()?.replace('SHA-', 'S') : null,
 			})
 		}
 
 		@ $mol_mem
 		account_url() {
-			return this.realm_url() + '/account?' + new URLSearchParams({
+			return this.realm_url() + '/account?' + this.search_params({
 				referrer: this.client_id(),
 				referrer_uri: this.redirect_uri()
 			})
@@ -277,16 +368,11 @@ namespace $ {
 
 		@ $mol_mem
 		protected logout_params() {
-			const id_token_hint = this.token_id()
-
-			const params = {
+			return this.search_params({
 				client_id: this.client_id(),
+				id_token_hint: this.token_id(),
 				post_logout_redirect_uri: this.logout_redirect_uri(),
-			} as Record<string, string>
-
-			if (id_token_hint) params.id_token_hint = id_token_hint
-
-			return new URLSearchParams(params)
+			})
 		}
 
 		@ $mol_mem
@@ -333,34 +419,29 @@ namespace $ {
 			const code = url_params?.code
 			if (! refresh_token && ! code) return null
 
-			const client_id = this.client_id()
 			const url = this.endpoint('token')
 
-			const grant_type = refresh_token ? 'refresh_token' : 'authorization_code'
-
-			const redirect_pair = refresh_token ? null : this.redirect_pair()
-			const [redirect_uri, state ] = redirect_pair ?? []
+			const redirect_pair = refresh_token ? null : this.redirect_params()
+			const [redirect_uri, state, nonce, code_verifier ] = redirect_pair ?? []
 
 			if (redirect_uri && url_params?.state !== state) {
-				throw new Error('Sso backurl is from another session')
+				throw new Error('Invalid state in backurl', { cause: {
+					stored_state: state,
+					back_url_state: url_params?.state,
+				}})
 			}
 
-			const params = {
-				code,
-				grant_type,
-				refresh_token,
-				client_id,
-				redirect_uri,
-			} as Record<string, string>
-
-			for (let key in params) {
-				if (! params[key]) delete params[key]
-			}
-
-			return this.$.$mol_fetch.json(url, {
+			const result = this.$.$mol_fetch.json(url, {
 				method: 'POST',
 				credentials: 'include',
-				body: new URLSearchParams(params),
+				body: this.search_params({
+					code,
+					grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
+					refresh_token,
+					client_id: this.client_id(),
+					redirect_uri,
+					code_verifier,
+				}),
 				headers: {
                     'Content-type': 'application/x-www-form-urlencoded',
 				}
@@ -369,6 +450,19 @@ namespace $ {
 				id_token?: string
 				refresh_token?: string
 			} | null
+
+			const id_token_params = nonce && result?.id_token
+				? this.token_decode(result.id_token)
+				: null
+
+			if (id_token_params && id_token_params.nonce !== nonce) {
+				throw new Error('Invalid nonce', { cause: {
+					stored: nonce?.slice(0, 3),
+					server: id_token_params.nonce?.slice(0, 3)
+				} })
+			}
+
+			return result
 		}
 
 		@ $mol_action
@@ -407,19 +501,24 @@ namespace $ {
 				return this.token_refresh(null)
 			}
 
-			let actual
+			let actual, error
 
 			try {
 				actual = this.update()
 			} catch (e) {
-				if ( op === 'refresh' || $mol_promise_like(e)) $mol_fail_hidden(e)
-				$mol_fail_log(e)
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+				error = e
 			}
 
-			if (! actual?.access_token || ! actual?.id_token) return this.token_refresh(null)
+			if (! actual?.access_token || ! actual?.id_token) {
+				this.token_refresh(null)
+				if (error) $mol_fail_hidden(error)
+				return null
+			}
 
-			this.token_refresh(actual?.refresh_token ?? null)
+			this.token_refresh(actual.refresh_token ?? null)
 			this.token_id(actual.id_token)
+
 			return super.token(actual.access_token)
 		}
 	}
