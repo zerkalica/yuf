@@ -30,7 +30,8 @@ namespace $ {
 		protected timeout = null as null | $mol_after_timeout
 		protected ping() {
 			const win = $mol_wire_probe( () => this.frame())?.frame.contentWindow
-			win && win.postMessage(this.message(), this.origin())
+			const msg = this.message()
+			msg && win && win.postMessage(msg, this.origin())
 			this.timeout = new this.$.$mol_after_timeout(this.ping_timeout(), () => this.ping())
 		}
 
@@ -45,13 +46,13 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		protected data(next?: 'changed' | 'unchanged' | 'error') {
+		protected data(next?: 'changed' | 'unchanged' | 'error' | null) {
 			return next ?? null
 		}
 
-		status() {
+		status(reset?: null) {
 			this.frame()
-			return this.data()
+			return this.data(reset)
 		}
 
 	}

@@ -374,14 +374,18 @@ namespace $ {
 		@ $mol_action
 		redirect_to(redirect_uri?: string | null) {
 			const loc = this.$.$mol_dom_context.location
-			if (redirect_uri) loc.href = redirect_uri
+			if (redirect_uri) loc.assign(redirect_uri)
 			else loc.reload()
 		}
 
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
-			const status = this.checker().status()
-			if (status === 'error' || status === 'changed') next = null
+			const checker = this.checker()
+			const status = checker.status()
+			if (status === 'error' || status === 'changed') {
+				checker.status(null)
+				next = null
+			}
 
 			if (next === undefined) {
 				const token = super.token()
@@ -396,12 +400,12 @@ namespace $ {
 					if ( $mol_promise_like(e)) $mol_fail_hidden(e)
 					$mol_fail_log(e)
 				}
-
-				return this.token_refresh(null)
 			}
 
 			// Only clear token in local storage - do not logout on sso
-			if (next === null && ! op ) return this.token_refresh(null)
+			if (next === null && (! op || op === 'logout')) {
+				return this.token_refresh(null)
+			}
 
 			let actual
 
