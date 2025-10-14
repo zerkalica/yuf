@@ -1,27 +1,20 @@
 namespace $ {
 
-	export class $yuf_entity2_store extends $yuf_entity2 {
+	export class $yuf_entity2_store<Item = string> extends $yuf_entity2 {
 		override defaults( raw?: [] ) {
-			return [ ...raw ?? [] ] as readonly string[]
+			return [ ...raw ?? [] ] as readonly Item[]
 		}
 
 		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache' | 'remove'): readonly string[] {
-			const prev = $mol_wire_probe(() => this.ids()) ?? []
-			if (next && cache === 'remove') next = prev.filter(id => ! next?.includes(id))
-
-			const current = this.data(
+		ids(next?: readonly string[], cache?: 'cache'): readonly string[] {
+			const data = (this.data(
 				next as ReturnType<this['defaults']>,
 				cache ? 'cache' : undefined
-			) ?? [] as readonly string[]
+			) ?? []) as readonly string[]
 
 			let tmp_id = this.tmp_id()
 
-			if ( cache === 'remove' && tmp_id && next?.includes(tmp_id) ) {
-				tmp_id = this.tmp_id(null)
-			}
-
-			return tmp_id ? [ tmp_id, ... current ] : current
+			return tmp_id ? [ tmp_id, ... data ] : data
 		}
 
 		@ $mol_mem
@@ -30,7 +23,7 @@ namespace $ {
 		}
 
 		draft_create() {
-			return this.by_id(this.tmp_id(null, 'create')!)
+			return this.by_id(this.tmp_id(null, 'create')!) as ReturnType<this['by_id']>
 		}
 
 		@ $mol_mem_key
@@ -38,9 +31,18 @@ namespace $ {
 			throw new Error(`Implement ${this}.by_id()`)
 		}
 
+		@ $mol_action
 		remove_item(id: string) {
 			this.by_id(id).remove()
-			this.ids([ id ], 'remove')
+
+			if (this.tmp_id() === id) {
+				this.tmp_id(null)
+				return
+			}
+
+			const ids = this.ids()
+			const next = ids.filter(cur => cur !== id)
+			if (ids.length !== next.length) this.ids(next, 'cache')
 		}
 	}
 }
