@@ -560,12 +560,19 @@ namespace $ {
 
 			if (! token) return false
 
-			const params = this.token_decode(token)
-			const min_validity = this.min_validity()
-			const end_time = new Date().getTime()
-			const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
+			try {
+				const params = this.token_decode(token)
+				const min_validity = this.min_validity()
+				const end_time = new Date().getTime()
+				const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
 
-			return expires_in <= 0
+				return expires_in <= 0
+			} catch (e) {
+				if ( $mol_promise_like(e) ) $mol_fail_hidden(e)
+				$mol_fail_log(e)
+				return true
+
+			}
 		}
 	}
 }
