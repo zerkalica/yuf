@@ -522,23 +522,14 @@ namespace $ {
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
 			try {
-				if (this.checker()?.changed()) throw new Error('Token changed')
-			} catch (e) {
-				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
-				$mol_fail_log(e)
-				next = null
-				op = 'refresh'
-			}
-
-			if (next === undefined) {
-				const token = super.token()
-				if (token && ! this.is_expired(token) ) return token
-			}
-
-			try {
 				if (op === 'logout') {
 					const redirect_uri = this.logout_send()
 					this.redirect_to(redirect_uri)
+				}
+
+				if (next === undefined) {
+					const token = super.token()
+					if (! this.checker()?.changed() && token && ! this.is_expired(token) ) return token
 				}
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
