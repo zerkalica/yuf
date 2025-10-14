@@ -85,8 +85,7 @@ namespace $ {
 
 		protected checker_origin() {
 			const auth_url = this.endpoint('auth')
-			if (auth_url.startsWith('/')) return this.$.$mol_dom.location.origin
-			return auth_url.substring(0, auth_url.indexOf('/', 8))
+			return auth_url.startsWith('/') ? this.$.$mol_dom.location.origin : new URL(auth_url).origin
 		}
 
 		protected checker_message() {
@@ -94,8 +93,14 @@ namespace $ {
 			return `${this.client_id()}${sid ? ` ${sid}` : ''}`
 		}
 
+		checker_enabled() {
+			return true
+		}
+
 		@ $mol_mem
 		protected checker() {
+			if (! this.checker_enabled()) return null
+
 			return this.$.$yuf_session_oids_checker.make({
 				src: () => this.endpoint('status'),
 				origin: () => this.checker_origin(),
@@ -139,7 +144,10 @@ namespace $ {
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
-			if (next || next === null) this.redirect_params(null)
+			if (next || next === null) {
+				$mol_wire_probe(() => this.checker())?.changed(false)
+				this.redirect_params(null)
+			}
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
@@ -224,7 +232,6 @@ namespace $ {
 		@ $mol_mem
 		protected token_refresh(next?: string | null) {
 			if (next === null) this.token_id(null)
-
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
 
@@ -418,6 +425,9 @@ namespace $ {
 		}
 
 		@ $mol_action
+		time_cut() { return new Date().getTime() }
+
+		@ $mol_action
 		update() {
 			const refresh_token = this.token_refresh()
 			const url_params = refresh_token ? null  : this.url_params()
@@ -447,7 +457,7 @@ namespace $ {
 
 			const url = this.endpoint('token')
 			const flow = this.flow()
-			const start_time = $mol_wire_sync(new Date()).getTime()
+			const start_time = this.time_cut()
 
 			if (flow === 'implicit' && url_params?.access_token && url_params?.id_token) {
 				result = {
@@ -481,7 +491,7 @@ namespace $ {
 				} })
 			}
 
-			const end_time = $mol_wire_sync(new Date()).getTime()
+			const end_time = this.time_cut()
 
 			const average_time = (start_time + end_time) / 2
 			const iat = result?.access_token ? this.token_decode(result?.access_token)?.iat : null
@@ -511,45 +521,39 @@ namespace $ {
 
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
-			const checker = this.checker()
-			const status = checker.status()
-			if (status === 'error' || status === 'changed') {
-				checker.status(null)
+			try {
+				if (this.checker()?.changed()) throw new Error('Token changed')
+			} catch (e) {
+				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
+				$mol_fail_log(e)
 				next = null
+				op = 'refresh'
 			}
 
 			if (next === undefined) {
 				const token = super.token()
-				if (token && ! this.is_expired(token) ) {
-					return token
-				}
+				if (token && ! this.is_expired(token) ) return token
 			}
-
-			if (op === 'logout') {
-				try {
-					const redirect_uri = this.logout_send()
-					this.redirect_to(redirect_uri)
-				} catch (e) {
-					if ( $mol_promise_like(e)) $mol_fail_hidden(e)
-					$mol_fail_log(e)
-				}
-				return this.token_refresh(null)
-			}
-
-			// Only clear token in local storage - do not logout on sso
-			if (next === null && ! op) return this.token_refresh(null)
 
 			try {
-				const actual = this.update()
-				if (! actual?.access_token || ! actual?.id_token) return this.token_refresh(null)
+				if (op === 'logout') {
+					const redirect_uri = this.logout_send()
+					this.redirect_to(redirect_uri)
+				}
+			} catch (e) {
+				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
+				$mol_fail_log(e)
+			}
 
-				this.token_refresh(actual.refresh_token ?? null)
-				this.token_id(actual.id_token)
+			try {
+				const actual = next === undefined || op === 'refresh' ? this.update() : null
 
-				return super.token(actual.access_token)
+				this.token_refresh(actual?.refresh_token ?? null)
+				this.token_id(actual?.id_token ?? null)
+
+				return super.token(actual?.access_token ?? null)
 			} catch (e) {
 				if (! $mol_promise_like(e)) this.token_refresh(null)
-
 				$mol_fail_hidden(e)
 			}
 		}
@@ -563,7 +567,7 @@ namespace $ {
 			try {
 				const params = this.token_decode(token)
 				const min_validity = this.min_validity()
-				const end_time = new Date().getTime()
+				const end_time = this.time_cut()
 				const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
 
 				return expires_in <= 0
