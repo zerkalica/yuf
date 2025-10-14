@@ -533,12 +533,11 @@ namespace $ {
 					if ( $mol_promise_like(e)) $mol_fail_hidden(e)
 					$mol_fail_log(e)
 				}
+				return this.token_refresh(null)
 			}
 
 			// Only clear token in local storage - do not logout on sso
-			if (next === null && (! op || op === 'logout')) {
-				return this.token_refresh(null)
-			}
+			if (next === null && ! op) return this.token_refresh(null)
 
 			try {
 				const actual = this.update()
