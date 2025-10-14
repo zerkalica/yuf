@@ -430,8 +430,7 @@ namespace $ {
 			const code = url_params?.code
 			if (! refresh_token && ! code) return null
 
-			const redirect_pair = refresh_token ? null : this.redirect_params()
-			const [redirect_uri, state, nonce, code_verifier ] = redirect_pair ?? []
+			const [ redirect_uri, state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
 			if (redirect_uri && url_params?.state !== state) {
 				throw new Error('Invalid state in backurl', { cause: {
@@ -541,25 +540,19 @@ namespace $ {
 				return this.token_refresh(null)
 			}
 
-			let actual, error
-
 			try {
-				actual = this.update()
+				const actual = this.update()
+				if (! actual?.access_token || ! actual?.id_token) return this.token_refresh(null)
+
+				this.token_refresh(actual.refresh_token ?? null)
+				this.token_id(actual.id_token)
+
+				return super.token(actual.access_token)
 			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-				error = e
+				if (! $mol_promise_like(e)) this.token_refresh(null)
+
+				$mol_fail_hidden(e)
 			}
-
-			if (! actual?.access_token || ! actual?.id_token) {
-				this.token_refresh(null)
-				if (error) $mol_fail_hidden(error)
-				return null
-			}
-
-			this.token_refresh(actual.refresh_token ?? null)
-			this.token_id(actual.id_token)
-
-			return super.token(actual.access_token)
 		}
 
 		@ $mol_mem
@@ -570,7 +563,7 @@ namespace $ {
 
 			const params = this.token_decode(token)
 			const min_validity = this.min_validity()
-			const end_time = $mol_wire_sync(new Date()).getTime()
+			const end_time = new Date().getTime()
 			const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
 
 			return expires_in <= 0
