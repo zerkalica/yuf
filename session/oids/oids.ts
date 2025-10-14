@@ -105,7 +105,7 @@ namespace $ {
 
 		@ $mol_mem
 		url_params(next?: null) {
-			const { location, history } = this.$.$mol_dom_context
+			const { location } = this.$.$mol_dom_context
 			const use_query = this.use_query()
 			const raw = use_query ? location.search : location.hash
 
@@ -129,9 +129,7 @@ namespace $ {
 				+ ( use_query ? location.hash : new_part )
 
 			if (next === null) {
-				location.replace(new_url)
-				// replaceState - brokes mol links
-                // history.replaceState(history.state, '', new_url)
+				this.redirect_to(new_url, 'history')
 				return null
 			}
 
@@ -490,8 +488,6 @@ namespace $ {
 			const iat = result?.access_token ? this.token_decode(result?.access_token)?.iat : null
 			const skew = iat ? Math.floor(average_time - iat * 1000) : 0
 
-			this.time_skew = skew
-
 			if ( result?.access_token && this.is_expired(result.access_token, skew) ) {
 				throw new Error('Auth token expired')
 			}
@@ -500,10 +496,14 @@ namespace $ {
 		}
 
 		@ $mol_action
-		redirect_to(redirect_uri?: string | null) {
+		redirect_to(url?: string | null, history?: 'history') {
+			if (history) {
+				url && this.$.$mol_state_arg.href(url)
+				return
+			}
+
 			const loc = this.$.$mol_dom_context.location
-			if (redirect_uri) loc.assign(redirect_uri)
-			else loc.reload()
+			new this.$.$mol_after_frame(() => url ? loc.assign(url) : loc.reload())
 		}
 
 		min_validity() { return 5000 }
@@ -529,7 +529,7 @@ namespace $ {
 			if (op === 'logout') {
 				try {
 					const redirect_uri = this.logout_send()
-					new $mol_after_tick(() => this.redirect_to(redirect_uri))
+					this.redirect_to(redirect_uri)
 				} catch (e) {
 					if ( $mol_promise_like(e)) $mol_fail_hidden(e)
 					$mol_fail_log(e)
@@ -562,11 +562,17 @@ namespace $ {
 			return super.token(actual.access_token)
 		}
 
-		is_expired(token: string, skew = this.time_skew) {
+		@ $mol_mem
+		is_expired(token = super.token(), skew = this.time_skew) {
+			this.time_skew = skew
+
+			if (! token) return false
+
 			const params = this.token_decode(token)
 			const min_validity = this.min_validity()
 			const end_time = $mol_wire_sync(new Date()).getTime()
 			const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
+
 			return expires_in <= 0
 		}
 	}

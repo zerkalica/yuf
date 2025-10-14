@@ -29,13 +29,8 @@ namespace $ {
 			return create ? 'draft_' + $mol_guid() : next ?? null
 		}
 
-		@ $mol_action
 		draft_create() {
-			const id = this.tmp_id(null, 'create')!
-			const model = this.by_id(id)
-			model.draft({ id }, 'creating')
-
-			return model
+			return this.by_id(this.tmp_id(null, 'create')!)
 		}
 
 		@ $mol_mem_key
