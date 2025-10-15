@@ -50,6 +50,7 @@ namespace $ {
 			if (data === 'error') this.on_error('Frame response error')
 			else this.changed(data === 'changed')
 
+			this.timeout?.destructor()
 			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => $mol_wire_async(this).check())
 		}
 
