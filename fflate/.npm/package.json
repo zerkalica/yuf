@@ -1,0 +1,15 @@
+{
+  "name": "yuf-fflate-npm",
+  "version": "1.0.0",
+  "main": "-/.app.js",
+  "scripts": {
+    "build": "node --enable-source-maps --trace-uncaught ./.build.mjs",
+    "watch": "node --enable-source-maps --trace-uncaught ./.build.mjs --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "fflate": "^0.8.2"
+  }
+}

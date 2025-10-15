@@ -40,7 +40,8 @@ namespace $ {
 				return
 			}
 
-			const ids = this.ids()
+			const ids = $mol_wire_probe(() => this.ids())
+			if (! ids) return
 			const next = ids.filter(cur => cur !== id)
 			if (ids.length !== next.length) this.ids(next, 'cache')
 		}

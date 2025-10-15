@@ -441,10 +441,10 @@ namespace $ {
 
 			const [ redirect_uri, state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
-			if (redirect_uri && url_params?.state !== state) {
+			if (redirect_uri && url_params?.state && url_params.state !== state) {
 				throw new Error('Invalid state in backurl', { cause: {
 					stored_state: state,
-					back_url_state: url_params?.state,
+					url_params,
 				}})
 			}
 

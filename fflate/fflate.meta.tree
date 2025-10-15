@@ -1,0 +1,3 @@
+build $yuf_fflate_npm_build \node ./.npm/.build.mjs
+deploy \/yuf/fflate/.npm/-/app.js
+deploy \/yuf/fflate/.npm/-/app.js.map
