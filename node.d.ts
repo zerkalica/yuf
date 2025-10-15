@@ -4593,7 +4593,7 @@ declare namespace $ {
     class $mol_fetch_response extends $mol_object2 {
         readonly native: Response;
         constructor(native: Response);
-        status(): "unknown" | "success" | "redirect" | "inform" | "wrong" | "failed";
+        status(): "unknown" | "success" | "inform" | "redirect" | "wrong" | "failed";
         code(): number;
         message(): string;
         headers(): Headers;
@@ -8719,29 +8719,33 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $yuf_transport_req = RequestInit & {
+    export type $yuf_transport_req_main = {
         deadline?: number;
-        headers?: Record<string, string | null>;
+        headers?: Record<string, string | undefined | null>;
         auth_token?: string | null;
         auth_fails?: boolean;
         body_object?: object;
         redirect?: 'follow' | 'manual' | 'error';
     };
-    type $yuf_transport_error_response = {
+    export type $yuf_transport_req = RequestInit & $yuf_transport_req_main;
+    export type $yuf_transport_error_response = {
         input?: RequestInfo;
         init?: $yuf_transport_req;
         http_code?: number | null;
         message?: string | null;
         code?: string | null;
+        req_id?: string | null;
         json?: unknown;
     };
-    class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {
+    type Headers_extra = RequestInit['headers'] | Record<string, string | null | undefined> | null;
+    export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {
+        req_id(): string | null;
     }
-    class $yuf_transport_error_timeout extends $yuf_transport_error {
+    export class $yuf_transport_error_timeout extends $yuf_transport_error {
         constructor(cause: $yuf_transport_error_response);
     }
-    function $yuf_transport_pass(data: unknown): unknown;
-    class $yuf_transport extends $mol_fetch {
+    export function $yuf_transport_pass(data: unknown): unknown;
+    export class $yuf_transport extends $mol_fetch {
         static base_url(next?: string): string;
         static base_url_full(): string;
         static base_url_ws(): string;
@@ -8750,7 +8754,8 @@ declare namespace $ {
         static headers_default(): Record<string, string>;
         static get(path: string, params?: $yuf_transport_req): $mol_fetch_response;
         static head(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        static headers_merge(headers: RequestInit['headers'], extra?: Record<string, string | null | undefined> | null): Record<string, string>;
+        protected static headers_to_object(headers: RequestInit['headers'] | Record<string, string | null | undefined> | null): Record<string, string | null | undefined>;
+        static headers_merge(main_raw: Headers_extra, extra_raw?: typeof main_raw): Record<string, string>;
         static range(path: string, raw?: $yuf_transport_req & {
             count_prefer?: 'exact' | 'planned';
         }): number | undefined;
@@ -8765,9 +8770,6 @@ declare namespace $ {
         static object_url(path: string): string;
         protected static auth_need(res: $mol_fetch_response): boolean;
         static deadline(): number;
-        static response(input: RequestInfo, init?: Omit<$yuf_transport_req, 'headers'> & {
-            headers: Record<string, string>;
-        }): $mol_fetch_response;
         static auth_fails(): boolean;
         static success(path: RequestInfo, params: $yuf_transport_req): $mol_fetch_response;
         static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null;
@@ -8775,12 +8777,11 @@ declare namespace $ {
             code: string;
             message: string;
         };
-        static request(input: RequestInfo, init?: $yuf_transport_req & {
-            headers: Record<string, string>;
-        }): Promise<Response> & {
+        static request(input: RequestInfo, init?: $yuf_transport_req): Promise<Response> & {
             destructor: () => void;
         };
     }
+    export {};
 }
 
 declare namespace $ {

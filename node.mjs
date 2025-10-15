@@ -19162,6 +19162,17 @@ var $;
 var $;
 (function ($) {
     class $yuf_transport_error extends $mol_error_mix {
+        req_id() {
+            if (this.cause.req_id)
+                return this.cause.req_id;
+            const headers = this.cause.init?.headers;
+            const key = 'X-Request-ID';
+            if (headers instanceof Headers)
+                return headers.get(key);
+            if (Array.isArray(headers))
+                return headers.find(([k]) => k === key)?.[1] ?? null;
+            return headers?.[key] ?? null;
+        }
     }
     $.$yuf_transport_error = $yuf_transport_error;
     class $yuf_transport_error_timeout extends $yuf_transport_error {
@@ -19215,15 +19226,20 @@ var $;
         static head(path, params) {
             return this.success(path, { ...params, method: 'HEAD' });
         }
-        static headers_merge(headers, extra) {
+        static headers_to_object(headers) {
+            if (!headers)
+                return headers ?? {};
             const entries = headers instanceof Headers
                 ? headers.entries()
                 : Array.isArray(headers) ? headers : null;
             let result = (entries ? {} : headers);
             for (const [key, val] of entries ?? [])
                 result[key] = val;
-            result = { ...result, ...extra };
-            for (const key of Object.keys(result)) {
+            return result;
+        }
+        static headers_merge(main_raw, extra_raw) {
+            const result = { ...this.headers_to_object(main_raw), ...this.headers_to_object(extra_raw) };
+            for (const key in result) {
                 if (result[key] === null || result[key] === undefined)
                     delete result[key];
             }
@@ -19297,9 +19313,6 @@ var $;
         }
         static deadline() {
             return 300_000;
-        }
-        static response(input, init) {
-            return new $mol_fetch_response($mol_wire_sync(this).request(input, init));
         }
         static auth_fails() { return false; }
         static success(path, params) {
@@ -19395,9 +19408,6 @@ var $;
     __decorate([
         $mol_mem_key
     ], $yuf_transport, "object_url_ref", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "response", null);
     __decorate([
         $mol_action
     ], $yuf_transport, "success", null);
