@@ -5,6 +5,10 @@ namespace $ {
 		// entity or list type
 		type: string
 
+		// Request id to route response to request promise
+		// If null or undefined - first response with type+id+query resolves request promise
+		req_id?: string | null
+
 		// entity id
 		id?: string | number
 		// list search params
@@ -12,7 +16,6 @@ namespace $ {
 
 		// optional target server paths
 		device?: readonly string[] | null
-
 		// to server: undefined - get and subscribe, null - delete, object - replace
 		// from server: null - deleted, object - new data
 		data?: unknown
@@ -22,6 +25,7 @@ namespace $ {
 
 		// Optional error message
 		message?: string | null
+
 	}
 
 	export class $yuf_ws_statefull extends $yuf_ws_host {
@@ -38,19 +42,16 @@ namespace $ {
 		override send_pong() { this.send_object({ type: 'pong' }) }
 		override send_ping() { this.send_object({ type: 'ping' }) }
 
+		send_auth(token: string) { this.send_object({ type: 'auth', data: { token } }) }
+
 		@ $mol_mem
 		override token_sended() {
 			if (! this.opened() ) return null
 			const token = this.token()
 			if (! token ) return null
-
-			this.send_data({ type: 'auth' }, { token })
+			this.send_auth(token)
 
 			return token
-		}
-
-		send_data(signature: {}, data?: {} | null, op?: 'unsubscribe') {
-			this.send_object({ ... signature, data, error: op === 'unsubscribe' ? null : undefined })
 		}
 
 		message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
@@ -65,20 +66,20 @@ namespace $ {
 		 * @throws if error field in message object is not empty
 		 * @returns undefined - not recognized message, null - delete patch
 		 */
-		message_data(obj: Partial<$yuf_ws_statefull_message>) {
-			if (Array.isArray(obj)) return undefined
-			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return undefined
-			if ((obj as { error?: string | null }).error === null) return undefined
+		message(obj: Partial<$yuf_ws_statefull_message>) {
+			if (Array.isArray(obj)) return null
+			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return null
+			if ((obj as { error?: string | null }).error === null) return null
 
 			const error = obj.error ? (this.code_to_error(obj.error) || obj.error) : null
-
-			if (! error) return obj.data === undefined ? {} : obj.data
+			if (! error) return obj
 
 			const signature = this.message_signature(obj)
 			const message = `${obj.message ? `${obj.message} ` : ''} [${error}] ${JSON.stringify(signature)}`
 
 			throw new $yuf_transport_error(message, {
 				message: obj.message,
+				req_id: obj.req_id,
 				code: error,
 				http_code: error === 'AUTH_FAILED' ? 403 : undefined,
 				json: obj
@@ -101,12 +102,14 @@ namespace $ {
 			const channel = signature.type ? $mol_wire_probe(() => this.channel(signature)) : null
 
 			try {
-				const data = this.message_data(obj)
-				if (data !== undefined) channel?.receive(data)
+				const message = this.message(obj)
+				if (message) channel?.receive(message)
 			} catch (error) {
 				if (this.auth_need(error as {})) this.logout()
 				if ( ! channel ) $mol_fail_hidden(error)
-				channel.receive(error as {})
+
+				const req_id = error instanceof $yuf_transport_error ? error.req_id() : null
+				channel.receive({ data: error, req_id })
 			}
 		}
 

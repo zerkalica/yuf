@@ -1,13 +1,14 @@
 namespace $ {
-
-	export type $yuf_transport_req = RequestInit & {
+	export type $yuf_transport_req_main = {
 		deadline?: number
-		headers?: Record<string, string | null>
+		headers?: Record<string, string | undefined | null>
 		auth_token?: string | null // null - auth disabled
 		auth_fails?: boolean // if 403 - return error, do not wait user input and retry fetch
 		body_object?: object
 		redirect?: 'follow' | 'manual' | 'error'
 	}
+
+	export type $yuf_transport_req =  RequestInit & $yuf_transport_req_main
 
 	export type $yuf_transport_error_response = {
 		input?: RequestInfo
@@ -15,11 +16,24 @@ namespace $ {
 		http_code?: number | null
 		message?: string | null
 		code?: string | null
+		req_id?: string | null
 		json?: unknown
 		// [key: string]: number | string | null | undefined | Object
 	}
 
-	export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {}
+	type Headers_extra = RequestInit['headers'] | Record<string, string | null | undefined > | null
+
+	export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {
+		req_id() {
+			if ( this.cause.req_id) return this.cause.req_id
+
+			const headers = this.cause.init?.headers
+			const key = 'X-Request-ID'
+			if (headers instanceof Headers) return headers.get(key)
+			if (Array.isArray(headers)) return headers.find(([k ]) => k === key)?.[1] ?? null
+			return headers?.[key] ?? null
+		}
+	}
 
 	export class $yuf_transport_error_timeout extends $yuf_transport_error {
 		constructor(cause: $yuf_transport_error_response) {
@@ -29,6 +43,7 @@ namespace $ {
 				...cause
 			})
 		}
+
 	}
 
 	export function $yuf_transport_pass(data: unknown) { return data }
@@ -95,21 +110,24 @@ namespace $ {
 			return this.success(path, { ...params, method: 'HEAD' })
 		}
 
-		static headers_merge(
-			headers: RequestInit['headers'],
-			extra?: Record<string, string | null | undefined> | null
-		) {
+		protected static headers_to_object(headers: RequestInit['headers'] | Record<string, string | null | undefined > | null) {
+			if (! headers) return headers ?? {}
+
 			const entries = headers instanceof Headers
 				? headers.entries()
 				: Array.isArray(headers) ? headers : null
 
-			let result = (entries ? {} : headers) as NonNullable<typeof extra>
+			let result = (entries ? {} : headers) as Record<string, string | null | undefined >
 
 			for (const [key, val] of entries ?? []) result[key] = val
 
-			result = { ... result, ...extra }
+			return result
+		}
 
-			for (const key of Object.keys(result)) {
+		static headers_merge( main_raw: Headers_extra, extra_raw?: typeof main_raw) {
+			const result = { ... this.headers_to_object(main_raw), ...this.headers_to_object(extra_raw) }
+
+			for (const key in result) {
 				if (result[key] === null || result[key] === undefined) delete result[key]
 			}
 
@@ -215,11 +233,6 @@ namespace $ {
 			return 300_000
 		}
 
-		@ $mol_action
-		static override response( input: RequestInfo, init?: Omit<$yuf_transport_req, 'headers'> & { headers: Record<string, string> }) {
-			return new $mol_fetch_response( $mol_wire_sync( this ).request( input , init) )
-		}
-
 		static auth_fails() { return false }
 
 		@ $mol_action
@@ -306,7 +319,7 @@ namespace $ {
 			return { ...json, code, message }
 		}
 
-		static override request(input: RequestInfo, init?: $yuf_transport_req & { headers: Record<string, string> }) {
+		static override request(input: RequestInfo, init?: $yuf_transport_req) {
 			const res = super.request(input, init)
 
 			Object.assign(res, { init })

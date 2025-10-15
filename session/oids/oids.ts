@@ -438,7 +438,6 @@ namespace $ {
 			}
 
 			const code = url_params?.code
-			if (! refresh_token && ! code) return null
 
 			const [ redirect_uri, state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
@@ -464,7 +463,7 @@ namespace $ {
 					access_token: url_params.access_token,
 					id_token: url_params.id_token,
 				}
-			} else {
+			} else if (redirect_uri && ( code || refresh_token ) ) {
 				result = this.$.$mol_fetch.json(url, {
 					method: 'POST',
 					credentials: 'include',

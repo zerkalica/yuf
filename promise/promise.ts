@@ -3,6 +3,8 @@ namespace $ {
 		protected _value = undefined as undefined | Result | Error
 		protected _timer = null as null | $mol_after_timeout
 
+		readonly id = $mol_guid()
+
 		deadline(deadline = 30_000, error = new Error('Timeout')) {
 			this._timer = new $mol_after_timeout(deadline, () => this.value(error))
 		}

@@ -3,17 +3,23 @@ namespace $ {
 		constructor(
 			protected host: {
 				ready(): boolean
-				send_data(signature: {}, data?: Val | null, op?: 'unsubscribe'): void
+				send_object(message: {}): void
 				deadline_timeout(): number
 			},
-			readonly signature: {},
+			readonly signature: { },
 		) {
 			super()
 		}
 
 		ready() { return this.host.ready() }
-		send_data(data?: Val | null, op?: 'unsubscribe') {
-			this.host.send_data(this.signature, data, op)
+
+		send_data(data?: Val | null, req_id?: string, op?: 'unsubscribe') {
+			this.host.send_object({
+				...this.signature,
+				data,
+				req_id,
+				error: op === 'unsubscribe' ? null : undefined,
+			})
 		}
 
 		deadline_timeout() { return this.host.deadline_timeout() }
@@ -21,14 +27,18 @@ namespace $ {
 		protected response = null as null | $yuf_promise<Val | null>
 
 		protected subscribed = false
-		receive(next: Val | null | undefined) {
-			if (this.response) return this.response.value(next)
+		receive(message: { data?: unknown, req_id?: string | null }) {
+			const data = message.data === undefined ? {} : message.data
+
+			if (this.response && (! message.req_id || this.response.id === message.req_id)) {
+				return this.response.value(data as Val)
+			}
 
 			try {
-				this.data(next, 'cache')
+				this.data(data as Val, 'cache')
 			} catch (err) {
 				// Error from socket pushed to mem causes exception, ignore it
-				if (err !== next) $mol_fail_hidden(err)
+				if (err !== data) $mol_fail_hidden(err)
 			}
 		}
 
@@ -36,24 +46,22 @@ namespace $ {
 		data(next?: Val | null, cache?: 'cache'): Val | null {
 			if (next !== undefined && cache) return next
 			const prev = $mol_wire_probe(() => this.data())
-			
-			// Resend subscription on auth token or ws connection change
-			if (this.ready()) {
-				this.send_data(next)
-				if (next === undefined) this.subscribed = true
-			}
 
-			if (next === undefined && prev !== undefined) return prev
-
-			if (! this.response) {
+			if (! this.response && ( next !== undefined || prev === undefined ) ) {
 				this.response = new $yuf_promise<Val | null>()
 				this.response.deadline(
 					this.deadline_timeout(),
-					new $yuf_transport_error_timeout({ input: JSON.stringify(this.signature) }),
+					new $yuf_transport_error_timeout({input: JSON.stringify(this.signature) }),
 				)
 			}
 
-			const value = this.response.value() as Val | null | Error
+			// Resend subscription on auth token or ws connection change
+			if (this.ready()) {
+				this.send_data(next, this.response?.id)
+				if (next === undefined) this.subscribed = true
+			}
+
+			const value = this.response ? this.response.value() : ( prev ?? null )
 			this.response = null
 
 			if (value instanceof Error) $mol_fail_hidden(value)
@@ -65,7 +73,7 @@ namespace $ {
 			if (! this.subscribed) return
 
 			try {
-				this.send_data(null, 'unsubscribe')
+				this.send_data(null, undefined, 'unsubscribe')
 			} catch (e) {
 				$mol_fail_log(e)
 			}
