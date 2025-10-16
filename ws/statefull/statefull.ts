@@ -34,10 +34,6 @@ namespace $ {
 
 		session() { return this.$.$yuf_session._ }
 
-		token(next?: string | null) { return this.session().token(next) }
-		logged() { return this.session().logged() }
-		logout() { this.session().logout() }
-
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		override send_pong() { this.send_object({ type: 'pong' }) }
 		override send_ping() { this.send_object({ type: 'ping' }) }
@@ -47,7 +43,7 @@ namespace $ {
 		@ $mol_mem
 		override token_sended() {
 			if (! this.opened() ) return null
-			const token = this.token()
+			const token = this.session().token()
 			if (! token ) return null
 			this.send_auth(token)
 
@@ -105,7 +101,9 @@ namespace $ {
 				const message = this.message(obj)
 				if (message) channel?.receive(message)
 			} catch (error) {
-				if (this.auth_need(error as {})) this.logout()
+				if (this.auth_need(error as {})) {
+					$mol_wire_async(this.session()).logout().catch(e => this.$.$mol_fail_log(e))
+				}
 				if ( ! channel ) $mol_fail_hidden(error)
 
 				const req_id = error instanceof $yuf_transport_error ? error.req_id() : null
