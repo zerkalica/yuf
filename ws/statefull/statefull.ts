@@ -115,6 +115,14 @@ namespace $ {
 			return error.cause?.http_code === 403
 		}
 
+		@ $mol_mem
+		override error_packed(error?: null | [Error]) {
+			this.restarts()
+			this.token_sended()
+
+			return error ?? null
+		}
+
 	}
 
 }
