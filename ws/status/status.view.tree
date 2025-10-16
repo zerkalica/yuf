@@ -12,5 +12,8 @@ $yuf_ws_status $mol_view
 		syncing @ \syncing
 	sub /
 		^ ws_error_content /
-			<= Ws_error $mol_speck value <= error_message
+			<= Ws_error $mol_speck
+				event *
+					click? <=> reset_error? null
+				value <= error_message
 		<= Icon $yuf_ws_icon status <= status \error

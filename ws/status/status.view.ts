@@ -13,6 +13,11 @@ namespace $.$$ {
 			return 'connecting'
 		}
 
+		override reset_error(e?: Event) {
+			e && $mol_dom_event.wrap(e)?.prevented(true)
+			this.ws().error(null)
+		}
+
 		override title_formatted() {
 			const message = this.status_message()[this.status()] || this.status_message().error
 			return super.title().replace('{status}', message)

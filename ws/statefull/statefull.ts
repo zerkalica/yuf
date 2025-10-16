@@ -46,6 +46,7 @@ namespace $ {
 			const token = this.session().token()
 			if (! token ) return null
 			this.send_auth(token)
+			this.error(null)
 
 			return token
 		}
@@ -113,14 +114,6 @@ namespace $ {
 
 		auth_need(error: { cause?: { http_code?: number } }) {
 			return error.cause?.http_code === 403
-		}
-
-		@ $mol_mem
-		override error_packed(error?: null | [Error]) {
-			this.restarts()
-			this.token_sended()
-
-			return error ?? null
 		}
 
 	}
