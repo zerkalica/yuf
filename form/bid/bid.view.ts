@@ -105,7 +105,7 @@ namespace $.$$ {
 			}
 		}
 
-		override ip4(field: string, mask_allowed = false) {
+		override ip4(field: string, flag?: 'mask-allowed' | 'mask-required') {
 			const val = this.value(field) as string
 			if (! val) return ''
 
@@ -119,7 +119,7 @@ namespace $.$$ {
 				if (
 					parts.every(num => num <= 255)
 					&& Number(port || 0) < 65535
-					&& (mask_allowed ? (msk >= 0 && msk <= 32 ) : msk === 0)
+					&& (flag ? (msk >= (flag === 'mask-allowed' ? 0 : 1) && msk <= 32 ) : msk === 0)
 				) return ''
 			}
 
@@ -127,7 +127,11 @@ namespace $.$$ {
 		}
 
 		override ip4_mask(field: string) {
-			return this.ip4(field, true)
+			return this.ip4(field, 'mask-allowed')
+		}
+
+		override ip4_mask_required(field: string) {
+			return this.ip4(field, 'mask-required')
 		}
 
 		override latin_digits(field: string) {

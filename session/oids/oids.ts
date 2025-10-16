@@ -4,7 +4,7 @@ namespace $ {
 		static get _() { return new this() }
 
 		auth_server_url() {
-			return `//${this.$.$mol_dom_context.location.hostname}/${this.client_id()}-keycloak`
+			return `/${this.client_id()}-keycloak`
 		}
 
 		realm() { return 'mssc' }
@@ -485,8 +485,8 @@ namespace $ {
 
 			if (id_token && id_token.nonce !== nonce) {
 				throw new Error('Invalid nonce', { cause: {
-					stored: nonce?.slice(0, 3),
-					server: id_token.nonce?.slice(0, 3)
+					nonce: nonce?.slice(0, 3),
+					server_nonce: id_token.nonce?.slice(0, 3)
 				} })
 			}
 
@@ -497,7 +497,10 @@ namespace $ {
 			const skew = iat ? Math.floor(average_time - iat * 1000) : 0
 
 			if ( result?.access_token && this.is_expired(result.access_token, skew) ) {
-				throw new Error('Auth token expired')
+				throw new Error('Auth token expired', { cause: {
+					access_token: result.access_token?.slice(0, 3),
+					skew,
+				} })
 			}
 
 			return result

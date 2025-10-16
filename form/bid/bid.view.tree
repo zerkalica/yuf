@@ -19,6 +19,7 @@ $yuf_form_bid $mol_view
 	json_invalid* <= json_invalid_msg @ \{json_error}
 	ip4* <= ip4_msg @ \Not valid ip4
 	ip4_mask* <= ip4_msg
+	ip4_mask_required* <= ip4_msg
 	latin_digits* <= latin_digits_msg @ \Only latin and digits
 	value_in_range*? @ \{range}
 	value_limits* /readonly(number)[]

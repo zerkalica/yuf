@@ -13,11 +13,13 @@ namespace $ {
 			frame.title = 'keycloak-session-iframe'
 			frame.style.display = 'none'
 			frame.onerror = e => this.on_error(e)
-			frame.onload = () => $mol_wire_async(this).check()
 
 			const cb = $mol_wire_async((e: MessageEvent) => this.on_message(e))
 
-			this.$.$mol_dom_context.addEventListener('message', cb, false)
+			frame.onload = () => {
+				this.$.$mol_dom_context.addEventListener('message', cb, false)
+				$mol_wire_async(this).check()
+			}
 
 			const destructor = () => {
 				this.$.$mol_dom_context.removeEventListener('message', cb)
