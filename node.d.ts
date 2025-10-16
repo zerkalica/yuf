@@ -8678,6 +8678,7 @@ declare namespace $ {
 		json_invalid( id: any): ReturnType< $yuf_form_bid['json_invalid_msg'] >
 		ip4( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
 		ip4_mask( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
+		ip4_mask_required( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
 		latin_digits( id: any): ReturnType< $yuf_form_bid['latin_digits_msg'] >
 		value_in_range( id: any, next?: string ): string
 		value_limits( id: any): readonly(readonly(number)[])[]
@@ -8701,8 +8702,9 @@ declare namespace $.$$ {
         str_max(field: string): string;
         rows_max(field: string): string;
         json_invalid(field: string): string;
-        ip4(field: string, mask_allowed?: boolean): string;
+        ip4(field: string, flag?: 'mask-allowed' | 'mask-required'): string;
         ip4_mask(field: string): string;
+        ip4_mask_required(field: string): string;
         latin_digits(field: string): string;
         value_in_range(key: string): string;
     }

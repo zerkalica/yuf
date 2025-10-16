@@ -18838,6 +18838,9 @@ var $;
 		ip4_mask(id){
 			return (this.ip4_msg());
 		}
+		ip4_mask_required(id){
+			return (this.ip4_msg());
+		}
 		latin_digits(id){
 			return (this.latin_digits_msg());
 		}
@@ -18955,7 +18958,7 @@ var $;
                     return this.json_invalid_msg().replace('{error}', e.message);
                 }
             }
-            ip4(field, mask_allowed = false) {
+            ip4(field, flag) {
                 const val = this.value(field);
                 if (!val)
                     return '';
@@ -18966,13 +18969,16 @@ var $;
                     const msk = Number(mask || 0);
                     if (parts.every(num => num <= 255)
                         && Number(port || 0) < 65535
-                        && (mask_allowed ? (msk >= 0 && msk <= 32) : msk === 0))
+                        && (flag ? (msk >= (flag === 'mask-allowed' ? 0 : 1) && msk <= 32) : msk === 0))
                         return '';
                 }
                 return super.ip4(field);
             }
             ip4_mask(field) {
-                return this.ip4(field, true);
+                return this.ip4(field, 'mask-allowed');
+            }
+            ip4_mask_required(field) {
+                return this.ip4(field, 'mask-required');
             }
             latin_digits(field) {
                 const val = this.value_str(field);
