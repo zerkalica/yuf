@@ -2,14 +2,18 @@ namespace $ {
 	export class $yuf_entity2<Data = unknown> extends $mol_object {
 		@ $mol_memo.field
 		static get _() { return new this() }
-		protected static pushing = new $mol_wire_set<$yuf_entity2>()
+
+		@ $mol_mem
+		protected static pushing() {
+			return new $mol_wire_set<$yuf_entity2>()
+		}
 
 		@ $mol_mem
 		static syncing() {
 			let syncing = false
 			const errors = [] as Error[]
 
-			for (const model of this.pushing) {
+			for (const model of this.pushing()) {
 				try {
 					model?.pushing()
 				} catch (e) {
@@ -84,31 +88,20 @@ namespace $ {
 		protected removing(next?: boolean) { return next ?? false }
 
 		@ $mol_mem
-		draft(
-			next?: Partial<Data> | null,
-			flag?: 'removing' | 'creating'
-		): NonNullable<typeof next> | null {
-
+		draft( next?: Partial<Data> | null, flag?: 'removing' | 'pushing'): Partial<Data> | null {
 			if (next === undefined) return null
 
-			this.removing(flag === 'removing')
-
-			if (flag === 'creating') {
-				this.data(next, 'cache')
-			}
-
-			const pushing = this.factory().pushing
-
-			if (next === null) {
-				pushing.delete(this)
-				return null
-			}
-			pushing.add(this)
-
+			const pushing = this.factory().pushing()
 			const prev = $mol_wire_probe(() => this.draft()) ?? null
 
 			// merge with prev object, while debouncing
-			return this.merge(next, prev)
+			const draft = next === null ? next : this.merge(next, prev)
+
+			this.removing(flag === 'removing')
+			if (flag === 'pushing' || flag === 'removing') pushing.add(this)
+			if (! flag && next === null) pushing.delete(this)
+
+			return draft
 		}
 
 		actual(next?: Partial<Data> | null) {
@@ -117,18 +110,15 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data(
-			next?: Partial<Data> | null,
-			cache?: 'cache'
-		): Data | null {
+		data(next?: Partial<Data> | null, cache?: 'cache'): Data | null {
 			let actual
 
 			if (next === undefined) {
-				actual = this.is_draft() ? {} : this.actual()
+				actual = this.is_draft() ? this.draft() : this.actual()
 			} else if (cache) {
 				actual = next
 			} else {
-				this.draft(next, next === null ? 'removing' : undefined)
+				this.draft(next, next === null ? 'removing' : 'pushing')
 				actual = this.pushing()
 			}
 
@@ -138,7 +128,7 @@ namespace $ {
 				return actual as Data
 			}
 
-			return this.defaults(this.merge(actual)) as Data
+			return this.defaults(this.merge(actual))
 		}
 
 		merge(

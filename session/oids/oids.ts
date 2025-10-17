@@ -432,10 +432,10 @@ namespace $ {
 		update() {
 			const refresh_token = this.token_refresh()
 			const url_params = refresh_token ? null  : this.url_params().params
-			const error = url_params?.error_description
+			const error_message = `${url_params?.error_description ?? ''}${url_params?.error ? ` ${url_params?.error}` : ''}`
 
-			if (error) {
-				throw new Error(error + `${url_params.error ? ` [${url_params.error}]` : ''}`, { cause: url_params })
+			if (error_message) {
+				throw new Error(error_message, { cause: url_params })
 			}
 
 			const code = url_params?.code
@@ -464,7 +464,9 @@ namespace $ {
 					access_token: url_params.access_token,
 					id_token: url_params.id_token,
 				}
-			} else if ( code || refresh_token ) {
+			} else if ( ! code && ! refresh_token ) return null
+
+			try {
 				result = this.fetch().json(url, {
 					method: 'POST',
 					credentials: 'include',
@@ -480,6 +482,17 @@ namespace $ {
 						'Content-type': 'application/x-www-form-urlencoded',
 					}
 				}) as typeof result
+			} catch (e) {
+				if ( $mol_promise_like(e) ) return $mol_fail_hidden(e)
+				if (! (e instanceof Error) ) return null
+
+				const data = e.cause instanceof $mol_fetch_response
+					? this.error_from_response(e.cause)
+					: null
+				const error_message = `${data?.error_description ?? ''}${data?.error ? ` ${data?.error}` : ''}`
+				if (error_message) e = new $mol_error_mix(error_message, { cause: data }, e)
+
+				$mol_fail_hidden(e)
 			}
 
 			const id_token = nonce && result?.id_token ? this.token_decode(result.id_token) : null
@@ -547,8 +560,47 @@ namespace $ {
 
 				return super.token(actual?.access_token ?? null)
 			} catch (e) {
-				if (! $mol_promise_like(e)) this.token_refresh(null)
+				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
+				this.token_refresh(null)
+
+				const code = e instanceof Error && e.cause && typeof e.cause === 'object'
+					? (e.cause as { code?: string }).code
+					: null
+
+				if (code == 'invalid_grant' || code === 'unauthorized_client' || code === 'invalid_token') {
+					$mol_fail_log(e)
+					return null
+				}
+
 				$mol_fail_hidden(e)
+			}
+		}
+
+		@ $mol_action
+		protected error_from_response(cause: $mol_fetch_response) {
+			let label = 'text not fetched'
+
+			try {
+				const text = cause.text()
+				label = 'json not parsed'
+
+				return JSON.parse(text) as null | {
+					error?:
+					| 'invalid_grant'
+					| 'invalid_client'
+					| 'unauthorized_client'
+					| 'invalid_scope'
+					| 'unsupported_grant_type'
+					| 'access_denied'
+					| 'invalid_token'
+					| 'insufficient_scope'
+					error_description?: string
+				}
+			} catch (e) {
+				if ($mol_promise_like(e)) $mol_fail_hidden(e)
+				if (e instanceof Error) e.message += e.message + ' ' + label
+				$mol_fail_log(e)
+				return null
 			}
 		}
 
