@@ -1,4 +1,24 @@
 namespace $ {
+
+	function $yuf_session_oids_error(obj: unknown) {
+		if (obj instanceof Error) obj = obj.cause
+		if (! obj || ! ( typeof obj === 'object') ) return null
+		if (! (obj as { error?: string }).error) return null
+
+		return obj as {
+			error:
+				| 'invalid_grant'
+				| 'invalid_client'
+				| 'unauthorized_client'
+				| 'invalid_scope'
+				| 'unsupported_grant_type'
+				| 'access_denied'
+				| 'invalid_token'
+				| 'insufficient_scope'
+			error_description?: string
+		}
+	}
+
 	export class $yuf_session_oids extends $yuf_session {
 		@ $mol_memo.field
 		static get _() { return new this() }
@@ -466,33 +486,37 @@ namespace $ {
 				}
 			} else if ( ! code && ! refresh_token ) return null
 
+			const response = this.fetch().response(url, {
+				method: 'POST',
+				credentials: 'include',
+				body: this.search_params({
+					code,
+					grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
+					refresh_token,
+					client_id: this.client_id(),
+					redirect_uri: this.redirect_uri_grab(),
+					code_verifier,
+				}),
+				headers: {
+					'Content-type': 'application/x-www-form-urlencoded',
+				}
+			})
+
+			const text = response.text()
+
 			try {
-				result = this.fetch().json(url, {
-					method: 'POST',
-					credentials: 'include',
-					body: this.search_params({
-						code,
-						grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
-						refresh_token,
-						client_id: this.client_id(),
-						redirect_uri: this.redirect_uri_grab(),
-						code_verifier,
-					}),
-					headers: {
-						'Content-type': 'application/x-www-form-urlencoded',
-					}
-				}) as typeof result
+				result = JSON.parse(text)
 			} catch (e) {
-				if ( $mol_promise_like(e) ) return $mol_fail_hidden(e)
-				if (! (e instanceof Error) ) return null
+				$mol_fail_hidden(new Error(response.message() + ': ' + (e as Error).message, { cause: e }))
+			}
 
-				const data = e.cause instanceof $mol_fetch_response
-					? this.error_from_response(e.cause)
-					: null
-				const error_message = `${data?.error_description ?? ''}${data?.error ? ` ${data?.error}` : ''}`
-				if (error_message) e = new $mol_error_mix(error_message, { cause: data }, e)
+			if (response.code() >= 400) {
+				const error = $yuf_session_oids_error(result)
 
-				$mol_fail_hidden(e)
+				const error_message = `${error?.error_description ?? ''}${
+					error?.error ? ` ${error?.error}` : ''}` || response.message()
+
+				throw new Error(error_message, { cause: error })
 			}
 
 			const id_token = nonce && result?.id_token ? this.token_decode(result.id_token) : null
@@ -563,9 +587,7 @@ namespace $ {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
 				this.token_refresh(null)
 
-				const code = e instanceof Error && e.cause && typeof e.cause === 'object'
-					? (e.cause as { code?: string }).code
-					: null
+				const code = $yuf_session_oids_error(e)?.error
 
 				if (code == 'invalid_grant' || code === 'unauthorized_client' || code === 'invalid_token') {
 					$mol_fail_log(e)
@@ -573,34 +595,6 @@ namespace $ {
 				}
 
 				$mol_fail_hidden(e)
-			}
-		}
-
-		@ $mol_action
-		protected error_from_response(cause: $mol_fetch_response) {
-			let label = 'text not fetched'
-
-			try {
-				const text = cause.text()
-				label = 'json not parsed'
-
-				return JSON.parse(text) as null | {
-					error?:
-					| 'invalid_grant'
-					| 'invalid_client'
-					| 'unauthorized_client'
-					| 'invalid_scope'
-					| 'unsupported_grant_type'
-					| 'access_denied'
-					| 'invalid_token'
-					| 'insufficient_scope'
-					error_description?: string
-				}
-			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-				if (e instanceof Error) e.message += e.message + ' ' + label
-				$mol_fail_log(e)
-				return null
 			}
 		}
 
