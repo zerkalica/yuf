@@ -70,16 +70,11 @@ namespace $ {
 			const url = `${this.realm_url()}/.well-known/openid-configuration`
 
 			try {
-				return this.fetch().json(url) as null | {
-					/** URL of the OP's OAuth 2.0 Authorization Endpoint. */
+				return this.json(url) as null | {
 					authorization_endpoint: string
-					/** URL of the OP's OAuth 2.0 Token Endpoint. */
 					token_endpoint: string
-					/** URL of the OP's UserInfo Endpoint. */
 					userinfo_endpoint?: string
-					/**  URL of an OP iframe that supports cross-origin communications for session state information with the RP Client, using the HTML5 postMessage API. */
 					check_session_iframe?: string
-					/** URL at the OP to which an RP can perform a redirect to request that the End-User be logged out at the OP. */
 					end_session_endpoint?: string
 				}
 			} catch (e) {
@@ -113,9 +108,7 @@ namespace $ {
 			return `${this.client_id()}${sid ? ` ${sid}` : ''}`
 		}
 
-		checker_enabled() {
-			return true
-		}
+		checker_enabled() { return true }
 
 		@ $mol_mem
 		protected checker() {
@@ -223,10 +216,7 @@ namespace $ {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.fetch().json(this.realm_url() + '/account', {
-				headers,
-				credentials: 'include'
-			}) as null | {
+			return this.json(this.realm_url() + '/account', { headers, credentials: 'include' }) as null | {
 				id?: string
 				username?: string
 				email?: string
@@ -248,7 +238,7 @@ namespace $ {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.fetch().json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
+			return this.json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
 				sub: string
 				[key: string]: any
 			}
@@ -260,8 +250,6 @@ namespace $ {
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
 
-
-		code_verifier() { return '' }
 
 		logout_redirect_uri() {
 			return this.redirect_uri_grab()
@@ -282,12 +270,7 @@ namespace $ {
 
 		scope() { return null as string | null }
 
-		/**
-		 * Set the OpenID Connect flow.
-		 */
-		flow() {
-			return 'standard' as 'standard' | 'implicit' | 'hybrid'
-		}
+		flow() { return 'standard' as 'standard' | 'implicit' | 'hybrid' }
 
 		/**
 		 * Sets the 'ui_locales' query param in compliance with section 3.1.2.1
@@ -346,22 +329,17 @@ namespace $ {
 		 * Configures the Proof Key for Code Exchange (PKCE) method to use. This will default to 'SHA-256'.
 		 * Can be disabled by passing `null`.
 		 */
-		pkce_method() {
-			return null as null | 'SHA-256'
-		}
+		pkce_method() { return null as null | 'SHA-256' }
 
 		@ $mol_action
 		pkce_generate(code: string) {
 			const algo = this.pkce_method()
 			if (! algo) return null
+
 			const data = $mol_wire_sync(this.$).$mol_charset_encode(code)
 			const hash_buf = $mol_wire_sync(this.$.$mol_crypto_native.subtle).digest( algo, data )
-			const str = this.$.$mol_base64_encode(new Uint8Array(hash_buf))
 
-			return str
-				.replace(/\+/g, '-')
-				.replace(/\//g, '_')
-				.replace(/\=/g, '')
+			return this.$.$mol_base64_url_encode(new Uint8Array(hash_buf))
 		}
 
 		protected search_params(params: Record<string, string | number | null | undefined>) {
@@ -426,27 +404,49 @@ namespace $ {
 			return this.endpoint('logout') + '?' + this.logout_params()
 		}
 
+		response(url: string, params?: RequestInit) {
+			const headers = { ... params?.headers } as Record<string, string>
+			if (params?.body instanceof URLSearchParams) {
+				headers['Content-type'] = 'application/x-www-form-urlencoded'
+			}
+
+			return this.$.$mol_fetch.response(url, { ...params, method: params?.body ? 'POST' : 'GET', headers })
+		}
+
+		json(url: string, params?: RequestInit) {
+			const response = this.response(url, params)
+			const text = response.text()
+
+			let result
+			try {
+				result = JSON.parse(text)
+			} catch (e) {
+				$mol_fail_hidden(new Error(response.message() + ': ' + (e as Error).message, { cause: e }))
+			}
+
+			if (response.code() >= 400) {
+				const error = $yuf_session_oids_error(result)
+
+				const error_message = `${error?.error_description ?? ''}${
+					error?.error ? ` ${error?.error}` : ''}` || response.message()
+
+				throw new Error(error_message, { cause: error || response })
+			}
+
+			return result
+		}
+
 		@ $mol_action
 		logout_send() {
 			const url = this.endpoint('logout')
-			const id_token_hint = this.token_id()
-			if (! id_token_hint) return null
 
-			const res = this.fetch().response(url, {
-				method: 'POST',
-				body: this.logout_params(),
-				headers: {
-                    'Content-type': 'application/x-www-form-urlencoded',
-				}
-			})
+			const res = this.token_id() ? this.response(url, { body: this.logout_params() } ) : null
 
-			return res.native.redirected ? res.native.url : null
+			return res?.native.redirected ? res.native.url : null
 		}
 
 		@ $mol_action
 		time_cut() { return new Date().getTime() }
-
-		fetch() { return this.$.$mol_fetch }
 
 		@ $mol_action
 		update() {
@@ -458,7 +458,7 @@ namespace $ {
 				throw new Error(error_message, { cause: url_params })
 			}
 
-			const code = url_params?.code
+			const start_time = this.time_cut()
 
 			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
@@ -477,47 +477,24 @@ namespace $ {
 
 			const url = this.endpoint('token')
 			const flow = this.flow()
-			const start_time = this.time_cut()
 
 			if (flow === 'implicit' && url_params?.access_token && url_params?.id_token) {
 				result = {
 					access_token: url_params.access_token,
 					id_token: url_params.id_token,
 				}
-			} else if ( ! code && ! refresh_token ) return null
+			} else if ( ! url_params?.code && ! refresh_token ) return null
 
-			const response = this.fetch().response(url, {
-				method: 'POST',
-				credentials: 'include',
-				body: this.search_params({
-					code,
-					grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
-					refresh_token,
-					client_id: this.client_id(),
-					redirect_uri: this.redirect_uri_grab(),
-					code_verifier,
-				}),
-				headers: {
-					'Content-type': 'application/x-www-form-urlencoded',
-				}
+			const body = this.search_params({
+				code: url_params?.code,
+				grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
+				refresh_token,
+				client_id: this.client_id(),
+				redirect_uri: this.redirect_uri_grab(),
+				code_verifier,
 			})
 
-			const text = response.text()
-
-			try {
-				result = JSON.parse(text)
-			} catch (e) {
-				$mol_fail_hidden(new Error(response.message() + ': ' + (e as Error).message, { cause: e }))
-			}
-
-			if (response.code() >= 400) {
-				const error = $yuf_session_oids_error(result)
-
-				const error_message = `${error?.error_description ?? ''}${
-					error?.error ? ` ${error?.error}` : ''}` || response.message()
-
-				throw new Error(error_message, { cause: error })
-			}
+			result = this.json(url, { credentials: 'include', body })
 
 			const id_token = nonce && result?.id_token ? this.token_decode(result.id_token) : null
 
@@ -529,15 +506,12 @@ namespace $ {
 			}
 
 			const end_time = this.time_cut()
-
 			const average_time = (start_time + end_time) / 2
-			const iat = result?.access_token ? this.token_decode(result?.access_token)?.iat : null
-			const skew = iat ? Math.floor(average_time - iat * 1000) : 0
 
-			if ( result?.access_token && this.is_expired(result.access_token, skew) ) {
+			if ( result?.access_token && this.is_expired(result.access_token, average_time) ) {
 				throw new Error('Auth token expired', { cause: {
 					access_token: result.access_token?.slice(0, 3),
-					skew,
+					average_time,
 				} })
 			}
 
@@ -550,14 +524,11 @@ namespace $ {
 				url && this.$.$mol_state_arg.href(url)
 				return
 			}
-
 			const loc = this.$.$mol_dom_context.location
 			new this.$.$mol_after_frame(() => url ? loc.assign(url) : loc.reload())
 		}
 
 		min_validity() { return 5000 }
-
-		protected time_skew = 0
 
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
@@ -598,25 +569,21 @@ namespace $ {
 			}
 		}
 
+		protected time_skew = 0
+
 		@ $mol_mem
-		is_expired(token = super.token(), skew = this.time_skew) {
-			this.time_skew = skew
+		is_expired(token = super.token(), average_time?: number) {
+			const params = token ? this.token_decode(token) : null
+			if (! params) return false
 
-			if (! token) return false
-
-			try {
-				const params = this.token_decode(token)
-				const min_validity = this.min_validity()
-				const end_time = this.time_cut()
-				const expires_in = params?.exp ? params.exp * 1000 - end_time - skew - min_validity : 0
-
-				return expires_in <= 0
-			} catch (e) {
-				if ( $mol_promise_like(e) ) $mol_fail_hidden(e)
-				$mol_fail_log(e)
-				return true
-
+			if (params.iat && average_time) {
+				this.time_skew = Math.floor(average_time - params.iat * 1000)
 			}
+			const min_validity = this.min_validity()
+			const end_time = this.time_cut()
+			const expires_in = params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
+
+			return expires_in <= 0
 		}
 	}
 }
