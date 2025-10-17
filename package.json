@@ -304,6 +304,7 @@
     "$yuf_canvas",
     "$yuf_canvas_blob",
     "$yuf_canvas_host",
+    "$mol_wire_field",
     "$mol_video_camera",
     "$mol_video",
     "$mol_video_player",

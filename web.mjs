@@ -15442,6 +15442,39 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function $mol_wire_field(host, field, descr) {
+        if (!descr)
+            descr = Reflect.getOwnPropertyDescriptor(host, field);
+        const _get = descr?.get || $mol_const(descr?.value);
+        const _set = descr?.set || function (next) {
+            $mol_wire_atom.solo(this, _get).put(next);
+        };
+        const sup = Reflect.getPrototypeOf(host);
+        const sup_descr = Reflect.getOwnPropertyDescriptor(sup, field);
+        Object.defineProperty(_get, 'name', { value: sup_descr?.get?.name ?? field });
+        Object.defineProperty(_set, 'name', { value: sup_descr?.set?.name ?? field });
+        function get() {
+            return $mol_wire_atom.solo(this, _get).sync();
+        }
+        const temp = $mol_wire_task.getter(_set);
+        function set(next) {
+            temp(this, [next]).sync();
+        }
+        Object.defineProperty(get, 'name', { value: _get.name + '$' });
+        Object.defineProperty(set, 'name', { value: _set.name + '@' });
+        Object.assign(get, { orig: _get });
+        Object.assign(set, { orig: _set });
+        const { value, writable, ...descr2 } = { ...descr, get, set };
+        Reflect.defineProperty(host, field, descr2);
+        return descr2;
+    }
+    $.$mol_wire_field = $mol_wire_field;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     class $yuf_canvas_host extends $mol_object {
         static get _() { return new this(); }
         native() {
@@ -15465,7 +15498,7 @@ var $;
         $mol_mem
     ], $yuf_canvas_host.prototype, "native", null);
     __decorate([
-        $mol_memo.field
+        $mol_wire_field
     ], $yuf_canvas_host, "_", null);
     $.$yuf_canvas_host = $yuf_canvas_host;
 })($ || ($ = {}));
@@ -19031,6 +19064,7 @@ var $;
         token(next, op) {
             return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
         }
+        user_id() { return null; }
         token_cut(reset) { return this.token(reset ? null : undefined, reset); }
         logged() { return Boolean(this.token()); }
         logout() { return this.token(null, 'logout'); }
@@ -19289,6 +19323,9 @@ var $;
     __decorate([
         $mol_mem
     ], $yuf_transport, "base_url", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_transport, "session", null);
     __decorate([
         $mol_action
     ], $yuf_transport, "headers_auth", null);

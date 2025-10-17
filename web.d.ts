@@ -1335,7 +1335,7 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    function $mol_charset_decode(buffer: BufferSource, encoding?: $mol_charset_encoding): string;
+    function $mol_charset_decode(buffer: AllowSharedBufferSource, encoding?: $mol_charset_encoding): string;
 }
 
 declare var $node: any;
@@ -6571,6 +6571,10 @@ declare namespace $ {
 
 //# sourceMappingURL=camera.view.tree.d.ts.map
 declare namespace $ {
+    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
+}
+
+declare namespace $ {
     class $yuf_canvas_host extends $mol_object {
         static get _(): $yuf_canvas_host;
         native(): OffscreenCanvas;
@@ -8659,6 +8663,7 @@ declare namespace $ {
         client_id(): string;
         token_key(): string;
         token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
+        user_id(): null | string;
         token_cut(reset?: 'refresh'): string | null;
         logged(): boolean;
         logout(): string | null;

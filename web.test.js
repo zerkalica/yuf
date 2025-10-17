@@ -3476,6 +3476,41 @@ var $;
 ;
 "use strict";
 var $;
+(function ($_1) {
+    $mol_test({
+        'Cached field'($) {
+            class App extends $mol_object2 {
+                static $ = $;
+                static low = 1;
+                static get high() {
+                    return this.low + 1;
+                }
+                static set high(next) {
+                    this.low = next - 1;
+                }
+                static test() {
+                    $mol_assert_equal(App.high, 2);
+                    App.high = 3;
+                    $mol_assert_equal(App.high, 3);
+                }
+            }
+            __decorate([
+                $mol_wire_field
+            ], App, "low", void 0);
+            __decorate([
+                $mol_wire_field
+            ], App, "high", null);
+            __decorate([
+                $mol_wire_method
+            ], App, "test", null);
+            App.test();
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
 (function ($) {
     $mol_test({
         'parse and serial'() {
