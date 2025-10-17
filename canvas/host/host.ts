@@ -1,6 +1,6 @@
 namespace $ {
 	export class $yuf_canvas_host extends $mol_object {
-		@ $mol_memo.field
+		@ $mol_wire_field
 		static get _() { return new this() }
 
 		@ $mol_mem

@@ -1,6 +1,6 @@
 namespace $ {
 
-	export class $yuf_ws_entity_store extends $yuf_entity2_store {
+	export class $yuf_ws_entity_store<Item = string> extends $yuf_entity2_store<Item> {
 		type() { return '' }
 		query() { return {} as Record<string, string | null> }
 		device() {

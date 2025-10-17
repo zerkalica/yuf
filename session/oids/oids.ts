@@ -50,7 +50,7 @@ namespace $ {
 			const url = `${this.realm_url()}/.well-known/openid-configuration`
 
 			try {
-				return this.$.$mol_fetch.json(url) as null | {
+				return this.fetch().json(url) as null | {
 					/** URL of the OP's OAuth 2.0 Authorization Endpoint. */
 					authorization_endpoint: string
 					/** URL of the OP's OAuth 2.0 Token Endpoint. */
@@ -128,17 +128,22 @@ namespace $ {
 
 			const new_part = raw.slice(0, 1) + unknown.join('&')
 
-			const new_url = location.origin
+			const clean_url = location.origin
 				+ location.pathname
 				+ ( use_query ? new_part : location.search )
 				+ ( use_query ? location.hash : new_part )
 
 			if (next === null) {
-				this.redirect_to(new_url, 'history')
-				return null
+				this.redirect_to(clean_url, 'history')
+				return { params: null , clean_url }
 			}
 
-			return params
+			return { params, clean_url }
+		}
+
+		@ $mol_action
+		redirect_uri_grab() {
+			return this.url_params().clean_url
 		}
 
 		@ $mol_mem
@@ -198,7 +203,7 @@ namespace $ {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.$.$mol_fetch.json(this.realm_url() + '/account', {
+			return this.fetch().json(this.realm_url() + '/account', {
 				headers,
 				credentials: 'include'
 			}) as null | {
@@ -215,7 +220,7 @@ namespace $ {
 			}
 		}
 
-		user_id() { return this.user_profile()?.id ?? '' }
+		override user_id() { return this.user_profile()?.id ?? null }
 		user_name() { return this.user_profile()?.username ?? '' }
 
 		@ $mol_mem
@@ -223,7 +228,7 @@ namespace $ {
 			const headers = this.auth_headers()
 			if (! headers) return null
 
-			return this.$.$mol_fetch.json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
+			return this.fetch().json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
 				sub: string
 				[key: string]: any
 			}
@@ -239,21 +244,15 @@ namespace $ {
 		code_verifier() { return '' }
 
 		logout_redirect_uri() {
-			return this.redirect_uri()
-		}
-
-		@ $mol_action
-		redirect_uri() {
-			return this.$.$mol_dom_context.location.href
+			return this.redirect_uri_grab()
 		}
 
 		@ $mol_mem
-		redirect_params(next?: [ url: string, state: string, nonce?: string | null, verifier?: string | null ] | null, refresh?: 'refresh') {
+		redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
 			if ( refresh ) next = [
-				this.redirect_uri(),
 				$mol_guid(36),
-				this.use_nonse() ? $mol_guid(36) : null,
-				this.pkce_method() ? $mol_guid(96) : null,
+				this.use_nonse() ? $mol_guid(36) : undefined,
+				this.pkce_method() ? $mol_guid(96) : undefined,
 			]
 
 			if (next === null) this.url_params(null)
@@ -355,13 +354,13 @@ namespace $ {
 
 		@ $mol_mem
 		protected action_query() {
-			const [ redirect_uri, state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
+			const [ state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
 			const scope = this.scope()
 			const flow = this.flow()
 
 			return this.search_params({
 				client_id: this.client_id(),
-				redirect_uri,
+				redirect_uri: this.redirect_uri_grab(),
 				state,
 				response_mode: this.use_query() ? 'query' : 'fragment',
 
@@ -386,7 +385,7 @@ namespace $ {
 		account_url() {
 			return this.realm_url() + '/account?' + this.search_params({
 				referrer: this.client_id(),
-				referrer_uri: this.redirect_uri()
+				referrer_uri: this.redirect_uri_grab()
 			})
 		}
 
@@ -413,7 +412,7 @@ namespace $ {
 			const id_token_hint = this.token_id()
 			if (! id_token_hint) return null
 
-			const res = this.$.$mol_fetch.response(url, {
+			const res = this.fetch().response(url, {
 				method: 'POST',
 				body: this.logout_params(),
 				headers: {
@@ -427,10 +426,12 @@ namespace $ {
 		@ $mol_action
 		time_cut() { return new Date().getTime() }
 
+		fetch() { return this.$.$mol_fetch }
+
 		@ $mol_action
 		update() {
 			const refresh_token = this.token_refresh()
-			const url_params = refresh_token ? null  : this.url_params()
+			const url_params = refresh_token ? null  : this.url_params().params
 			const error = url_params?.error_description
 
 			if (error) {
@@ -439,9 +440,9 @@ namespace $ {
 
 			const code = url_params?.code
 
-			const [ redirect_uri, state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
+			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
-			if (redirect_uri && url_params?.state && url_params.state !== state) {
+			if (url_params?.state && url_params.state !== state) {
 				throw new Error('Invalid state in backurl', { cause: {
 					stored_state: state,
 					url_params,
@@ -463,8 +464,8 @@ namespace $ {
 					access_token: url_params.access_token,
 					id_token: url_params.id_token,
 				}
-			} else if (redirect_uri && ( code || refresh_token ) ) {
-				result = this.$.$mol_fetch.json(url, {
+			} else if ( code || refresh_token ) {
+				result = this.fetch().json(url, {
 					method: 'POST',
 					credentials: 'include',
 					body: this.search_params({
@@ -472,7 +473,7 @@ namespace $ {
 						grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
 						refresh_token,
 						client_id: this.client_id(),
-						redirect_uri,
+						redirect_uri: this.redirect_uri_grab(),
 						code_verifier,
 					}),
 					headers: {

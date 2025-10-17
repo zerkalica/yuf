@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_ws_entity extends $yuf_entity2 {
+	export class $yuf_ws_entity<Data = unknown> extends $yuf_entity2<Data> {
 		type() { return '' }
 		query() { return {} as Record<string, string | null> }
 		device() { return [] as readonly string[] }

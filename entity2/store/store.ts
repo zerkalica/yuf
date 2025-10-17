@@ -1,6 +1,6 @@
 namespace $ {
 
-	export class $yuf_entity2_store<Item = string> extends $yuf_entity2 {
+	export class $yuf_entity2_store<Item = string> extends $yuf_entity2<readonly Item[]> {
 		override defaults( raw?: [] ) {
 			return [ ...raw ?? [] ] as readonly Item[]
 		}
@@ -27,7 +27,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		by_id(id: string): $yuf_entity2 {
+		by_id(id: string): $yuf_entity2<{}> {
 			throw new Error(`Implement ${this}.by_id()`)
 		}
 

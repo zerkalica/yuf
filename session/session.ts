@@ -10,6 +10,8 @@ namespace $ {
 			return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null
 		}
 
+		user_id() { return null as null | string }
+
 		@ $mol_action
 		token_cut(reset?: 'refresh') { return this.token(reset ? null : undefined, reset) }
 

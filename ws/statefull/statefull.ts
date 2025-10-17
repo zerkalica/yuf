@@ -32,6 +32,7 @@ namespace $ {
 		@ $mol_memo.field
 		static get _() { return new this() }
 
+		@ $mol_mem
 		session() { return this.$.$yuf_session._ }
 
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }

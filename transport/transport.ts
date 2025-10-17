@@ -74,6 +74,7 @@ namespace $ {
 			return this.base_url_full().replace(/^http/, 'ws')
 		}
 
+		@ $mol_mem
 		static session() { return this.$.$yuf_session._ }
 
 		/**

@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_entity2 extends $mol_object {
+	export class $yuf_entity2<Data = unknown> extends $mol_object {
 		@ $mol_memo.field
 		static get _() { return new this() }
 		protected static pushing = new $mol_wire_set<$yuf_entity2>()
@@ -50,9 +50,9 @@ namespace $ {
 
 		id() { return '' }
 
-		defaults(raw?: {}) { return {} }
+		defaults(raw?: {}) { return {} as Data }
 
-		mock(prev?: ReturnType<this['defaults']> | null): ReturnType<this['defaults']> | null {
+		mock(prev?: Data | null): Data | null {
 			return null
 		}
 
@@ -62,22 +62,22 @@ namespace $ {
 
 		@ $mol_mem_key
 		value<
-			Field extends keyof ReturnType< this['defaults'] >
+			Field extends keyof Data
 		>(
 			field: Field,
-			next?: ReturnType< this['defaults'] >[ Field ] | null,
+			next?: Data[ Field ] | null,
 			draft?: 'draft'
-		): ReturnType< this['defaults'] >[ Field ] {
+		): Data[ Field ] {
 			const patch = next === undefined || draft
 				? undefined
-				: { [field]: next } as Partial<ReturnType<this['defaults']>>
+				: { [field]: next } as Partial<Data>
 
 			if (draft) {
 				const draft = this.draft(patch)?.[field]
 				if (draft !== undefined) return draft
 			}
 
-			return this.data( patch )?.[ field ] as ReturnType< this['defaults'] >[ Field ]
+			return this.data( patch )?.[ field ] as Data[ Field ]
 		}
 
 		@ $mol_mem
@@ -85,7 +85,7 @@ namespace $ {
 
 		@ $mol_mem
 		draft(
-			next?: Partial<ReturnType<this['defaults']>> | null,
+			next?: Partial<Data> | null,
 			flag?: 'removing' | 'creating'
 		): NonNullable<typeof next> | null {
 
@@ -111,16 +111,16 @@ namespace $ {
 			return this.merge(next, prev)
 		}
 
-		actual(next?: Partial<ReturnType<this['defaults']>> | null) {
+		actual(next?: Partial<Data> | null) {
 			// sync logic
 			return next ?? null
 		}
 
 		@ $mol_mem
 		data(
-			next?: Partial<ReturnType<this['defaults']>> | null,
+			next?: Partial<Data> | null,
 			cache?: 'cache'
-		): ReturnType<this['defaults']> | null {
+		): Data | null {
 			let actual
 
 			if (next === undefined) {
@@ -135,14 +135,14 @@ namespace $ {
 			if (actual === null) return null
 
 			if (actual instanceof Error) {
-				return actual as ReturnType<this['defaults']>
+				return actual as Data
 			}
 
-			return this.defaults(this.merge(actual)) as ReturnType<this['defaults']>
+			return this.defaults(this.merge(actual)) as Data
 		}
 
 		merge(
-			actual: Partial<ReturnType<this['defaults']>>,
+			actual: Partial<Data>,
 			prev: typeof actual | undefined | null = $mol_wire_probe(() => this.data())
 		) {
 			// broken backend returns undefined data on push,
