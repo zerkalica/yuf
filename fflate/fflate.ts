@@ -1,9 +1,6 @@
 namespace $ {
 
 	export class $yuf_fflate extends $mol_object {
-		@ $mol_memo.field
-		static get _() { return new this() }
-
 		@ $mol_mem
 		protected static module() {
 			$mol_wire_solid()

@@ -128,15 +128,19 @@ namespace $ {
 			const raw = use_query ? location.search : location.hash
 
 			const known = this.params_hybrid()
-			const pairs = raw.slice(1).split('&').map(rec => rec.split('='))
+			const pairs = raw.slice(1).split('&')
 
 			const unknown = [] as string[]
 			const params = {} as Record<typeof known[number], string | null | undefined>
 
-			for (const [name_raw, val] of pairs) {
-				const name = name_raw.trim() as typeof known[number]
-				if ( known.includes(name) ) params[name] = val
-				else unknown.push(`${name_raw}${val === undefined ? '' : `=${val}`}`)
+			for (const param_raw of pairs) {
+				const name = known.find(key => param_raw.startsWith(key + '='))
+				if ( name ) {
+					params[name] = param_raw.slice(name.length + 1)
+					continue
+				}
+
+				unknown.push(param_raw)
 			}
 
 			const new_part = raw.slice(0, 1) + unknown.join('&')
