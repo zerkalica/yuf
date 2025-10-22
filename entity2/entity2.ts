@@ -62,7 +62,10 @@ namespace $ {
 
 		mock_periodically() { return false }
 
-		is_draft() { return this.id().startsWith('draft') }
+		static tmp_ids = new Set<string>()
+		is_draft() {
+			return this.factory().tmp_ids.has(this.id())
+		}
 
 		@ $mol_mem_key
 		value<

@@ -17,9 +17,23 @@ namespace $ {
 			return tmp_id ? [ tmp_id, ... data ] : data
 		}
 
+		tmp_id_server_accepted() { return false }
+
 		@ $mol_mem
 		tmp_id(next?: null, create?: 'create') {
-			return create ? 'draft_' + $mol_guid() : next ?? null
+			const prev = $mol_wire_probe(() => this.tmp_id())
+
+			if (next === null && prev && this.tmp_id_server_accepted()) {
+				this.ids([ ... this.ids(), prev ], 'cache')
+			}
+
+			if (next) this.$.$yuf_entity2.tmp_ids.delete(next)
+			if (! create) return next ?? null
+
+			const id = $mol_guid()
+			this.$.$yuf_entity2.tmp_ids.add(id)
+
+			return id
 		}
 
 		draft_create() {

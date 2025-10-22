@@ -45,9 +45,9 @@ namespace $ {
 		override token_sended() {
 			if (! this.opened() ) return null
 			const token = this.session().token()
+			this.error(null)
 			if (! token ) return null
 			this.send_auth(token)
-			this.error(null)
 
 			return token
 		}
