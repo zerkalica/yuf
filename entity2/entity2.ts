@@ -52,24 +52,44 @@ namespace $ {
 			delete this.factory().active[this.toString()]
 		}
 
-		static draft_ids(next?: Record<string, string | null> | null) {
-			if (next) {
-				let keys_count = 0
-				for (let k in next) {
-					if (! next[k]) delete next[k]
-					else keys_count++
-				}
-
-				if (! keys_count) next = null
-			}
-
-			return this.$.$mol_state_local.value(`${this}.draft_ids()`, next) || {}
+		protected static drafts(next?: Record<string, [store_id: string, tmp_data: unknown] | null> | null) {
+			return this.$.$mol_state_local.value(`${this}.drafts()`, next) || {}
 		}
 
-		@ $mol_action
-		protected static draft_remove(id: string) { this.draft_ids({ ... this.draft_ids(), [id]: null }) }
+		protected static drafts_patch(next?: Record<string, [store_id: string, tmp_data: unknown] | null> | null) {
+			const prev = this.drafts()
+			if (next === undefined) return prev
 
-		protected static is_draft(id: string) { return !! this.draft_ids()[id] }
+			next = { ...prev, ...next }
+
+			let keys_count = 0
+
+			for (let k in next) {
+				if (! next[k]) delete next[k]
+				else keys_count++
+			}
+
+			if (! keys_count) next = null
+
+			return this.drafts(next)
+		}
+
+		static draft_ids_by_store(store_id: string, next?: string) {
+			const ids = this.drafts_patch(next ? { [next]: [ store_id, {} ] } : undefined)
+
+			return Object.keys(ids).filter(id => ids[id]?.[0] === store_id)
+		}
+
+		protected static draft_data<Data>(id: string, next?: Partial<Data> | null) {
+			const ids_prev = this.drafts_patch()[id]
+			if (! ids_prev?.[0] ) return next ?? null
+
+			if (next === undefined) return ids_prev[1] ?? null
+
+			return this.drafts_patch({ [id]: next ? [ ids_prev[0], next ] : next })[id]?.[1] ?? null
+		}
+
+		protected static is_draft(id: string) { return !! this.drafts_patch()[id] }
 
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
 
@@ -121,7 +141,7 @@ namespace $ {
 			if (flag === 'pushing' || flag === 'removing') pushing.add(this)
 			if (! flag && next === null) pushing.delete(this)
 
-			return this.$.$mol_state_local.value(`${this}`, draft)
+			return this.$.$yuf_entity2.draft_data(this.id(), draft)
 		}
 
 		actual(next?: Partial<Data> | null) {
@@ -134,7 +154,7 @@ namespace $ {
 			let actual
 
 			if (next === undefined) {
-				actual = this.is_draft() ? this.draft() : this.actual()
+				actual = this.draft() ?? this.actual()
 			} else if (cache) {
 				actual = next
 			} else {
@@ -197,8 +217,6 @@ namespace $ {
 				// if removing true - do not merge with prev value, assume null - object deleted
 				const result = actual && ! removing ? this.merge(actual, draft) : null
 				this.draft(null)
-
-				this.$.$yuf_entity2.draft_remove(this.id())
 
 				return result
 			} catch (e) {

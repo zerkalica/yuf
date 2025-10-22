@@ -27,25 +27,14 @@ namespace $ {
 		store_id() { return this.toString() }
 
 		@ $mol_mem
-		draft_ids(prepends?: readonly string[]) {
-			const factory = this.$.$yuf_entity2
-			const store_id = this.store_id()
-			let ids = factory.draft_ids()
-
-			if (prepends?.length) {
-				const next = {} as typeof ids
-				prepends.forEach(id => { next[id] = store_id } )
-				ids = {...next, ...ids}
-				factory.draft_ids(ids)
-			}
-
-			return Object.keys(ids).filter(id => ids[id] === store_id)
+		draft_ids(next?: string) {
+			return this.$.$yuf_entity2.draft_ids_by_store(this.store_id(), next)
 		}
 
 		@ $mol_action
 		draft_create() {
 			const id = this.draft_id_create()
-			this.draft_ids([ id ])
+			this.draft_ids(id)
 
 			return this.by_id(id) as ReturnType<this['by_id']>
 		}
