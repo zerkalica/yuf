@@ -5,16 +5,8 @@ namespace $ {
 			return [ ...raw ?? [] ] as readonly Item[]
 		}
 
-		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache'): readonly string[] {
-			const data = (this.data(
-				next as ReturnType<this['defaults']>,
-				cache ? 'cache' : undefined
-			) ?? []) as readonly string[]
-
-			let tmp_id = this.tmp_id()
-
-			return tmp_id ? [ tmp_id, ... data ] : data
+		ids(next?: readonly string[], cache?: 'cache') {
+			return (this.data(next as readonly Item[], cache) ?? []) as readonly string[]
 		}
 
 		store_id() { return this.toString() }
@@ -23,6 +15,12 @@ namespace $ {
 
 		protected tmp_id_server_accepted() { return true }
 
+		@ $mol_action
+		ids_cache_add(id: string) {
+			this.ids([ id, ... this.ids() ], 'cache')
+		}
+
+		@ $mol_action
 		tmp_id_remove(id: string) {
 			this.tmp_id(null)
 		}

@@ -91,8 +91,8 @@ namespace $ {
 			return new this.$.$yuf_ws_statefull_channel<Val>(this, signature)
 		}
 
-		data<Val>(signature: {}, data?: null | Val) {
-			return this.channel<Val>(signature).data(data)
+		data<Val>(signature: {}, data?: null | Val, refresh?: 'refresh') {
+			return this.channel<Val>(signature).data(data, refresh)
 		}
 
 		protected override on_object( obj: {} ) {

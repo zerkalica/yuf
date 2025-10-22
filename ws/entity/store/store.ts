@@ -22,9 +22,9 @@ namespace $ {
 
 		ws() { return this.$.$yuf_ws_statefull._ }
 
-		override actual(next?: Partial<ReturnType<this['defaults']>> | null) {
+		override actual(next?: Partial<ReturnType<this['defaults']>> | null, refresh?: 'refresh') {
 			this.propagate()
-			return this.ws().data<Partial<ReturnType<this['defaults']>>>(this.signature(), next)
+			return this.ws().data<Partial<ReturnType<this['defaults']>>>(this.signature(), next, refresh)
 		}
 
 		override toString() { return JSON.stringify(this.signature()) }

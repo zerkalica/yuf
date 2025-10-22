@@ -43,8 +43,8 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		data(next?: Val | null, cache?: 'cache'): Val | null {
-			if (next !== undefined && cache) return next
+		data(next?: Val | null, cache?: 'cache' | 'refresh'): Val | null {
+			if (next !== undefined && cache === 'cache') return next
 			const prev = $mol_wire_probe(() => this.data())
 
 			if (! this.response && ( next !== undefined || prev === undefined ) ) {
@@ -57,7 +57,7 @@ namespace $ {
 
 			// Resend subscription on auth token or ws connection change
 			if (this.ready()) {
-				this.send_data(next, this.response?.id)
+				this.send_data(cache === 'refresh' ? undefined : next, this.response?.id)
 				if (next === undefined) this.subscribed = true
 			}
 
