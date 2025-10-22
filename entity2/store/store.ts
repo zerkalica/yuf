@@ -17,7 +17,7 @@ namespace $ {
 			return tmp_id ? [ tmp_id, ... data ] : data
 		}
 
-		tmp_id_server_accepted() { return false }
+		tmp_id_server_accepted() { return true }
 
 		@ $mol_mem
 		tmp_id(next?: null, create?: 'create') {
