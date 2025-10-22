@@ -17,27 +17,23 @@ namespace $ {
 			return tmp_id ? [ tmp_id, ... data ] : data
 		}
 
-		tmp_id_server_accepted() { return true }
+		store_id() { return this.toString() }
 
-		@ $mol_mem
-		tmp_id(next?: string) {
-			if (next === '') {
-				next = $mol_guid()
-				this.$.$yuf_entity2.tmp_ids([ next ])
-				return next
-			}
+		protected tmp_id_create() { return $mol_guid() }
 
-			if (next) {
-				this.$.$yuf_entity2.tmp_ids([ next ], 'remove')
-				this.tmp_id_server_accepted() && this.ids([ ... this.ids(), next ], 'cache')
-				return null
-			}
+		protected tmp_id_server_accepted() { return true }
 
-			return next ?? null
+		tmp_id_remove(id: string) {
+			this.tmp_id(null)
 		}
 
+		protected tmp_id(next?: string | null) {
+			return this.$.$yuf_entity2.tmp_id(this.store_id(), next)
+		}
+
+		@ $mol_action
 		draft_create() {
-			const id = this.tmp_id('')!
+			const id = this.tmp_id(this.tmp_id_create())!
 
 			return this.by_id(id) as ReturnType<this['by_id']>
 		}
