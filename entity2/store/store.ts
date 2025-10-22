@@ -5,30 +5,47 @@ namespace $ {
 			return [ ...raw ?? [] ] as readonly Item[]
 		}
 
-		ids(next?: readonly string[], cache?: 'cache') {
+		ids_actual(next?: readonly string[], cache?: 'cache') {
 			return (this.data(next as readonly Item[], cache) ?? []) as readonly string[]
 		}
 
-		store_id() { return this.toString() }
+		@ $mol_mem
+		ids(next?: readonly string[], cache?: 'cache') {
+			return [ ... this.draft_ids(), ...this.ids_actual(next, cache) ]
+		}
+
+		@ $mol_action
+		ids_add_optimistic(id: string) {
+			const ids = this.ids()
+			if ( ! ids || ids.includes(id) ) return
+
+			this.ids([ id, ... ids ], 'cache')
+		}
 
 		protected draft_id_create() { return $mol_guid() }
 
-		draft_optimistic(draft_id: string) { return false }
+		store_id() { return this.toString() }
 
-		@ $mol_action
-		draft_done(draft_id: string) {
-			if (! this.draft_optimistic(draft_id) ) return
+		@ $mol_mem
+		draft_ids(prepends?: readonly string[]) {
+			const factory = this.$.$yuf_entity2
+			const store_id = this.store_id()
+			let ids = factory.draft_ids()
 
-			const ids = $mol_wire_probe(() => this.ids())
-			if ( ! ids || ids.includes(draft_id) ) return
+			if (prepends?.length) {
+				const next = {} as typeof ids
+				prepends.forEach(id => { next[id] = store_id } )
+				ids = {...next, ...ids}
+				factory.draft_ids(ids)
+			}
 
-			this.ids([ draft_id, ... ids ], 'cache')
+			return Object.keys(ids).filter(id => ids[id] === store_id)
 		}
 
 		@ $mol_action
 		draft_create() {
 			const id = this.draft_id_create()
-			this.$.$yuf_entity2.draft_add(id)
+			this.draft_ids([ id ])
 
 			return this.by_id(id) as ReturnType<this['by_id']>
 		}

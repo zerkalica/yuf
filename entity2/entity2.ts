@@ -52,17 +52,7 @@ namespace $ {
 			delete this.factory().active[this.toString()]
 		}
 
-		id() { return '' }
-
-		defaults(raw?: {}) { return {} as Data }
-
-		mock(prev?: Data | null): Data | null {
-			return null
-		}
-
-		mock_periodically() { return false }
-
-		protected static draft_ids(next?: Record<string, number | null> | null) {
+		static draft_ids(next?: Record<string, string | null> | null) {
 			if (next) {
 				let keys_count = 0
 				for (let k in next) {
@@ -77,16 +67,24 @@ namespace $ {
 		}
 
 		@ $mol_action
-		static draft_add(id: string) { this.draft_ids({ ... this.draft_ids(), [id]: 1 }) }
-
-		@ $mol_action
 		protected static draft_remove(id: string) { this.draft_ids({ ... this.draft_ids(), [id]: null }) }
 
-		protected static is_draft(id: string) {
-			return !! this.draft_ids()[id]
-		}
+		protected static is_draft(id: string) { return !! this.draft_ids()[id] }
 
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
+
+		_id = ''
+
+		id() { return this._id }
+
+		defaults(raw?: {}) { return {} as Data }
+
+		mock(prev?: Data | null): Data | null {
+			return null
+		}
+
+		mock_periodically() { return false }
+
 
 		@ $mol_mem_key
 		value<
@@ -113,19 +111,17 @@ namespace $ {
 
 		@ $mol_mem
 		draft( next?: Partial<Data> | null, flag?: 'removing' | 'pushing'): Partial<Data> | null {
-			if (next === undefined) return null
-
 			const pushing = this.factory().pushing()
 			const prev = $mol_wire_probe(() => this.draft()) ?? null
 
 			// merge with prev object, while debouncing
-			const draft = next === null ? next : this.merge(next, prev)
+			const draft = next ? this.merge(next, prev) : next
 
-			this.removing(flag === 'removing')
+			if (next !== undefined) this.removing(flag === 'removing')
 			if (flag === 'pushing' || flag === 'removing') pushing.add(this)
 			if (! flag && next === null) pushing.delete(this)
 
-			return draft
+			return this.$.$mol_state_local.value(`${this}`, draft)
 		}
 
 		actual(next?: Partial<Data> | null) {
@@ -201,6 +197,7 @@ namespace $ {
 				// if removing true - do not merge with prev value, assume null - object deleted
 				const result = actual && ! removing ? this.merge(actual, draft) : null
 				this.draft(null)
+
 				this.$.$yuf_entity2.draft_remove(this.id())
 
 				return result
