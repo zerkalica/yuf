@@ -101,9 +101,12 @@ namespace $ {
 				data: obj
 			})
 
-			const message = this.answer(obj)
+			const prev = this.subs.find(sub => this.message_equal(obj, sub) )
+			const message = this.answer({ ...prev, ...obj })
 
-			this.subs = this.subs.filter(sub => ! this.message_equal(obj, sub) )
+			if (prev) {
+				this.subs = this.subs.filter(sub => sub !== prev )
+			}
 
 			if (! message) return
 

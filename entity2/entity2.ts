@@ -80,6 +80,7 @@ namespace $ {
 			return Object.keys(ids).filter(id => ids[id]?.[0] === store_id)
 		}
 
+		@ $mol_mem_key
 		protected static draft_data<Data>(id: string, next?: Partial<Data> | null) {
 			const ids_prev = this.drafts_patch()[id]
 			if (! ids_prev?.[0] ) return next ?? null
@@ -91,9 +92,11 @@ namespace $ {
 
 		protected static is_draft(id: string) { return !! this.drafts_patch()[id] }
 
+		@ $mol_mem
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
 
 		_id = ''
+		store = null as null | $yuf_entity2_store
 
 		id() { return this._id }
 
@@ -137,14 +140,17 @@ namespace $ {
 			// merge with prev object, while debouncing
 			const draft = next ? this.merge(next, prev) : next
 
-			if (next !== undefined) this.removing(flag === 'removing')
-			if (flag === 'pushing' || flag === 'removing') pushing.add(this)
-			if (! flag && next === null) pushing.delete(this)
+			const removing = flag === 'removing' && ! this.is_draft()
+
+			if (next !== undefined) this.removing(removing)
+
+			if (flag === 'pushing' || removing) pushing.add(this)
+			else if (next === null) pushing.delete(this)
 
 			return this.$.$yuf_entity2.draft_data(this.id(), draft)
 		}
 
-		actual(next?: Partial<Data> | null) {
+		actual(next?: Partial<Data> | null, refresh?: 'refresh') {
 			// sync logic
 			return next ?? null
 		}
@@ -152,9 +158,8 @@ namespace $ {
 		@ $mol_mem
 		data(next?: Partial<Data> | null, cache?: 'cache'): Data | null {
 			let actual
-
 			if (next === undefined) {
-				actual = this.draft() ?? this.actual()
+				actual = this.is_draft() ? this.draft() : this.actual()
 			} else if (cache) {
 				actual = next
 			} else {
@@ -216,7 +221,22 @@ namespace $ {
 				// it converts to empty object in $yuf_ws_statefull.message_data
 				// if removing true - do not merge with prev value, assume null - object deleted
 				const result = actual && ! removing ? this.merge(actual, draft) : null
+
+				const is_created = this.is_draft()
+
+				// Pull actual data to subscribe to server data changes
+				is_created && this.actual(null, 'refresh')
+
+				// Null draft before pulling data, without nulled draft data do not pull actual
 				this.draft(null)
+				if (! is_created ) return result
+
+				// Pull data to subscribe to actual changes
+				this.data()
+
+				// Try optimistacally add id, returned by server to ids list in store
+				const next_id = (actual as { id?: string }).id ?? this.id()
+				this.store?.id_add(this._id = next_id)
 
 				return result
 			} catch (e) {
@@ -226,8 +246,8 @@ namespace $ {
 		}
 
 		remove() {
-			if (this.is_draft()) return
 			this.data(null)
+			this.store?.id_remove(this.id())
 		}
 
 	}

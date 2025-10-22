@@ -11,15 +11,19 @@ namespace $ {
 
 		@ $mol_mem
 		ids(next?: readonly string[], cache?: 'cache') {
-			return [ ... this.draft_ids(), ...this.ids_actual(next, cache) ]
+			return [ ...this.draft_ids(), ...this.ids_actual(next, cache) ]
 		}
 
 		@ $mol_action
-		ids_add_optimistic(id: string) {
-			const ids = this.ids()
-			if ( ! ids || ids.includes(id) ) return
+		id_remove(id: string) {
+			const ids = $mol_wire_probe(() => this.ids_actual())
+			if (ids?.length) this.ids_actual(ids.filter(cur => cur !== id), 'cache')
+		}
 
-			this.ids([ id, ... ids ], 'cache')
+		@ $mol_action
+		id_add(id: string) {
+			const ids = this.ids_actual()
+			if ( ! ids.includes(id) ) this.ids_actual([ id, ... ids ], 'cache')
 		}
 
 		protected draft_id_create() { return $mol_guid() }
@@ -33,7 +37,7 @@ namespace $ {
 
 		@ $mol_action
 		draft_create() {
-			const id = this.draft_id_create()
+			const id = this.draft_ids()?.[0] ?? this.draft_id_create()
 			this.draft_ids(id)
 
 			return this.by_id(id) as ReturnType<this['by_id']>
@@ -44,15 +48,5 @@ namespace $ {
 			throw new Error(`Implement ${this}.by_id()`)
 		}
 
-		@ $mol_action
-		remove_item(id: string) {
-			this.by_id(id).remove()
-
-			const ids = $mol_wire_probe(() => this.ids())
-			if (! ids) return
-
-			const next = ids.filter(cur => cur !== id)
-			if (ids.length !== next.length) this.ids(next, 'cache')
-		}
 	}
 }

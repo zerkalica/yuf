@@ -28,16 +28,6 @@ namespace $ {
 		}
 
 		override toString() { return JSON.stringify(this.signature()) }
-
-		@ $mol_mem_key
-		override by_id(id: string) {
-			return this.$.$yuf_ws_entity.make<typeof $yuf_ws_entity<{}>>({
-				id: $mol_const(id),
-				ws: () => this.ws(),
-				device: () => this.device(),
-				actual: next => this.row_data(id, next)
-			})
-		}
 	}
 
 }
