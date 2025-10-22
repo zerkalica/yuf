@@ -62,33 +62,28 @@ namespace $ {
 
 		mock_periodically() { return false }
 
-		protected static tmp_ids(next?: Record<string, string | null> | null): Record<string, string | null> {
-			return this.$.$mol_state_local.value(`${this}.tmp_ids()`, next) || {}
-		}
-
-		protected static is_draft(id: string) {
-			return !! this.tmp_ids()[id]
-		}
-
-		@ $mol_mem_key
-		static tmp_id(store_id: string, id?: string | null) {
-			let next = this.tmp_ids()
-
-			if (id) next = this.tmp_ids({ ... next, [id]: store_id })
-
-			if (id === null) {
-				next = { ... next }
+		protected static draft_ids(next?: Record<string, number | null> | null) {
+			if (next) {
 				let keys_count = 0
-
 				for (let k in next) {
-					if (next[k] === store_id) delete next[k]
+					if (! next[k]) delete next[k]
 					else keys_count++
 				}
 
-				next = this.tmp_ids(keys_count === 0 ? null : next)
+				if (! keys_count) next = null
 			}
 
-			return Object.keys(next).find(id_cur => next[id_cur] === store_id) ?? null
+			return this.$.$mol_state_local.value(`${this}.draft_ids()`, next) || {}
+		}
+
+		@ $mol_action
+		static draft_add(id: string) { this.draft_ids({ ... this.draft_ids(), [id]: 1 }) }
+
+		@ $mol_action
+		protected static draft_remove(id: string) { this.draft_ids({ ... this.draft_ids(), [id]: null }) }
+
+		protected static is_draft(id: string) {
+			return !! this.draft_ids()[id]
 		}
 
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
@@ -206,6 +201,7 @@ namespace $ {
 				// if removing true - do not merge with prev value, assume null - object deleted
 				const result = actual && ! removing ? this.merge(actual, draft) : null
 				this.draft(null)
+				this.$.$yuf_entity2.draft_remove(this.id())
 
 				return result
 			} catch (e) {
