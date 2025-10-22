@@ -17,6 +17,7 @@ namespace $ {
 
 		@ $mol_action
 		ids_cache_add(id: string) {
+			if ( this.ids().includes(id) ) return
 			this.ids([ id, ... this.ids() ], 'cache')
 		}
 
