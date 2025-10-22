@@ -222,21 +222,30 @@ namespace $ {
 				// if removing true - do not merge with prev value, assume null - object deleted
 				const result = actual && ! removing ? this.merge(actual, draft) : null
 
+				// Call before draft(null) - is_draft result cached in fiber
 				const is_created = this.is_draft()
+				const next_id = (actual as { id?: string }).id ?? this.id()
 
-				// Pull actual data to subscribe to server data changes
-				is_created && this.actual(null, 'refresh')
+				const server_accepts_client_id = next_id === this.id()
+
+				// Subscribe, only if server accepts client id on creating
+				// If server return new id, this entity need to be unsubscribed
+				if ( is_created && server_accepts_client_id ) {
+					// Pull actual data to subscribe to server data changes
+					this.actual(null, 'refresh')
+				}
 
 				// Null draft before pulling data, without nulled draft data do not pull actual
 				this.draft(null)
-				if (! is_created ) return result
 
-				// Pull data to subscribe to actual changes
+				// Pull data to subscribe to actual changes, if created - we never pull actual before
 				this.data()
 
-				// Try optimistacally add id, returned by server to ids list in store
-				const next_id = (actual as { id?: string }).id ?? this.id()
-				this.store?.id_add(this._id = next_id)
+				if ( is_created ) {
+					// Try optimistically add id, returned by server to ids list in store
+					this.store?.id_add(next_id)
+				}
+				this._id = next_id
 
 				return result
 			} catch (e) {
