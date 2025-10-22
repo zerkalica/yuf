@@ -62,9 +62,22 @@ namespace $ {
 
 		mock_periodically() { return false }
 
-		static tmp_ids = new Set<string>()
+		@ $mol_mem
+		static tmp_ids(next?: readonly string[] | null, remove?: 'remove'): readonly string[] {
+			let prev = $mol_wire_probe(() => this.tmp_ids()) ?? []
+			if (next) prev = prev.filter(id => ! next!.includes(id))
+
+			if (remove) next = prev
+			if (next && ! remove) next = [ ... prev, ... next ]
+			if (next && ! next.length) next = null
+
+			return this.$.$mol_state_local.value(`${this}.tmp_ids()`, next) || []
+		}
+
 		is_draft() {
-			return this.factory().tmp_ids.has(this.id())
+			const ids = this.$.$yuf_entity2.tmp_ids()
+			const id = this.id()
+			return ids.includes(id)
 		}
 
 		@ $mol_mem_key

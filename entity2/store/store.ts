@@ -20,24 +20,26 @@ namespace $ {
 		tmp_id_server_accepted() { return true }
 
 		@ $mol_mem
-		tmp_id(next?: null, create?: 'create') {
-			const prev = $mol_wire_probe(() => this.tmp_id())
-
-			if (next === null && prev && this.tmp_id_server_accepted()) {
-				this.ids([ ... this.ids(), prev ], 'cache')
+		tmp_id(next?: string) {
+			if (next === '') {
+				next = $mol_guid()
+				this.$.$yuf_entity2.tmp_ids([ next ])
+				return next
 			}
 
-			if (next) this.$.$yuf_entity2.tmp_ids.delete(next)
-			if (! create) return next ?? null
+			if (next) {
+				this.$.$yuf_entity2.tmp_ids([ next ], 'remove')
+				this.tmp_id_server_accepted() && this.ids([ ... this.ids(), next ], 'cache')
+				return null
+			}
 
-			const id = $mol_guid()
-			this.$.$yuf_entity2.tmp_ids.add(id)
-
-			return id
+			return next ?? null
 		}
 
 		draft_create() {
-			return this.by_id(this.tmp_id(null, 'create')!) as ReturnType<this['by_id']>
+			const id = this.tmp_id('')!
+
+			return this.by_id(id) as ReturnType<this['by_id']>
 		}
 
 		@ $mol_mem_key
@@ -50,7 +52,7 @@ namespace $ {
 			this.by_id(id).remove()
 
 			if (this.tmp_id() === id) {
-				this.tmp_id(null)
+				this.tmp_id(id)
 				return
 			}
 
