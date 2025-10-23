@@ -125,16 +125,27 @@ namespace $ {
 		url_params(next?: null) {
 			const { location } = this.$.$mol_dom_context
 			const use_query = this.use_query()
-			const raw = use_query ? location.search : location.hash
 
 			const known = this.params_hybrid()
-			const pairs = raw.slice(1).split('&')
-
-			const unknown = [] as string[]
 			const params = {} as Record<typeof known[number], string | null | undefined>
+
+			const href = location.href
+			const query_index = href.indexOf('?')
+			const fragment_index = href.indexOf('#')
+
+			let from_index = use_query ? query_index : fragment_index
+			from_index++
+			if (from_index === 0) from_index = href.length
+
+			let to_index = use_query ? fragment_index : query_index
+			if (to_index < from_index) to_index = href.length
+
+			const pairs = href.slice(from_index, to_index).split('&')
+			const unknown = [] as string[]
 
 			for (const param_raw of pairs) {
 				const name = known.find(key => param_raw.startsWith(key + '='))
+
 				if ( name ) {
 					params[name] = param_raw.slice(name.length + 1)
 					continue
@@ -143,15 +154,14 @@ namespace $ {
 				unknown.push(param_raw)
 			}
 
-			const new_part = raw.slice(0, 1) + unknown.join('&')
-
-			const clean_url = location.origin
-				+ location.pathname
-				+ ( use_query ? new_part : location.search )
-				+ ( use_query ? location.hash : new_part )
+			let clean_url = href.slice(0, from_index) + unknown.join('&') + href.slice(to_index)
+			clean_url = clean_url.replace(/[\#\?]$/, '')
 
 			if (next === null) {
-				this.redirect_to(clean_url, 'history')
+				if (location.href !== clean_url) {
+					this.redirect_to(clean_url, 'history')
+				}
+
 				return { params: null , clean_url }
 			}
 
@@ -359,10 +369,10 @@ namespace $ {
 			const [ state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
 			const scope = this.scope()
 			const flow = this.flow()
-
+			const redirect_uri = this.redirect_uri_grab()
 			return this.search_params({
 				client_id: this.client_id(),
-				redirect_uri: this.redirect_uri_grab(),
+				redirect_uri,
 				state,
 				response_mode: this.use_query() ? 'query' : 'fragment',
 
@@ -391,7 +401,9 @@ namespace $ {
 			})
 		}
 
-		login_url() { return this.endpoint('auth') + '?' + this.action_query() }
+		login_url() {
+			return this.endpoint('auth') + '?' + this.action_query()
+		}
 		register_url() { return this.endpoint('registrations') + '?' + this.action_query() }
 
 		@ $mol_mem
@@ -494,7 +506,7 @@ namespace $ {
 				grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
 				refresh_token,
 				client_id: this.client_id(),
-				redirect_uri: this.redirect_uri_grab(),
+				redirect_uri: refresh_token ? undefined : this.redirect_uri_grab(),
 				code_verifier,
 			})
 
