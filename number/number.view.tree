@@ -1,0 +1,13 @@
+$yuf_number $mol_number
+	String $yuf_number_string
+		blur_event? <=> blur_event? null
+		type <= type
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+
+$yuf_number_string $mol_string
+	event *
+		^
+		blur? <=> blur_event? null

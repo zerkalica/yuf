@@ -1,12 +1,13 @@
 {
 	"$yuf_form_bid_required_msg": "*",
-	"$yuf_form_bid_str_min_msg": "от {str_min_val} символов",
-	"$yuf_form_bid_str_max_msg": "до {str_max_val} символов",
-	"$yuf_form_bid_rows_max_msg": "до {rows_max_val} строк",
-	"$yuf_form_bid_list_min_msg": "минимум {list_min_val}",
-	"$yuf_form_bid_list_max_msg": "максимум {list_max_val}",
+	"$yuf_form_bid_pattern_not_match_msg": "Маска {pattern_val}",
+	"$yuf_form_bid_rows_max_msg": "До {max_val} строк",
+	"$yuf_form_bid_str_min_msg": "От {min_val} символов",
+	"$yuf_form_bid_str_max_msg": "До {max_val} символов",
+	"$yuf_form_bid_min_msg": "От {min_val}",
+	"$yuf_form_bid_max_msg": "До {max_val}",
 	"$yuf_form_bid_json_invalid_msg": "{json_error}",
 	"$yuf_form_bid_ip4_msg": "Не ip4",
 	"$yuf_form_bid_latin_digits_msg": "Только лат. символы и числа",
-	"$yuf_form_bid_value_in_range": "{range}"
+	"$yuf_form_bid_value_in_range_msg": "{range}"
 }

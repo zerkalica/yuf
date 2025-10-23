@@ -1,25 +1,30 @@
 $yuf_form_bid $mol_view
 	value* null
+	value_empty* false
+	value_len* 0
 	-
-	str_min_val* 2
-	str_max_val* 200
-	rows_max_val* 5
+	params_min *number
+	params_max *number
+	params_limits *readonly(readonly(number)[])[]
+	params_pattern *string
 	-
-	list_min_val* 1
-	list_max_val* 10
+	pattern_val* \
+	min_val* 0
+	max_val* 10000
 	-
 	required* <= required_msg @ \*
-	str_min* <= str_min_msg @ \From {str_min_val}
-	str_max* <= str_max_msg @ \To {str_max_val}
-	rows_max* <= rows_max_msg @ \No more {rows_max_val} rows
+	pattern* <= pattern_not_match_msg @ \Mask {mask}
+	str_min_msg @ \From {min_val} chars
+	str_max_msg @ \To {max_val} chars
 	-
-	list_min* <= list_min_msg @ \Min {list_min_val}
-	list_max* <= list_max_msg @ \Max {list_max_val}
+	min* <= min_msg @ \From {min_val}
+	max* <= max_msg @ \To {max_val}
+	rows_max* <= rows_max_msg @ \To {max_vol} rows
 	-
 	json_invalid* <= json_invalid_msg @ \{json_error}
 	ip4* <= ip4_msg @ \Not valid ip4
 	ip4_mask* <= ip4_msg
 	ip4_mask_required* <= ip4_msg
 	latin_digits* <= latin_digits_msg @ \Only latin and digits
-	value_in_range*? @ \{range}
+	value_in_range*? <= value_in_range_msg @ \{range}
 	value_limits* /readonly(number)[]

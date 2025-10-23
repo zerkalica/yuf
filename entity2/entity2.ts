@@ -74,6 +74,7 @@ namespace $ {
 			return this.drafts(next)
 		}
 
+		@ $mol_mem_key
 		static draft_ids_by_store(store_id: string, next?: string) {
 			const ids = this.drafts_patch(next ? { [next]: [ store_id, {} ] } : undefined)
 
@@ -144,8 +145,9 @@ namespace $ {
 
 			if (next !== undefined) this.removing(removing)
 
-			if (flag === 'pushing' || removing) pushing.add(this)
-			else if (next === null) pushing.delete(this)
+			if (flag === 'pushing' || removing) {
+				pushing.add(this)
+			} else if (next === null) pushing.delete(this)
 
 			return this.$.$yuf_entity2.draft_data(this.id(), draft)
 		}
@@ -212,46 +214,41 @@ namespace $ {
 				this.$.$yuf_wait_timeout(debounce_timeout)
 			}
 
-			try {
-				const data = removing || ! draft ? null :
-					this.patch_enabled() ? draft : this.defaults(this.merge(draft))
+			const data = removing || ! draft ? null :
+				this.patch_enabled() ? draft : this.defaults(this.merge(draft))
 
-				const actual = this.actual(data)
-				// broken backend returns undefined data on push,
-				// it converts to empty object in $yuf_ws_statefull.message_data
-				// if removing true - do not merge with prev value, assume null - object deleted
-				const result = actual && ! removing ? this.merge(actual, draft) : null
+			const actual = this.actual(data)
+			// broken backend returns undefined data on push,
+			// it converts to empty object in $yuf_ws_statefull.message_data
+			// if removing true - do not merge with prev value, assume null - object deleted
+			const result = actual && ! removing ? this.merge(actual, draft) : null
 
-				// Call before draft(null) - is_draft result cached in fiber
-				const is_created = this.is_draft()
-				const next_id = (actual as { id?: string }).id ?? this.id()
+			// Call before draft(null) - is_draft result cached in fiber
+			const is_created = this.is_draft()
+			const next_id = (actual as { id?: string }).id ?? this.id()
 
-				const server_accepts_client_id = next_id === this.id()
+			const server_accepts_client_id = next_id === this.id()
 
-				// Subscribe, only if server accepts client id on creating
-				// If server return new id, this entity need to be unsubscribed
-				if ( is_created && server_accepts_client_id ) {
-					// Pull actual data to subscribe to server data changes
-					this.actual(null, 'refresh')
-				}
-
-				// Null draft before pulling data, without nulled draft data do not pull actual
-				this.draft(null)
-
-				// Pull data to subscribe to actual changes, if created - we never pull actual before
-				this.data()
-
-				if ( is_created ) {
-					// Try optimistically add id, returned by server to ids list in store
-					this.store?.id_add(next_id)
-				}
-				this._id = next_id
-
-				return result
-			} catch (e) {
-				if ( ! $mol_promise_like(e) ) this.draft(null)
-				$mol_fail_hidden(e)
+			// Subscribe, only if server accepts client id on creating
+			// If server return new id, this entity need to be unsubscribed
+			if ( is_created && server_accepts_client_id ) {
+				// Pull actual data to subscribe to server data changes
+				this.actual(null, 'refresh')
 			}
+
+			// Null draft before pulling data, without nulled draft data do not pull actual
+			this.draft(null)
+
+			// Pull data to subscribe to actual changes, if created - we never pull actual before
+			this.data()
+
+			if ( is_created ) {
+				// Try optimistically add id, returned by server to ids list in store
+				this.store?.id_add(next_id)
+			}
+			this._id = next_id
+
+			return result
 		}
 
 		remove() {

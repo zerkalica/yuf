@@ -36,11 +36,14 @@ namespace $ {
 		}
 
 		@ $mol_action
-		draft_create() {
-			const id = this.draft_ids()?.[0] ?? this.draft_id_create()
-			this.draft_ids(id)
+		draft_id() {
+			let id = this.draft_ids()?.[0]
+			if (! id) {
+				id = this.draft_id_create()
+				this.draft_ids(id)
+			}
 
-			return this.by_id(id) as ReturnType<this['by_id']>
+			return id
 		}
 
 		@ $mol_mem_key
