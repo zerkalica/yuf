@@ -121,8 +121,8 @@ namespace $ {
 			})
 		}
 
-		@ $mol_mem
-		url_params(next?: null) {
+		@ $mol_action
+		protected callback_parts(next?: null) {
 			const { location } = this.$.$mol_dom_context
 			const use_query = this.use_query()
 
@@ -168,10 +168,8 @@ namespace $ {
 			return { params, clean_url }
 		}
 
-		@ $mol_action
-		redirect_uri_grab() {
-			return this.url_params().clean_url
-		}
+		protected redirect_uri() { return this.callback_parts().clean_url }
+		protected callback_params() { return this.callback_parts().params }
 
 		@ $mol_mem
 		protected token_id(next?: string | null) {
@@ -266,7 +264,7 @@ namespace $ {
 
 
 		logout_redirect_uri() {
-			return this.redirect_uri_grab()
+			return this.redirect_uri()
 		}
 
 		@ $mol_mem
@@ -277,7 +275,7 @@ namespace $ {
 				this.pkce_method() ? $mol_guid(96) : undefined,
 			]
 
-			if (next === null) this.url_params(null)
+			if (next === null) this.callback_parts(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_redirect`, next)
 		}
@@ -369,10 +367,10 @@ namespace $ {
 			const [ state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
 			const scope = this.scope()
 			const flow = this.flow()
-			const redirect_uri = this.redirect_uri_grab()
+
 			return this.search_params({
 				client_id: this.client_id(),
-				redirect_uri,
+				redirect_uri: this.redirect_uri(),
 				state,
 				response_mode: this.use_query() ? 'query' : 'fragment',
 
@@ -397,7 +395,7 @@ namespace $ {
 		account_url() {
 			return this.realm_url() + '/account?' + this.search_params({
 				referrer: this.client_id(),
-				referrer_uri: this.redirect_uri_grab()
+				referrer_uri: this.redirect_uri()
 			})
 		}
 
@@ -467,21 +465,21 @@ namespace $ {
 		@ $mol_action
 		update() {
 			const refresh_token = this.token_refresh()
-			const url_params = refresh_token ? null  : this.url_params().params
-			const error_message = `${url_params?.error_description ?? ''}${url_params?.error ? ` ${url_params?.error}` : ''}`
+			const callback_params = refresh_token ? null  : this.callback_params()
+			const error_message = `${callback_params?.error_description ?? ''}${callback_params?.error ? ` ${callback_params?.error}` : ''}`
 
 			if (error_message) {
-				throw new Error(error_message, { cause: url_params })
+				throw new Error(error_message, { cause: callback_params })
 			}
 
 			const start_time = this.time_cut()
 
 			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
-			if (url_params?.state && url_params.state !== state) {
+			if (callback_params?.state && callback_params.state !== state) {
 				throw new Error('Invalid state in backurl', { cause: {
 					stored_state: state,
-					url_params,
+					callback_params,
 				}})
 			}
 
@@ -494,19 +492,19 @@ namespace $ {
 			const url = this.endpoint('token')
 			const flow = this.flow()
 
-			if (flow === 'implicit' && url_params?.access_token && url_params?.id_token) {
+			if (flow === 'implicit' && callback_params?.access_token && callback_params?.id_token) {
 				result = {
-					access_token: url_params.access_token,
-					id_token: url_params.id_token,
+					access_token: callback_params.access_token,
+					id_token: callback_params.id_token,
 				}
-			} else if ( ! url_params?.code && ! refresh_token ) return null
+			} else if ( ! callback_params?.code && ! refresh_token ) return null
 
 			const body = this.search_params({
-				code: url_params?.code,
+				code: callback_params?.code,
 				grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
 				refresh_token,
 				client_id: this.client_id(),
-				redirect_uri: refresh_token ? undefined : this.redirect_uri_grab(),
+				redirect_uri: refresh_token ? undefined : this.redirect_uri(),
 				code_verifier,
 			})
 
@@ -546,9 +544,6 @@ namespace $ {
 
 		min_validity() { return 5000 }
 
-		@ $mol_action
-		protected url_params_cut() { return this.url_params().params }
-
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
 			try {
@@ -566,7 +561,7 @@ namespace $ {
 				$mol_fail_log(e)
 			}
 			// after redirect from sso url params not empty, but nulled in token_id(null)
-			const url_params = this.url_params_cut()
+			const callback_params = this.callback_params()
 
 			try {
 				const actual = next === undefined || op === 'refresh' ? this.update() : null
@@ -579,7 +574,7 @@ namespace $ {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
 				this.token_refresh(null)
 				// Show any error on page reload if keycloak params exists in url (after redirect from sso)
-				if (url_params) $mol_fail_hidden(e)
+				if (callback_params) $mol_fail_hidden(e)
 
 				const code = $yuf_session_oids_error(e)?.error
 
