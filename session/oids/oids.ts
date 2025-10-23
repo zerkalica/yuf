@@ -546,6 +546,9 @@ namespace $ {
 
 		min_validity() { return 5000 }
 
+		@ $mol_action
+		protected url_params_cut() { return this.url_params().params }
+
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
 			try {
@@ -562,6 +565,8 @@ namespace $ {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
 				$mol_fail_log(e)
 			}
+			// after redirect from sso url params not empty, but nulled in token_id(null)
+			const url_params = this.url_params_cut()
 
 			try {
 				const actual = next === undefined || op === 'refresh' ? this.update() : null
@@ -573,10 +578,13 @@ namespace $ {
 			} catch (e) {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
 				this.token_refresh(null)
+				// Show any error on page reload if keycloak params exists in url (after redirect from sso)
+				if (url_params) $mol_fail_hidden(e)
 
 				const code = $yuf_session_oids_error(e)?.error
 
-				if (code == 'invalid_grant' || code === 'unauthorized_client' || code === 'invalid_token') {
+				if (code === 'invalid_grant' || code === 'unauthorized_client' || code === 'invalid_token') {
+					// If token obsolete on page reload - do not show error on page - just clear token and logout
 					$mol_fail_log(e)
 					return null
 				}
