@@ -1,8 +1,5 @@
 namespace $ {
-	export class $yuf_session extends $mol_object {
-		@ $mol_memo.field
-		static get _() { return new this() }
-
+	export class $yuf_session extends $yuf_object {
 		client_id() { return this.$.$mol_dom_context.location.hostname }
 		token_key() { return `${this.client_id()}_token` }
 

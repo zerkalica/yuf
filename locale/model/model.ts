@@ -1,8 +1,5 @@
 namespace $ {
-	export class $yuf_locale_model extends $mol_object {
-		@ $mol_memo.field
-		static get _() { return new this() }
-
+	export class $yuf_locale_model extends $yuf_object {
 		lang(next?: string) { return this.$.$mol_locale.lang(next) }
 
 		langs_available() {

@@ -20,9 +20,6 @@ namespace $ {
 	}
 
 	export class $yuf_session_oids extends $yuf_session {
-		@ $mol_memo.field
-		static get _() { return new this() }
-
 		auth_server_url() {
 			return `/${this.client_id()}-keycloak`
 		}

@@ -1,6 +1,6 @@
 namespace $.$$ {
 	export class $yuf_pick extends $.$yuf_pick {
-		override portal() { return this.$.$yuf_portal._ }
+		override portal() { return this.$.$yuf_portal.current }
 
 		@ $mol_mem
 		override showed(next?: boolean) {

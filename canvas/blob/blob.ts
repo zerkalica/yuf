@@ -1,6 +1,6 @@
 namespace $ {
-	export class $yuf_canvas_blob extends $mol_object {
-		host() { return this.$.$yuf_canvas_host._ }
+	export class $yuf_canvas_blob extends $yuf_object {
+		host() { return this.$.$yuf_canvas_host._(this.$) }
 		context() { return this.host().context2D() }
 
 		protected cancel = null as null | (() => void )

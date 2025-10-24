@@ -1,10 +1,10 @@
 namespace $.$$ {
 	export class $yuf_portal extends $.$yuf_portal {
 
-		static _ = null as null | $yuf_portal
+		static current = null as null | $yuf_portal
 
 		override destructor() {
-			this.$.$yuf_portal._ = null
+			this.$.$yuf_portal.current = null
 		}
 
 		@ $mol_mem
@@ -35,7 +35,7 @@ namespace $.$$ {
 
 		@ $mol_mem
 		override bubbles() {
-			this.$.$yuf_portal._ = this
+			this.$.$yuf_portal.current = this
 			return this.popups().filter(popup => popup.showed()).map(pop => pop.Bubble())
 		}
 	}

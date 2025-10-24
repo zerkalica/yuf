@@ -1,8 +1,5 @@
 namespace $ {
-	export class $yuf_entity2<Data = unknown> extends $mol_object {
-		@ $mol_memo.field
-		static get _() { return new this() }
-
+	export class $yuf_entity2<Data = unknown> extends $yuf_object {
 		@ $mol_mem
 		protected static pushing() {
 			return new $mol_wire_set<$yuf_entity2>()

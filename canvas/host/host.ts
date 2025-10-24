@@ -1,8 +1,5 @@
 namespace $ {
-	export class $yuf_canvas_host extends $mol_object {
-		@ $mol_wire_field
-		static get _() { return new this() }
-
+	export class $yuf_canvas_host extends $yuf_object {
 		@ $mol_mem
 		native() {
 			const ctx = this.$.$mol_dom_context
