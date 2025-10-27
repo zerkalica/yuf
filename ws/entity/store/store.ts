@@ -20,7 +20,7 @@ namespace $ {
 			}
 		}
 
-		ws() { return this.$.$yuf_ws_statefull._(this.$) }
+		ws() { return this.$.$mol_one.$yuf_ws_statefull }
 
 		override actual(next?: Partial<ReturnType<this['defaults']>> | null, refresh?: 'refresh') {
 			this.propagate()

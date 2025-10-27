@@ -29,7 +29,7 @@ namespace $ {
 	}
 
 	export class $yuf_ws_statefull extends $yuf_ws_host {
-		session() { return this.$.$yuf_session._(this.$) }
+		session() { return this.$.$mol_one.$yuf_session }
 
 		override is_ping(msg: { type?: string }) { return msg.type === 'ping' }
 		override send_pong() { this.send_object({ type: 'pong' }) }
