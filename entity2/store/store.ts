@@ -10,7 +10,7 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache') {
+		ids(next?: readonly string[], cache?: 'cache'): readonly string[] {
 			return [ ...this.draft_ids(), ...this.ids_actual(next, cache) ]
 		}
 
