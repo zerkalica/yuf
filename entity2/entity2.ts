@@ -218,7 +218,7 @@ namespace $ {
 			// broken backend returns undefined data on push,
 			// it converts to empty object in $yuf_ws_statefull.message_data
 			// if removing true - do not merge with prev value, assume null - object deleted
-			const result = actual && ! removing ? this.merge(actual, draft) : null
+			const result = actual && ! removing ? this.merge(actual, data) : null
 
 			// Call before draft(null) - is_draft result cached in fiber
 			const is_created = this.is_draft()

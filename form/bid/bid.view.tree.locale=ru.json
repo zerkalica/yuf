@@ -4,6 +4,8 @@
 	"$yuf_form_bid_rows_max_msg": "До {max_val} строк",
 	"$yuf_form_bid_str_min_msg": "От {min_val} символов",
 	"$yuf_form_bid_str_max_msg": "До {max_val} символов",
+	"$yuf_form_bid_str_date_min_msg": "С {min_date_val}",
+	"$yuf_form_bid_str_date_max_msg": "До {max_date_val}",
 	"$yuf_form_bid_min_msg": "От {min_val}",
 	"$yuf_form_bid_max_msg": "До {max_val}",
 	"$yuf_form_bid_json_invalid_msg": "{json_error}",

@@ -38,11 +38,11 @@ namespace $.$$ {
 			)
 		}
 
-		override value_len(field: string) {
+		@ $mol_mem_key
+		override value_date(field: string) {
 			const value = this.value(field)
-			if (typeof value === 'string' || Array.isArray(value)) return value.length
-			if (typeof value === 'number') return value
-			return 0
+			if (value instanceof this.$.$mol_time_moment || typeof value === 'string') return value
+			throw new Error('Not a date ' + value)
 		}
 
 		protected min_msg_formatted(field: string) {
@@ -62,24 +62,86 @@ namespace $.$$ {
 			return val === null || val === undefined
 		}
 
+		min_date(field: string) {
+			const val = this.value_date(field)
+			const limit = this.min_date_val(field)
+			if (! limit ) return ''
+
+			if (val.toString() >= limit.toString()) return ''
+
+			return this.format(field, this.date_min_msg() )
+		}
+
+		max_date(field: string) {
+			const val = this.value_date(field)
+			const limit = this.max_date_val(field)
+			if (! limit ) return ''
+
+			if (val.toString() <= limit.toString()) return ''
+
+			return this.format(field, this.date_max_msg() )
+		}
+
+		min_str(field: string) {
+			const val = this.value_str(field)
+			const limit = this.min_val(field)
+			if (! limit ) return ''
+
+			if (val.length >= limit) return ''
+
+			return this.format(field, this.str_min_msg() )
+		}
+
+		max_str(field: string) {
+			const val = this.value_str(field)
+			const limit = this.max_val(field)
+			if (! limit ) return ''
+
+			if (val.length <= limit) return ''
+
+			return this.format(field, this.str_max_msg() )
+		}
+
+		min_number(field: string) {
+			const val = this.value_number(field)
+			const limit = this.min_val(field)
+			if (limit === null || limit === undefined) return ''
+
+			if (val >= limit) return ''
+
+			return this.format(field, this.min_msg() )
+		}
+
+		max_number(field: string) {
+			const val = this.value_number(field)
+			const limit = this.max_val(field)
+			if (limit === null || limit === undefined) return ''
+
+			if (val <= limit) return ''
+
+			return this.format(field, this.max_msg() )
+		}
+
 		@ $mol_mem_key
 		override min( field: string ) {
 			if (this.value_empty(field)) return ''
-			const len = this.value_len( field )
+			const val = this.value(field)
 
-			if ( len >= this.min_val(field)) return ''
+			if (val instanceof $mol_time_moment) return this.min_date(field)
+			if (typeof val === 'number') return this.min_number(field)
 
-			return this.format(field, this.min_msg_formatted(field))
+			return this.min_str(field)
 		}
 
 		@ $mol_mem_key
 		override max( field: string ) {
 			if (this.value_empty(field)) return ''
-			const len = this.value_len( field )
+			const val = this.value(field)
 
-			if ( len <= this.max_val(field)) return ''
+			if (val instanceof $mol_time_moment) return this.max_date(field)
+			if (typeof val === 'number') return this.max_number(field)
 
-			return this.format(field, this.max_msg_formatted(field))
+			return this.max_str(field)
 		}
 
 		@ $mol_mem_key
@@ -95,15 +157,27 @@ namespace $.$$ {
 		}
 
 		override min_val(field: string) {
-			return this.params_min()[field] ?? super.min_val(field)
+			return this.params_min()[field] ?? null
 		}
 
 		override max_val(field: string) {
-			return this.params_max()[field] ?? super.max_val(field)
+			return this.params_max()[field] ?? null
 		}
 
 		override pattern_val(field: string) {
 			return this.params_pattern()[field] ?? super.pattern_val(field)
+		}
+
+		@ $mol_mem_key
+		override min_date_val(field: string) {
+			const val = this.params_min_date()[field]
+			return typeof val === 'string' ? new $mol_time_moment(val) : val
+		}
+
+		@ $mol_mem_key
+		override max_date_val(field: string) {
+			const val = this.params_max_date()[field]
+			return typeof val === 'string' ? new $mol_time_moment(val) : val
 		}
 
 		override pattern(field: string) {
@@ -122,7 +196,8 @@ namespace $.$$ {
 
 			const val = this.value_str( field )
 			const rows = val.split('\n').length
-			if (rows <= this.max_val(field)) return ''
+			const max = this.max_val(field)
+			if (max === null || rows <= max) return ''
 
 			return this.format(field, this.rows_max_msg())
 		}
