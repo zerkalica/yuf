@@ -88,7 +88,7 @@ namespace $ {
 			return this.drafts_patch({ [id]: next ? [ ids_prev[0], next ] : next })[id]?.[1] ?? null
 		}
 
-		protected static is_draft(id: string) { return !! this.drafts_patch()[id] }
+		static is_draft(id: string) { return !! this.drafts_patch()[id] }
 
 		@ $mol_mem
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
