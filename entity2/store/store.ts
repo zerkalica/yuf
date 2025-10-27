@@ -5,25 +5,20 @@ namespace $ {
 			return [ ...raw ?? [] ] as readonly Item[]
 		}
 
-		ids_actual(next?: readonly string[], cache?: 'cache') {
+		ids(next?: readonly string[], cache?: 'cache') {
 			return (this.data(next as readonly Item[], cache) ?? []) as readonly string[]
-		}
-
-		@ $mol_mem
-		ids(next?: readonly string[], cache?: 'cache'): readonly string[] {
-			return [ ...this.draft_ids(), ...this.ids_actual(next, cache) ]
 		}
 
 		@ $mol_action
 		id_remove(id: string) {
-			const ids = $mol_wire_probe(() => this.ids_actual())
-			if (ids?.length) this.ids_actual(ids.filter(cur => cur !== id), 'cache')
+			const ids = $mol_wire_probe(() => this.ids())
+			if (ids?.length) this.ids(ids.filter(cur => cur !== id), 'cache')
 		}
 
 		@ $mol_action
 		id_add(id: string) {
-			const ids = this.ids_actual()
-			if ( ! ids.includes(id) ) this.ids_actual([ id, ... ids ], 'cache')
+			const ids = this.ids()
+			if ( ! ids.includes(id) ) this.ids([ id, ... ids ], 'cache')
 		}
 
 		protected draft_id_create() { return $mol_guid() }
