@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_session extends $yuf_object {
+	export class $yuf_session extends $mol_object {
 		client_id() { return this.$.$mol_dom_context.location.hostname }
 		token_key() { return `${this.client_id()}_token` }
 

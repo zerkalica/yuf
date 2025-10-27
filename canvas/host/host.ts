@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_canvas_host extends $yuf_object {
+	export class $yuf_canvas_host extends $mol_object {
 		@ $mol_mem
 		native() {
 			const ctx = this.$.$mol_dom_context

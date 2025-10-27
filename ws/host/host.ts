@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_ws_host extends $yuf_object {
+	export class $yuf_ws_host extends $mol_object {
 
 		watchdog_deadline() { return 30000 }
 		restart_delay() { return 3000 }

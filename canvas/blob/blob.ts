@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_canvas_blob extends $yuf_object {
+	export class $yuf_canvas_blob extends $mol_object {
 		host() { return this.$.$mol_one.$yuf_canvas_host }
 		context() { return this.host().context2D() }
 
