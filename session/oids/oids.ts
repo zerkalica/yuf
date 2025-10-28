@@ -30,11 +30,25 @@ namespace $ {
 			return `${this.auth_server_url().replace(/\/+$/, '')}/realms/${encodeURIComponent(this.realm())}`
 		}
 
+		is_dev_mode() {
+			const loc = this.$.$mol_dom_context.location
+
+			// 9080 port - used in development mode
+			return Number(loc.port || 443) >= 9080
+		}
+
 		protected endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1') {
 			let str = key as string
 
-			const config_value = this.config_value(key)
-			if (config_value) return config_value
+			let url = this.config_value(key)
+
+			if (url && this.is_dev_mode()) {
+				// to avoid cors errors, fix url to use keycloak proxified on same port
+
+				url = url.replace(/^(?:https?:\/\/)[^\/]+(\/.*)/, '$1')
+			}
+
+			if (url) return url
 
 			if (key === 'step1') str = '3p-cookies/step1.html'
 
