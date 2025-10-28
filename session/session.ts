@@ -9,6 +9,12 @@ namespace $ {
 
 		user_id() { return null as null | string }
 
+		user_id_ensure() {
+			const user_id = this.user_id()
+			if (! user_id) throw new Error('Required user_id in session')
+			return user_id
+		}
+
 		@ $mol_action
 		token_cut(reset?: 'refresh') { return this.token(reset ? null : undefined, reset) }
 
