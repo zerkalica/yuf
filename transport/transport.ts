@@ -247,23 +247,27 @@ namespace $ {
 			const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined)
 			const headers_default = this.headers_merge(this.headers_default(), params.headers)
 
-			let refresh = undefined as undefined | 'refresh'
+			let try_refresh = true
+			let auth_token = (params.auth_token || params.auth_token === null)
+				? params.auth_token
+				: this.session().token_cut()
 
-			do {
-				const auth_token = (params.auth_token || params.auth_token === null) && ! refresh
-					? params.auth_token
-					: this.session().token_cut(refresh)
-
+			while (true) {
 				const headers = auth_token
 					? this.headers_merge(headers_default, this.headers_auth(auth_token))
 					: headers_default
-	
+
 				response = this.response(input, init = { ... params, body, headers })
 
 				if ( response.status() === 'success' ) return response
-				if (! this.auth_need(response) || refresh ) break
-				refresh = 'refresh'
-			} while( true )
+
+				if (! try_refresh ) break
+
+				if ( ! this.auth_need(response) ) break
+
+				auth_token = this.session().token(null, 'refresh')
+				try_refresh = false
+			}
 
 			const response_json = this.response_json(response)
 			const message = response_json?.message ?? 'Unknown'

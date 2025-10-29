@@ -7,12 +7,15 @@ namespace $ {
 
 		@ $mol_mem
 		protected frame() {
-			const frame = this.$.$mol_dom.document.createElement( 'iframe' )
-			frame.src = this.src()
+			const src = this.src()
+			const doc = this.$.$mol_dom_context.document
+
+			const frame = doc.createElement( 'iframe' )
+			frame.src = src
 			frame.sandbox = 'allow-storage-access-by-user-activation allow-scripts allow-same-origin'
 			frame.title = 'keycloak-session-iframe'
 			frame.style.display = 'none'
-			frame.onerror = e => this.on_error(e)
+			frame.onerror = $mol_wire_async((e: string | Event) => this.on_error(e))
 
 			const cb = $mol_wire_async((e: MessageEvent) => this.on_message(e))
 
@@ -20,6 +23,8 @@ namespace $ {
 				this.$.$mol_dom_context.addEventListener('message', cb, false)
 				$mol_wire_async(this).check()
 			}
+
+			doc.body.appendChild(frame)
 
 			const destructor = () => {
 				this.$.$mol_dom_context.removeEventListener('message', cb)
@@ -31,7 +36,7 @@ namespace $ {
 		}
 
 		check() {
-			const win = $mol_wire_probe( () => this.frame())?.frame.contentWindow
+			const win = this.frame().frame.contentWindow
 			const msg = this.message()
 			const origin = this.origin()
 			if (! msg || ! origin || ! win) return
@@ -43,17 +48,31 @@ namespace $ {
 		protected timeout = null as null | $mol_after_timeout
 
 		protected on_message(event: MessageEvent) {
+			const origin = this.origin()
 			if (event.origin !== origin) return
-			const frame = $mol_wire_probe(() => this.frame())?.frame
+
+			const frame = this.frame()?.frame
 			if (! frame || frame.contentWindow !== event.source) return
+
 			const data = event.data
-			if ( data !== 'changed' && data !== 'unchanged' && data !== 'error' ) return
 
-			if (data === 'error') this.on_error('Frame response error')
-			else this.changed(data === 'changed')
+			if (data === 'error') {
+				this.on_error('Frame response error')
+			}
 
+			if (data === 'changed') {
+				this.changed(true)
+			}
+
+			this.schedule_check()
+		}
+
+		protected schedule_check() {
 			this.timeout?.destructor()
-			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => $mol_wire_async(this).check())
+			this.timeout = new this.$.$mol_after_timeout(
+				this.check_timeout(),
+				() => $mol_wire_async(this).check()
+			)
 		}
 
 		protected on_error(event: string | Event) {

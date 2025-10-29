@@ -19,6 +19,9 @@ namespace $ {
 		}
 	}
 
+	/**
+	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
+	 */
 	export class $yuf_session_oids extends $yuf_session {
 		auth_server_url() {
 			return `/${this.client_id()}-keycloak`
@@ -30,22 +33,14 @@ namespace $ {
 			return `${this.auth_server_url().replace(/\/+$/, '')}/realms/${encodeURIComponent(this.realm())}`
 		}
 
-		is_dev_mode() {
-			const loc = this.$.$mol_dom_context.location
-
-			// 9080 port - used in development mode
-			return Number(loc.port || 443) >= 9080
-		}
-
-		protected endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1') {
+		protected endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'account' | 'userinfo' | 'status' | 'step1') {
 			let str = key as string
 
 			let url = this.config_value(key)
 
-			if (url && this.is_dev_mode()) {
-				// to avoid cors errors, fix url to use keycloak proxified on same port
-
-				url = url.replace(/^(?:https?:\/\/)[^\/]+(\/.*)/, '$1')
+			if (url && url.startsWith('/') && ! this.realm_url().startsWith('/')) {
+				const origin = new URL(this.realm_url()).origin
+				url = origin + url
 			}
 
 			if (url) return url
@@ -57,7 +52,9 @@ namespace $ {
 				str = `login-status-iframe.html${version ? '?' + this.search_params({ version }) : ''}`
 			}
 
-			return `${this.realm_url()}/protocol/openid-connect/${str}`
+			const prefix = key === 'account' ? '' : '/protocol/openid-connect'
+
+			return `${this.realm_url()}${prefix}/${str}`
 		}
 
 		protected endpoint_config_names() {
@@ -115,8 +112,8 @@ namespace $ {
 		}
 
 		protected checker_message() {
-			const sid = $mol_wire_probe(() => this.token_params())?.sid
-			return `${this.client_id()}${sid ? ` ${sid}` : ''}`
+			const sid = this.token_params()?.sid ?? ''
+			return `${this.client_id()} ${sid}`
 		}
 
 		checker_enabled() { return true }
@@ -224,22 +221,10 @@ namespace $ {
 			return this.token_params()?.resource_access?.[resource || this.client_id()]?.roles ?? []
 		}
 
-		protected auth_headers() {
-			const token = this.token()
-			if (! token) return null
-
-			return {
-				Accept: 'application/json',
-				Authorization: 'bearer ' + token,
-			}
-		}
 
 		@ $mol_mem
 		protected user_profile() {
-			const headers = this.auth_headers()
-			if (! headers) return null
-
-			return this.json(this.realm_url() + '/account', { headers, credentials: 'include' }) as null | {
+			return this.json_authorized(this.endpoint('account')) as null | {
 				id?: string
 				username?: string
 				email?: string
@@ -258,10 +243,7 @@ namespace $ {
 
 		@ $mol_mem
 		protected user_info() {
-			const headers = this.auth_headers()
-			if (! headers) return null
-
-			return this.json(this.endpoint('userinfo'), { headers, credentials: 'include' }) as {
+			return this.json_authorized(this.endpoint('userinfo')) as null | {
 				sub: string
 				[key: string]: any
 			}
@@ -438,11 +420,13 @@ namespace $ {
 			return this.$.$mol_fetch.response(url, { ...params, method: params?.body ? 'POST' : 'GET', headers })
 		}
 
-		json(url: string, params?: RequestInit) {
+		@ $mol_action
+		protected json(url: string, params?: RequestInit) {
 			const response = this.response(url, params)
 			const text = response.text()
 
 			let result
+
 			try {
 				result = JSON.parse(text)
 			} catch (e) {
@@ -455,19 +439,64 @@ namespace $ {
 				const error_message = `${error?.error_description ?? ''}${
 					error?.error ? ` ${error?.error}` : ''}` || response.message()
 
-				throw new Error(error_message, { cause: error || response })
+				throw new Error(error_message, { cause: response })
 			}
 
 			return result
 		}
 
 		@ $mol_action
+		protected json_authorized(url: string, params?: RequestInit) {
+			let token = this.token_cut()
+			let try_refresh = true
+
+			while (true) {
+				if (! token) return null
+
+				try {
+					const headers = {
+						Accept: 'application/json',
+						Authorization: 'bearer ' + token,
+						...params?.headers,
+					}
+					return this.json(url, { ...params, headers, credentials: 'include' })
+				} catch (e) {
+					const code = e instanceof Error && e.cause instanceof $mol_fetch_response ? e.cause.code() : null
+					if (try_refresh && (code === 401 || code === 403) ) {
+						token = this.token(null, 'refresh')
+						try_refresh = false
+						continue
+					}
+					$mol_fail_hidden(e)
+				}
+			}
+		}
+
+		logout_use_post() { return true }
+
+		@ $mol_action
 		logout_send() {
 			const url = this.endpoint('logout')
+			const body = this.logout_params()
+			if (! this.logout_use_post() ) return url + '?' + body.toString()
 
-			const res = this.token_id() ? this.response(url, { body: this.logout_params() } ) : null
+			const doc = this.$.$mol_dom_context.document
+			const form = doc.createElement('form')
+			form.setAttribute('method', 'POST')
+			form.setAttribute('action', url)
+			form.style.display = 'none'
 
-			return res?.native.redirected ? res.native.url : null
+			for (const [name, value] of body) {
+				const field = doc.createElement('input')
+				field.setAttribute('type', 'hidden')
+				field.setAttribute('name', name)
+				field.setAttribute('value', value)
+				form.appendChild(field)
+			}
+			doc.body.appendChild(form)
+			form.submit()
+
+			return null
 		}
 
 		@ $mol_action
@@ -560,7 +589,7 @@ namespace $ {
 			try {
 				if (op === 'logout') {
 					const redirect_uri = this.logout_send()
-					this.redirect_to(redirect_uri)
+					if (redirect_uri) this.redirect_to(redirect_uri)
 				}
 
 				if (next === undefined) {

@@ -16,7 +16,7 @@ namespace $ {
 		}
 
 		@ $mol_action
-		token_cut(reset?: 'refresh') { return this.token(reset ? null : undefined, reset) }
+		token_cut() { return this.token() }
 
 		@ $mol_mem
 		logged() { return Boolean(this.token()) }
