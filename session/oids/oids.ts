@@ -16,6 +16,7 @@ namespace $ {
 				| 'invalid_token'
 				| 'insufficient_scope'
 			error_description?: string
+			error_uri?: string
 		}
 	}
 
@@ -112,8 +113,7 @@ namespace $ {
 		}
 
 		protected checker_message() {
-			const sid = this.token_params()?.sid ?? ''
-			return `${this.client_id()} ${sid}`
+			return `${this.client_id()} ${this.token_params()?.sid ?? ''}`
 		}
 
 		checker_enabled() { return true }
@@ -128,6 +128,8 @@ namespace $ {
 				message: () => this.checker_message()
 			})
 		}
+
+		is_session_obsolete() { return this.checker()?.obsolete() ?? false }
 
 		@ $mol_action
 		protected callback_parts(next?: null) {
@@ -182,10 +184,7 @@ namespace $ {
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
-			if (next || next === null) {
-				$mol_wire_probe(() => this.checker())?.changed(false)
-				this.redirect_params(null)
-			}
+			if (next || next === null) this.redirect_params(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
@@ -211,7 +210,7 @@ namespace $ {
 
 		@ $mol_mem
 		protected token_params() {
-			const token = this.token()
+			const token = super.token()
 			return token ? this.token_decode(token) : null
 		}
 
@@ -220,7 +219,6 @@ namespace $ {
 		resource_roles(resource: string) {
 			return this.token_params()?.resource_access?.[resource || this.client_id()]?.roles ?? []
 		}
-
 
 		@ $mol_mem
 		protected user_profile() {
@@ -423,21 +421,16 @@ namespace $ {
 		@ $mol_action
 		protected json(url: string, params?: RequestInit) {
 			const response = this.response(url, params)
-			const text = response.text()
-
-			let result
-
-			try {
-				result = JSON.parse(text)
-			} catch (e) {
-				$mol_fail_hidden(new Error(response.message() + ': ' + (e as Error).message, { cause: e }))
-			}
+			const result = response.json() as any
 
 			if (response.code() >= 400) {
 				const error = $yuf_session_oids_error(result)
 
-				const error_message = `${error?.error_description ?? ''}${
-					error?.error ? ` ${error?.error}` : ''}` || response.message()
+				const error_message = [
+					error?.error_description,
+					error?.error,
+					error?.error_uri,
+				].filter(Boolean).join(', ') || response.message()
 
 				throw new Error(error_message, { cause: response })
 			}
@@ -459,9 +452,11 @@ namespace $ {
 						Authorization: 'bearer ' + token,
 						...params?.headers,
 					}
+
 					return this.json(url, { ...params, headers, credentials: 'include' })
 				} catch (e) {
 					const code = e instanceof Error && e.cause instanceof $mol_fetch_response ? e.cause.code() : null
+
 					if (try_refresh && (code === 401 || code === 403) ) {
 						token = this.token(null, 'refresh')
 						try_refresh = false
@@ -592,9 +587,8 @@ namespace $ {
 					if (redirect_uri) this.redirect_to(redirect_uri)
 				}
 
-				if (next === undefined) {
-					const token = super.token()
-					if (! this.checker()?.changed() && token && ! this.is_expired(token) ) return token
+				if ( next === undefined && ! this.is_session_obsolete() && ! this.is_expired() ) {
+					return super.token()
 				}
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
@@ -629,11 +623,14 @@ namespace $ {
 		}
 
 		protected time_skew = 0
+		protected is_expired_timer = null as null | $mol_after_timeout
 
 		@ $mol_mem
-		is_expired(token = super.token(), average_time?: number) {
+		is_expired(next?: string | null, average_time?: number) {
+			const token = next ?? super.token()
 			const params = token ? this.token_decode(token) : null
-			if (! params) return false
+
+			if (! params) return true
 
 			if (params.iat && average_time) {
 				this.time_skew = Math.floor(average_time - params.iat * 1000)
@@ -642,7 +639,13 @@ namespace $ {
 			const end_time = this.time_cut()
 			const expires_in = params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
 
-			return expires_in <= 0
+			this.is_expired_timer?.destructor()
+
+			if ( expires_in <= 0 ) return true
+
+			this.is_expired_timer = new $mol_after_timeout(expires_in, () => this.is_expired(null))
+
+			return false
 		}
 	}
 }

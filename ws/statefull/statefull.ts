@@ -80,7 +80,7 @@ namespace $ {
 			})
 		}
 
-		deadline_timeout() { return 20000 }
+		deadline_timeout() { return 10000 }
 
 		@ $mol_mem_key
 		protected channel<Val>(signature: {}) {

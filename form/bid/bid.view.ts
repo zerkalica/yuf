@@ -232,7 +232,7 @@ namespace $.$$ {
 				) return ''
 			}
 
-			return super.ip4(field)
+			return flag === 'mask-required' ? this.ip4_mask_msg() : this.ip4_msg()
 		}
 
 		override ip4_mask(field: string) {

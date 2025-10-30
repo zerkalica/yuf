@@ -14,6 +14,7 @@ namespace $ {
 				if (! first) return null
 				if (periodically && ! first.mock_periodically() ) return null
 				const data = first.mock(obj.data as {}) ?? null
+				if (data === null) return data
 				return { ... obj, data }
 			} catch (e) {
 				if (e instanceof Error) {

@@ -5,44 +5,36 @@ namespace $ {
 		message() { return '' }
 		origin() { return '' }
 
+		dom() { return this.$.$mol_dom_context }
+
 		@ $mol_mem
 		protected frame() {
 			const src = this.src()
-			const doc = this.$.$mol_dom_context.document
+			const doc = this.dom().document
 
 			const frame = doc.createElement( 'iframe' )
 			frame.src = src
 			frame.sandbox = 'allow-storage-access-by-user-activation allow-scripts allow-same-origin'
 			frame.title = 'keycloak-session-iframe'
 			frame.style.display = 'none'
-			frame.onerror = $mol_wire_async((e: string | Event) => this.on_error(e))
-
-			const cb = $mol_wire_async((e: MessageEvent) => this.on_message(e))
-
-			frame.onload = () => {
-				this.$.$mol_dom_context.addEventListener('message', cb, false)
-				$mol_wire_async(this).check()
-			}
+			frame.onerror = event => this.error_push(event)
+			frame.onload = () => this.on_load()
 
 			doc.body.appendChild(frame)
 
-			const destructor = () => {
-				this.$.$mol_dom_context.removeEventListener('message', cb)
-				this.timeout?.destructor()
-				$mol_wire_probe(() => this.frame())?.frame.remove()
-			}
-
-			return { frame, destructor }
+			return frame
 		}
 
-		check() {
-			const win = this.frame().frame.contentWindow
-			const msg = this.message()
-			const origin = this.origin()
-			if (! msg || ! origin || ! win) return
-			// set error if iframe not answer
-			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.changed(true))
-			win.postMessage(msg, origin)
+		on_load() {
+			this.on_message_async = $mol_wire_async((e: MessageEvent) => this.on_message(e))
+			this.dom().addEventListener('message', this.on_message_async, false)
+			this.obsolete(false)
+		}
+
+		override destructor() {
+			this.on_message_async && this.dom().removeEventListener('message', this.on_message_async)
+			this.timeout?.destructor()
+			$mol_wire_probe(() => this.frame())?.remove()
 		}
 
 		protected timeout = null as null | $mol_after_timeout
@@ -51,44 +43,49 @@ namespace $ {
 			const origin = this.origin()
 			if (event.origin !== origin) return
 
-			const frame = this.frame()?.frame
+			const frame = this.frame()
 			if (! frame || frame.contentWindow !== event.source) return
 
 			const data = event.data
 
-			if (data === 'error') {
-				this.on_error('Frame response error')
-			}
+			if (data === 'error') this.error_push('No access')
+			if (data === 'changed') this.obsolete(true)
 
-			if (data === 'changed') {
-				this.changed(true)
-			}
-
-			this.schedule_check()
-		}
-
-		protected schedule_check() {
 			this.timeout?.destructor()
-			this.timeout = new this.$.$mol_after_timeout(
-				this.check_timeout(),
-				() => $mol_wire_async(this).check()
-			)
+			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.obsolete(false))
 		}
 
-		protected on_error(event: string | Event) {
-			const msg = typeof event === 'string' ? event : ( event as ErrorEvent ).error
-			const err = msg instanceof Error ? msg : new Error(msg, { cause: event })
+		protected on_message_async = null as null | typeof this.on_message
 
+		protected error_push(event: string | Event) {
 			try {
-				this.changed(err as unknown as boolean)
+				const err = typeof event === 'string'
+					? new Error(event)
+					: ( event as ErrorEvent ).error as Error
+
+				// fatal error loading iframe - status throws exceptions
+				this.obsolete(err as unknown as boolean)
 			} catch (e) {
-				if (e !== err) $mol_fail_log(e)
+				$mol_fail_log(e)
 			}
 		}
 
 		@ $mol_mem
-		changed(next?: boolean) {
-			this.frame()
+		obsolete(next?: boolean) {
+			if (next) return next
+
+			const win = this.frame().contentWindow
+			const msg = this.message()
+			const origin = this.origin()
+			if (! msg || ! origin || ! win) return false
+
+			// set error if iframe not answer or load timeout
+			this.timeout?.destructor()
+			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.error_push('timeout'))
+
+			// Send if onload setups on_message_async
+			this.on_message_async && win.postMessage(msg, origin)
+
 			return next ?? false
 		}
 

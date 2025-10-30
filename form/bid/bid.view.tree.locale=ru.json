@@ -10,6 +10,7 @@
 	"$yuf_form_bid_max_msg": "До {max_val}",
 	"$yuf_form_bid_json_invalid_msg": "{json_error}",
 	"$yuf_form_bid_ip4_msg": "Не ip4",
+	"$yuf_form_bid_ip4_mask_msg": "Не ip4/маска",
 	"$yuf_form_bid_latin_digits_msg": "Только лат. символы и числа",
 	"$yuf_form_bid_value_in_range_msg": "{range}"
 }
