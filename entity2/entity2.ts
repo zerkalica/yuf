@@ -90,7 +90,6 @@ namespace $ {
 
 		static is_draft(id: string) { return !! this.drafts_patch()[id] }
 
-		@ $mol_mem
 		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
 
 		_id = ''
@@ -233,17 +232,18 @@ namespace $ {
 				this.actual(null, 'refresh')
 			}
 
-			// Null draft before pulling data, without nulled draft data do not pull actual
-			this.draft(null)
-
-			// Pull data to subscribe to actual changes, if created - we never pull actual before
-			this.data()
-
 			if ( is_created ) {
 				// Try optimistically add id, returned by server to ids list in store
 				this.store?.id_add(next_id)
 			}
 			this._id = next_id
+
+			// Null draft before pulling data, without nulled draft data do not pull actual
+			// Warning - do not allow suspends after draft(null)
+			this.draft(null)
+
+			// Pull data to subscribe to actual changes, if created - we never pull actual before
+			this.data()
 
 			return result
 		}

@@ -72,7 +72,9 @@ namespace $ {
 
 		@ $mol_mem
 		obsolete(next?: boolean) {
-			if (next) return next
+			if (next) {
+				return next
+			}
 
 			const win = this.frame().contentWindow
 			const msg = this.message()

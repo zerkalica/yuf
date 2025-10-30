@@ -532,20 +532,22 @@ namespace $ {
 					access_token: callback_params.access_token,
 					id_token: callback_params.id_token,
 				}
-			} else if ( ! callback_params?.code && ! refresh_token ) return null
+			} else if ( callback_params?.code || refresh_token ) {
+				const body = this.search_params({
+					code: callback_params?.code,
+					grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
+					refresh_token,
+					client_id: this.client_id(),
+					redirect_uri: refresh_token ? undefined : this.redirect_uri(),
+					code_verifier,
+				})
 
-			const body = this.search_params({
-				code: callback_params?.code,
-				grant_type: refresh_token ? 'refresh_token' : 'authorization_code',
-				refresh_token,
-				client_id: this.client_id(),
-				redirect_uri: refresh_token ? undefined : this.redirect_uri(),
-				code_verifier,
-			})
+				result = this.json(url, { credentials: 'include', body })
+			}
 
-			result = this.json(url, { credentials: 'include', body })
+			if (! result ) return null
 
-			const id_token = nonce && result?.id_token ? this.token_decode(result.id_token) : null
+			const id_token = nonce && result.id_token ? this.token_decode(result.id_token) : null
 
 			if (id_token && id_token.nonce !== nonce) {
 				throw new Error('Invalid nonce', { cause: {
@@ -581,28 +583,25 @@ namespace $ {
 
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh' | 'logout') {
+			// after redirect from sso url params not empty, but nulled in token_id(null)
+			const callback_params = this.callback_params()
+			const token = super.token()
+
 			try {
+				if ( next === undefined && token && ! this.is_session_obsolete() && ! this.is_expired(token) ) {
+					return token
+				}
+
+				let actual
+				if (next === undefined) actual = this.update()
+				if (op === 'refresh') actual = this.update()
 				if (op === 'logout') {
 					const redirect_uri = this.logout_send()
 					if (redirect_uri) this.redirect_to(redirect_uri)
 				}
 
-				if ( next === undefined && ! this.is_session_obsolete() && ! this.is_expired() ) {
-					return super.token()
-				}
-			} catch (e) {
-				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
-				$mol_fail_log(e)
-			}
-			// after redirect from sso url params not empty, but nulled in token_id(null)
-			const callback_params = this.callback_params()
-
-			try {
-				const actual = next === undefined || op === 'refresh' ? this.update() : null
-
 				this.token_refresh(actual?.refresh_token ?? null)
 				this.token_id(actual?.id_token ?? null)
-
 				return super.token(actual?.access_token ?? null)
 			} catch (e) {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
@@ -622,19 +621,19 @@ namespace $ {
 			}
 		}
 
-		protected time_skew = 0
 		protected is_expired_timer = null as null | $mol_after_timeout
+		protected time_skew = 0
 
-		@ $mol_mem
-		is_expired(next?: string | null, average_time?: number) {
-			const token = next ?? super.token()
+		@ $mol_action
+		protected is_expired(token?: string, average_time?: number) {
 			const params = token ? this.token_decode(token) : null
 
 			if (! params) return true
 
-			if (params.iat && average_time) {
+			if (params.iat && average_time !== undefined) {
 				this.time_skew = Math.floor(average_time - params.iat * 1000)
 			}
+
 			const min_validity = this.min_validity()
 			const end_time = this.time_cut()
 			const expires_in = params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
@@ -643,7 +642,7 @@ namespace $ {
 
 			if ( expires_in <= 0 ) return true
 
-			this.is_expired_timer = new $mol_after_timeout(expires_in, () => this.is_expired(null))
+			this.is_expired_timer = new $mol_after_timeout(expires_in, () => super.token(null))
 
 			return false
 		}
