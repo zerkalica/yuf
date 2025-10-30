@@ -621,7 +621,6 @@ namespace $ {
 			}
 		}
 
-		protected is_expired_timer = null as null | $mol_after_timeout
 		protected time_skew = 0
 
 		@ $mol_action
@@ -630,7 +629,7 @@ namespace $ {
 
 			if (! params) return true
 
-			if (params.iat && average_time !== undefined) {
+			if (params.iat && average_time) {
 				this.time_skew = Math.floor(average_time - params.iat * 1000)
 			}
 
@@ -638,13 +637,7 @@ namespace $ {
 			const end_time = this.time_cut()
 			const expires_in = params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
 
-			this.is_expired_timer?.destructor()
-
-			if ( expires_in <= 0 ) return true
-
-			this.is_expired_timer = new $mol_after_timeout(expires_in, () => super.token(null))
-
-			return false
+			return expires_in <= 0
 		}
 	}
 }
