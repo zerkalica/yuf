@@ -221,7 +221,7 @@ namespace $ {
 
 			// Call before draft(null) - is_draft result cached in fiber
 			const is_created = this.is_draft()
-			const next_id = (actual as { id?: string }).id ?? this.id()
+			const next_id = (actual && ! Array.isArray(actual) ? (actual as { id?: string }).id : null) ?? this.id()
 
 			const server_accepts_client_id = next_id === this.id()
 
