@@ -19239,6 +19239,9 @@ var $;
 		param_suffix(){
 			return "users";
 		}
+		param(){
+			return "user";
+		}
 		menu_title(){
 			return "Users";
 		}
@@ -19276,7 +19279,7 @@ var $;
 		Spread(id){
 			const obj = new this.$.$yuf_catalog_demo_user_info();
 			(obj.model) = () => ((this.by_id(id)));
-			(obj.param_prefix) = () => ((this.param()));
+			(obj.param_base) = () => ((this.param()));
 			(obj.addon_tools) = () => ([(this.Spread_close())]);
 			return obj;
 		}
@@ -19305,6 +19308,19 @@ var $;
 		menu_title(){
 			return "User {id}";
 		}
+		Age_enable_icon(){
+			const obj = new this.$.$mol_icon_face_agent();
+			return obj;
+		}
+		age_param_name(){
+			return "age";
+		}
+		Age_enable(){
+			const obj = new this.$.$yuf_link();
+			(obj.sub) = () => ([(this.Age_enable_icon())]);
+			(obj.param_name) = () => ((this.age_param_name()));
+			return obj;
+		}
 		addon_tools(){
 			return [];
 		}
@@ -19320,11 +19336,11 @@ var $;
 			(obj.content) = () => ([(this.age())]);
 			return obj;
 		}
+		age_content(){
+			return [(this.Age())];
+		}
 		friends_name(){
 			return "Friends";
-		}
-		friends_param_name(){
-			return "friends";
 		}
 		Friends_enable(){
 			const obj = new this.$.$yuf_link();
@@ -19335,13 +19351,16 @@ var $;
 		Info(){
 			const obj = new this.$.$mol_page();
 			(obj.title) = () => ((this.menu_title()));
-			(obj.tools) = () => ([...(this.addon_tools())]);
+			(obj.tools) = () => ([(this.Age_enable()), ...(this.addon_tools())]);
 			(obj.body) = () => ([
 				(this.Name()), 
-				(this.Age()), 
+				...(this.age_content()), 
 				(this.Friends_enable())
 			]);
 			return obj;
+		}
+		friends_param_name(){
+			return (this.Friends().param_base());
 		}
 		friends_title(){
 			return "Friends of {id}";
@@ -19353,7 +19372,7 @@ var $;
 		}
 		Friends(){
 			const obj = new this.$.$yuf_catalog_demo_user_catalog();
-			(obj.param_prefix) = () => ((this.friends_param_name()));
+			(obj.param_prefix) = () => ((this.param_base()));
 			(obj.friend_user_id) = () => ((this.id()));
 			(obj.menu_title) = () => ((this.friends_title()));
 			(obj.addon_tools) = () => ([(this.Friends_close())]);
@@ -19362,11 +19381,8 @@ var $;
 		friends_content(){
 			return [(this.Friends())];
 		}
-		param_prefix(){
+		param_base(){
 			return "";
-		}
-		param_suffix(){
-			return "info";
 		}
 		model(){
 			const obj = new this.$.$yuf_catalog_demo_user_model();
@@ -19376,6 +19392,8 @@ var $;
 			return [(this.Info()), ...(this.friends_content())];
 		}
 	};
+	($mol_mem(($.$yuf_catalog_demo_user_info.prototype), "Age_enable_icon"));
+	($mol_mem(($.$yuf_catalog_demo_user_info.prototype), "Age_enable"));
 	($mol_mem(($.$yuf_catalog_demo_user_info.prototype), "Name"));
 	($mol_mem(($.$yuf_catalog_demo_user_info.prototype), "Age"));
 	($mol_mem(($.$yuf_catalog_demo_user_info.prototype), "Friends_enable"));
@@ -19482,6 +19500,9 @@ var $;
             age_param_name() {
                 return this.param_base() + '_' + super.age_param_name();
             }
+            param() {
+                return `${this.param_base()}_${super.param()}`;
+            }
             age_from(next) {
                 return Number(this.$.$mol_state_arg.value(this.param_base() + '_age_from', next === undefined ? next : !next ? null : String(next)));
             }
@@ -19503,11 +19524,14 @@ var $;
         ], $yuf_catalog_demo_user_catalog.prototype, "age_from", null);
         $$.$yuf_catalog_demo_user_catalog = $yuf_catalog_demo_user_catalog;
         class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
-            param_base() {
-                return this.param_prefix() + '_' + this.param_suffix();
+            age_param_name() {
+                return this.param_base() + '_' + super.age_param_name();
             }
-            friends_param_name() {
-                return `${this.param_base()}_${super.friends_param_name()}`;
+            age_enabled() {
+                return this.$.$mol_state_arg.value(this.age_param_name()) !== null;
+            }
+            age_content() {
+                return this.age_enabled() ? super.age_content() : [];
             }
             menu_title() { return super.menu_title().replace('{id}', this.id()); }
             friends_content() {

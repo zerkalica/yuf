@@ -1887,6 +1887,7 @@ $yuf_catalog_demo_foods $yuf_catalog
 
 $yuf_catalog_demo_user_catalog $yuf_catalog
 	param_suffix \users
+	param \user
 	menu_title \Users
 	Content $mol_filler
 	Empty $mol_status
@@ -1916,12 +1917,11 @@ $yuf_catalog_demo_user_catalog $yuf_catalog
 		default <= menu_link_default*
 	Spread* $yuf_catalog_demo_user_info
 		model <= by_id*
-		param_prefix <= param
+		param_base <= param
 		addon_tools / <= Spread_close
 
 $yuf_catalog_demo_user_info $mol_book2
-	param_prefix \
-	param_suffix \info
+	param_base \
 	model $yuf_catalog_demo_user_model
 		name => name
 		age => age
@@ -1930,20 +1930,25 @@ $yuf_catalog_demo_user_info $mol_book2
 		<= Info $mol_page
 			title <= menu_title \User {id}
 			tools /
+				<= Age_enable $yuf_link
+					sub / <= Age_enable_icon $mol_icon_face_agent
+					param_name <= age_param_name \age
 				^ addon_tools /
 			body /
 				<= Name $mol_labeler
 					title \Name
 					content / <= name
-				<= Age $mol_labeler
-					title \Age
-					content / <= age
+				^ age_content /
+					<= Age $mol_labeler
+						title \Age
+						content / <= age
 				<= Friends_enable $yuf_link
 					sub / <= friends_name \Friends
-					param_name <= friends_param_name \friends
+					param_name <= friends_param_name
 		^ friends_content /
 			<= Friends $yuf_catalog_demo_user_catalog
-				param_prefix <= friends_param_name
+				param_prefix <= param_base
+				param_base => friends_param_name
 				friend_user_id <= id
 				menu_title <= friends_title \Friends of {id}
 				addon_tools /

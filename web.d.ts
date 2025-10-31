@@ -8787,10 +8787,10 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_catalog_demo_user_info['model'] >
 	>
-	type $yuf_catalog_demo_user_info__param_prefix_yuf_catalog_demo_user_catalog_16 = $mol_type_enforce<
+	type $yuf_catalog_demo_user_info__param_base_yuf_catalog_demo_user_catalog_16 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_catalog['param'] >
 		,
-		ReturnType< $yuf_catalog_demo_user_info['param_prefix'] >
+		ReturnType< $yuf_catalog_demo_user_info['param_base'] >
 	>
 	type $yuf_catalog_demo_user_info__addon_tools_yuf_catalog_demo_user_catalog_17 = $mol_type_enforce<
 		readonly(any)[]
@@ -8811,6 +8811,7 @@ declare namespace $ {
 		Filter_page( ): $yuf_catalog_demo_user_filter
 		age_enabled( ): boolean
 		param_suffix( ): string
+		param( ): string
 		menu_title( ): string
 		Content( ): $mol_filler
 		Empty( ): $mol_status
@@ -8822,15 +8823,15 @@ declare namespace $ {
 		Spread( id: any): $yuf_catalog_demo_user_info
 	}
 	
-	type $mol_labeler__title_yuf_catalog_demo_user_info_1 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_labeler['title'] >
-	>
-	type $mol_labeler__content_yuf_catalog_demo_user_info_2 = $mol_type_enforce<
+	type $yuf_link__sub_yuf_catalog_demo_user_info_1 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $mol_labeler['content'] >
+		ReturnType< $yuf_link['sub'] >
+	>
+	type $yuf_link__param_name_yuf_catalog_demo_user_info_2 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['age_param_name'] >
+		,
+		ReturnType< $yuf_link['param_name'] >
 	>
 	type $mol_labeler__title_yuf_catalog_demo_user_info_3 = $mol_type_enforce<
 		string
@@ -8842,52 +8843,62 @@ declare namespace $ {
 		,
 		ReturnType< $mol_labeler['content'] >
 	>
-	type $yuf_link__sub_yuf_catalog_demo_user_info_5 = $mol_type_enforce<
+	type $mol_labeler__title_yuf_catalog_demo_user_info_5 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_catalog_demo_user_info_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $yuf_link__sub_yuf_catalog_demo_user_info_7 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_link['sub'] >
 	>
-	type $yuf_link__param_name_yuf_catalog_demo_user_info_6 = $mol_type_enforce<
+	type $yuf_link__param_name_yuf_catalog_demo_user_info_8 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
 		,
 		ReturnType< $yuf_link['param_name'] >
 	>
-	type $mol_page__title_yuf_catalog_demo_user_info_7 = $mol_type_enforce<
+	type $mol_page__title_yuf_catalog_demo_user_info_9 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_info['menu_title'] >
 		,
 		ReturnType< $mol_page['title'] >
 	>
-	type $mol_page__tools_yuf_catalog_demo_user_info_8 = $mol_type_enforce<
+	type $mol_page__tools_yuf_catalog_demo_user_info_10 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['tools'] >
 	>
-	type $mol_page__body_yuf_catalog_demo_user_info_9 = $mol_type_enforce<
+	type $mol_page__body_yuf_catalog_demo_user_info_11 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['body'] >
 	>
-	type $yuf_link_close__param_name_yuf_catalog_demo_user_info_10 = $mol_type_enforce<
+	type $yuf_link_close__param_name_yuf_catalog_demo_user_info_12 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
 		,
 		ReturnType< $yuf_link_close['param_name'] >
 	>
-	type $yuf_catalog_demo_user_catalog__param_prefix_yuf_catalog_demo_user_info_11 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
+	type $yuf_catalog_demo_user_catalog__param_prefix_yuf_catalog_demo_user_info_13 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['param_base'] >
 		,
 		ReturnType< $yuf_catalog_demo_user_catalog['param_prefix'] >
 	>
-	type $yuf_catalog_demo_user_catalog__friend_user_id_yuf_catalog_demo_user_info_12 = $mol_type_enforce<
+	type $yuf_catalog_demo_user_catalog__friend_user_id_yuf_catalog_demo_user_info_14 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_info['id'] >
 		,
 		ReturnType< $yuf_catalog_demo_user_catalog['friend_user_id'] >
 	>
-	type $yuf_catalog_demo_user_catalog__menu_title_yuf_catalog_demo_user_info_13 = $mol_type_enforce<
+	type $yuf_catalog_demo_user_catalog__menu_title_yuf_catalog_demo_user_info_15 = $mol_type_enforce<
 		ReturnType< $yuf_catalog_demo_user_info['friends_title'] >
 		,
 		ReturnType< $yuf_catalog_demo_user_catalog['menu_title'] >
 	>
-	type $yuf_catalog_demo_user_catalog__addon_tools_yuf_catalog_demo_user_info_14 = $mol_type_enforce<
+	type $yuf_catalog_demo_user_catalog__addon_tools_yuf_catalog_demo_user_info_16 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_catalog_demo_user_catalog['addon_tools'] >
@@ -8897,19 +8908,22 @@ declare namespace $ {
 		age( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['model'] >['age'] >
 		id( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['model'] >['id'] >
 		menu_title( ): string
+		Age_enable_icon( ): $mol_icon_face_agent
+		age_param_name( ): string
+		Age_enable( ): $yuf_link
 		addon_tools( ): readonly(any)[]
 		Name( ): $mol_labeler
 		Age( ): $mol_labeler
+		age_content( ): readonly(any)[]
 		friends_name( ): string
-		friends_param_name( ): string
 		Friends_enable( ): $yuf_link
 		Info( ): $mol_page
+		friends_param_name( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['Friends'] >['param_base'] >
 		friends_title( ): string
 		Friends_close( ): $yuf_link_close
 		Friends( ): $yuf_catalog_demo_user_catalog
 		friends_content( ): readonly(any)[]
-		param_prefix( ): string
-		param_suffix( ): string
+		param_base( ): string
 		model( ): $yuf_catalog_demo_user_model
 		pages( ): readonly(any)[]
 	}
@@ -8994,14 +9008,16 @@ declare namespace $.$$ {
     class $yuf_catalog_demo_user_catalog extends $.$yuf_catalog_demo_user_catalog {
         filter_param_name(): string;
         age_param_name(): string;
+        param(): string;
         age_from(next?: number): number;
         filter_enabled(): boolean;
         pages(): any[];
         age_enabled(): boolean;
     }
     class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
-        param_base(): string;
-        friends_param_name(): string;
+        age_param_name(): string;
+        age_enabled(): boolean;
+        age_content(): readonly any[];
         menu_title(): string;
         friends_content(): readonly any[];
         friends_title(): string;
