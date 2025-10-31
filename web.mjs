@@ -18203,9 +18203,13 @@ var $;
 (function ($) {
     class $yuf_catalog_demo_user_store extends $mol_object {
         ids_all() {
+            const prefix = this.friend_user_id();
             const ids = [];
             for (let i = 0; i < 20; i++) {
-                ids.push($mol_guid());
+                let id = '' + (i + 1);
+                if (prefix)
+                    id = prefix + '-' + id;
+                ids.push(id);
             }
             return ids;
         }
