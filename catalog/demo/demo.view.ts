@@ -2,17 +2,17 @@ namespace $.$$ {
 	export class $yuf_catalog_demo_user_catalog extends $.$yuf_catalog_demo_user_catalog {
 		
 		override filter_param_name() {
-			return this.param() + '_' + super.filter_param_name()
+			return this.param_base() + '_' + super.filter_param_name()
 		}
 
 		override age_param_name() {
-			return this.param() + '_' + super.age_param_name()
+			return this.param_base() + '_' + super.age_param_name()
 		}
 
 		@ $mol_mem
 		override age_from(next?: number) {
 			return Number(this.$.$mol_state_arg.value(
-				this.param() + '_age_from',
+				this.param_base() + '_age_from',
 				next === undefined ? next : ! next ? null : String(next)
 			))
 		}
@@ -36,13 +36,14 @@ namespace $.$$ {
 
 
 	export class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
-		param() {
+		param_base() {
 			return this.param_prefix() + '_' + this.param_suffix()
 		}
 
 		override friends_param_name() {
-			return `${this.param()}_${this.model().id()}_${super.friends_param_name()}`
+			return `${this.param_base()}_${super.friends_param_name()}`
 		}
+
 		override menu_title() { return super.menu_title().replace('{id}', this.id()) }
 
 		override friends_content() {

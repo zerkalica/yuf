@@ -1,10 +1,10 @@
 namespace $.$$ {
 	export class $yuf_catalog extends $.$yuf_catalog {
 		
-		override param() {
+		override param_base() {
 			return [
 				this.param_prefix(),
-				this.param_suffix()
+				this.param_suffix(),
 			].filter(Boolean).join('_')
 		}
 

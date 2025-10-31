@@ -2,6 +2,7 @@ $yuf_catalog $mol_book2_catalog
 	spread_default \
 	param_prefix \
 	param_suffix \
+	param <= param_base \
 	spread_close_content /$mol_view
 		<= Spread_close $yuf_link_close
 			link_arg <= spread_close_arg
