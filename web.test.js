@@ -744,16 +744,16 @@ var $;
             $mol_assert_unique([1], [2], [3]);
         },
         'two must be alike'() {
-            $mol_assert_like([3], [3]);
+            $mol_assert_equal([3], [3]);
         },
         'three must be alike'() {
-            $mol_assert_like([3], [3], [3]);
+            $mol_assert_equal([3], [3], [3]);
         },
         'two object must be alike'() {
-            $mol_assert_like({ a: 1 }, { a: 1 });
+            $mol_assert_equal({ a: 1 }, { a: 1 });
         },
         'three object must be alike'() {
-            $mol_assert_like({ a: 1 }, { a: 1 }, { a: 1 });
+            $mol_assert_equal({ a: 1 }, { a: 1 }, { a: 1 });
         },
     });
 })($ || ($ = {}));
@@ -841,7 +841,7 @@ var $;
 ;
 "use strict";
 var $;
-(function ($) {
+(function ($_1) {
     $mol_test({
         'init with overload'() {
             class X extends $mol_object {
@@ -853,6 +853,13 @@ var $;
                 foo: () => 2,
             });
             $mol_assert_equal(x.foo(), 2);
+        },
+        'Context in instance inherits from class'($) {
+            const custom = $.$mol_ambient({});
+            class X extends $.$mol_object {
+                static $ = custom;
+            }
+            $mol_assert_equal(new X().$, custom);
         },
     });
 })($ || ($ = {}));
@@ -1156,7 +1163,7 @@ var $;
             }
             await $mol_wire_async(A).a();
             $mol_assert_equal(A.instances.length, 2);
-            $mol_assert_equal(A.instances[0] instanceof A);
+            $mol_assert_equal(A.instances[0] instanceof A, true);
             $mol_assert_equal(A.instances[0], A.instances[1]);
         }
     });
@@ -2704,10 +2711,23 @@ var $;
 var $;
 (function ($) {
     $mol_test({
-        'encode utf8 string'() {
-            const str = 'Hello, ΧΨΩЫ';
-            const encoded = new Uint8Array([72, 101, 108, 108, 111, 44, 32, 206, 167, 206, 168, 206, 169, 208, 171]);
-            $mol_assert_like($mol_charset_encode(str), encoded);
+        'encode empty'() {
+            $mol_assert_equal($mol_charset_encode(''), new Uint8Array([]));
+        },
+        'encode 1 octet'() {
+            $mol_assert_equal($mol_charset_encode('F'), new Uint8Array([0x46]));
+        },
+        'encode 2 octet'() {
+            $mol_assert_equal($mol_charset_encode('Б'), new Uint8Array([0xd0, 0x91]));
+        },
+        'encode 3 octet'() {
+            $mol_assert_equal($mol_charset_encode('ह'), new Uint8Array([0xe0, 0xa4, 0xb9]));
+        },
+        'encode 4 octet'() {
+            $mol_assert_equal($mol_charset_encode('𐍈'), new Uint8Array([0xf0, 0x90, 0x8d, 0x88]));
+        },
+        'encode surrogate pair'() {
+            $mol_assert_equal($mol_charset_encode('😀'), new Uint8Array([0xf0, 0x9f, 0x98, 0x80]));
         },
     });
 })($ || ($ = {}));
@@ -3477,33 +3497,74 @@ var $;
 "use strict";
 var $;
 (function ($_1) {
+    class $mol_static_test_object extends $mol_object2 {
+        static test = [];
+    }
+    $_1.$mol_static_test_object = $mol_static_test_object;
     $mol_test({
-        'Cached field'($) {
-            class App extends $mol_object2 {
-                static $ = $;
-                static low = 1;
-                static get high() {
-                    return this.low + 1;
-                }
-                static set high(next) {
-                    this.low = next - 1;
-                }
-                static test() {
-                    $mol_assert_equal(App.high, 2);
-                    App.high = 3;
-                    $mol_assert_equal(App.high, 3);
-                }
-            }
-            __decorate([
-                $mol_wire_field
-            ], App, "low", void 0);
-            __decorate([
-                $mol_wire_field
-            ], App, "high", null);
-            __decorate([
-                $mol_wire_method
-            ], App, "test", null);
-            App.test();
+        'Context not passed without helper'($) {
+            const custom = $.$mol_ambient({});
+            $mol_assert_unique(custom.$mol_static_test_object.$, custom);
+        },
+        'Context passed with helper'($) {
+            const custom = $.$mol_ambient({});
+            $mol_assert_equal(custom.$mol_static.$mol_static_test_object.$, custom);
+        },
+        'Inherited context in static class'($) {
+            $mol_assert_unique($.$mol_static_test_object.$, $.$mol_static.$mol_static_test_object.$);
+            $mol_assert_equal($.$mol_static.$mol_static_test_object.$, $);
+            $mol_assert_equal($.$mol_static($mol_static_test_object).$, $);
+        },
+        'Returns subclass'($) {
+            const proto = Object.getPrototypeOf($.$mol_static.$mol_static_test_object);
+            $mol_assert_equal(proto, $mol_static_test_object);
+        },
+        'Caching class'($) {
+            let first = $.$mol_static.$mol_static_test_object;
+            $mol_assert_equal($.$mol_static.$mol_static_test_object, first);
+        },
+        'Caching class if call as function'($) {
+            let first = $.$mol_static($mol_static_test_object);
+            $mol_assert_equal($.$mol_static($mol_static_test_object), first);
+        },
+        'Calling as prop and as function results equal classes'($) {
+            $mol_assert_equal($.$mol_static.$mol_static_test_object, $.$mol_static($mol_static_test_object));
+        },
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    class $mol_one_test_object extends $mol_object2 {
+    }
+    $_1.$mol_one_test_object = $mol_one_test_object;
+    $mol_test({
+        'Context not passed without helper'($) {
+            const custom = $.$mol_ambient({});
+            $mol_assert_unique(new custom.$mol_one_test_object().$, custom);
+        },
+        'Contexts passed with helper'($) {
+            const custom = $.$mol_ambient({});
+            $mol_assert_equal(custom.$mol_one.$mol_one_test_object.$, custom);
+        },
+        'Inerited context in instance'($) {
+            $mol_assert_equal($.$mol_one.$mol_one_test_object.$, $);
+        },
+        'Returns instance'($) {
+            $mol_assert_equal($.$mol_one.$mol_one_test_object instanceof $mol_one_test_object, true);
+        },
+        'Caching instance'($) {
+            let first = $.$mol_one.$mol_one_test_object;
+            $mol_assert_equal($.$mol_one.$mol_one_test_object, first);
+        },
+        'Caching instance if call as function'($) {
+            let first = $.$mol_one($mol_one_test_object);
+            $mol_assert_equal($.$mol_one($mol_one_test_object), first);
+        },
+        'Calling as prop and as function results equal instances'($) {
+            $mol_assert_equal($.$mol_one.$mol_one_test_object, $.$mol_one($mol_one_test_object));
         },
     });
 })($ || ($ = {}));

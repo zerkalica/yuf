@@ -1338,10 +1338,10 @@ declare namespace $ {
     function $mol_charset_decode(buffer: AllowSharedBufferSource, encoding?: $mol_charset_encoding): string;
 }
 
-declare var $node: any;
-
 declare namespace $ {
-    function $mol_charset_encode(value: string): Uint8Array<ArrayBuffer>;
+    function $mol_charset_encode(str: string): Uint8Array<ArrayBuffer>;
+    function $mol_charset_encode_to(str: string, buf: Uint8Array<ArrayBuffer>, from?: number): number;
+    function $mol_charset_encode_size(str: string): number;
 }
 
 declare namespace $ {
@@ -3387,6 +3387,8 @@ declare namespace $.$$ {
 declare namespace $.$$ {
 }
 
+declare var $node: any;
+
 declare namespace $ {
     type $mol_blob = Blob;
     let $mol_blob: {
@@ -3929,6 +3931,23 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	export class $mol_embed_vklive extends $mol_embed_service {
+	}
+	
+}
+
+//# sourceMappingURL=vklive.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_embed_vklive extends $.$mol_embed_vklive {
+        video_embed(): string;
+        channel_id(): string;
+        video_id(): string;
+        video_preview(): string;
+    }
+}
+
+declare namespace $ {
+
 	type $mol_image__title_mol_embed_any_1 = $mol_type_enforce<
 		ReturnType< $mol_embed_any['title'] >
 		,
@@ -3969,6 +3988,16 @@ declare namespace $ {
 		,
 		ReturnType< $mol_embed_rutube['uri'] >
 	>
+	type $mol_embed_vklive__title_mol_embed_any_9 = $mol_type_enforce<
+		ReturnType< $mol_embed_any['title'] >
+		,
+		ReturnType< $mol_embed_vklive['title'] >
+	>
+	type $mol_embed_vklive__uri_mol_embed_any_10 = $mol_type_enforce<
+		ReturnType< $mol_embed_any['uri'] >
+		,
+		ReturnType< $mol_embed_vklive['uri'] >
+	>
 	export class $mol_embed_any extends $mol_view {
 		title( ): string
 		uri( ): string
@@ -3976,6 +4005,7 @@ declare namespace $ {
 		Object( ): $mol_embed_native
 		Youtube( ): $mol_embed_youtube
 		Rutube( ): $mol_embed_rutube
+		Vklive( ): $mol_embed_vklive
 	}
 	
 }
@@ -3983,7 +4013,7 @@ declare namespace $ {
 //# sourceMappingURL=any.view.tree.d.ts.map
 declare namespace $.$$ {
     class $mol_embed_any extends $.$mol_embed_any {
-        type(): "object" | "image" | "youtube" | "rutube";
+        type(): "object" | "image" | "youtube" | "rutube" | "vklive";
         sub(): $.$mol_image[] | $.$mol_embed_youtube[] | $.$mol_embed_native[];
     }
 }
@@ -6531,7 +6561,7 @@ declare namespace $ {
 //# sourceMappingURL=portal.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_portal extends $.$yuf_portal {
-        static _: null | $yuf_portal;
+        static current: null | $yuf_portal;
         destructor(): void;
         showed(next?: boolean): boolean;
         display(): "none" | null;
@@ -6571,12 +6601,22 @@ declare namespace $ {
 
 //# sourceMappingURL=camera.view.tree.d.ts.map
 declare namespace $ {
-    function $mol_wire_field<Host extends object, Field extends keyof Host, Value extends Host[Field]>(host: Host, field: Field, descr?: TypedPropertyDescriptor<Value>): any;
+    type Constructor = new (...args: any) => any;
+    export const factory_caches: WeakMap<typeof $, WeakMap<Constructor, Constructor>>;
+    export let $mol_static: typeof $ & (<Value extends Constructor>(constructor: Value) => Value);
+    export {};
+}
+
+declare namespace $ {
+    type Instances<Obj> = {
+        [K in keyof Obj]: Obj[K] extends new (...args: any) => infer Instance ? Instance : Obj[K];
+    };
+    export let $mol_one: Instances<$> & (<Instance>(constructor: new (...args: any) => Instance) => Instance);
+    export {};
 }
 
 declare namespace $ {
     class $yuf_canvas_host extends $mol_object {
-        static get _(): $yuf_canvas_host;
         native(): OffscreenCanvas;
         context2D(): OffscreenCanvasRenderingContext2D;
         protected _render_task: null | Promise<Blob>;
@@ -7517,12 +7557,14 @@ declare namespace $ {
 		ReturnType< $yuf_link['hint'] >
 	>
 	export class $yuf_catalog extends $mol_book2_catalog {
+		param_base( ): string
 		Spread_close( ): $yuf_link_close
 		menu_link_default( id: any): boolean
 		menu_link_hint( id: any): any
 		spread_default( ): string
 		param_prefix( ): string
 		param_suffix( ): string
+		param( ): ReturnType< $yuf_catalog['param_base'] >
 		spread_close_content( ): readonly($mol_view)[]
 		Menu_link( id: any): $yuf_link
 	}
@@ -7532,7 +7574,7 @@ declare namespace $ {
 //# sourceMappingURL=catalog.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_catalog extends $.$yuf_catalog {
-        param(): string;
+        param_base(): string;
         menu_link_default(id: string): boolean;
         spread(next?: string): string;
         spread_close_content(): readonly $mol_view[];
@@ -7540,18 +7582,96 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    function $mol_array_lottery<Value>(list: readonly Value[]): Value;
+}
 
-	export class $mol_icon_plus extends $mol_icon {
+declare namespace $ {
+    class $mol_unit extends $mol_object {
+        'valueOf()': number;
+        constructor(value?: number);
+        prefix(): string;
+        postfix(): string;
+        [Symbol.toPrimitive](hint: 'number' | 'string' | 'default'): string | number;
+        valueOf(): number;
+        delimiter(): string;
+        value_view(): string;
+        toString(): string;
+        static summ(a: $mol_unit, b: $mol_unit): any;
+        mult(m: number): this;
+    }
+}
+
+declare namespace $ {
+    class $mol_unit_money extends $mol_unit {
+    }
+    class $mol_unit_money_usd extends $mol_unit_money {
+        prefix(): string;
+    }
+    class $mol_unit_money_rub extends $mol_unit_money {
+        postfix(): string;
+    }
+}
+
+declare namespace $ {
+    function $mol_stub_strings(prefix?: string, count?: number, length?: number): any[];
+    function $mol_stub_code(length?: number): string;
+    function $mol_stub_price(max?: number): $mol_unit_money_usd;
+    function $mol_stub_product_name(): string;
+    function $mol_stub_company_name_big(): string;
+    function $mol_stub_company_name_small(): string;
+    function $mol_stub_company_name(): string;
+    function $mol_stub_person_name(): string;
+    function $mol_stub_person_avatar(size?: number): string;
+    function $mol_stub_city(): string;
+    function $mol_stub_time(maxShift?: number): $mol_time_moment;
+    function $mol_stub_message(max_length: number): string;
+}
+
+declare namespace $ {
+    class $yuf_catalog_demo_user_model extends $mol_object {
+        id(): string;
+        name(): string;
+        age(): number;
+    }
+}
+
+declare namespace $ {
+    class $yuf_catalog_demo_user_store extends $mol_object {
+        ids_all(): string[];
+        ids(): string[];
+        age_from(next?: number): number;
+        by_id(id: string): $yuf_catalog_demo_user_model;
+        friend_user_id(): string;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_filter extends $mol_icon {
 		path( ): string
 	}
 	
 }
 
-//# sourceMappingURL=plus.view.tree.d.ts.map
+//# sourceMappingURL=filter.view.tree.d.ts.map
 declare namespace $ {
-    function $mol_array_lottery<Value>(list: readonly Value[]): Value;
+
+	export class $mol_icon_face extends $mol_icon {
+		path( ): string
+	}
+	
 }
 
+//# sourceMappingURL=face.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_face_agent extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=agent.view.tree.d.ts.map
 declare namespace $ {
 }
 
@@ -8214,222 +8334,144 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_catalog_demo_catalog__param_prefix_yuf_catalog_demo_1 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo['param'] >
-		,
-		ReturnType< $yuf_catalog_demo_catalog['param_prefix'] >
-	>
-	export class $yuf_catalog_demo extends $mol_example_large {
-		Calatog( ): $yuf_catalog_demo_catalog
-		title( ): string
-		param( ): string
-		sub( ): readonly(any)[]
-		tags( ): readonly(any)[]
-		aspects( ): readonly(any)[]
-	}
-	
-	type $yuf_catalog_demo_foods__param_prefix_yuf_catalog_demo_catalog_1 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo_catalog['param'] >
-		,
-		ReturnType< $yuf_catalog_demo_foods['param_prefix'] >
-	>
-	type $yuf_catalog_demo_foods__addon_tools_yuf_catalog_demo_catalog_2 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $yuf_catalog_demo_foods['addon_tools'] >
-	>
-	type $yuf_catalog_demo_animals__param_prefix_yuf_catalog_demo_catalog_3 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo_catalog['param'] >
-		,
-		ReturnType< $yuf_catalog_demo_animals['param_prefix'] >
-	>
-	type $yuf_catalog_demo_animals__addon_tools_yuf_catalog_demo_catalog_4 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $yuf_catalog_demo_animals['addon_tools'] >
-	>
-	export class $yuf_catalog_demo_catalog extends $yuf_catalog {
-		Foods( ): $yuf_catalog_demo_foods
-		Animals( ): $yuf_catalog_demo_animals
-		param_suffix( ): string
-		menu_title( ): string
-		spread_default( ): string
-		spreads( ): ({ 
-			'foods': ReturnType< $yuf_catalog_demo_catalog['Foods'] >,
-			'animals': ReturnType< $yuf_catalog_demo_catalog['Animals'] >,
-		}) 
-	}
-	
-	type $mol_page__title_yuf_catalog_demo_foods_1 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_page['title'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_foods_2 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_foods_3 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	type $mol_page__title_yuf_catalog_demo_foods_4 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_page['title'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_foods_5 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_foods_6 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	type $mol_page__title_yuf_catalog_demo_foods_7 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_page['title'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_foods_8 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_foods_9 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	export class $yuf_catalog_demo_foods extends $yuf_catalog {
-		Pizza( ): $mol_page
-		Hot_dogs( ): $mol_page
-		Fries( ): $mol_page
-		param_suffix( ): string
-		menu_title( ): string
-		spread_default( ): string
-		Empty( ): $mol_status
-		spreads( ): ({ 
-			'pizza': ReturnType< $yuf_catalog_demo_foods['Pizza'] >,
-			'hot_dogs': ReturnType< $yuf_catalog_demo_foods['Hot_dogs'] >,
-			'fries': ReturnType< $yuf_catalog_demo_foods['Fries'] >,
-		}) 
-	}
-	
-	type $yuf_link__sub_yuf_catalog_demo_animals_1 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $yuf_link['sub'] >
-	>
-	type $yuf_link__param_name_yuf_catalog_demo_animals_2 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo_animals['extra_param_name'] >
-		,
-		ReturnType< $yuf_link['param_name'] >
-	>
-	type $yuf_link_close__param_name_yuf_catalog_demo_animals_3 = $mol_type_enforce<
-		ReturnType< $yuf_catalog_demo_animals['extra_param_name'] >
-		,
-		ReturnType< $yuf_link_close['param_name'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_animals_4 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_animals_5 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	type $mol_page__title_yuf_catalog_demo_animals_6 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_page['title'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_animals_7 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_animals_8 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	type $mol_page__title_yuf_catalog_demo_animals_9 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_page['title'] >
-	>
-	type $mol_page__tools_yuf_catalog_demo_animals_10 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['tools'] >
-	>
-	type $mol_page__body_yuf_catalog_demo_animals_11 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_page['body'] >
-	>
-	export class $yuf_catalog_demo_animals extends $yuf_catalog {
-		Extra_enable_icon( ): $mol_icon_plus
-		extra_param_name( ): string
-		Extra_enable( ): $yuf_link
-		Extra_close( ): $yuf_link_close
-		Extra_page( ): $mol_page
-		Cats( ): $mol_page
-		Dogs( ): $mol_page
-		param_suffix( ): string
-		menu_title( ): string
-		spread_default( ): string
-		Content( ): $mol_filler
-		Empty( ): $mol_status
-		menu_tools( ): readonly(any)[]
-		extra_content( ): readonly(any)[]
-		spreads( ): ({ 
-			'cats': ReturnType< $yuf_catalog_demo_animals['Cats'] >,
-			'dogs': ReturnType< $yuf_catalog_demo_animals['Dogs'] >,
-		}) 
+	export class $mol_icon_chevron_left extends $mol_icon {
+		path( ): string
 	}
 	
 }
 
-//# sourceMappingURL=demo.view.tree.d.ts.map
+//# sourceMappingURL=left.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_chevron_right extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=right.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $mol_hotkey__key_mol_number_1 = $mol_type_enforce<
+		({ 
+			down( next?: ReturnType< $mol_number['event_dec'] > ): ReturnType< $mol_number['event_dec'] >,
+			up( next?: ReturnType< $mol_number['event_inc'] > ): ReturnType< $mol_number['event_inc'] >,
+			pageDown( next?: ReturnType< $mol_number['event_dec_boost'] > ): ReturnType< $mol_number['event_dec_boost'] >,
+			pageUp( next?: ReturnType< $mol_number['event_inc_boost'] > ): ReturnType< $mol_number['event_inc_boost'] >,
+		}) 
+		,
+		ReturnType< $mol_hotkey['key'] >
+	>
+	type $mol_button_minor__event_click_mol_number_2 = $mol_type_enforce<
+		ReturnType< $mol_number['event_dec'] >
+		,
+		ReturnType< $mol_button_minor['event_click'] >
+	>
+	type $mol_button_minor__enabled_mol_number_3 = $mol_type_enforce<
+		ReturnType< $mol_number['dec_enabled'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__sub_mol_number_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_string__type_mol_number_5 = $mol_type_enforce<
+		ReturnType< $mol_number['type'] >
+		,
+		ReturnType< $mol_string['type'] >
+	>
+	type $mol_string__keyboard_mol_number_6 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_string['keyboard'] >
+	>
+	type $mol_string__value_mol_number_7 = $mol_type_enforce<
+		ReturnType< $mol_number['value_string'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_string__hint_mol_number_8 = $mol_type_enforce<
+		ReturnType< $mol_number['hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__enabled_mol_number_9 = $mol_type_enforce<
+		ReturnType< $mol_number['string_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__submit_mol_number_10 = $mol_type_enforce<
+		ReturnType< $mol_number['submit'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_button_minor__event_click_mol_number_11 = $mol_type_enforce<
+		ReturnType< $mol_number['event_inc'] >
+		,
+		ReturnType< $mol_button_minor['event_click'] >
+	>
+	type $mol_button_minor__enabled_mol_number_12 = $mol_type_enforce<
+		ReturnType< $mol_number['inc_enabled'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__sub_mol_number_13 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	export class $mol_number extends $mol_view {
+		precision( ): number
+		event_dec( next?: any ): any
+		event_inc( next?: any ): any
+		event_dec_boost( next?: any ): any
+		event_inc_boost( next?: any ): any
+		Hotkey( ): $mol_hotkey
+		dec_enabled( ): ReturnType< $mol_number['enabled'] >
+		dec_icon( ): $mol_icon_chevron_left
+		Dec( ): $mol_button_minor
+		type( ): string
+		value_string( next?: string ): string
+		hint( ): string
+		string_enabled( ): ReturnType< $mol_number['enabled'] >
+		submit( next?: any ): any
+		String( ): $mol_string
+		inc_enabled( ): ReturnType< $mol_number['enabled'] >
+		inc_icon( ): $mol_icon_chevron_right
+		Inc( ): $mol_button_minor
+		precision_view( ): ReturnType< $mol_number['precision'] >
+		precision_change( ): ReturnType< $mol_number['precision'] >
+		boost( ): number
+		value_min( ): number
+		value_max( ): number
+		value( next?: number ): number
+		enabled( ): boolean
+		plugins( ): readonly(any)[]
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=number.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_catalog_demo_animals extends $.$yuf_catalog_demo_animals {
-        extra_param_name(): string;
-        extra_enabled(): boolean;
-        pages(): any[];
+    class $mol_number extends $.$mol_number {
+        value_limited(val?: number): number;
+        event_dec(next?: Event): void;
+        event_inc(next?: Event): void;
+        event_dec_boost(next?: Event): void;
+        event_inc_boost(next?: Event): void;
+        round(val: number): string;
+        value_string(next?: string): string;
+        dec_enabled(): boolean;
+        inc_enabled(): boolean;
     }
 }
 
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	export class $mol_button_major extends $mol_button_minor {
-		theme( ): string
-	}
-	
-}
-
-//# sourceMappingURL=major.view.tree.d.ts.map
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	export class $mol_row extends $mol_view {
-	}
-	
-}
-
-//# sourceMappingURL=row.view.tree.d.ts.map
 declare namespace $ {
 
 	type $mol_view__sub_mol_form_field_1 = $mol_type_enforce<
@@ -8459,6 +8501,29 @@ declare namespace $.$$ {
 declare namespace $ {
 }
 
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_button_major extends $mol_button_minor {
+		theme( ): string
+	}
+	
+}
+
+//# sourceMappingURL=major.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_row extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=row.view.tree.d.ts.map
 declare namespace $ {
 
 	type $mol_list__sub_mol_form_1 = $mol_type_enforce<
@@ -8542,6 +8607,415 @@ declare namespace $ {
 
 declare namespace $ {
 
+	type $yuf_catalog_demo_catalog__param_prefix_yuf_catalog_demo_1 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo['param'] >
+		,
+		ReturnType< $yuf_catalog_demo_catalog['param_prefix'] >
+	>
+	export class $yuf_catalog_demo extends $mol_example_large {
+		Calatog( ): $yuf_catalog_demo_catalog
+		title( ): string
+		param( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $yuf_catalog_demo_user_catalog__param_prefix_yuf_catalog_demo_catalog_1 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_catalog['param'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['param_prefix'] >
+	>
+	type $yuf_catalog_demo_user_catalog__addon_tools_yuf_catalog_demo_catalog_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['addon_tools'] >
+	>
+	type $yuf_catalog_demo_foods__param_prefix_yuf_catalog_demo_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_catalog['param'] >
+		,
+		ReturnType< $yuf_catalog_demo_foods['param_prefix'] >
+	>
+	type $yuf_catalog_demo_foods__addon_tools_yuf_catalog_demo_catalog_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_catalog_demo_foods['addon_tools'] >
+	>
+	export class $yuf_catalog_demo_catalog extends $yuf_catalog {
+		Users( ): $yuf_catalog_demo_user_catalog
+		Foods( ): $yuf_catalog_demo_foods
+		param_suffix( ): string
+		menu_title( ): string
+		spreads( ): ({ 
+			'users': ReturnType< $yuf_catalog_demo_catalog['Users'] >,
+			'foods': ReturnType< $yuf_catalog_demo_catalog['Foods'] >,
+		}) 
+	}
+	
+	type $mol_page__title_yuf_catalog_demo_foods_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__tools_yuf_catalog_demo_foods_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__body_yuf_catalog_demo_foods_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $mol_page__title_yuf_catalog_demo_foods_4 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__tools_yuf_catalog_demo_foods_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__body_yuf_catalog_demo_foods_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $mol_page__title_yuf_catalog_demo_foods_7 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__tools_yuf_catalog_demo_foods_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__body_yuf_catalog_demo_foods_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	export class $yuf_catalog_demo_foods extends $yuf_catalog {
+		Pizza( ): $mol_page
+		Hot_dogs( ): $mol_page
+		Fries( ): $mol_page
+		param_suffix( ): string
+		menu_title( ): string
+		spread_default( ): string
+		Empty( ): $mol_status
+		spreads( ): ({ 
+			'pizza': ReturnType< $yuf_catalog_demo_foods['Pizza'] >,
+			'hot_dogs': ReturnType< $yuf_catalog_demo_foods['Hot_dogs'] >,
+			'fries': ReturnType< $yuf_catalog_demo_foods['Fries'] >,
+		}) 
+	}
+	
+	type __yuf_catalog_demo_user_catalog_1 = $mol_type_enforce<
+		Parameters< $yuf_catalog_demo_user_catalog['by_id'] >[0]
+		,
+		Parameters< ReturnType< $yuf_catalog_demo_user_catalog['store'] >['by_id'] >[0]
+	>
+	type $yuf_link__sub_yuf_catalog_demo_user_catalog_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_link['sub'] >
+	>
+	type $yuf_link__param_name_yuf_catalog_demo_user_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['filter_param_name'] >
+		,
+		ReturnType< $yuf_link['param_name'] >
+	>
+	type $yuf_link__sub_yuf_catalog_demo_user_catalog_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_link['sub'] >
+	>
+	type $yuf_link__param_name_yuf_catalog_demo_user_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['age_param_name'] >
+		,
+		ReturnType< $yuf_link['param_name'] >
+	>
+	type $yuf_catalog_demo_user_filter__close_param_name_yuf_catalog_demo_user_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['filter_param_name'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_filter['close_param_name'] >
+	>
+	type $yuf_catalog_demo_user_filter__age_from_yuf_catalog_demo_user_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['age_from'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_filter['age_from'] >
+	>
+	type $yuf_catalog_demo_user_filter__title_yuf_catalog_demo_user_catalog_8 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_catalog_demo_user_filter['title'] >
+	>
+	type $yuf_catalog_demo_user_store__age_from_yuf_catalog_demo_user_catalog_9 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['age_from'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_store['age_from'] >
+	>
+	type $yuf_catalog_demo_user_store__friend_user_id_yuf_catalog_demo_user_catalog_10 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['friend_user_id'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_store['friend_user_id'] >
+	>
+	type $yuf_catalog_demo_user_link__arg_yuf_catalog_demo_user_catalog_11 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['arg'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_link['arg'] >
+	>
+	type $yuf_catalog_demo_user_link__age_enabled_yuf_catalog_demo_user_catalog_12 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['age_enabled'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_link['age_enabled'] >
+	>
+	type $yuf_catalog_demo_user_link__model_yuf_catalog_demo_user_catalog_13 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['by_id'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_link['model'] >
+	>
+	type $yuf_catalog_demo_user_link__default_yuf_catalog_demo_user_catalog_14 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['menu_link_default'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_link['default'] >
+	>
+	type $yuf_catalog_demo_user_info__model_yuf_catalog_demo_user_catalog_15 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['by_id'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_info['model'] >
+	>
+	type $yuf_catalog_demo_user_info__param_prefix_yuf_catalog_demo_user_catalog_16 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_catalog['param'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_info['param_prefix'] >
+	>
+	type $yuf_catalog_demo_user_info__addon_tools_yuf_catalog_demo_user_catalog_17 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_catalog_demo_user_info['addon_tools'] >
+	>
+	export class $yuf_catalog_demo_user_catalog extends $yuf_catalog {
+		by_id( id: any): ReturnType< ReturnType< $yuf_catalog_demo_user_catalog['store'] >['by_id'] >
+		spread_ids( ): ReturnType< ReturnType< $yuf_catalog_demo_user_catalog['store'] >['ids'] >
+		age_from( next?: number ): number
+		friend_user_id( ): string
+		Filter_enable_icon( ): $mol_icon_filter
+		filter_param_name( ): string
+		Filter_enable( ): $yuf_link
+		Age_enable_icon( ): $mol_icon_face_agent
+		age_param_name( ): string
+		Age_enable( ): $yuf_link
+		Filter_page( ): $yuf_catalog_demo_user_filter
+		age_enabled( ): boolean
+		param_suffix( ): string
+		menu_title( ): string
+		Content( ): $mol_filler
+		Empty( ): $mol_status
+		store( ): $yuf_catalog_demo_user_store
+		menu_filter_enabled( ): boolean
+		menu_tools( ): readonly(any)[]
+		filter_content( ): readonly(any)[]
+		Menu_link( id: any): $yuf_catalog_demo_user_link
+		Spread( id: any): $yuf_catalog_demo_user_info
+	}
+	
+	type $mol_labeler__title_yuf_catalog_demo_user_info_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_catalog_demo_user_info_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_catalog_demo_user_info_3 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_catalog_demo_user_info_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $yuf_link__sub_yuf_catalog_demo_user_info_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_link['sub'] >
+	>
+	type $yuf_link__param_name_yuf_catalog_demo_user_info_6 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
+		,
+		ReturnType< $yuf_link['param_name'] >
+	>
+	type $mol_page__title_yuf_catalog_demo_user_info_7 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['menu_title'] >
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__tools_yuf_catalog_demo_user_info_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__body_yuf_catalog_demo_user_info_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $yuf_link_close__param_name_yuf_catalog_demo_user_info_10 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
+		,
+		ReturnType< $yuf_link_close['param_name'] >
+	>
+	type $yuf_catalog_demo_user_catalog__param_prefix_yuf_catalog_demo_user_info_11 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['friends_param_name'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['param_prefix'] >
+	>
+	type $yuf_catalog_demo_user_catalog__friend_user_id_yuf_catalog_demo_user_info_12 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['id'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['friend_user_id'] >
+	>
+	type $yuf_catalog_demo_user_catalog__menu_title_yuf_catalog_demo_user_info_13 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_info['friends_title'] >
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['menu_title'] >
+	>
+	type $yuf_catalog_demo_user_catalog__addon_tools_yuf_catalog_demo_user_info_14 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_catalog_demo_user_catalog['addon_tools'] >
+	>
+	export class $yuf_catalog_demo_user_info extends $mol_book2 {
+		name( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['model'] >['name'] >
+		age( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['model'] >['age'] >
+		id( ): ReturnType< ReturnType< $yuf_catalog_demo_user_info['model'] >['id'] >
+		menu_title( ): string
+		addon_tools( ): readonly(any)[]
+		Name( ): $mol_labeler
+		Age( ): $mol_labeler
+		friends_name( ): string
+		friends_param_name( ): string
+		Friends_enable( ): $yuf_link
+		Info( ): $mol_page
+		friends_title( ): string
+		Friends_close( ): $yuf_link_close
+		Friends( ): $yuf_catalog_demo_user_catalog
+		friends_content( ): readonly(any)[]
+		param_prefix( ): string
+		param_suffix( ): string
+		model( ): $yuf_catalog_demo_user_model
+		pages( ): readonly(any)[]
+	}
+	
+	type $yuf_link_close__param_name_yuf_catalog_demo_user_filter_1 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_filter['close_param_name'] >
+		,
+		ReturnType< $yuf_link_close['param_name'] >
+	>
+	type $mol_number__value_yuf_catalog_demo_user_filter_2 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_filter['age_from'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_form_field__name_yuf_catalog_demo_user_filter_3 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_catalog_demo_user_filter_4 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_demo_user_filter['Age'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_form__body_yuf_catalog_demo_user_filter_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form['body'] >
+	>
+	type $mol_form__buttons_yuf_catalog_demo_user_filter_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form['buttons'] >
+	>
+	export class $yuf_catalog_demo_user_filter extends $mol_page {
+		close_param_name( ): string
+		Filter_close( ): $yuf_link_close
+		age_from( next?: number ): number
+		Age( ): $mol_number
+		Age_field( ): $mol_form_field
+		Form( ): $mol_form
+		theme( ): string
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+	type $mol_labeler__title_yuf_catalog_demo_user_link_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_catalog_demo_user_link_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_catalog_demo_user_link_3 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_catalog_demo_user_link_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	export class $yuf_catalog_demo_user_link extends $yuf_link {
+		name( ): ReturnType< ReturnType< $yuf_catalog_demo_user_link['model'] >['name'] >
+		age( ): ReturnType< ReturnType< $yuf_catalog_demo_user_link['model'] >['age'] >
+		Name( ): $mol_labeler
+		Age( ): $mol_labeler
+		age_content( ): readonly(any)[]
+		model( ): $yuf_catalog_demo_user_model
+		age_enabled( ): boolean
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_catalog_demo_user_catalog extends $.$yuf_catalog_demo_user_catalog {
+        filter_param_name(): string;
+        age_param_name(): string;
+        age_from(next?: number): number;
+        filter_enabled(): boolean;
+        pages(): any[];
+        age_enabled(): boolean;
+    }
+    class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
+        param_base(): string;
+        friends_param_name(): string;
+        menu_title(): string;
+        friends_content(): readonly any[];
+        friends_title(): string;
+    }
+    class $yuf_catalog_demo_user_link extends $.$yuf_catalog_demo_user_link {
+        age_content(): readonly any[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
 	export class $mol_icon_eye_off extends $mol_icon {
 		path( ): string
 	}
@@ -8602,32 +9076,44 @@ declare namespace $ {
 
 	export class $yuf_form_bid extends $mol_view {
 		required_msg( ): string
-		str_min_msg( ): string
-		str_max_msg( ): string
+		pattern_not_match_msg( ): string
+		min_msg( ): string
+		max_msg( ): string
 		rows_max_msg( ): string
-		list_min_msg( ): string
-		list_max_msg( ): string
 		json_invalid_msg( ): string
 		ip4_msg( ): string
+		ip4_mask_msg( ): string
 		latin_digits_msg( ): string
+		value_in_range_msg( ): string
 		value( id: any): any
-		str_min_val( id: any): number
-		str_max_val( id: any): number
-		rows_max_val( id: any): number
-		list_min_val( id: any): number
-		list_max_val( id: any): number
+		value_empty( id: any): boolean
+		value_date( id: any): $mol_time_moment|string
+		params_min_date( ): Record<string, $mol_time_moment|string>
+		params_max_date( ): Record<string, $mol_time_moment|string>
+		params_min( ): Record<string, number>
+		params_max( ): Record<string, number>
+		params_limits( ): Record<string, readonly(readonly(number)[])[]>
+		params_pattern( ): Record<string, string>
+		pattern_val( id: any): string
+		min_val( id: any): number | null
+		max_val( id: any): number | null
+		min_date_val( id: any): $mol_time_moment|null
+		max_date_val( id: any): $mol_time_moment|null
 		required( id: any): ReturnType< $yuf_form_bid['required_msg'] >
-		str_min( id: any): ReturnType< $yuf_form_bid['str_min_msg'] >
-		str_max( id: any): ReturnType< $yuf_form_bid['str_max_msg'] >
+		pattern( id: any): ReturnType< $yuf_form_bid['pattern_not_match_msg'] >
+		str_min_msg( ): string
+		str_max_msg( ): string
+		date_min_msg( ): string
+		date_max_msg( ): string
+		min( id: any): ReturnType< $yuf_form_bid['min_msg'] >
+		max( id: any): ReturnType< $yuf_form_bid['max_msg'] >
 		rows_max( id: any): ReturnType< $yuf_form_bid['rows_max_msg'] >
-		list_min( id: any): ReturnType< $yuf_form_bid['list_min_msg'] >
-		list_max( id: any): ReturnType< $yuf_form_bid['list_max_msg'] >
 		json_invalid( id: any): ReturnType< $yuf_form_bid['json_invalid_msg'] >
 		ip4( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
 		ip4_mask( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
-		ip4_mask_required( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
+		ip4_mask_required( id: any): ReturnType< $yuf_form_bid['ip4_mask_msg'] >
 		latin_digits( id: any): ReturnType< $yuf_form_bid['latin_digits_msg'] >
-		value_in_range( id: any, next?: string ): string
+		value_in_range( id: any, next?: ReturnType< $yuf_form_bid['value_in_range_msg'] > ): ReturnType< $yuf_form_bid['value_in_range_msg'] >
 		value_limits( id: any): readonly(readonly(number)[])[]
 	}
 	
@@ -8642,29 +9128,44 @@ declare namespace $.$$ {
         list_string(field: string): readonly string[];
         dictionary_bool(field: string): any;
         format(key: string, str: string): string;
-        list_min(field: string): string;
-        list_max(field: string): string;
+        value_date(field: string): string | $mol_time_moment;
+        protected min_msg_formatted(field: string): string;
+        protected max_msg_formatted(field: string): string;
+        value_empty(field: string): boolean;
+        min_date(field: string): string;
+        max_date(field: string): string;
+        min_str(field: string): string;
+        max_str(field: string): string;
+        min_number(field: string): string;
+        max_number(field: string): string;
+        min(field: string): string;
+        max(field: string): string;
         required(field: string): string;
-        str_min(field: string): string;
-        str_max(field: string): string;
+        min_val(field: string): number;
+        max_val(field: string): number;
+        pattern_val(field: string): string;
+        min_date_val(field: string): $mol_time_moment;
+        max_date_val(field: string): $mol_time_moment;
+        pattern(field: string): string;
         rows_max(field: string): string;
         json_invalid(field: string): string;
         ip4(field: string, flag?: 'mask-allowed' | 'mask-required'): string;
         ip4_mask(field: string): string;
         ip4_mask_required(field: string): string;
         latin_digits(field: string): string;
-        value_in_range(key: string): string;
+        value_limits(field: string): readonly (readonly number[])[];
+        value_in_range(field: string): string;
     }
 }
 
 declare namespace $ {
     class $yuf_session extends $mol_object {
-        static get _(): $yuf_session;
         client_id(): string;
         token_key(): string;
         token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
         user_id(): null | string;
-        token_cut(reset?: 'refresh'): string | null;
+        user_id_ensure(): string;
+        token_cut(): string | null;
         logged(): boolean;
         logout(): string | null;
     }
@@ -8744,14 +9245,14 @@ declare namespace $ {
 		Parameters< ReturnType< $yuf_login_form['Bid'] >['required'] >[0]
 	>
 	type __yuf_login_form_2 = $mol_type_enforce<
-		Parameters< $yuf_login_form['str_min'] >[0]
+		Parameters< $yuf_login_form['min'] >[0]
 		,
-		Parameters< ReturnType< $yuf_login_form['Bid'] >['str_min'] >[0]
+		Parameters< ReturnType< $yuf_login_form['Bid'] >['min'] >[0]
 	>
 	type __yuf_login_form_3 = $mol_type_enforce<
-		Parameters< $yuf_login_form['str_max'] >[0]
+		Parameters< $yuf_login_form['max'] >[0]
 		,
-		Parameters< ReturnType< $yuf_login_form['Bid'] >['str_max'] >[0]
+		Parameters< ReturnType< $yuf_login_form['Bid'] >['max'] >[0]
 	>
 	type $mol_string__value_yuf_login_form_4 = $mol_type_enforce<
 		ReturnType< $yuf_login_form['login'] >
@@ -8811,8 +9312,8 @@ declare namespace $ {
 	export class $yuf_login_form extends $mol_form {
 		value_str( id: any, next?: string ): string
 		required( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['required'] >
-		str_min( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['str_min'] >
-		str_max( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['str_max'] >
+		min( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['min'] >
+		max( id: any): ReturnType< ReturnType< $yuf_login_form['Bid'] >['max'] >
 		login_label( ): string
 		login( next?: string ): string
 		submit_activate_fork( next?: ReturnType< $yuf_login_form['submit_activate'] > ): ReturnType< $yuf_login_form['submit_activate'] >
@@ -8872,48 +9373,6 @@ declare namespace $.$$ {
     class $yuf_login_form_demo extends $.$yuf_login_form_demo {
         enter(e?: Event): void;
     }
-}
-
-declare namespace $ {
-    class $mol_unit extends $mol_object {
-        'valueOf()': number;
-        constructor(value?: number);
-        prefix(): string;
-        postfix(): string;
-        [Symbol.toPrimitive](hint: 'number' | 'string' | 'default'): string | number;
-        valueOf(): number;
-        delimiter(): string;
-        value_view(): string;
-        toString(): string;
-        static summ(a: $mol_unit, b: $mol_unit): any;
-        mult(m: number): this;
-    }
-}
-
-declare namespace $ {
-    class $mol_unit_money extends $mol_unit {
-    }
-    class $mol_unit_money_usd extends $mol_unit_money {
-        prefix(): string;
-    }
-    class $mol_unit_money_rub extends $mol_unit_money {
-        postfix(): string;
-    }
-}
-
-declare namespace $ {
-    function $mol_stub_strings(prefix?: string, count?: number, length?: number): any[];
-    function $mol_stub_code(length?: number): string;
-    function $mol_stub_price(max?: number): $mol_unit_money_usd;
-    function $mol_stub_product_name(): string;
-    function $mol_stub_company_name_big(): string;
-    function $mol_stub_company_name_small(): string;
-    function $mol_stub_company_name(): string;
-    function $mol_stub_person_name(): string;
-    function $mol_stub_person_avatar(size?: number): string;
-    function $mol_stub_city(): string;
-    function $mol_stub_time(maxShift?: number): $mol_time_moment;
-    function $mol_stub_message(max_length: number): string;
 }
 
 declare namespace $ {

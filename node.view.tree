@@ -672,6 +672,8 @@ $mol_embed_youtube $mol_embed_service
 
 $mol_embed_rutube $mol_embed_service
 
+$mol_embed_vklive $mol_embed_service
+
 $mol_embed_any $mol_view
 	Image $mol_image
 		title <= title \
@@ -683,6 +685,9 @@ $mol_embed_any $mol_view
 		title <= title \
 		uri <= uri \
 	Rutube $mol_embed_rutube
+		title <= title \
+		uri <= uri \
+	Vklive $mol_embed_vklive
 		title <= title \
 		uri <= uri \
 
@@ -1611,6 +1616,7 @@ $yuf_catalog $mol_book2_catalog
 	spread_default \
 	param_prefix \
 	param_suffix \
+	param <= param_base \
 	spread_close_content /$mol_view
 		<= Spread_close $yuf_link_close
 			link_arg <= spread_close_arg
@@ -1621,7 +1627,11 @@ $yuf_catalog $mol_book2_catalog
 		content <= menu_link_content*
 		hint <= menu_link_hint* null
 
-$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+$mol_icon_filter $mol_icon path \M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z
+
+$mol_icon_face $mol_icon path \M9,11.75C8.31,11.75 7.75,12.31 7.75,13C7.75,13.69 8.31,14.25 9,14.25C9.69,14.25 10.25,13.69 10.25,13C10.25,12.31 9.69,11.75 9,11.75M15,11.75C14.31,11.75 13.75,12.31 13.75,13C13.75,13.69 14.31,14.25 15,14.25C15.69,14.25 16.25,13.69 16.25,13C16.25,12.31 15.69,11.75 15,11.75M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z
+
+$mol_icon_face_agent $mol_icon path \M18.72,14.76C19.07,13.91 19.26,13 19.26,12C19.26,11.28 19.15,10.59 18.96,9.95C18.31,10.1 17.63,10.18 16.92,10.18C13.86,10.18 11.15,8.67 9.5,6.34C8.61,8.5 6.91,10.26 4.77,11.22C4.73,11.47 4.73,11.74 4.73,12A7.27,7.27 0 0,0 12,19.27C13.05,19.27 14.06,19.04 14.97,18.63C15.54,19.72 15.8,20.26 15.78,20.26C14.14,20.81 12.87,21.08 12,21.08C9.58,21.08 7.27,20.13 5.57,18.42C4.53,17.38 3.76,16.11 3.33,14.73H2V10.18H3.09C3.93,6.04 7.6,2.92 12,2.92C14.4,2.92 16.71,3.87 18.42,5.58C19.69,6.84 20.54,8.45 20.89,10.18H22V14.67H22V14.69L22,14.73H21.94L18.38,18L13.08,17.4V15.73H17.91L18.72,14.76M9.27,11.77C9.57,11.77 9.86,11.89 10.07,12.11C10.28,12.32 10.4,12.61 10.4,12.91C10.4,13.21 10.28,13.5 10.07,13.71C9.86,13.92 9.57,14.04 9.27,14.04C8.64,14.04 8.13,13.54 8.13,12.91C8.13,12.28 8.64,11.77 9.27,11.77M14.72,11.77C15.35,11.77 15.85,12.28 15.85,12.91C15.85,13.54 15.35,14.04 14.72,14.04C14.09,14.04 13.58,13.54 13.58,12.91A1.14,1.14 0 0,1 14.72,11.77Z
 
 $mol_filler $mol_paragraph
 	min_symbols 7000
@@ -1755,80 +1765,51 @@ $mol_filler $mol_paragraph
 		\Aenean luctus, elit commodo laoreet commodo, justo nisi consequat massa, sed vulputate quam urna quis eros. 
 		\Donec vel. 
 
-$yuf_catalog_demo $mol_example_large
-	title \Catalog of pages
-	param \app
+$mol_icon_chevron_left $mol_icon path \M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z
+
+$mol_icon_chevron_right $mol_icon path \M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z
+
+$mol_number $mol_view
+	precision_view <= precision 1
+	precision_change <= precision 1
+	boost 10
+	value_min -Infinity
+	value_max +Infinity
+	value? +NaN
+	enabled true
+	plugins /
+		<= Hotkey $mol_hotkey
+			key *
+				down? <=> event_dec? null
+				up? <=> event_inc? null
+				pageDown? <=> event_dec_boost? null
+				pageUp? <=> event_inc_boost? null
 	sub /
-		<= Calatog $yuf_catalog_demo_catalog
-			param_prefix <= param
-	tags /
-		\app
-		\page
-		\menu
-		\navigation
-		\transition
-		\multipage
-	aspects /
-		\Navigation
-		\Widget/Layout
+		<= Dec $mol_button_minor
+			event_click? <=> event_dec? null
+			enabled <= dec_enabled <= enabled
+			sub / <= dec_icon $mol_icon_chevron_left
+		<= String $mol_string
+			- \ we don't want native number controls in mobile devices
+			- \ https://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-input-s-spin-box
+			type <= type \text
+			keyboard \decimal
+			value? <=> value_string? \
+			hint <= hint \ 
+			enabled <= string_enabled <= enabled
+			submit? <=> submit? null
+		<= Inc $mol_button_minor
+			event_click? <=> event_inc? null
+			enabled <= inc_enabled <= enabled
+			sub / <= inc_icon $mol_icon_chevron_right
 
-$yuf_catalog_demo_catalog $yuf_catalog
-	param_suffix \catalog
-	menu_title \Catalog
-	spread_default \foods
-	spreads *
-		foods <= Foods $yuf_catalog_demo_foods
-			param_prefix <= param
-			addon_tools / ^ spread_close_content
-		animals <= Animals $yuf_catalog_demo_animals
-			param_prefix <= param
-			addon_tools / ^ spread_close_content
-
-$yuf_catalog_demo_foods $yuf_catalog
-	param_suffix \foods
-	menu_title \Foods
-	spread_default \pizza
-	Empty $mol_status
-	spreads *
-		pizza <= Pizza $mol_page
-			title \🍕 Pizzas
-			tools / ^ spread_close_content
-			body / <= Empty
-		hot_dogs <= Hot_dogs $mol_page
-			title \🌭 Hot Dogs
-			tools / ^ spread_close_content
-			body / <= Empty
-		fries <= Fries $mol_page
-			title \🍟 Fries
-			tools / ^ spread_close_content
-			body / <= Empty
-
-$yuf_catalog_demo_animals $yuf_catalog
-	param_suffix \animals
-	menu_title \Animals
-	spread_default \dogs
-	Content $mol_filler
-	Empty $mol_status
-	menu_tools /
-		<= Extra_enable $yuf_link
-			sub / <= Extra_enable_icon $mol_icon_plus
-			param_name <= extra_param_name \extra
-	extra_content /
-		<= Extra_page $mol_page
-			tools /
-				<= Extra_close $yuf_link_close
-					param_name <= extra_param_name
-			body /
-				\Extra page
-	spreads *
-		cats <= Cats $mol_page
-			title \🐱 Cats
-			tools / ^ spread_close_content
-			body / <= Content
-		dogs <= Dogs $mol_page
-			title \🐶 Dogs
-			tools / ^ spread_close_content
-			body / <= Empty
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
 
 $mol_button_major $mol_button_minor
 	theme \$mol_theme_base
@@ -1857,13 +1838,145 @@ $mol_form $mol_list
 				<= Result $mol_status
 					message <= result? null
 
-$mol_form_field $mol_labeler
-	bids /string
-	label /
-		<= name \
-		<= Bid $mol_view
-			sub / <= bid \
-	content / <= control null
+$yuf_catalog_demo $mol_example_large
+	title \Catalog of pages
+	param \app
+	sub /
+		<= Calatog $yuf_catalog_demo_catalog
+			param_prefix <= param
+	tags /
+		\app
+		\page
+		\menu
+		\navigation
+		\transition
+		\multipage
+	aspects /
+		\Navigation
+		\Widget/Layout
+
+$yuf_catalog_demo_catalog $yuf_catalog
+	param_suffix \catalog
+	menu_title \Catalog
+	spreads *
+		users <= Users $yuf_catalog_demo_user_catalog
+			param_prefix <= param
+			addon_tools / ^ spread_close_content
+		foods <= Foods $yuf_catalog_demo_foods
+			param_prefix <= param
+			addon_tools / ^ spread_close_content
+
+$yuf_catalog_demo_foods $yuf_catalog
+	param_suffix \foods
+	menu_title \Foods with default selected pizza
+	spread_default \pizza
+	Empty $mol_status
+	spreads *
+		pizza <= Pizza $mol_page
+			title \🍕 Pizzas
+			tools / ^ spread_close_content
+			body / <= Empty
+		hot_dogs <= Hot_dogs $mol_page
+			title \🌭 Hot Dogs
+			tools / ^ spread_close_content
+			body / <= Empty
+		fries <= Fries $mol_page
+			title \🍟 Fries
+			tools / ^ spread_close_content
+			body / <= Empty
+
+$yuf_catalog_demo_user_catalog $yuf_catalog
+	param_suffix \users
+	menu_title \Users
+	Content $mol_filler
+	Empty $mol_status
+	store $yuf_catalog_demo_user_store
+		by_id* => by_id*
+		ids => spread_ids
+		-
+		age_from? <=> age_from? 10
+		friend_user_id <= friend_user_id \
+	menu_filter_enabled false
+	menu_tools /
+		<= Filter_enable $yuf_link
+			sub / <= Filter_enable_icon $mol_icon_filter
+			param_name <= filter_param_name \filter
+		<= Age_enable $yuf_link
+			sub / <= Age_enable_icon $mol_icon_face_agent
+			param_name <= age_param_name \age
+	filter_content /
+		<= Filter_page $yuf_catalog_demo_user_filter
+			close_param_name <= filter_param_name
+			age_from? <=> age_from?
+			title \Filter
+	Menu_link* $yuf_catalog_demo_user_link
+		arg <= arg*
+		age_enabled <= age_enabled false
+		model <= by_id*
+		default <= menu_link_default*
+	Spread* $yuf_catalog_demo_user_info
+		model <= by_id*
+		param_prefix <= param
+		addon_tools / <= Spread_close
+
+$yuf_catalog_demo_user_info $mol_book2
+	param_prefix \
+	param_suffix \info
+	model $yuf_catalog_demo_user_model
+		name => name
+		age => age
+		id => id
+	pages /
+		<= Info $mol_page
+			title <= menu_title \User {id}
+			tools /
+				^ addon_tools /
+			body /
+				<= Name $mol_labeler
+					title \Name
+					content / <= name
+				<= Age $mol_labeler
+					title \Age
+					content / <= age
+				<= Friends_enable $yuf_link
+					sub / <= friends_name \Friends
+					param_name <= friends_param_name \friends
+		^ friends_content /
+			<= Friends $yuf_catalog_demo_user_catalog
+				param_prefix <= friends_param_name
+				friend_user_id <= id
+				menu_title <= friends_title \Friends of {id}
+				addon_tools /
+					<= Friends_close $yuf_link_close
+						param_name <= friends_param_name
+
+$yuf_catalog_demo_user_filter $mol_page
+	theme \$mol_theme_special
+	tools /
+		<= Filter_close $yuf_link_close
+			param_name <= close_param_name \
+	body /
+		<= Form $mol_form
+			body /
+				<= Age_field $mol_form_field
+					name \Age from
+					control <= Age $mol_number
+						value? <=> age_from? 10
+			buttons /
+
+$yuf_catalog_demo_user_link $yuf_link
+	model $yuf_catalog_demo_user_model
+		name => name
+		age => age
+	age_enabled false
+	sub /
+		<= Name $mol_labeler
+			title \Name
+			content / <= name
+		^ age_content /
+			<= Age $mol_labeler
+				title \Age
+				content / <= age
 
 $mol_icon_eye_off $mol_icon path \M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z
 
@@ -1887,28 +2000,39 @@ $yuf_password_check $yuf_check_icon2
 
 $yuf_form_bid $mol_view
 	value* null
+	value_empty* false
+	value_date* $mol_time_moment|string
 	-
-	str_min_val* 2
-	str_max_val* 200
-	rows_max_val* 5
+	params_min_date *$mol_time_moment|string
+	params_max_date *$mol_time_moment|string
+	params_min *number
+	params_max *number
+	params_limits *readonly(readonly(number)[])[]
+	params_pattern *string
 	-
-	list_min_val* 1
-	list_max_val* 10
+	pattern_val* \
+	min_val* null number
+	max_val* null number
+	min_date_val* $mol_time_moment|null
+	max_date_val* $mol_time_moment|null
 	-
 	required* <= required_msg @ \*
-	str_min* <= str_min_msg @ \From {str_min_val}
-	str_max* <= str_max_msg @ \To {str_max_val}
-	rows_max* <= rows_max_msg @ \No more {rows_max_val} rows
+	pattern* <= pattern_not_match_msg @ \Mask {mask}
+	str_min_msg @ \From {min_val} chars
+	str_max_msg @ \To {max_val} chars
+	date_min_msg @ \From {min_date_val}
+	date_max_msg @ \To {max_date_val}
 	-
-	list_min* <= list_min_msg @ \Min {list_min_val}
-	list_max* <= list_max_msg @ \Max {list_max_val}
+	min* <= min_msg @ \From {min_val}
+	max* <= max_msg @ \To {max_val}
+	rows_max* <= rows_max_msg @ \To {max_vol} rows
 	-
 	json_invalid* <= json_invalid_msg @ \{json_error}
 	ip4* <= ip4_msg @ \Not valid ip4
 	ip4_mask* <= ip4_msg
-	ip4_mask_required* <= ip4_msg
+	ip4_mask_required* <= ip4_mask_msg @ \Not valid ip4/mask
 	latin_digits* <= latin_digits_msg @ \Only latin and digits
-	value_in_range*? @ \{range}
+	value_in_range*? <= value_in_range_msg @ \{range}
 	value_limits* /readonly(number)[]
 
 $yuf_login_form $mol_form
@@ -1918,14 +2042,14 @@ $yuf_login_form $mol_form
 	Bid $yuf_form_bid
 		value* <= value_str*? \
 		required* => required*
-		str_min* => str_min*
-		str_max* => str_max*
+		min* => min*
+		max* => max*
 	form_fields /
 		<= Login_field $mol_form_field
 			bids /
 				<= required*login
-				<= str_min*login
-				<= str_max*login
+				<= min*login
+				<= max*login
 			name <= login_label @ \User name
 			control <= Login $mol_string
 				value? <=> login? \
@@ -1933,8 +2057,8 @@ $yuf_login_form $mol_form
 		<= Password_field $mol_form_field
 			bids /
 				<= required*password
-				<= str_min*password
-				<= str_max*password
+				<= min*password
+				<= max*password
 			name <= password_label @ \Password
 			control <= Password $yuf_password
 				value? <=> password? \
