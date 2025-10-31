@@ -251,6 +251,15 @@ namespace $.$$ {
 			return this.format(field, this.latin_digits_msg())
 		}
 
+		override latin_digits_alpha(field: string) {
+			if (this.value_empty(field)) return ''
+			const val = this.value_str(field)
+
+			if ( val.match(/^[\w\d\-\.\;\!]+$/)) return ''
+
+			return this.format(field, this.latin_digits_msg())
+		}
+
 		override value_limits(field: string) {
 			return this.params_limits()[field] ?? super.value_limits(field)
 		}

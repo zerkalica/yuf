@@ -17,6 +17,7 @@ namespace $ {
 		@ $mol_mem
 		protected ws(reset?: null) {
 			this.restarts()
+			console.log('creating socket')
 			if (! this.enabled()) return null
 
 			return this.$.$yuf_ws_socket.make({
@@ -156,7 +157,7 @@ namespace $ {
 
 		@ $mol_mem
 		error_packed(error?: null | [Error]) {
-			this.restarts()
+			this.ws()
 			return error ?? null
 		}
 

@@ -32,5 +32,6 @@ $yuf_form_bid $mol_view
 	ip4_mask* <= ip4_msg
 	ip4_mask_required* <= ip4_mask_msg @ \Not valid ip4/mask
 	latin_digits* <= latin_digits_msg @ \Only latin and digits
+	latin_digits_alpha* <= latin_digits_msg
 	value_in_range*? <= value_in_range_msg @ \{range}
 	value_limits* /readonly(number)[]

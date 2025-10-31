@@ -98,8 +98,12 @@ namespace $ {
 
 		restarts_to_logout() { return 3 }
 
-		override restarts() {
-			if (this.restart_count(null) >= this.restarts_to_logout()) this.logout()
+		@ $mol_mem
+		protected ws(reset?: null) {
+			const count = this.restart_count(null)
+			if (count >= this.restarts_to_logout()) this.logout()
+
+			return super.ws(reset)
 		}
 
 		logout() {
