@@ -4584,7 +4584,7 @@ var $;
             }
             return names;
         }
-        theme(next = null) {
+        theme(next) {
             return next;
         }
         attr_static() {
@@ -4595,7 +4595,7 @@ var $;
         }
         attr() {
             return {
-                mol_theme: this.theme() ?? undefined,
+                mol_theme: this.theme(),
             };
         }
         style() {
@@ -4730,9 +4730,6 @@ var $;
     __decorate([
         $mol_memo.method
     ], $mol_view.prototype, "view_names", null);
-    __decorate([
-        $mol_mem
-    ], $mol_view.prototype, "theme", null);
     __decorate([
         $mol_mem
     ], $mol_view.prototype, "event_async", null);
@@ -11794,7 +11791,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/status/status.view.css", "[mol_status] {\n\tpadding: var(--mol_gap_text);\n\tborder-radius: var(--mol_gap_round);\n\tdisplay: block;\n}\n\n[mol_status]:not([mol_view_error=\"Promise\"]) {\n\tcolor: var(--mol_theme_focus);\n}\n\n[mol_status]:not([mol_view_error=\"Promise\"]):empty {\n\tdisplay: none;\n}\n");
+    $mol_style_attach("mol/status/status.view.css", "[mol_status] {\n\tpadding: var(--mol_gap_text);\n\tborder-radius: var(--mol_gap_round);\n\tdisplay: block;\n\tflex-shrink: 1;\n\tword-wrap: break-word;\n}\n\n[mol_status]:not([mol_view_error=\"Promise\"]) {\n\tcolor: var(--mol_theme_focus);\n}\n\n[mol_status]:not([mol_view_error=\"Promise\"]):empty {\n\tdisplay: none;\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -19839,6 +19836,9 @@ var $;
 		latin_digits(id){
 			return (this.latin_digits_msg());
 		}
+		latin_digits_alpha(id){
+			return (this.latin_digits_msg());
+		}
 		value_in_range(id, next){
 			if(next !== undefined) return next;
 			return (this.value_in_range_msg());
@@ -20085,6 +20085,14 @@ var $;
                     return '';
                 const val = this.value_str(field);
                 if (val.match(/^[\w\d]+$/))
+                    return '';
+                return this.format(field, this.latin_digits_msg());
+            }
+            latin_digits_alpha(field) {
+                if (this.value_empty(field))
+                    return '';
+                const val = this.value_str(field);
+                if (val.match(/^[\w\d\-\.\;\!]+$/))
                     return '';
                 return this.format(field, this.latin_digits_msg());
             }

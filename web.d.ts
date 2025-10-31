@@ -1081,7 +1081,7 @@ declare namespace $ {
         static view_names(suffix: string): string[];
         view_names_owned(): string[];
         view_names(): Set<string>;
-        theme(next?: null | string): string | null;
+        theme(next?: string | null): string | null | undefined;
         attr_static(): {
             [key: string]: string | number | boolean | null;
         };
@@ -9129,6 +9129,7 @@ declare namespace $ {
 		ip4_mask( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
 		ip4_mask_required( id: any): ReturnType< $yuf_form_bid['ip4_mask_msg'] >
 		latin_digits( id: any): ReturnType< $yuf_form_bid['latin_digits_msg'] >
+		latin_digits_alpha( id: any): ReturnType< $yuf_form_bid['latin_digits_msg'] >
 		value_in_range( id: any, next?: ReturnType< $yuf_form_bid['value_in_range_msg'] > ): ReturnType< $yuf_form_bid['value_in_range_msg'] >
 		value_limits( id: any): readonly(readonly(number)[])[]
 	}
@@ -9169,6 +9170,7 @@ declare namespace $.$$ {
         ip4_mask(field: string): string;
         ip4_mask_required(field: string): string;
         latin_digits(field: string): string;
+        latin_digits_alpha(field: string): string;
         value_limits(field: string): readonly (readonly number[])[];
         value_in_range(field: string): string;
     }
