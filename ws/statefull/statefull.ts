@@ -91,16 +91,39 @@ namespace $ {
 			return this.channel<Val>(signature).data(data, refresh)
 		}
 
+		@ $mol_mem
+		restart_count(next?: number | null ): number {
+			return next ?? (($mol_wire_probe(() => this.restart_count()) ?? -1) + 1)
+		}
+
+		restarts_to_logout() { return 3 }
+
+		override restarts() {
+			if (this.restart_count(null) >= this.restarts_to_logout()) this.logout()
+		}
+
+		logout() {
+			new $mol_after_frame($mol_wire_async(() => {
+				try {
+					this.session().logout()
+				} catch (e) {
+					if ($mol_promise_like(e)) $mol_fail_hidden(e)
+					$mol_fail_log(e)
+				}
+			}))
+		}
+
 		protected override on_object( obj: {} ) {
 			const signature = this.message_signature(obj)
 			const channel = signature.type ? $mol_wire_probe(() => this.channel(signature)) : null
 
 			try {
+				this.restart_count(0)
 				const message = this.message(obj)
 				if (message) channel?.receive(message)
 			} catch (error) {
 				if (this.auth_need(error as {})) {
-					$mol_wire_async(this.session()).logout().catch(e => this.$.$mol_fail_log(e))
+					this.logout()
 				}
 				if ( ! channel ) $mol_fail_hidden(error)
 
