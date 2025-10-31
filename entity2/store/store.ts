@@ -17,8 +17,8 @@ namespace $ {
 
 		@ $mol_action
 		id_add(id: string) {
-			const ids = this.ids()
-			if ( ! ids.includes(id) ) this.ids([ id, ... ids ], 'cache')
+			const ids = this.ids() // $mol_wire_probe(() => this.ids())
+			if ( ids && ! ids.includes(id) ) this.ids([ id, ... ids ], 'cache')
 		}
 
 		protected draft_id_create() { return $mol_guid() }

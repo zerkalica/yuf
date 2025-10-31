@@ -1,20 +1,62 @@
 namespace $.$$ {
-	export class $yuf_catalog_demo_animals extends $.$yuf_catalog_demo_animals {
+	export class $yuf_catalog_demo_user_catalog extends $.$yuf_catalog_demo_user_catalog {
 		
-		override extra_param_name() {
-			return `${this.param()}_${super.extra_param_name()}`
+		override filter_param_name() {
+			return this.param() + '_' + super.filter_param_name()
 		}
 
-		extra_enabled() {
-			return this.$.$mol_state_arg.value(this.extra_param_name()) !== null
+		override age_param_name() {
+			return this.param() + '_' + super.age_param_name()
+		}
+
+		@ $mol_mem
+		override age_from(next?: number) {
+			return Number(this.$.$mol_state_arg.value(
+				this.param() + '_age_from',
+				next === undefined ? next : ! next ? null : String(next)
+			))
+		}
+
+		filter_enabled() {
+			return this.$.$mol_state_arg.value(this.filter_param_name()) !== null
 		}
 
 		override pages() {
 			return [
 				... super.pages(),
-				... this.extra_enabled() ? this.extra_content() : [],
+				... this.filter_enabled() ? this.filter_content() : [],
 			]
 		}
+
+		override age_enabled() {
+			return this.$.$mol_state_arg.value(this.age_param_name()) !== null
+		}
 		
+	}
+
+
+	export class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
+		param() {
+			return this.param_prefix() + '_' + this.param_suffix()
+		}
+
+		override friends_param_name() {
+			return `${this.param()}_${this.model().id()}_${super.friends_param_name()}`
+		}
+		override menu_title() { return super.menu_title().replace('{id}', this.id()) }
+
+		override friends_content() {
+			return this.$.$mol_state_arg.value(this.friends_param_name()) !== null ? super.friends_content() : []
+		}
+
+		override friends_title() {
+			return super.friends_title().replace('{id}', this.id())
+		}
+	}
+
+	export class $yuf_catalog_demo_user_link extends $.$yuf_catalog_demo_user_link {
+		override age_content() {
+			return this.age_enabled() ? super.age_content() : []
+		}
 	}
 }
