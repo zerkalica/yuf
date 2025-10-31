@@ -9,6 +9,10 @@ namespace $.$$ {
 			return this.param_base() + '_' + super.age_param_name()
 		}
 
+		override param() {
+			return `${this.param_base()}_${super.param()}`
+		}
+
 		@ $mol_mem
 		override age_from(next?: number) {
 			return Number(this.$.$mol_state_arg.value(
@@ -36,12 +40,16 @@ namespace $.$$ {
 
 
 	export class $yuf_catalog_demo_user_info extends $.$yuf_catalog_demo_user_info {
-		param_base() {
-			return this.param_prefix() + '_' + this.param_suffix()
+		override age_param_name() {
+			return this.param_base() + '_' + super.age_param_name()
 		}
 
-		override friends_param_name() {
-			return `${this.param_base()}_${super.friends_param_name()}`
+		age_enabled() {
+			return this.$.$mol_state_arg.value(this.age_param_name()) !== null
+		}
+
+		override age_content() {
+			return this.age_enabled() ? super.age_content() : []
 		}
 
 		override menu_title() { return super.menu_title().replace('{id}', this.id()) }
