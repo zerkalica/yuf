@@ -1,32 +1,11 @@
 namespace $ {
+	type Draft_data<Data = unknown> = [
+		store_id?: string | null,
+		tmp_data?: Data | null,
+		flag?: 'remove' | 'patch' | null
+	]
+
 	export class $yuf_entity2<Data = unknown> extends $mol_object {
-		@ $mol_mem
-		protected static pushing() {
-			return new $mol_wire_set<$yuf_entity2>()
-		}
-
-		@ $mol_mem
-		static syncing() {
-			let syncing = false
-			const errors = [] as Error[]
-
-			for (const model of this.pushing()) {
-				try {
-					model?.pushing()
-				} catch (e) {
-					if ($mol_promise_like(e)) syncing = true
-					else errors.push(e as Error)
-				}
-			}
-
-			if (errors.length) {
-				if (errors.length === 1) throw errors[0]
-				throw new $mol_error_mix(errors[0].message, errors[0].cause ?? {}, ...errors)
-			}
-
-			return syncing
-		}
-
 		protected factory() {
 			return this.constructor as typeof $yuf_entity2
 		}
@@ -49,12 +28,12 @@ namespace $ {
 			delete this.factory().active[this.toString()]
 		}
 
-		protected static drafts(next?: Record<string, [store_id: string, tmp_data: unknown] | null> | null) {
-			return this.$.$mol_state_local.value(`${this}.drafts()`, next) || {}
+		protected static drafts_stored(next?: Record<string, Draft_data | null> | null) {
+			return this.$.$mol_state_local.value(`${this}.drafts()`, next) ?? {}
 		}
 
-		protected static drafts_patch(next?: Record<string, [store_id: string, tmp_data: unknown] | null> | null) {
-			const prev = this.drafts()
+		protected static drafts(next?: Record<string, Draft_data | null> | null) {
+			const prev = this.drafts_stored()
 			if (next === undefined) return prev
 
 			next = { ...prev, ...next }
@@ -68,29 +47,52 @@ namespace $ {
 
 			if (! keys_count) next = null
 
-			return this.drafts(next)
+			return this.drafts_stored(next)
 		}
 
 		@ $mol_mem_key
-		static draft_ids_by_store(store_id: string, next?: string) {
-			const ids = this.drafts_patch(next ? { [next]: [ store_id, {} ] } : undefined)
+		static draft_ids(store_id: string, draft_ids?: readonly string[]) {
+			const ids = this.drafts(draft_ids
+				? Object.fromEntries(draft_ids.map(entity_id => [ entity_id, [ store_id ] ]))
+				: draft_ids
+			)
 
 			return Object.keys(ids).filter(id => ids[id]?.[0] === store_id)
 		}
 
-		@ $mol_mem_key
-		protected static draft_data<Data>(id: string, next?: Partial<Data> | null) {
-			const ids_prev = this.drafts_patch()[id]
-			if (! ids_prev?.[0] ) return next ?? null
+		protected static draft_data<Data>(id: string, next?: Draft_data<Data> | null) {
+			const prev = this.drafts()[id] as typeof next ?? null
+			if (next === undefined) return prev
 
-			if (next === undefined) return ids_prev[1] ?? null
-
-			return this.drafts_patch({ [id]: next ? [ ids_prev[0], next ] : next })[id]?.[1] ?? null
+			return this.drafts({ [id]: next === null ? next : [
+				prev?.[0], // store_id
+				next[1], // data
+				next[2] === undefined ? prev?.[2] : next[2] // flag
+			] })[id] as typeof next ?? null
 		}
 
-		static is_draft(id: string) { return !! this.drafts_patch()[id] }
+		protected draft_data(next?: Draft_data<Partial<Data>> | null) {
+			return this.$.$yuf_entity2.draft_data(this.id(), next)
+		}
 
-		is_draft() { return this.$.$yuf_entity2.is_draft(this.id()) }
+		is_draft() {
+			// if store_id exists - data is creating
+			return !! this.draft_data()?.[0]
+		}
+
+		@ $mol_mem
+		draft( next?: Partial<Data> | null, flag?: 'remove' | 'patch'): Partial<Data> | null {
+			const prev = this.draft_data()?.[1] ?? null
+
+			// merge with prev object, while debouncing
+			const draft = next ? this.merge(next, prev) : null
+
+			return this.draft_data(
+				next === undefined || (next === null && ! flag)
+					? next
+					: [null, draft, flag]
+			)?.[1] ?? null
+		}
 
 		_id = ''
 		store = null as null | $yuf_entity2_store
@@ -105,47 +107,20 @@ namespace $ {
 
 		mock_periodically() { return false }
 
-
 		@ $mol_mem_key
-		value<
-			Field extends keyof Data
-		>(
-			field: Field,
-			next?: Data[ Field ] | null,
-			draft?: 'draft'
-		): Data[ Field ] {
-			const patch = next === undefined || draft
-				? undefined
-				: { [field]: next } as Partial<Data>
+		draft_value<Field extends keyof Data>(field: Field, next?: Data[ Field ] | null) {
+			const draft = this.draft(
+				next === undefined ? undefined : { [field]: next } as Partial<Data>
+			)?.[ field ] ?? null
 
-			if (draft) {
-				const draft = this.draft(patch)?.[field]
-				if (draft !== undefined) return draft
-			}
-
-			return this.data( patch )?.[ field ] as Data[ Field ]
+			return draft === undefined ? this.value(field) : (draft ?? null)
 		}
 
-		@ $mol_mem
-		protected removing(next?: boolean) { return next ?? false }
-
-		@ $mol_mem
-		draft( next?: Partial<Data> | null, flag?: 'removing' | 'pushing'): Partial<Data> | null {
-			const pushing = this.factory().pushing()
-			const prev = $mol_wire_probe(() => this.draft()) ?? null
-
-			// merge with prev object, while debouncing
-			const draft = next ? this.merge(next, prev) : next
-
-			const removing = flag === 'removing' && ! this.is_draft()
-
-			if (next !== undefined) this.removing(removing)
-
-			if (flag === 'pushing' || removing) {
-				pushing.add(this)
-			} else if (next === null) pushing.delete(this)
-
-			return this.$.$yuf_entity2.draft_data(this.id(), draft)
+		@ $mol_mem_key
+		value<Field extends keyof Data>(field: Field, next?: Data[ Field ] | null) {
+			return this.data(
+				next === undefined ? undefined : { [field]: next } as Partial<Data>
+			)?.[ field ] ?? null
 		}
 
 		actual(next?: Partial<Data> | null, refresh?: 'refresh') {
@@ -161,7 +136,7 @@ namespace $ {
 			} else if (cache) {
 				actual = next
 			} else {
-				this.draft(next, next === null ? 'removing' : 'pushing')
+				this.draft(next, next === null ? 'remove' : 'patch')
 				actual = this.pushing()
 			}
 
@@ -199,9 +174,10 @@ namespace $ {
 		// Always pulled somewhere in app to track pushing status of each model
 		@ $mol_mem
 		pushing() {
-			const draft = this.draft()
-			const removing = this.removing()
-			if (! draft && ! removing) return null
+			const [, draft, flag] = this.draft_data() ?? []
+			const removing = flag === 'remove'
+			const patching = flag === 'patch'
+			if (! patching && ! removing) return null
 
 			const debounce_timeout = this.debounce_timeout()
 			if (debounce_timeout) {
@@ -221,22 +197,19 @@ namespace $ {
 
 			// Call before draft(null) - is_draft result cached in fiber
 			const is_created = this.is_draft()
-			const next_id = (actual && ! Array.isArray(actual) ? (actual as { id?: string }).id : null) ?? this.id()
+			const next_id = (actual ? this.pick_id(actual) : null) ?? this.id()
 
-			const server_accepts_client_id = next_id === this.id()
-
-			// Subscribe, only if server accepts client id on creating
-			// If server return new id, this entity need to be unsubscribed
-			if ( is_created && server_accepts_client_id ) {
-				// Pull actual data to subscribe to server data changes
+			if ( is_created && next_id === this.id() ) {
+				// In yuf_ws_statefull_channel pushing 'refresh' causing subscription to data changes
+				// Subscribe, only if server accepts client id on creating
 				this.actual(null, 'refresh')
 			}
 
+			this._id = next_id
 			if ( is_created ) {
 				// Try optimistically add id, returned by server to ids list in store
 				this.store?.id_add(next_id)
 			}
-			this._id = next_id
 
 			// Null draft before pulling data, without nulled draft data do not pull actual
 			// Warning - do not allow suspends after draft(null)
@@ -246,6 +219,10 @@ namespace $ {
 			this.data()
 
 			return result
+		}
+
+		protected pick_id(actual: Partial<Data>) {
+			return ! Array.isArray(actual) ? (actual as { id?: string }).id : null
 		}
 
 		remove() {

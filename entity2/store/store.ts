@@ -25,9 +25,11 @@ namespace $ {
 
 		store_id() { return this.toString() }
 
-		@ $mol_mem
 		draft_ids(next?: string) {
-			return this.$.$yuf_entity2.draft_ids_by_store(this.store_id(), next)
+			return this.$.$yuf_entity2.draft_ids(
+				this.store_id(),
+				typeof next === 'string' ? [ next ] : next
+			)
 		}
 
 		@ $mol_action
