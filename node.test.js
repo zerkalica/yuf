@@ -11513,18 +11513,18 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $mol_fetch_response extends $mol_object2 {
+    class $mol_fetch_response extends $mol_object {
         native;
-        constructor(native) {
-            super();
-            this.native = native;
-        }
+        request;
         status() {
             const types = ['unknown', 'inform', 'success', 'redirect', 'wrong', 'failed'];
             return types[Math.floor(this.native.status / 100)];
         }
         code() {
             return this.native.status;
+        }
+        ok() {
+            return this.native.ok;
         }
         message() {
             return this.native.statusText || `HTTP Error ${this.code()}`;
@@ -11540,8 +11540,7 @@ var $;
         }
         text() {
             const buffer = this.buffer();
-            const native = this.native;
-            const mime = native.headers.get('content-type') || '';
+            const mime = this.mime() || '';
             const [, charset] = /charset=(.*)/.exec(mime) || [, 'utf-8'];
             const decoder = new TextDecoder(charset);
             return decoder.decode(buffer);
@@ -11581,14 +11580,13 @@ var $;
         $mol_action
     ], $mol_fetch_response.prototype, "html", null);
     $.$mol_fetch_response = $mol_fetch_response;
-    class $mol_fetch extends $mol_object2 {
-        static request(input, init = {}) {
+    class $mol_fetch_request extends $mol_object {
+        native;
+        response_async() {
             const controller = new AbortController();
             let done = false;
-            const promise = fetch(input, {
-                ...init,
-                signal: controller.signal,
-            }).finally(() => {
+            const request = new Request(this.native, { signal: controller.signal });
+            const promise = fetch(request).finally(() => {
                 done = true;
             });
             return Object.assign(promise, {
@@ -11598,14 +11596,34 @@ var $;
                 },
             });
         }
-        static response(input, init) {
-            return new $mol_fetch_response($mol_wire_sync(this).request(input, init));
+        response() {
+            return this.$.$mol_fetch_response.make({
+                native: $mol_wire_sync(this).response_async(),
+                request: this
+            });
         }
-        static success(input, init) {
-            const response = this.response(input, init);
+        success() {
+            const response = this.response();
             if (response.status() === 'success')
                 return response;
             throw new Error(response.message(), { cause: response });
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_fetch_request.prototype, "response", null);
+    $.$mol_fetch_request = $mol_fetch_request;
+    class $mol_fetch extends $mol_object {
+        static request(input, init) {
+            return this.$.$mol_fetch_request.make({
+                native: new Request(input, init)
+            });
+        }
+        static response(input, init) {
+            return this.request(input, init).response();
+        }
+        static success(input, init) {
+            return this.request(input, init).success();
         }
         static stream(input, init) {
             return this.success(input, init).stream();
@@ -11634,34 +11652,7 @@ var $;
     }
     __decorate([
         $mol_action
-    ], $mol_fetch, "response", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "success", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "stream", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "text", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "json", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "blob", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "buffer", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "xml", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "xhtml", null);
-    __decorate([
-        $mol_action
-    ], $mol_fetch, "html", null);
+    ], $mol_fetch, "request", null);
     $.$mol_fetch = $mol_fetch;
 })($ || ($ = {}));
 
@@ -20247,296 +20238,6 @@ var $;
 
 ;
 "use strict";
-var $;
-(function ($) {
-    class $yuf_session extends $mol_object {
-        client_id() { return this.$.$mol_dom_context.location.hostname; }
-        token_key() { return `${this.client_id()}_token`; }
-        token(next, op) {
-            return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
-        }
-        user_id() { return null; }
-        user_id_ensure() {
-            const user_id = this.user_id();
-            if (!user_id)
-                throw new Error('Required user_id in session');
-            return user_id;
-        }
-        token_cut() { return this.token(); }
-        logged() { return Boolean(this.token()); }
-        logout() { return this.token(null, 'logout'); }
-    }
-    __decorate([
-        $mol_action
-    ], $yuf_session.prototype, "token_cut", null);
-    __decorate([
-        $mol_mem
-    ], $yuf_session.prototype, "logged", null);
-    $.$yuf_session = $yuf_session;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $yuf_transport_error extends $mol_error_mix {
-        req_id() {
-            if (this.cause.req_id)
-                return this.cause.req_id;
-            const headers = this.cause.init?.headers;
-            const key = 'X-Request-ID';
-            if (headers instanceof Headers)
-                return headers.get(key);
-            if (Array.isArray(headers))
-                return headers.find(([k]) => k === key)?.[1] ?? null;
-            return headers?.[key] ?? null;
-        }
-    }
-    $.$yuf_transport_error = $yuf_transport_error;
-    class $yuf_transport_error_timeout extends $yuf_transport_error {
-        constructor(cause) {
-            super(`Timeout${cause.input ? ` ${cause.input}` : ''}`, {
-                http_code: 408,
-                code: 'TIMEOUT',
-                ...cause
-            });
-        }
-    }
-    $.$yuf_transport_error_timeout = $yuf_transport_error_timeout;
-    function $yuf_transport_pass(data) { return data; }
-    $.$yuf_transport_pass = $yuf_transport_pass;
-    class $yuf_transport extends $mol_fetch {
-        static base_url(next) {
-            const url = this.$.$mol_state_arg.value('api_url', next);
-            if (url)
-                return url;
-            return '';
-        }
-        static base_url_full() {
-            const url = this.base_url();
-            if (url.match(/^\w+\:/))
-                return url;
-            const loc = this.$.$mol_dom_context.location;
-            let normalized = url.replace(/^\/+/, '');
-            if (normalized)
-                normalized = '/' + normalized;
-            return `${loc.origin}${normalized}`;
-        }
-        static base_url_ws() {
-            return this.base_url_full().replace(/^http/, 'ws');
-        }
-        static session() { return this.$.$mol_one.$yuf_session; }
-        static headers_auth(token) {
-            return {
-                'Authorization': `Bearer ${token}`
-            };
-        }
-        static headers_default() {
-            return {
-                'X-Request-ID': $mol_guid(),
-                'X-Client-ID': this.session().client_id(),
-                'Content-Type': 'application/json',
-            };
-        }
-        static get(path, params) {
-            return this.success(path, { ...params, method: 'GET' });
-        }
-        static head(path, params) {
-            return this.success(path, { ...params, method: 'HEAD' });
-        }
-        static headers_to_object(headers) {
-            if (!headers)
-                return headers ?? {};
-            const entries = headers instanceof Headers
-                ? headers.entries()
-                : Array.isArray(headers) ? headers : null;
-            let result = (entries ? {} : headers);
-            for (const [key, val] of entries ?? [])
-                result[key] = val;
-            return result;
-        }
-        static headers_merge(main_raw, extra_raw) {
-            const result = { ...this.headers_to_object(main_raw), ...this.headers_to_object(extra_raw) };
-            for (const key in result) {
-                if (result[key] === null || result[key] === undefined)
-                    delete result[key];
-            }
-            return result;
-        }
-        static range(path, raw) {
-            const { count_prefer, ...params } = raw ?? {};
-            const res = this.head(path, {
-                ...params,
-                headers: this.headers_merge(params?.headers, {
-                    'Range-Unit': 'items',
-                    Prefer: `count=${count_prefer ?? 'exact'}`,
-                }),
-            });
-            const headers = res.headers();
-            const range_str = headers.get('Content-Range');
-            const [all, from, to, total] = range_str?.match(/(?:(?:(\d+)\-(\d+))|(?:\*))\/((?:\d+)|(?:\*))$/) ?? [];
-            const count = !total || total === '*' ? to : total;
-            if (count === '*')
-                return 0;
-            if (!count?.match(/^\d+$/)) {
-                this.$.$mol_log3_warn({
-                    place: '$yuf_transport.count()',
-                    message: 'Cant get count of range',
-                    hint: 'check backend'
-                });
-                return undefined;
-            }
-            return Number(count);
-        }
-        static put(path, params) {
-            return this.success(path, { ...params, method: 'PUT' });
-        }
-        static post(path, params) {
-            return this.success(path, { ...params, method: 'POST' });
-        }
-        static delete(path, params) {
-            return this.success(path, { ...params, method: 'DELETE' });
-        }
-        static data(params) {
-            let json;
-            let text;
-            const input = params.input;
-            const init = { ...params, input: undefined, assert: undefined };
-            const res = this.success(input, init);
-            try {
-                text = res.text();
-                json = JSON.parse(text);
-                return params.assert(json);
-            }
-            catch (e) {
-                if ($mol_promise_like(e))
-                    $mol_fail_hidden(e);
-                throw new $yuf_transport_error(`Invalid ${json ? 'object' : 'json'} ${e.message}`, {
-                    input,
-                    init,
-                    code: json ? 'InvalidObject' : 'InvalidJson',
-                    message: e.message,
-                    json
-                }, e);
-            }
-        }
-        static object_url_ref(path) {
-            return new this.$.$yuf_url_object(this.get(path).blob());
-        }
-        static object_url(path) {
-            return this.object_url_ref(path).url;
-        }
-        static auth_need(res) {
-            return res.code() === 403 || res.code() === 401;
-        }
-        static deadline() {
-            return 300_000;
-        }
-        static auth_fails() { return false; }
-        static success(path, params) {
-            const input = typeof path === 'string' && !path.match(/^(\w+:)?\/\//)
-                ? this.base_url() + path
-                : path;
-            let response;
-            let init;
-            const body = params.body ?? (params.body_object ? JSON.stringify(params.body_object) : undefined);
-            const headers_default = this.headers_merge(this.headers_default(), params.headers);
-            let try_refresh = true;
-            let auth_token = (params.auth_token || params.auth_token === null)
-                ? params.auth_token
-                : this.session().token_cut();
-            while (true) {
-                const headers = auth_token
-                    ? this.headers_merge(headers_default, this.headers_auth(auth_token))
-                    : headers_default;
-                response = this.response(input, init = { ...params, body, headers });
-                if (response.status() === 'success')
-                    return response;
-                if (!try_refresh)
-                    break;
-                if (!this.auth_need(response))
-                    break;
-                auth_token = this.session().token(null, 'refresh');
-                try_refresh = false;
-            }
-            const response_json = this.response_json(response);
-            const message = response_json?.message ?? 'Unknown';
-            throw new $yuf_transport_error(message, { input, init, ...response_json });
-        }
-        static response_json(res) {
-            if (!res)
-                return null;
-            let text;
-            let data;
-            try {
-                text = res.text();
-                let json = JSON.parse(text);
-                text = null;
-                if (!json)
-                    json = {};
-                if (typeof json !== 'object')
-                    data = { code: 'Unknown', message: text };
-                else
-                    data = this.code_from_json(json);
-            }
-            catch (e) {
-                if ($mol_promise_like(e))
-                    $mol_fail_hidden(e);
-                data = { code: 'Unknown', message: text || 'Unknown', };
-            }
-            let http_message = res.message();
-            let http_code = res.code();
-            if (res.native.type === 'opaqueredirect' && !http_code) {
-                http_code = 302;
-                http_message = 'Redirect: ' + res.native.url;
-            }
-            const message = `${data.message}${data.message ? ', ' : ''}${http_message}`;
-            return { ...data, message, http_code };
-        }
-        static code_from_json(json) {
-            const error_as_code = json.error && !json.error.includes(' ') ? json.error : null;
-            const code = error_as_code || json.code || json.type || json.error || 'Unknown';
-            const message = json.message || json.error || '';
-            delete json.type;
-            delete json.code;
-            delete json.message;
-            delete json.error;
-            return { ...json, code, message };
-        }
-        static request(input, init) {
-            const res = super.request(input, init);
-            Object.assign(res, { init });
-            const deadline = init?.deadline ?? this.deadline();
-            if (!deadline)
-                return res;
-            const err_deadline = new $yuf_transport_error_timeout({ init, input });
-            const deadlined = Promise.race([
-                new Promise((res, rej) => setTimeout(() => rej(err_deadline), deadline)),
-                res
-            ]);
-            return Object.assign(deadlined, { destructor: () => res.destructor() });
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $yuf_transport, "base_url", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "headers_auth", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "headers_default", null);
-    __decorate([
-        $mol_mem_key
-    ], $yuf_transport, "object_url_ref", null);
-    __decorate([
-        $mol_action
-    ], $yuf_transport, "success", null);
-    $.$yuf_transport = $yuf_transport;
-})($ || ($ = {}));
-
-;
-"use strict";
 
 ;
 "use strict";
@@ -20567,8 +20268,9 @@ var $;
                 catch (e) {
                     if ($mol_promise_like(e))
                         $mol_fail_hidden(e);
-                    if (e instanceof $yuf_transport_error
-                        && e.cause.code === 'AUTH_FAILED') {
+                    if (e instanceof Error
+                        && e.cause instanceof $mol_fetch_response
+                        && (e.cause.code() === 401 || e.cause.code() === 403)) {
                         const msg = this.login_error();
                         if (!e.message.startsWith(msg))
                             e.message = msg + ': ' + e.message;
@@ -24280,6 +23982,20 @@ var $;
             ]);
         },
     });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($_1) {
+    var $$;
+    (function ($$) {
+        $mol_test({
+            async "Get and parse"($) {
+                $mol_assert_equal(await $mol_wire_async($mol_fetch).text('data:text/plain,foo'), 'foo');
+            },
+        });
+    })($$ = $_1.$$ || ($_1.$$ = {}));
 })($ || ($ = {}));
 
 ;

@@ -4622,11 +4622,12 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $mol_fetch_response extends $mol_object2 {
+    class $mol_fetch_response extends $mol_object {
         readonly native: Response;
-        constructor(native: Response);
+        readonly request: $mol_fetch_request;
         status(): "unknown" | "success" | "inform" | "redirect" | "wrong" | "failed";
         code(): number;
+        ok(): boolean;
         message(): string;
         headers(): Headers;
         mime(): string | null;
@@ -4639,10 +4640,16 @@ declare namespace $ {
         xhtml(): Document;
         html(): Document;
     }
-    class $mol_fetch extends $mol_object2 {
-        static request(input: RequestInfo, init?: RequestInit): Promise<Response> & {
+    class $mol_fetch_request extends $mol_object {
+        readonly native: Request;
+        response_async(): Promise<Response> & {
             destructor: () => void;
         };
+        response(): $mol_fetch_response;
+        success(): $mol_fetch_response;
+    }
+    class $mol_fetch extends $mol_object {
+        static request(input: RequestInfo, init?: RequestInit): $mol_fetch_request;
         static response(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static success(input: RequestInfo, init?: RequestInit): $mol_fetch_response;
         static stream(input: RequestInfo, init?: RequestInit): ReadableStream<Uint8Array<ArrayBuffer>> | null;
@@ -9231,85 +9238,6 @@ declare namespace $.$$ {
         value_limits(field: string): readonly (readonly number[])[];
         value_in_range(field: string): string;
     }
-}
-
-declare namespace $ {
-    class $yuf_session extends $mol_object {
-        client_id(): string;
-        token_key(): string;
-        token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
-        user_id(): null | string;
-        user_id_ensure(): string;
-        token_cut(): string | null;
-        logged(): boolean;
-        logout(): string | null;
-    }
-}
-
-declare namespace $ {
-    export type $yuf_transport_req_main = {
-        deadline?: number;
-        headers?: Record<string, string | undefined | null>;
-        auth_token?: string | null;
-        auth_fails?: boolean;
-        body_object?: object;
-        redirect?: 'follow' | 'manual' | 'error';
-    };
-    export type $yuf_transport_req = RequestInit & $yuf_transport_req_main;
-    export type $yuf_transport_error_response = {
-        input?: RequestInfo;
-        init?: $yuf_transport_req;
-        http_code?: number | null;
-        message?: string | null;
-        code?: string | null;
-        req_id?: string | null;
-        json?: unknown;
-    };
-    type Headers_extra = RequestInit['headers'] | Record<string, string | null | undefined> | null;
-    export class $yuf_transport_error extends $mol_error_mix<$yuf_transport_error_response> {
-        req_id(): string | null;
-    }
-    export class $yuf_transport_error_timeout extends $yuf_transport_error {
-        constructor(cause: $yuf_transport_error_response);
-    }
-    export function $yuf_transport_pass(data: unknown): unknown;
-    export class $yuf_transport extends $mol_fetch {
-        static base_url(next?: string): string;
-        static base_url_full(): string;
-        static base_url_ws(): string;
-        static session(): $yuf_session;
-        static headers_auth(token: string): Record<string, string> | null;
-        static headers_default(): Record<string, string>;
-        static get(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        static head(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        protected static headers_to_object(headers: RequestInit['headers'] | Record<string, string | null | undefined> | null): Record<string, string | null | undefined>;
-        static headers_merge(main_raw: Headers_extra, extra_raw?: typeof main_raw): Record<string, string>;
-        static range(path: string, raw?: $yuf_transport_req & {
-            count_prefer?: 'exact' | 'planned';
-        }): number | undefined;
-        static put(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        static post(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        static delete(path: string, params?: $yuf_transport_req): $mol_fetch_response;
-        static data<Result>(params: $yuf_transport_req & {
-            input: RequestInfo;
-            assert: (obj: any) => Result;
-        }): Result;
-        static object_url_ref(path: string): $yuf_url_object;
-        static object_url(path: string): string;
-        protected static auth_need(res: $mol_fetch_response): boolean;
-        static deadline(): number;
-        static auth_fails(): boolean;
-        static success(path: RequestInfo, params: $yuf_transport_req): $mol_fetch_response;
-        static response_json(res?: $mol_fetch_response | null): $yuf_transport_error_response | null;
-        static code_from_json(json: Record<string, string | undefined>): {
-            code: string;
-            message: string;
-        };
-        static request(input: RequestInfo, init?: $yuf_transport_req): Promise<Response> & {
-            destructor: () => void;
-        };
-    }
-    export {};
 }
 
 declare namespace $ {
