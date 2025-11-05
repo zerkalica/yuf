@@ -1,23 +1,25 @@
 namespace $ {
+	export enum $yuf_session_oids_errors {
+		invalid_grant,
+		invalid_client,
+		unauthorized_client,
+		unsupported_grant_type,
+		access_denied,
+		invalid_token,
+		insufficient_scope
+	}
 
 	function $yuf_session_oids_error(obj: unknown) {
-		if (obj instanceof Error) obj = obj.cause
-		if (! obj || ! ( typeof obj === 'object') ) return null
-		if (! (obj as { error?: string }).error) return null
-
-		return obj as {
-			error:
-				| 'invalid_grant'
-				| 'invalid_client'
-				| 'unauthorized_client'
-				| 'invalid_scope'
-				| 'unsupported_grant_type'
-				| 'access_denied'
-				| 'invalid_token'
-				| 'insufficient_scope'
-			error_description?: string
-			error_uri?: string
-		}
+		return obj
+			&& typeof obj === 'object'
+			&& 'error' in obj
+			&& typeof obj.error === 'string'
+				? obj as {
+					error: keyof typeof $yuf_session_oids_errors
+					error_description?: string
+					error_uri?: string
+				}
+				: null
 	}
 
 	/**
@@ -421,18 +423,17 @@ namespace $ {
 		@ $mol_action
 		protected json(url: string, params?: RequestInit) {
 			const response = this.response(url, params)
-			const result = response.json() as any
 
-			if (response.code() >= 400) {
+			const result = response.json() as any
+			if (! response.ok() ) {
+
 				const error = $yuf_session_oids_error(result)
 
-				const error_message = [
-					error?.error_description,
-					error?.error,
-					error?.error_uri,
-				].filter(Boolean).join(', ') || response.message()
-
-				throw new Error(error_message, { cause: response })
+				throw new Error(error?.error ?? response.message(), { cause: {
+					response,
+					message: error?.error_description ?? 'Unknown',
+					error_uri: error?.error_uri
+				} })
 			}
 
 			return result
