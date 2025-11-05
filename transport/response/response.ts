@@ -5,11 +5,8 @@ namespace $ {
 
 			return $yuf_error_fence(
 				() => JSON.parse(text = this.text()),
-				e => $yuf_error_cause.error(
-					e,
-					text === undefined ? 'UNKNOWN' : 'BAD_JSON',
-					{ response: this }
-				)
+				e => e.cause instanceof $mol_fetch_response ? e
+					: new $mol_error_mix(e.message, { response: this }, e)
 			)
 		}
 
@@ -18,7 +15,9 @@ namespace $ {
 
 			return $yuf_error_fence(
 				() => assert(json),
-				e => $yuf_error_cause.error(e, 'ASSERT_FAILED', { response: this })
+				e => typeof e.cause === 'object' && e.cause && 'message' in e.cause
+					? e
+					: new $mol_error_mix('ASSERT_FAILED', { response: this }, e)
 			)
 		}
 	}

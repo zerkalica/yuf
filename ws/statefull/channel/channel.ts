@@ -52,8 +52,8 @@ namespace $ {
 				const deadline = this.deadline_timeout()
 				this.response.deadline(
 					deadline,
-					new Error('Socket response timeout', { cause:
-						new $yuf_error_cause('TIMEOUT', { ... this.signature, deadline })
+					new Error($mol_rest_code[$mol_rest_code['Request Timeout']], { cause:
+						{ ... this.signature, deadline }
 					}),
 				)
 			}

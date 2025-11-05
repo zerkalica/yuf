@@ -33,7 +33,7 @@ namespace $ {
 			if (! deadline) return promise
 			let timer = null as null | NodeJS.Timeout
 
-			const err_deadline = new Error('408 Request Timeout', { cause: this } )
+			const err_deadline = new Error($mol_rest_code[$mol_rest_code['Request Timeout']], { cause: this } )
 
 			const timeout = new Promise<Response>((res, rej) => {
 				timer = setTimeout(() => rej( err_deadline ), deadline)

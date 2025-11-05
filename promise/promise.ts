@@ -5,7 +5,7 @@ namespace $ {
 
 		readonly id = $mol_guid()
 
-		deadline(deadline = 30_000, error = new Error('Timeout')) {
+		deadline(deadline = 30_000, error = new Error('Request Timeout')) {
 			this._timer = new $mol_after_timeout(deadline, () => this.value(error))
 		}
 

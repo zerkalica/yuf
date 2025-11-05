@@ -18,7 +18,7 @@ namespace $ {
 		})))
 	})
 
-	const error_message = rec({
+	export const $yuf_gql_pick_message = rec({
 		message: opt(str),
 		extensions: opt(vr(error_dto, arr(error_dto)))
 	})
@@ -29,10 +29,10 @@ namespace $ {
 		}
 
 		const errors = raw && typeof raw === 'object'
-			? (raw as { errors?: readonly typeof error_message.Value[]})?.errors
+			? (raw as { errors?: readonly typeof $yuf_gql_pick_message.Value[]})?.errors
 			: null
 
-		const error: typeof error_message.Value = errors?.[0] ?? {
+		const error: typeof $yuf_gql_pick_message.Value = errors?.[0] ?? {
 			message: 'Unknown gql error',
 			extensions: []
 		}
@@ -43,10 +43,9 @@ namespace $ {
 		const json = extensions?.[0] ?? null
 
 		const message = json?.internal?.error?.message ?? json?.error ?? error.message ?? ''
-		const code = (json?.internal?.error?.status_code ?? json?.code ?? 'ASSERT_FAILED') as $yuf_error_cause_code
+		const code = json?.internal?.error?.status_code ?? json?.code ?? 'ASSERT_FAILED'
 
-		const cause = new $yuf_error_cause(code)
-		throw new Error(message, { cause } )
+		throw new Error(code, { cause: { message } } )
 	}
 
 }

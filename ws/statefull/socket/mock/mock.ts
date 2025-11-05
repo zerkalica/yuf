@@ -20,27 +20,27 @@ namespace $ {
 
 				if (data === null) return data
 
-				return { ... obj, data }
+				return { ... obj, data, error: undefined, message: undefined }
 			} catch (e) {
 
 				if (e instanceof Error) {
-					const cause = e.cause instanceof $yuf_error_cause ? e.cause : null
-					const code = cause?.code ?? 'INTERNAL_ERROR'
+					const error = e.message || 'INTERNAL_ERROR'
 
-					const res = {
-						... obj,
-						error: code,
-						message: e.message ?? ''
-					}
+					const message = e.cause
+						&& typeof e.cause === 'object'
+						&& 'message' in e.cause
+						&& typeof e.cause.message === 'string'
+							? e.cause.message
+							: ''
 
-					return res
+					return { ... obj, error, message, data: undefined }
 				}
 
 				$mol_fail_hidden(e)
 			}
 		}
 
-		override message_normalize({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
+		override message_normalize({ type, query, device, id }: $yuf_ws_statefull_message) {
 			return { type, id, query, device }
 		}
 	}

@@ -70,14 +70,8 @@ namespace $ {
 
 			const signature = this.message_signature(obj)
 
-			const cause = new $yuf_error_cause(
-				code,
-				{ ...signature, req_id: obj.req_id, message: obj.message }
-			)
-
-			throw new Error(
-				`${obj.message ? `${obj.message} ` : ''} [${code}] ${JSON.stringify(signature)}`,
-				{ cause }
+			throw new Error(code,
+				{ cause: { signature, req_id: obj.req_id, message: obj.message } }
 			)
 		}
 
