@@ -33,9 +33,7 @@ namespace $ {
 			if (! deadline) return promise
 			let timer = null as null | NodeJS.Timeout
 
-			const err_deadline = new Error('Fetch timeout', { cause:
-				new $yuf_error_cause('TIMEOUT', { request: this } )
-			} )
+			const err_deadline = new Error('408 Request Timeout', { cause: this } )
 
 			const timeout = new Promise<Response>((res, rej) => {
 				timer = setTimeout(() => rej( err_deadline ), deadline)
