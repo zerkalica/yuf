@@ -28,12 +28,12 @@ namespace $ {
 			delete this.factory().active[this.toString()]
 		}
 
-		protected static drafts_stored(next?: Record<string, Draft_data | null> | null) {
+		protected static drafts(next?: Record<string, Draft_data | null> | null) {
 			return this.$.$mol_state_local.value(`${this}.drafts()`, next) ?? {}
 		}
 
-		protected static drafts(next?: Record<string, Draft_data | null> | null) {
-			const prev = this.drafts_stored()
+		protected static drafts_patch(next?: Record<string, Draft_data | null> | null) {
+			const prev = this.drafts()
 			if (next === undefined) return prev
 
 			next = { ...prev, ...next }
@@ -47,13 +47,13 @@ namespace $ {
 
 			if (! keys_count) next = null
 
-			return this.drafts_stored(next)
+			return this.drafts(next)
 		}
 
 		@ $mol_mem_key
 		static draft_ids(store_id: string, draft_ids?: readonly string[]) {
-			const ids = this.drafts(draft_ids
-				? Object.fromEntries(draft_ids.map(entity_id => [ entity_id, [ store_id ] ]))
+			const ids = this.drafts_patch(draft_ids
+				? Object.fromEntries(draft_ids.map(draft_id => [ draft_id, [ store_id ] ]))
 				: draft_ids
 			)
 
@@ -61,10 +61,10 @@ namespace $ {
 		}
 
 		protected static draft_data<Data>(id: string, next?: Draft_data<Data> | null) {
-			const prev = this.drafts()[id] as typeof next ?? null
+			const prev = this.drafts_patch()[id] as typeof next ?? null
 			if (next === undefined) return prev
 
-			return this.drafts({ [id]: next === null ? next : [
+			return this.drafts_patch({ [id]: next === null ? next : [
 				prev?.[0], // store_id
 				next[1], // data
 				next[2] === undefined ? prev?.[2] : next[2] // flag
@@ -75,6 +75,7 @@ namespace $ {
 			return this.$.$yuf_entity2.draft_data(this.id(), next)
 		}
 
+		@ $mol_mem
 		is_draft() {
 			// if store_id exists - data is creating
 			return !! this.draft_data()?.[0]
@@ -131,20 +132,36 @@ namespace $ {
 		@ $mol_mem
 		data(next?: Partial<Data> | null, cache?: 'cache'): Data | null {
 			let actual
+			const is_creating = this.is_draft()
+
 			if (next === undefined) {
-				actual = this.is_draft() ? this.draft() : this.actual()
+				actual = is_creating ? this.draft() : this.actual()
 			} else if (cache) {
 				actual = next
 			} else {
-				this.draft(next, next === null ? 'remove' : 'patch')
-				actual = this.pushing()
+				actual = this.pushing_set(next)
+				// Call before draft(null) - is_draft result cached in fiber
+				const server_id = actual ? this.server_created_id(actual) : null
+				const id = this.id()
+				const next_id = server_id ?? id
+
+				if ( is_creating && next_id === id ) {
+					// If server accepts client id on creating - need to subscribe
+					// On creating we never pull actual data and not subscribed to server changes
+					// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
+					this.actual(null, 'refresh')
+				}
+
+				if ( is_creating ) {
+					// Try optimistically add id to ids list
+					// Needed on bad servers without ids list changes notification
+					this.store?.id_add(next_id)
+				}
+
 			}
 
 			if (actual === null) return null
-
-			if (actual instanceof Error) {
-				return actual as Data
-			}
+			if (actual instanceof Error) return actual as Data
 
 			return this.defaults(this.merge(actual))
 		}
@@ -171,7 +188,6 @@ namespace $ {
 		 */
 		patch_enabled() { return false }
 
-		// Always pulled somewhere in app to track pushing status of each model
 		@ $mol_mem
 		pushing() {
 			const [, draft, flag] = this.draft_data() ?? []
@@ -192,24 +208,7 @@ namespace $ {
 			const actual = this.actual(data)
 			// broken backend returns undefined data on push,
 			// it converts to empty object in $yuf_ws_statefull.message_data
-			// if removing true - do not merge with prev value, assume null - object deleted
-			const result = actual && ! removing ? this.merge(actual, data) : null
-
-			// Call before draft(null) - is_draft result cached in fiber
-			const is_created = this.is_draft()
-			const next_id = (actual ? this.pick_id(actual) : null) ?? this.id()
-
-			if ( is_created && next_id === this.id() ) {
-				// In yuf_ws_statefull_channel pushing 'refresh' causing subscription to data changes
-				// Subscribe, only if server accepts client id on creating
-				this.actual(null, 'refresh')
-			}
-
-			this._id = next_id
-			if ( is_created ) {
-				// Try optimistically add id, returned by server to ids list in store
-				this.store?.id_add(next_id)
-			}
+			const result = actual ? this.merge(actual, data) : null
 
 			// Null draft before pulling data, without nulled draft data do not pull actual
 			// Warning - do not allow suspends after draft(null)
@@ -221,7 +220,14 @@ namespace $ {
 			return result
 		}
 
-		protected pick_id(actual: Partial<Data>) {
+		@ $mol_action
+		pushing_set(next: Partial<Data> | null) {
+			this.draft(next, next === null ? 'remove' : 'patch')
+			// trick with pushing mem needed for debounce and serial push
+			return this.pushing()
+		}
+
+		protected server_created_id(actual: Partial<Data>) {
 			return ! Array.isArray(actual) ? (actual as { id?: string }).id : null
 		}
 
@@ -231,4 +237,5 @@ namespace $ {
 		}
 
 	}
+
 }

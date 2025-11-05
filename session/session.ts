@@ -15,9 +15,6 @@ namespace $ {
 			return user_id
 		}
 
-		@ $mol_action
-		token_cut() { return this.token() }
-
 		@ $mol_mem
 		logged() { return Boolean(this.token()) }
 		logout() { return this.token(null, 'logout') }

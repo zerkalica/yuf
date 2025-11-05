@@ -11,14 +11,22 @@ namespace $ {
 
 			try {
 				const first = this.message_sub(obj)
+
 				if (! first) return null
+
 				if (periodically && ! first.mock_periodically() ) return null
+
 				const data = first.mock(obj.data as {}) ?? null
+
 				if (data === null) return data
+
 				return { ... obj, data }
 			} catch (e) {
+
 				if (e instanceof Error) {
-					const code = (e instanceof $yuf_transport_error ? e.cause.code : undefined) ?? 'INTERNAL_ERROR'
+					const cause = e.cause instanceof $yuf_error_cause ? e.cause : null
+					const code = cause?.code ?? 'INTERNAL_ERROR'
+
 					const res = {
 						... obj,
 						error: code,
@@ -27,6 +35,7 @@ namespace $ {
 
 					return res
 				}
+
 				$mol_fail_hidden(e)
 			}
 		}

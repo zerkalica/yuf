@@ -52,8 +52,8 @@ namespace $ {
 			return { type, id, query, device }
 		}
 
-		code_to_error(error: string | number) {
-			return '' + error
+		code_normalize(code: string | number) {
+			return '' + code
 		}
 
 		/**
@@ -65,19 +65,20 @@ namespace $ {
 			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return null
 			if ((obj as { error?: string | null }).error === null) return null
 
-			const error = obj.error ? (this.code_to_error(obj.error) || obj.error) : null
-			if (! error) return obj
+			const code = obj.error ? (this.code_normalize(obj.error) || obj.error) : null
+			if (! code) return obj
 
 			const signature = this.message_signature(obj)
-			const message = `${obj.message ? `${obj.message} ` : ''} [${error}] ${JSON.stringify(signature)}`
 
-			throw new $yuf_transport_error(message, {
-				message: obj.message,
-				req_id: obj.req_id,
-				code: error,
-				http_code: error === 'AUTH_FAILED' ? 403 : undefined,
-				json: obj
-			})
+			const cause = new $yuf_error_cause(
+				code,
+				{ ...signature, req_id: obj.req_id, message: obj.message }
+			)
+
+			throw new Error(
+				`${obj.message ? `${obj.message} ` : ''} [${code}] ${JSON.stringify(signature)}`,
+				{ cause }
+			)
 		}
 
 		deadline_timeout() { return 10000 }
@@ -131,7 +132,9 @@ namespace $ {
 				}
 				if ( ! channel ) $mol_fail_hidden(error)
 
-				const req_id = error instanceof $yuf_transport_error ? error.req_id() : null
+				const req_id = error instanceof Error && error.cause instanceof $mol_fetch_response
+					? error.cause.headers().get('X-Request-ID')
+					: null
 				channel.receive({ data: error, req_id })
 			}
 		}

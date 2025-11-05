@@ -25,8 +25,9 @@ namespace $.$$ {
 			} catch (e) {
 				if ($mol_promise_like(e)) $mol_fail_hidden(e)
 				if (
-					e instanceof $yuf_transport_error
-					&& e.cause.code === 'AUTH_FAILED'
+					e instanceof Error
+					&& e.cause instanceof $mol_fetch_response
+					&& (e.cause.code() === 401 || e.cause.code() === 403)
 				) {
 					const msg = this.login_error()
 					if (! e.message.startsWith(msg) ) e.message = msg + ': ' + e.message

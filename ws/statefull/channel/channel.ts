@@ -49,9 +49,12 @@ namespace $ {
 
 			if (! this.response && ( next !== undefined || prev === undefined ) ) {
 				this.response = new $yuf_promise<Val | null>()
+				const deadline = this.deadline_timeout()
 				this.response.deadline(
-					this.deadline_timeout(),
-					new $yuf_transport_error_timeout({input: JSON.stringify(this.signature) }),
+					deadline,
+					new Error('Socket response timeout', { cause:
+						new $yuf_error_cause('TIMEOUT', { ... this.signature, deadline })
+					}),
 				)
 			}
 

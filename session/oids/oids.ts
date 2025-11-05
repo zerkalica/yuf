@@ -439,6 +439,9 @@ namespace $ {
 		}
 
 		@ $mol_action
+		token_cut() { return this.token() }
+
+		@ $mol_action
 		protected json_authorized(url: string, params?: RequestInit) {
 			let token = this.token_cut()
 			let try_refresh = true
