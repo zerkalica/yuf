@@ -3,7 +3,7 @@ namespace $ {
 		override json() {
 			let text = undefined as undefined | string
 
-			return $yuf_error_fence(
+			return $mol_error_fence(
 				() => JSON.parse(text = this.text()),
 				e => e.cause instanceof $mol_fetch_response ? e
 					: new $mol_error_mix(e.message, { response: this }, e)
@@ -13,7 +13,7 @@ namespace $ {
 		data<V>(assert: (v: any) => V) {
 			const json = this.json()
 
-			return $yuf_error_fence(
+			return $mol_error_fence(
 				() => assert(json),
 				e => typeof e.cause === 'object' && e.cause && 'message' in e.cause
 					? e
