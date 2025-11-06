@@ -2014,10 +2014,12 @@ $yuf_form_bid $mol_view
 	params_max_date *$mol_time_moment|string
 	params_min *number
 	params_max *number
+	params_max_rows *number
 	params_limits *readonly(readonly(number)[])[]
 	params_pattern *string
 	-
 	pattern_val* \
+	rows_max_val* null number
 	min_val* null number
 	max_val* null number
 	min_date_val* $mol_time_moment|null

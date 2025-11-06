@@ -9180,9 +9180,11 @@ declare namespace $ {
 		params_max_date( ): Record<string, $mol_time_moment|string>
 		params_min( ): Record<string, number>
 		params_max( ): Record<string, number>
+		params_max_rows( ): Record<string, number>
 		params_limits( ): Record<string, readonly(readonly(number)[])[]>
 		params_pattern( ): Record<string, string>
 		pattern_val( id: any): string
+		rows_max_val( id: any): number | null
 		min_val( id: any): number | null
 		max_val( id: any): number | null
 		min_date_val( id: any): $mol_time_moment|null
@@ -9232,6 +9234,7 @@ declare namespace $.$$ {
         required(field: string): string;
         min_val(field: string): number;
         max_val(field: string): number;
+        rows_max_val(field: string): number;
         pattern_val(field: string): string;
         min_date_val(field: string): $mol_time_moment;
         max_date_val(field: string): $mol_time_moment;

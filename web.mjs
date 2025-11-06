@@ -19729,6 +19729,9 @@ var $;
 		params_max(){
 			return {};
 		}
+		params_max_rows(){
+			return {};
+		}
 		params_limits(){
 			return {};
 		}
@@ -19737,6 +19740,9 @@ var $;
 		}
 		pattern_val(id){
 			return "";
+		}
+		rows_max_val(id){
+			return null;
 		}
 		min_val(id){
 			return null;
@@ -19972,6 +19978,9 @@ var $;
             max_val(field) {
                 return this.params_max()[field] ?? null;
             }
+            rows_max_val(field) {
+                return this.params_max_rows()[field] ?? null;
+            }
             pattern_val(field) {
                 return this.params_pattern()[field] ?? super.pattern_val(field);
             }
@@ -19998,7 +20007,7 @@ var $;
                     return '';
                 const val = this.value_str(field);
                 const rows = val.split('\n').length;
-                const max = this.max_val(field);
+                const max = this.rows_max_val(field);
                 if (max === null || rows <= max)
                     return '';
                 return this.format(field, this.rows_max_msg());
