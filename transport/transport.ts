@@ -112,14 +112,14 @@ namespace $ {
 		@ $mol_action
 		static override request(path: RequestInfo, init?: $yuf_transport_request_data) {
 			let request = this.request_make(path, init)
-			const response = request.response()
-			const code = response.code()
+			// const response = request.response()
+			// const code = response.code()
 
-			if ((code === 403 || code === 401) && ! init?.auth_fails) {
-				const auth_token = this.session().token(null, 'refresh')
+			// if ((code === 403 || code === 401) && ! init?.auth_fails) {
+			// 	const auth_token = this.session().token(null, 'refresh')
 
-				request = this.request_make( path , { ...init, auth_token } )
-			}
+			// 	request = this.request_make( path , { ...init, auth_token } )
+			// }
 
 			return request
 		}
