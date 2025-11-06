@@ -164,6 +164,10 @@ namespace $.$$ {
 			return this.params_max()[field] ?? null
 		}
 
+		override rows_max_val(field: string) {
+			return this.params_max_rows()[field] ?? null
+		}
+
 		override pattern_val(field: string) {
 			return this.params_pattern()[field] ?? super.pattern_val(field)
 		}
@@ -196,7 +200,7 @@ namespace $.$$ {
 
 			const val = this.value_str( field )
 			const rows = val.split('\n').length
-			const max = this.max_val(field)
+			const max = this.rows_max_val(field)
 			if (max === null || rows <= max) return ''
 
 			return this.format(field, this.rows_max_msg())

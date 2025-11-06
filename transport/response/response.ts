@@ -4,9 +4,10 @@ namespace $ {
 			let text = undefined as undefined | string
 
 			return $mol_error_fence(
-				() => JSON.parse(text = this.text()),
-				e => e.cause instanceof $mol_fetch_response ? e
-					: new $mol_error_mix(e.message, { response: this }, e)
+				() => JSON.parse(text = this.text()) as unknown,
+				e => e.cause instanceof $mol_fetch_response
+					? e
+					: new $mol_error_mix(e.message, { response: this, ... e.cause || {} }, e)
 			)
 		}
 
@@ -15,9 +16,9 @@ namespace $ {
 
 			return $mol_error_fence(
 				() => assert(json),
-				e => typeof e.cause === 'object' && e.cause && 'message' in e.cause
+				e => e.cause instanceof $mol_fetch_response
 					? e
-					: new $mol_error_mix('ASSERT_FAILED', { response: this }, e)
+					: new $mol_error_mix(e.message, { response: this, ... e.cause || {} }, e)
 			)
 		}
 	}

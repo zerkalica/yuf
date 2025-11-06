@@ -23,8 +23,8 @@ namespace $ {
 		extensions: opt(vr(error_dto, arr(error_dto)))
 	})
 
-	export function $yuf_gql_pick(raw?: {} | null ) {
-		if ( raw && typeof raw === 'object' && ! Array.isArray(raw) && 'data' in raw ) {
+	export function $yuf_gql_pick(raw?: {} | null, error_code?: string | null) {
+		if ( raw && typeof raw === 'object' && ! Array.isArray(raw) && 'data' in raw && ! error_code) {
 			return raw.data
 		}
 
@@ -42,8 +42,8 @@ namespace $ {
 			: error.extensions ? [ error.extensions ] : null
 		const json = extensions?.[0] ?? null
 
-		const message = json?.internal?.error?.message ?? json?.error ?? error.message ?? ''
-		const code = json?.internal?.error?.status_code ?? json?.code ?? 'ASSERT_FAILED'
+		const message = json?.internal?.error?.message || json?.error || error.message || ''
+		const code = json?.internal?.error?.status_code || json?.code || error_code || 'ASSERT_FAILED'
 
 		throw new Error(code, { cause: { message } } )
 	}

@@ -78,22 +78,6 @@ namespace $ {
 		static auth_fails() { return false }
 
 		@ $mol_action
-		static override success( input: RequestInfo, init?: $yuf_transport_request_data ) {
-			const response = this.request( input , init ).response()
-			if (response.ok()) return response
-
-			const code = response.code()
-
-			if ((code !== 403 && code === 401) || init?.auth_fails) {
-				throw new Error(response.message(), { cause: response })
-			}
-
-			const auth_token = this.session().token(null, 'refresh')
-
-			return this.request( input , { ...init, auth_token } ).success()
-		}
-
-		@ $mol_action
 		static request_native(path: RequestInfo, init?: $yuf_transport_request_data) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
 				? this.base_url() + path
@@ -127,6 +111,21 @@ namespace $ {
 
 		@ $mol_action
 		static override request(path: RequestInfo, init?: $yuf_transport_request_data) {
+			let request = this.request_make(path, init)
+			const response = request.response()
+			const code = response.code()
+
+			if ((code === 403 || code === 401) && ! init?.auth_fails) {
+				const auth_token = this.session().token(null, 'refresh')
+
+				request = this.request_make( path , { ...init, auth_token } )
+			}
+
+			return request
+		}
+
+		@ $mol_action
+		protected static request_make(path: RequestInfo, init?: $yuf_transport_request_data) {
 			return this.$.$yuf_transport_request.make({
 				$: this.$,
 				native: this.request_native(path, init),
