@@ -86,7 +86,11 @@ namespace $ {
 			const session = this.session()
 
 			const client_id = session.client_id()
-			const token = init?.auth_token === undefined ? session.token() : init.auth_token
+			const token = init?.auth_token === 'new' && ! init?.auth_fails
+				? session.token(null, 'refresh')
+				: init?.auth_token === undefined
+					? session.token()
+					: init.auth_token
 
 			const body = init?.body ?? (init?.body_object ? JSON.stringify(init.body_object) : undefined)
 			const headers_base = $yuf_header_normalize(init?.headers)
@@ -102,6 +106,7 @@ namespace $ {
 			const headers = $yuf_header_merge(headers_base, {
 				'Authorization': token ? `Bearer ${token}` : null,
 				'X-Request-ID': id,
+				'X-Request-Deadline': init?.deadline ? `${init.deadline}ms` : null,
 				'X-Client-ID': client_id,
 				'Content-Type': content_type,
 			})
@@ -111,25 +116,9 @@ namespace $ {
 
 		@ $mol_action
 		static override request(path: RequestInfo, init?: $yuf_transport_request_data) {
-			let request = this.request_make(path, init)
-			// const response = request.response()
-			// const code = response.code()
-
-			// if ((code === 403 || code === 401) && ! init?.auth_fails) {
-			// 	const auth_token = this.session().token(null, 'refresh')
-
-			// 	request = this.request_make( path , { ...init, auth_token } )
-			// }
-
-			return request
-		}
-
-		@ $mol_action
-		protected static request_make(path: RequestInfo, init?: $yuf_transport_request_data) {
 			return this.$.$yuf_transport_request.make({
 				$: this.$,
-				native: this.request_native(path, init),
-				deadline: () => init?.deadline ?? 20_0000
+				native_grab: auth_token => this.request_native(path, {...init, auth_token }),
 			})
 		}
 	}
