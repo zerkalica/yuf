@@ -18,4 +18,8 @@ Transformer converts http response to gql data or throws exception with response
 			user_id: nul(str)
 		}))))
 	}))
+
+	const response = $mol_fetch.response('/graphql/v1', { method: 'POST', body })
+
+	const user_id = user_sessions_request_dto(response).user_sessions?.[0]?.user_id ?? null
 ```
