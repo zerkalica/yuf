@@ -16302,6 +16302,9 @@ var $;
 			(obj.node) = () => ((this.camera_node()));
 			return obj;
 		}
+		canvas_file(){
+			return null;
+		}
 		file(next){
 			if(next !== undefined) return next;
 			return null;
@@ -16983,19 +16986,38 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_camera_pane extends $.$yuf_camera_pane {
-            camera_click(event) {
-                event && $mol_dom_event.wrap(event).prevented(true);
-                const blob = this.canvas().blob();
+            canvas_file() {
+                const blob = this.visible() ? this.canvas().blob() : null;
+                if (!blob)
+                    return null;
                 const date_str = new $mol_time_moment().toString('YYYYMMDD_hhmmss');
                 const name = this.file_name_template().replace('{{date}}', date_str);
-                const file = new File([blob], name, {
+                return new File([blob], name, {
                     lastModified: new Date().getTime(),
                     type: blob.type
                 });
-                this.file(file);
+            }
+            visible(next) {
+                if (next === undefined)
+                    new $mol_after_timeout(0, () => this.visible(true));
+                return next ?? false;
+            }
+            auto() {
+                this.visible();
+                return super.auto();
+            }
+            camera_click(event) {
+                event && $mol_dom_event.wrap(event).prevented(true);
+                this.file(this.canvas_file());
                 return null;
             }
         }
+        __decorate([
+            $mol_action
+        ], $yuf_camera_pane.prototype, "canvas_file", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_camera_pane.prototype, "visible", null);
         $$.$yuf_camera_pane = $yuf_camera_pane;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -17007,6 +17029,9 @@ var $;
     var $$;
     (function ($$) {
         $mol_style_define($yuf_camera_pane, {
+            Camera: {
+                maxWidth: '100%',
+            },
             Controls: {
                 position: 'absolute',
                 top: 0,

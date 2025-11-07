@@ -585,7 +585,7 @@ declare namespace $ {
         static getter<Host, Args extends readonly unknown[], Result>(task: (this: Host, ...args: Args) => Result): (host: Host, args: Args) => $mol_wire_task<Host, Args, Result>;
         get temp(): boolean;
         complete(): void;
-        put(next: Result | Error | Promise<Result | Error>): Error | Result | Promise<Error | Result>;
+        put(next: Result | Error | Promise<Result | Error>): Result | Error | Promise<Result | Error>;
         destructor(): void;
     }
 }
@@ -6724,7 +6724,7 @@ declare namespace $ {
         node(): null | Element;
         static sizes(image: Exclude<CanvasImageSource, VideoFrame>): number[];
         render_options(): {
-            node: HTMLVideoElement | HTMLCanvasElement | HTMLOrSVGImageElement | ImageBitmap | OffscreenCanvas;
+            node: HTMLVideoElement | OffscreenCanvas | HTMLCanvasElement | HTMLOrSVGImageElement | ImageBitmap;
             context: OffscreenCanvasRenderingContext2D;
             canvas: OffscreenCanvas;
             type: string;
@@ -7062,7 +7062,8 @@ declare namespace $ {
 		Controls( ): $mol_view
 		file_name_template( ): string
 		canvas( ): $yuf_canvas_image
-		file( next?: any ): any
+		canvas_file( ): File | null
+		file( next?: File | null ): File | null
 		sub( ): readonly(any)[]
 	}
 	
@@ -7078,6 +7079,9 @@ declare namespace $ {
 //# sourceMappingURL=pane.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_camera_pane extends $.$yuf_camera_pane {
+        canvas_file(): File | null;
+        visible(next?: boolean): boolean;
+        auto(): any;
         camera_click(event?: Event): null;
     }
 }
