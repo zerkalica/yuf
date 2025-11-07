@@ -5,13 +5,16 @@ namespace $ {
 		device() { return [] as readonly string[] }
 
 		@ $mol_mem
-		signature() {
+		signature(): Record<string, unknown> {
 			const query = this.query()
 			const device = this.device()
 
+			let id = this.id() || undefined
+			if (id && device.includes(id)) id = undefined
+
 			return {
 				type: this.type(),
-				id: this.id() || undefined,
+				id,
 				query: Object.keys(query).length ? query : undefined,
 				device: device.length ? device : undefined,
 			}

@@ -145,14 +145,14 @@ namespace $ {
 				const id = this.id()
 				const next_id = server_id ?? id
 
-				if ( is_creating && next_id === id ) {
+				if ( is_creating && next_id === id && id) {
 					// If server accepts client id on creating - need to subscribe
 					// On creating we never pull actual data and not subscribed to server changes
 					// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
 					this.actual(null, 'refresh')
 				}
 
-				if ( is_creating ) {
+				if ( is_creating && next_id) {
 					// Try optimistically add id to ids list
 					// Needed on bad servers without ids list changes notification
 					this.store?.id_add(next_id)
@@ -228,12 +228,13 @@ namespace $ {
 		}
 
 		protected server_created_id(actual: Partial<Data>) {
-			return ! Array.isArray(actual) ? (actual as { id?: string }).id : null
+			return ! Array.isArray(actual) ? (actual as { id?: string }).id || null : null
 		}
 
 		remove() {
 			this.data(null)
-			this.store?.id_remove(this.id())
+			const id = this.id()
+			id && this.store?.id_remove(id)
 		}
 
 	}

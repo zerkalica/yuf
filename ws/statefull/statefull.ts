@@ -5,10 +5,6 @@ namespace $ {
 		// entity or list type
 		type: string
 
-		// Request id to route response to request promise
-		// If null or undefined - first response with type+id+query resolves request promise
-		req_id?: string | null
-
 		// entity id
 		id?: string | number
 		// list search params
@@ -16,6 +12,7 @@ namespace $ {
 
 		// optional target server paths
 		device?: readonly string[] | null
+
 		// to server: undefined - get and subscribe, null - delete, object - replace
 		// from server: null - deleted, object - new data
 		data?: unknown
@@ -26,6 +23,9 @@ namespace $ {
 		// Optional error message
 		message?: string | null
 
+		// Request id to route response to request promise
+		// If null or undefined - first response with type+id+query resolves request promise
+		req_id?: string | null
 	}
 
 	export class $yuf_ws_statefull extends $yuf_ws_host {
