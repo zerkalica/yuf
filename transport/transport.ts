@@ -75,30 +75,28 @@ namespace $ {
 			return this.object_url_ref(path).url
 		}
 
-		static auth_fails() { return false }
-
 		@ $mol_action
 		static request_native(path: RequestInfo, init?: $yuf_transport_request_data) {
 			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
 				? this.base_url() + path
 				: path
+			const body = init?.body ?? (init?.body_object ? JSON.stringify(init.body_object) : undefined)
 
 			const session = this.session()
 
 			const client_id = session.client_id()
-			const token = init?.auth_token === 'new' && ! init?.auth_fails
+			const token = init?.auth_token === 'new'
 				? session.token(null, 'refresh')
 				: init?.auth_token === undefined
 					? session.token()
 					: init.auth_token
 
-			const body = init?.body ?? (init?.body_object ? JSON.stringify(init.body_object) : undefined)
 			const headers_base = $yuf_header_normalize(init?.headers)
 			let content_type = headers_base.get('Content-Type')
 
 			if (content_type === undefined) {
 				if (body instanceof URLSearchParams) content_type = 'application/x-www-form-urlencoded'
-				else if ( ! (body instanceof FormData) ) content_type = 'application/json'
+				if ( typeof body === 'string' ) content_type = 'application/json'
 			}
 
 			const id = $mol_guid()

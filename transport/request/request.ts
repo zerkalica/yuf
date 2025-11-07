@@ -3,7 +3,6 @@ namespace $ {
 		deadline?: number
 		headers?: RequestInit['headers'] | $yuf_header_rec
 		auth_token?: string | null // null - auth disabled
-		auth_fails?: boolean // if 403 - return error, do not wait user input and retry fetch
 		body_object?: object
 	}
 
@@ -69,7 +68,7 @@ namespace $ {
 			if (! deadline) return promise
 			let timer = null as null | NodeJS.Timeout
 
-			const err_deadline = new Error($mol_rest_code[$mol_rest_code['Request Timeout']], { cause: this } )
+			const err_deadline = new Error($mol_rest_code[$mol_rest_code['Request Timeout']], { cause: { request: this} } )
 
 			const timeout = new Promise<Response>((res, rej) => {
 				timer = setTimeout(() => rej( err_deadline ), deadline)

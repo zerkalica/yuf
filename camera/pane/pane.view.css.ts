@@ -1,7 +1,9 @@
 namespace $.$$ {
 	
 	$mol_style_define( $yuf_camera_pane, {
-		
+		Camera: {
+			maxWidth: '100%',
+		},
 		Controls: {
 			position: 'absolute',
 			top: 0,

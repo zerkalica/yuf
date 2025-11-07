@@ -3,7 +3,8 @@ $yuf_camera_pane $mol_view
 	canvas $yuf_canvas_image
 		image_type <= image_type \image/jpeg
 		node <= camera_node
-	file? null
+	canvas_file null File
+	file? null File
 	sub /
 		<= Camera $yuf_camera_pane_video
 			dom_node => camera_node
