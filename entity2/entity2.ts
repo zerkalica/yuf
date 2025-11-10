@@ -71,6 +71,8 @@ namespace $ {
 			] })[id] as typeof next ?? null
 		}
 
+		static is_draft(id: string) { return !! this.draft_data(id)?.[0] }
+
 		protected draft_data(next?: Draft_data<Partial<Data>> | null) {
 			return this.$.$yuf_entity2.draft_data(this.id(), next)
 		}
@@ -121,7 +123,7 @@ namespace $ {
 		value<Field extends keyof Data>(field: Field, next?: Data[ Field ] | null) {
 			return this.data(
 				next === undefined ? undefined : { [field]: next } as Partial<Data>
-			)?.[ field ] ?? null
+			)?.[ field ] ?? this.defaults()[field]
 		}
 
 		actual(next?: Partial<Data> | null, refresh?: 'refresh') {

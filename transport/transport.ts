@@ -30,45 +30,26 @@ namespace $ {
 
 		static session() { return this.$.$mol_one.$yuf_session }
 
-		static get(path: string, params?: $yuf_transport_request_data) {
-			return this.success(path, { ...params, method: 'GET' })
-		}
-
-		static head(path: string, params?: $yuf_transport_request_data) {
-			return this.success(path, { ...params, method: 'HEAD' })
-		}
-
 		// custom range headers
 		static range(path: string, raw?: $yuf_transport_request_data & { count_prefer?: 'exact' | 'planned' }) {
 			const { count_prefer, ...params } = raw ?? {}
-			const res = this.head(path, {
+			const res = this.request(path, {
 				...params,
+				method: 'HEAD',
 				headers: $yuf_header_merge(params?.headers, {
 					'Range-Unit': 'items',
 					Prefer: `count=${count_prefer ?? 'exact'}`,
 				}),
-			})
+			}).success()
 
 			const range_str = res.headers().get('Content-Range')
 
 			return range_str ? $yuf_header_range_parse(range_str) : null
 		}
 
-		static put(path: string, params?: $yuf_transport_request_data) {
-			return this.success(path, { ...params, method: 'PUT' })
-		}
-
-		static post(path: string, params?: $yuf_transport_request_data) {
-			return this.success(path, { ...params, method: 'POST' })
-		}
-
-		static delete(path: string, params?: $yuf_transport_request_data) {
-			return this.success(path, { ...params, method: 'DELETE' })
-		}
-
 		@ $mol_mem_key
 		static object_url_ref( path: string ) {
-			return new this.$.$yuf_url_object(this.get( path ).blob())
+			return new this.$.$yuf_url_object(this.request( path ).success().blob())
 		}
 
 		static object_url(path: string) {
@@ -77,21 +58,18 @@ namespace $ {
 
 		@ $mol_action
 		static request_native(path: RequestInfo, init?: $yuf_transport_request_data) {
-			const input = typeof path === 'string' && ! path.match(/^(\w+:)?\/\//)
-				? this.base_url() + path
-				: path
-			const body = init?.body ?? (init?.body_object ? JSON.stringify(init.body_object) : undefined)
-
 			const session = this.session()
-
 			const client_id = session.client_id()
-			const token = init?.auth_token === 'new'
-				? session.token(null, 'refresh')
-				: init?.auth_token === undefined
-					? session.token()
-					: init.auth_token
+			const base_url = this.base_url()
 
+			let token = init?.auth_token
+			if (token === 'new') token = session.token(null, 'refresh')
+			if (token === undefined) token = session.token()
+
+			const deadline = init?.deadline
+			const body = init?.body
 			const headers_base = $yuf_header_normalize(init?.headers)
+
 			let content_type = headers_base.get('Content-Type')
 
 			if (content_type === undefined) {
@@ -104,12 +82,16 @@ namespace $ {
 			const headers = $yuf_header_merge(headers_base, {
 				'Authorization': token ? `Bearer ${token}` : null,
 				'X-Request-ID': id,
-				'X-Request-Deadline': init?.deadline ? `${init.deadline}ms` : null,
+				'X-Request-Deadline': deadline ? `${deadline}ms` : null,
 				'X-Client-ID': client_id,
 				'Content-Type': content_type,
 			})
 
-			return new Request(input, { ...init, body, headers })
+			let url = typeof path === 'string' ? path : path.url
+			if (! url.match(/^(\w+:)?\/\//)) url = base_url + url
+			const prev = typeof path === 'string' ? url : new Request(url, path)
+
+			return new Request(prev, { ...init, body, headers })
 		}
 
 		@ $mol_action

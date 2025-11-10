@@ -1,9 +1,7 @@
 namespace $ {
 	export type $yuf_transport_request_data_main = {
 		deadline?: number
-		headers?: RequestInit['headers'] | $yuf_header_rec
 		auth_token?: string | null // null - auth disabled
-		body_object?: object
 	}
 
 	export type $yuf_transport_request_data =  RequestInit & $yuf_transport_request_data_main

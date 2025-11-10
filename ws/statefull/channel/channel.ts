@@ -14,6 +14,8 @@ namespace $ {
 		ready() { return this.host.ready() }
 
 		send_data(data?: Val | null, req_id?: string, op?: 'unsubscribe') {
+			if (data === undefined && ! op) this.subscribed = true
+
 			this.host.send_object({
 				...this.signature,
 				data,
@@ -44,7 +46,10 @@ namespace $ {
 
 		@ $mol_mem
 		data(next?: Val | null, cache?: 'cache' | 'refresh'): Val | null {
-			if (next !== undefined && cache === 'cache') return next
+			if (next !== undefined && cache === 'cache') {
+				return next
+			}
+
 			const prev = $mol_wire_probe(() => this.data())
 
 			if (! this.response && ( next !== undefined || prev === undefined ) ) {
@@ -61,7 +66,6 @@ namespace $ {
 			// Resend subscription on auth token or ws connection change
 			if (this.ready()) {
 				this.send_data(cache === 'refresh' ? undefined : next, this.response?.id)
-				if (next === undefined) this.subscribed = true
 			}
 
 			const value = this.response ? this.response.value() : ( prev ?? null )

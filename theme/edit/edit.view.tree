@@ -1,0 +1,8 @@
+$yuf_theme_edit $mol_view
+	sub /
+		<= Item1 $yuf_theme_edit_field
+
+
+$yuf_theme_edit_field $mol_view
+	sub /
+		<= Input $mol_button_copy

@@ -1,0 +1,9 @@
+$yuf_theme_edit_demo $mol_example_small
+	title \Color theme editor
+	sub /
+		<= Editor $yuf_theme_edit
+	tags /
+		\theme
+		\skin
+	aspects /
+		\Type/Color
