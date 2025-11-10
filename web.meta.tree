@@ -36,4 +36,5 @@
 	include \/yuf/attach/demo
 	include \/yuf/catalog/demo
 	include \/yuf/login/form/demo
+	include \/yuf/theme/edit/demo
 	include \/yuf/app/hello

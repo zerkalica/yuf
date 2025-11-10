@@ -9394,6 +9394,41 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    const $yuf_theme: Record<"accept" | "accent" | "back_soft" | "control_hover" | "decline", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $yuf_theme_edit extends $mol_view {
+		Item1( ): $yuf_theme_edit_field
+		sub( ): readonly(any)[]
+	}
+	
+	export class $yuf_theme_edit_field extends $mol_view {
+		Input( ): $mol_button_copy
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=edit.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_theme_edit_demo extends $mol_example_small {
+		Editor( ): $yuf_theme_edit
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $ {
 
 	type $mol_view__minimal_height_yuf_app_hello_1 = $mol_type_enforce<
 		number

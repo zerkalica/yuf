@@ -351,6 +351,9 @@
     "$mol_icon_eye_off",
     "$yuf_form_bid",
     "$yuf_form",
+    "$yuf_theme_edit_demo",
+    "$yuf_theme_edit",
+    "$yuf_theme",
     "$yuf_app_hello",
     "$yuf_app"
   ],
