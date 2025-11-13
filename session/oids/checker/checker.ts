@@ -17,7 +17,7 @@ namespace $ {
 			frame.sandbox = 'allow-storage-access-by-user-activation allow-scripts allow-same-origin'
 			frame.title = 'keycloak-session-iframe'
 			frame.style.display = 'none'
-			frame.onerror = event => this.error_push(event)
+			frame.onerror = event => this.status(event as string | ErrorEvent)
 			frame.onload = () => this.on_load()
 
 			doc.body.appendChild(frame)
@@ -28,7 +28,7 @@ namespace $ {
 		on_load() {
 			this.on_message_async = $mol_wire_async((e: MessageEvent) => this.on_message(e))
 			this.dom().addEventListener('message', this.on_message_async, false)
-			this.obsolete(false)
+			this.status(null)
 		}
 
 		override destructor() {
@@ -48,47 +48,36 @@ namespace $ {
 
 			const data = event.data
 
-			if (data === 'error') this.error_push('No access')
-			if (data === 'changed') this.obsolete(true)
+			if (data === 'error') this.status('Status iframe token error')
+			if (data === 'changed') this.status('Status iframe token changed')
 
 			this.timeout?.destructor()
-			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.obsolete(false))
+			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.status(null))
 		}
 
 		protected on_message_async = null as null | typeof this.on_message
 
-		protected error_push(event: string | Event) {
-			try {
-				const err = typeof event === 'string'
-					? new Error(event)
-					: ( event as ErrorEvent ).error as Error
-
-				// fatal error loading iframe - status throws exceptions
-				this.obsolete(err as unknown as boolean)
-			} catch (e) {
-				$mol_fail_log(e)
-			}
-		}
-
 		@ $mol_mem
-		obsolete(next?: boolean) {
+		status(next?: string | ErrorEvent | null) {
 			if (next) {
-				return next
+				return typeof next === 'string'
+					? next
+					: String(next.error?.message || next.error || 'Status iframe unknown error')
 			}
 
 			const win = this.frame().contentWindow
 			const msg = this.message()
 			const origin = this.origin()
-			if (! msg || ! origin || ! win) return false
+			if (! msg || ! origin || ! win) return null
 
 			// set error if iframe not answer or load timeout
 			this.timeout?.destructor()
-			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.error_push('timeout'))
+			this.timeout = new this.$.$mol_after_timeout(this.check_timeout(), () => this.status('Status iframe load timeout'))
 
 			// Send if onload setups on_message_async
 			this.on_message_async && win.postMessage(msg, origin)
 
-			return next ?? false
+			return null
 		}
 
 	}

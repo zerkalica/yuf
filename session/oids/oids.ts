@@ -1,26 +1,72 @@
 namespace $ {
-	export enum $yuf_session_oids_errors {
-		invalid_grant,
-		invalid_client,
-		unauthorized_client,
-		unsupported_grant_type,
-		access_denied,
-		invalid_token,
-		insufficient_scope
-	}
+	const rec = $mol_data_record
+	const opt = $mol_data_optional
+	const nul = $mol_data_nullable
+	const str = $mol_data_string
+	const num = $mol_data_number
+	const bool = $mol_data_boolean
+	const arr = $mol_data_array
+	const dict = $mol_data_dict
+	const vr = $mol_data_variant
 
-	function $yuf_session_oids_error(obj: unknown) {
-		return obj
-			&& typeof obj === 'object'
-			&& 'error' in obj
-			&& typeof obj.error === 'string'
-				? obj as {
-					error: keyof typeof $yuf_session_oids_errors
-					error_description?: string
-					error_uri?: string
-				}
-				: null
-	}
+	const Update_dto = rec({
+		access_token: opt(nul(str)),
+		id_token: opt(nul(str)),
+		refresh_token: opt(nul(str)),
+	})
+
+	const Update_response = $yuf_session_oids_response_data(Update_dto)
+
+	const Config_dto = rec({
+		authorization_endpoint: str,
+		token_endpoint: str,
+		userinfo_endpoint: opt(nul(str)),
+		check_session_iframe: opt(nul(str)),
+		end_session_endpoint: opt(nul(str)),
+	})
+
+	const Config_response = $yuf_session_oids_response_data(Config_dto)
+
+	const Roles_dto = rec({
+		roles: arr(str),
+	})
+
+	const Token_dto = rec({
+		iss: opt(nul(str)),
+		sub: opt(nul(str)),
+		sid: opt(nul(str)),
+		aud: opt(nul(vr(str, arr(str)))),
+		exp: opt(nul(num)),
+		iat: opt(nul(num)),
+		auth_time: opt(nul(num)),
+		nonce: opt(nul(str)),
+		acr: opt(nul(str)),
+		amr: opt(nul(str)),
+		azp: opt(nul(str)),
+		session_state: opt(nul(str)),
+		realm_access: opt(nul(Roles_dto)),
+		resource_access: opt(nul(dict(Roles_dto))),
+	})
+
+	const unk = (v: unknown) => v
+
+	const User_profile_dto = rec({
+		id: opt(nul(str)),
+		username: opt(nul(str)),
+		email: opt(nul(str)),
+		firstName: opt(nul(str)),
+		lastName: opt(nul(str)),
+		enabled: opt(nul(bool)),
+		emailVerified: opt(nul(bool)),
+		totp: opt(nul(bool)),
+		createdTimestamp: opt(nul(num)),
+		attributes: opt(nul(dict(unk)))
+	})
+
+	const User_profile_response = $yuf_session_oids_response_data(User_profile_dto)
+
+	const User_info_dto = dict(unk)
+	const User_info_response = $yuf_session_oids_response_data(User_info_dto)
 
 	/**
 	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
@@ -78,21 +124,9 @@ namespace $ {
 		@ $mol_mem
 		protected config() {
 			$mol_wire_solid()
-			const url = `${this.realm_url()}/.well-known/openid-configuration`
+			const response = this.response(`${this.realm_url()}/.well-known/openid-configuration`)
 
-			try {
-				return this.json(url) as null | {
-					authorization_endpoint: string
-					token_endpoint: string
-					userinfo_endpoint?: string
-					check_session_iframe?: string
-					end_session_endpoint?: string
-				}
-			} catch (e) {
-				if ($mol_promise_like(e)) $mol_fail_hidden(e)
-				$mol_fail_log(e)
-				return null
-			}
+			return Config_response(response)
 		}
 
 		status_iframe_version() {
@@ -131,7 +165,7 @@ namespace $ {
 			})
 		}
 
-		is_session_obsolete() { return this.checker()?.obsolete() ?? false }
+		session_error() { return this.checker()?.status() ?? null }
 
 		@ $mol_action
 		protected callback_parts(next?: null) {
@@ -192,22 +226,12 @@ namespace $ {
 		}
 
 		protected token_decode(token: string) {
-			return (this.$.$mol_jwt_decode(token).payload || null) as null | {
-				iss?: string
-				sub?: string
-				sid?: string
-				aud?: string
-				exp?: number
-				iat?: number
-				auth_time?: number
-				nonce?: string
-				acr?: string
-				amr?: string
-				azp?: string
-				session_state?: string
-				realm_access?: { roles: readonly string[] }
-				resource_access?: Record<string, { roles: readonly string[] }>
-			}
+			const payload = this.$.$mol_jwt_decode(token).payload
+
+			return $mol_error_fence(
+				() => payload ? Token_dto( payload) : null,
+				e => new $mol_error_mix(e.message, { payload }, e)
+			)
 		}
 
 		@ $mol_mem
@@ -224,18 +248,8 @@ namespace $ {
 
 		@ $mol_mem
 		protected user_profile() {
-			return this.json_authorized(this.endpoint('account')) as null | {
-				id?: string
-				username?: string
-				email?: string
-				firstName?: string
-				lastName?: string
-				enabled?: boolean
-				emailVerified?: boolean
-				totp?: boolean
-				createdTimestamp?: number
-				attributes?: Record<string, unknown>
-			}
+			const response = this.response_authorized(this.endpoint('account'))
+			return response ? User_profile_response(response) : null
 		}
 
 		override user_id() { return this.user_profile()?.id ?? null }
@@ -243,10 +257,9 @@ namespace $ {
 
 		@ $mol_mem
 		protected user_info() {
-			return this.json_authorized(this.endpoint('userinfo')) as null | {
-				sub: string
-				[key: string]: any
-			}
+			const response = this.response_authorized(this.endpoint('userinfo'))
+
+			return response ? User_info_response(response) : null
 		}
 
 		@ $mol_mem
@@ -417,57 +430,35 @@ namespace $ {
 				headers['Content-type'] = 'application/x-www-form-urlencoded'
 			}
 
-			return this.$.$mol_fetch.response(url, { ...params, method: params?.body ? 'POST' : 'GET', headers })
-		}
-
-		@ $mol_action
-		protected json(url: string, params?: RequestInit) {
-			const response = this.response(url, params)
-
-			const result = response.json() as any
-			if (! response.ok() ) {
-
-				const error = $yuf_session_oids_error(result)
-
-				throw new Error(error?.error ?? response.message(), { cause: {
-					response,
-					message: error?.error_description ?? 'Unknown',
-					error_uri: error?.error_uri
-				} })
-			}
-
-			return result
+			return this.$.$mol_fetch.request(url, { ...params, method: params?.body ? 'POST' : 'GET', headers }).response()
 		}
 
 		@ $mol_action
 		token_cut() { return this.token() }
 
 		@ $mol_action
-		protected json_authorized(url: string, params?: RequestInit) {
+		protected response_authorized(url: string, params?: RequestInit) {
 			let token = this.token_cut()
 			let try_refresh = true
 
 			while (true) {
 				if (! token) return null
 
-				try {
-					const headers = {
-						Accept: 'application/json',
-						Authorization: 'bearer ' + token,
-						...params?.headers,
-					}
-
-					return this.json(url, { ...params, headers, credentials: 'include' })
-				} catch (e) {
-					const code = e instanceof Error && e.cause instanceof $mol_fetch_response ? e.cause.code() : null
-
-					if (try_refresh && (code === 401 || code === 403) ) {
-						token = this.token(null, 'refresh')
-						try_refresh = false
-						continue
-					}
-					$mol_fail_hidden(e)
+				const headers = {
+					Accept: 'application/json',
+					Authorization: 'bearer ' + token,
+					...params?.headers,
 				}
+
+				const response = this.response(url, { ...params, headers, credentials: 'include' })
+				const code = response.code()
+				if (try_refresh && (code === 401 || code === 403) ) {
+					token = this.token(null, 'refresh')
+					try_refresh = false
+					continue
+				}
+
+				return response
 			}
 		}
 
@@ -522,11 +513,7 @@ namespace $ {
 				}})
 			}
 
-			let result = null as {
-				access_token?: string
-				id_token?: string
-				refresh_token?: string
-			} | null
+			let result = null as null | typeof Update_dto.Value
 
 			const url = this.endpoint('token')
 			const flow = this.flow()
@@ -546,7 +533,9 @@ namespace $ {
 					code_verifier,
 				})
 
-				result = this.json(url, { credentials: 'include', body })
+				const response = this.response(url, { credentials: 'include', body })
+
+				result = Update_response(response)
 			}
 
 			if (! result ) return null
@@ -592,7 +581,7 @@ namespace $ {
 			const token = super.token()
 
 			try {
-				if ( next === undefined && token && ! this.is_session_obsolete() && ! this.is_expired(token) ) {
+				if ( next === undefined && token && ! this.session_error() && ! this.is_expired(token) ) {
 					return token
 				}
 
@@ -604,6 +593,17 @@ namespace $ {
 					if (redirect_uri) this.redirect_to(redirect_uri)
 				}
 
+				this.$.$mol_log3_rise({
+					place: '$yuf_session_oids.token()',
+					message: 'changes',
+					next,
+					op,
+					token,
+					is_expired: ! token ? null : this.is_expired(token),
+					session_error: ! token ? null : this.session_error(),
+					actual,
+				})
+
 				this.token_refresh(actual?.refresh_token ?? null)
 				this.token_id(actual?.id_token ?? null)
 				return super.token(actual?.access_token ?? null)
@@ -613,7 +613,7 @@ namespace $ {
 				// Show any error on page reload if keycloak params exists in url (after redirect from sso)
 				if (callback_params) $mol_fail_hidden(e)
 
-				const code = $yuf_session_oids_error(e)?.error
+				const code = e instanceof Error ? e.message : null
 
 				if (code === 'invalid_grant' || code === 'unauthorized_client' || code === 'invalid_token') {
 					// If token obsolete on page reload - do not show error on page - just clear token and logout

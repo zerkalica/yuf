@@ -1,0 +1,39 @@
+$yuf_svg_video $mol_svg_image
+	dom_name \foreignObject
+	attr *
+		^
+		href null
+	sub /
+		<= Player $yuf_svg_video_player
+			autoplay <= autoplay true
+			controls <=> controls false
+			loop <=> loop true
+			muted <=> muted false
+			poster <= poster \
+			inline <= inline true
+			uri <=> uri \
+			stream <= stream null
+			duration => duration
+			playing? => playing?
+			volume? => volume?
+			preload <= preload \metadata
+			time? => time?
+			click_event? <=> click_event? null
+			size? <=> size_real? /number
+				256
+				144
+
+$yuf_svg_video_player $mol_video_player
+	attr *
+		^
+		xmlns \http://www.w3.org/1999/xhtml
+		preload <= preload \metadata
+	auto /
+		<= size
+	size? /number
+		256
+		144
+	event *
+		^mssc/inspection/svg/video
+		loadedmetadata? <=> metadata_event? null
+		click? <=> click_event? null

@@ -4,32 +4,6 @@ namespace $ {
 
 	export class $yuf_transport extends $mol_fetch {
 
-		@ $mol_mem
-		static base_url(next?: string) {
-			const url = this.$.$mol_state_arg.value( 'api_url', next )
-			if (url) return url
-
-			return ''
-		}
-
-		static base_url_full() {
-			const url = this.base_url()
-			if (url.match(/^\w+\:/)) return url
-
-			const loc = this.$.$mol_dom_context.location
-
-			let normalized = url.replace(/^\/+/, '')
-			if (normalized) normalized = '/' + normalized
-
-			return `${loc.origin}${normalized}`
-		}
-
-		static base_url_ws() {
-			return this.base_url_full().replace(/^http/, 'ws')
-		}
-
-		static session() { return this.$.$mol_one.$yuf_session }
-
 		// custom range headers
 		static range(path: string, raw?: $yuf_transport_request_data & { count_prefer?: 'exact' | 'planned' }) {
 			const { count_prefer, ...params } = raw ?? {}
@@ -48,7 +22,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		static object_url_ref( path: string ) {
+		protected static object_url_ref( path: string ) {
 			return new this.$.$yuf_url_object(this.request( path ).success().blob())
 		}
 
@@ -58,9 +32,8 @@ namespace $ {
 
 		@ $mol_action
 		static request_native(path: RequestInfo, init?: $yuf_transport_request_data) {
-			const session = this.session()
+			const session = this.$.$mol_one.$yuf_session
 			const client_id = session.client_id()
-			const base_url = this.base_url()
 
 			let token = init?.auth_token
 			if (token === 'new') token = session.token(null, 'refresh')
@@ -88,7 +61,6 @@ namespace $ {
 			})
 
 			let url = typeof path === 'string' ? path : path.url
-			if (! url.match(/^(\w+:)?\/\//)) url = base_url + url
 			const prev = typeof path === 'string' ? url : new Request(url, path)
 
 			return new Request(prev, { ...init, body, headers })

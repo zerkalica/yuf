@@ -21,15 +21,13 @@ namespace $ {
 			if ( ids && ! ids.includes(id) ) this.ids([ id, ... ids ], 'cache')
 		}
 
-		protected draft_id_create() { return $mol_guid() }
+		@ $mol_action
+		draft_id_create() { return $mol_guid() }
 
 		store_id() { return this.toString() }
 
-		draft_ids(next?: string) {
-			return this.$.$yuf_entity2.draft_ids(
-				this.store_id(),
-				typeof next === 'string' ? [ next ] : next
-			)
+		draft_ids(next?: readonly string[]) {
+			return this.$.$yuf_entity2.draft_ids(this.store_id(), next)
 		}
 
 		@ $mol_action
@@ -37,7 +35,7 @@ namespace $ {
 			let id = this.draft_ids()?.[0]
 			if (! id) {
 				id = this.draft_id_create()
-				this.draft_ids(id)
+				this.draft_ids([ id ])
 			}
 
 			return id
