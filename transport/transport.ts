@@ -1,7 +1,5 @@
 namespace $ {
 
-	export function $yuf_transport_pass(data: unknown) { return data }
-
 	export class $yuf_transport extends $mol_fetch {
 
 		// custom range headers

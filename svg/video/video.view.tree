@@ -34,6 +34,6 @@ $yuf_svg_video_player $mol_video_player
 		256
 		144
 	event *
-		^mssc/inspection/svg/video
+		^
 		loadedmetadata? <=> metadata_event? null
 		click? <=> click_event? null
