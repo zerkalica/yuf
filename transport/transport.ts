@@ -1,9 +1,13 @@
 namespace $ {
+	export type $yuf_transport_params =  RequestInit & {
+		deadline?: number
+		auth_token?: string | null // null - auth disabled
+	}
 
 	export class $yuf_transport extends $mol_fetch {
 
 		// custom range headers
-		static range(path: string, raw?: $yuf_transport_request_data & { count_prefer?: 'exact' | 'planned' }) {
+		static range(path: string, raw?: $yuf_transport_params & { count_prefer?: 'exact' | 'planned' }) {
 			const { count_prefer, ...params } = raw ?? {}
 			const res = this.request(path, {
 				...params,
@@ -21,7 +25,7 @@ namespace $ {
 
 		@ $mol_mem_key
 		protected static object_url_ref( path: string ) {
-			return new this.$.$yuf_url_object(this.request( path ).success().blob())
+			return this.$.$yuf_url_object.from_blob(this.request( path ).success().blob())
 		}
 
 		static object_url(path: string) {
@@ -29,7 +33,7 @@ namespace $ {
 		}
 
 		@ $mol_action
-		static request_native(path: RequestInfo, init?: $yuf_transport_request_data) {
+		static request_native(path: RequestInfo, init?: $yuf_transport_params) {
 			const session = this.$.$mol_one.$yuf_session
 			const client_id = session.client_id()
 
@@ -61,11 +65,11 @@ namespace $ {
 			let url = typeof path === 'string' ? path : path.url
 			const prev = typeof path === 'string' ? url : new Request(url, path)
 
-			return new Request(prev, { ...init, body, headers })
+			return new Request(prev, { ...init, headers })
 		}
 
 		@ $mol_action
-		static override request(path: RequestInfo, init?: $yuf_transport_request_data) {
+		static override request(path: RequestInfo, init?: $yuf_transport_params) {
 			return this.$.$yuf_transport_request.make({
 				$: this.$,
 				native_grab: auth_token => this.request_native(path, {...init, auth_token }),
