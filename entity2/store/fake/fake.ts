@@ -18,11 +18,15 @@ namespace $ {
 			const result = {} as Record<string, Item | null>
 
 			for (let i = 0; i < data.length; i++) {
-				const id = String(i + 1)
+				const id = this.item_id(data[i]) || String(i + 1)
 				result[id] = data[i]
 			}
 
 			return result
+		}
+
+		item_id(item: Item) {
+			return ''
 		}
 
 		@ $mol_mem

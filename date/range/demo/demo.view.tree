@@ -1,0 +1,12 @@
+$yuf_date_range_demo $mol_example_small
+	title \Date range
+	sub /
+		<= Current $yuf_date_range
+	tags /
+		\time
+		\datepicker
+		\format
+		\range
+	aspects /
+		\Widget/Control/Button/Picker
+		\Type/Date

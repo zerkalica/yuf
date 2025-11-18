@@ -1,0 +1,11 @@
+$yuf_date_range $mol_view
+	sub /
+		<= From $yuf_date_range_date
+			align <= from_align \bottom_right
+			value_moment? <=> from? $mol_time_moment
+		<= Separator $mol_view sub / <= separator \-
+		<= To $yuf_date_range_date
+			align <= to_align \bottom_left
+			value_moment? <=> to? $mol_time_moment
+
+$yuf_date_range_date $mol_date
