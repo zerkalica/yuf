@@ -7,7 +7,7 @@ $yuf_chess_demo $mol_example_small
 	tags /
 		\drag
 		\dragndrop
+		\game
 		\chess
 	aspects /
-		\Widget/Plugin
-		\Drag'n'Drop
+		\Application

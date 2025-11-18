@@ -9,5 +9,7 @@ $yuf_app_hello $mol_example_small
 	tags /
 		\app
 		\list
+		\demo
+		\bug
 	aspects /
-		\App
+		\Application

@@ -24,4 +24,4 @@ $yuf_keyboard_demo $mol_example_small
 		\input
 		\button
 	aspects /
-		\Widget/Plugin
+		\Widget/Control

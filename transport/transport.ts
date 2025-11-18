@@ -57,7 +57,7 @@ namespace $ {
 			const headers = $yuf_header_merge(headers_base, {
 				'Authorization': token ? `Bearer ${token}` : null,
 				'X-Request-ID': id,
-				'X-Request-Deadline': deadline ? `${deadline}ms` : null,
+				'X-Request-Deadline': deadline ? `${deadline.toFixed(0)}ms` : null,
 				'X-Client-ID': client_id,
 				'Content-Type': content_type,
 			})

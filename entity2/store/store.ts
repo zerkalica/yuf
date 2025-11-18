@@ -21,9 +21,6 @@ namespace $ {
 			if ( ids && ! ids.includes(id) ) this.ids([ id, ... ids ], 'cache')
 		}
 
-		@ $mol_action
-		draft_id_create() { return $mol_guid() }
-
 		store_id() { return this.toString() }
 
 		draft_ids(next?: readonly string[]) {
@@ -34,8 +31,7 @@ namespace $ {
 		draft_id() {
 			let id = this.draft_ids()?.[0]
 			if (! id) {
-				id = this.draft_id_create()
-				this.draft_ids([ id ])
+				id = this.draft_ids([ '' ])[0]
 			}
 
 			return id

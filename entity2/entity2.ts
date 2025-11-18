@@ -50,10 +50,12 @@ namespace $ {
 			return this.drafts(next)
 		}
 
+		static draft_id_create() { return $mol_guid() }
+
 		@ $mol_mem_key
 		static draft_ids(store_id: string, draft_ids?: readonly string[]) {
 			const ids = this.drafts_patch(draft_ids
-				? Object.fromEntries(draft_ids.map(draft_id => [ draft_id, [ store_id ] ]))
+				? Object.fromEntries(draft_ids.map(draft_id => [ draft_id || this.draft_id_create(), [ store_id ] ]))
 				: draft_ids
 			)
 
