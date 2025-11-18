@@ -2091,25 +2091,6 @@ $yuf_login_form_demo $mol_example_small
 	aspects /
 		\Widget/Control
 
-$yuf_theme_edit $mol_view
-	sub /
-		<= Item1 $yuf_theme_edit_field
-
-
-$yuf_theme_edit_field $mol_view
-	sub /
-		<= Input $mol_button_copy
-
-$yuf_theme_edit_demo $mol_example_small
-	title \Color theme editor
-	sub /
-		<= Editor $yuf_theme_edit
-	tags /
-		\theme
-		\skin
-	aspects /
-		\Type/Color
-
 $yuf_app_hello $mol_example_small
 	title \Test app
 	sub /
@@ -2123,5 +2104,6 @@ $yuf_app_hello $mol_example_small
 		\list
 		\demo
 		\bug
+		\prepend
 	aspects /
 		\Application
