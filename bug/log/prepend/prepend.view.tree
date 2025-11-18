@@ -1,4 +1,4 @@
-$yuf_app_hello $mol_example_small
+$yuf_bug_log_prepend $mol_example_small
 	title \Test app
 	sub /
 		<= List $mol_list
@@ -11,6 +11,7 @@ $yuf_app_hello $mol_example_small
 		\list
 		\demo
 		\bug
+		\log
 		\prepend
 	aspects /
 		\Application

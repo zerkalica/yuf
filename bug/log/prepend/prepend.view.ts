@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $yuf_app_hello extends $.$yuf_app_hello {
+	export class $yuf_bug_log_prepend extends $.$yuf_bug_log_prepend {
 		@ $mol_mem
 		logs(next?: readonly string[]): readonly string[] {
 			const prev = $mol_wire_probe(() => this.logs()) ?? this.make_rows(50)

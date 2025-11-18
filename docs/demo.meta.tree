@@ -10,4 +10,4 @@ include \/yuf/keyboard/demo
 include \/yuf/attach/demo
 include \/yuf/catalog/demo
 include \/yuf/login/form/demo
-include \/yuf/app/hello
+include \/yuf/bug/log/prepend
