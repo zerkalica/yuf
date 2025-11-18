@@ -11,5 +11,6 @@ $yuf_app_hello $mol_example_small
 		\list
 		\demo
 		\bug
+		\prepend
 	aspects /
 		\Application
