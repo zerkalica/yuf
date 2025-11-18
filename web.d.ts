@@ -9403,22 +9403,22 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_view__minimal_height_yuf_app_hello_1 = $mol_type_enforce<
+	type $mol_view__minimal_height_yuf_bug_log_prepend_1 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_view['minimal_height'] >
 	>
-	type $mol_view__sub_yuf_app_hello_2 = $mol_type_enforce<
+	type $mol_view__sub_yuf_bug_log_prepend_2 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_list__rows_yuf_app_hello_3 = $mol_type_enforce<
-		ReturnType< $yuf_app_hello['rows'] >
+	type $mol_list__rows_yuf_bug_log_prepend_3 = $mol_type_enforce<
+		ReturnType< $yuf_bug_log_prepend['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	export class $yuf_app_hello extends $mol_example_small {
+	export class $yuf_bug_log_prepend extends $mol_example_small {
 		log_row( id: any): string
 		Log( id: any): $mol_view
 		rows( ): readonly($mol_view)[]
@@ -9431,9 +9431,9 @@ declare namespace $ {
 	
 }
 
-//# sourceMappingURL=hello.view.tree.d.ts.map
+//# sourceMappingURL=prepend.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_app_hello extends $.$yuf_app_hello {
+    class $yuf_bug_log_prepend extends $.$yuf_bug_log_prepend {
         logs(next?: readonly string[]): readonly string[];
         make_rows(count?: number): string[];
         log_add(): null;

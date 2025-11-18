@@ -352,8 +352,9 @@
     "$mol_icon_eye_off",
     "$yuf_form_bid",
     "$yuf_form",
-    "$yuf_app_hello",
-    "$yuf_app"
+    "$yuf_bug_log_prepend",
+    "$yuf_bug_log",
+    "$yuf_bug"
   ],
   "dependencies": {
     "jsdom": "*"

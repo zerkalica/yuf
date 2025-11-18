@@ -20505,7 +20505,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_app_hello) = class $yuf_app_hello extends ($.$mol_example_small) {
+	($.$yuf_bug_log_prepend) = class $yuf_bug_log_prepend extends ($.$mol_example_small) {
 		log_row(id){
 			return "";
 		}
@@ -20535,6 +20535,7 @@ var $;
 				"list", 
 				"demo", 
 				"bug", 
+				"log", 
 				"prepend"
 			];
 		}
@@ -20542,8 +20543,8 @@ var $;
 			return ["Application"];
 		}
 	};
-	($mol_mem_key(($.$yuf_app_hello.prototype), "Log"));
-	($mol_mem(($.$yuf_app_hello.prototype), "List"));
+	($mol_mem_key(($.$yuf_bug_log_prepend.prototype), "Log"));
+	($mol_mem(($.$yuf_bug_log_prepend.prototype), "List"));
 
 
 ;
@@ -20555,7 +20556,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_app_hello extends $.$yuf_app_hello {
+        class $yuf_bug_log_prepend extends $.$yuf_bug_log_prepend {
             logs(next) {
                 const prev = $mol_wire_probe(() => this.logs()) ?? this.make_rows(50);
                 return [...prev, ...next ?? []];
@@ -20593,17 +20594,17 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $yuf_app_hello.prototype, "logs", null);
+        ], $yuf_bug_log_prepend.prototype, "logs", null);
         __decorate([
             $mol_mem
-        ], $yuf_app_hello.prototype, "log_add", null);
+        ], $yuf_bug_log_prepend.prototype, "log_add", null);
         __decorate([
             $mol_mem
-        ], $yuf_app_hello.prototype, "indices", null);
+        ], $yuf_bug_log_prepend.prototype, "indices", null);
         __decorate([
             $mol_mem
-        ], $yuf_app_hello.prototype, "rows", null);
-        $$.$yuf_app_hello = $yuf_app_hello;
+        ], $yuf_bug_log_prepend.prototype, "rows", null);
+        $$.$yuf_bug_log_prepend = $yuf_bug_log_prepend;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -20613,7 +20614,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_app_hello, {
+        $mol_style_define($yuf_bug_log_prepend, {
             Log: {
                 padding: $mol_gap.block,
             }
