@@ -36,4 +36,5 @@
 	include \/yuf/attach/demo
 	include \/yuf/catalog/demo
 	include \/yuf/login/form/demo
+	include \/yuf/date/range/demo
 	include \/yuf/bug/log/prepend
