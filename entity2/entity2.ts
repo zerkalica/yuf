@@ -154,6 +154,9 @@ namespace $ {
 					// On creating we never pull actual data and not subscribed to server changes
 					// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
 					this.actual(null, 'refresh')
+
+					// Pull data to subscribe to actual changes, if created - we never pull actual before
+					this.data()
 				}
 
 				if ( is_creating && next_id) {
@@ -217,9 +220,6 @@ namespace $ {
 			// Null draft before pulling data, without nulled draft data do not pull actual
 			// Warning - do not allow suspends after draft(null)
 			this.draft(null)
-
-			// Pull data to subscribe to actual changes, if created - we never pull actual before
-			this.data()
 
 			return result
 		}
