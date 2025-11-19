@@ -20,7 +20,7 @@ namespace $.$$ {
 			const text = value ? declOfNum(value, this[key as time_parts]().split('|')) : ''
 
 			return value
-				? `${value} ${text}`
+				? `${this.show_minus() ? value : Math.abs(value)} ${text}`
 				: (value === null ? key : null)
 		}
 

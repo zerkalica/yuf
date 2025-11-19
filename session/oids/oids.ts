@@ -598,7 +598,7 @@ namespace $ {
 					message: 'changes',
 					next,
 					op,
-					token,
+					token: token?.slice(0, 5),
 					is_expired: ! token ? null : this.is_expired(token),
 					session_error: ! token ? null : this.session_error(),
 					actual,

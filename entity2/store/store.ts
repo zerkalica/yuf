@@ -28,10 +28,10 @@ namespace $ {
 		}
 
 		@ $mol_action
-		draft_id() {
+		draft_id(next = '') {
 			let id = this.draft_ids()?.[0]
 			if (! id) {
-				id = this.draft_ids([ '' ])[0]
+				id = this.draft_ids([ next ])[0]
 			}
 
 			return id

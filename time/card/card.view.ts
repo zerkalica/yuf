@@ -5,8 +5,12 @@ namespace $.$$ {
 			return this.local() ? moment?.toOffset() : moment
 		}
 
+		override format_value() {
+			return this.formats()[this.format()] || this.formats().normal
+		}
+
 		override formatted_date() {
-			return this.current()?.toString(this.formats()[this.format()]) ?? ''
+			return this.current()?.toString(this.format_value()) ?? ''
 		}
 
 		override hint() {
