@@ -15,6 +15,10 @@ $yuf_bug_catalog_flash $mol_example_small
 
 $yuf_bug_catalog_flash_catalog $mol_book2_catalog
 	title \Main
+	addon_tools /
+		<= Shuffle $mol_button_major
+			sub / \Shuffle
+			click? <=> last_event? null
 	Menu_links $mol_list
 		item_height_min* 232
 		Empty <= Menu_links_empty
