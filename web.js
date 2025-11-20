@@ -21490,8 +21490,14 @@ var $;
                 const ids = this.ids();
                 const min = Math.floor(ids.length / 2);
                 const max = min + Math.floor((ids.length - min) * Math.random());
+                const indices = new Set();
                 for (let i = 0; i < max; i++) {
-                    result.push(ids[Math.floor(Math.random() * ids.length)]);
+                    let index;
+                    do {
+                        index = Math.floor(Math.random() * ids.length);
+                    } while (indices.has(index));
+                    indices.add(index);
+                    result.push(ids[index]);
                 }
                 return result;
             }
