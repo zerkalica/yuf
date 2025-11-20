@@ -21439,12 +21439,13 @@ var $;
 				"list", 
 				"demo", 
 				"bug", 
+				"geizenbug", 
 				"log", 
 				"prepend"
 			];
 		}
 		aspects(){
-			return ["Application"];
+			return ["Bug"];
 		}
 	};
 	($mol_mem_key(($.$yuf_bug_log_prepend.prototype), "Log"));
@@ -21527,7 +21528,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_bug_catalog_flash) = class $yuf_bug_catalog_flash extends ($.$mol_book2_catalog) {
+	($.$yuf_bug_catalog_flash) = class $yuf_bug_catalog_flash extends ($.$mol_example_small) {
 		Main(){
 			const obj = new this.$.$yuf_bug_catalog_flash_catalog();
 			return obj;
@@ -21535,8 +21536,8 @@ var $;
 		title(){
 			return "Test app";
 		}
-		spreads(){
-			return {"main": (this.Main())};
+		sub(){
+			return [(this.Main())];
 		}
 		tags(){
 			return [
@@ -21544,12 +21545,13 @@ var $;
 				"list", 
 				"demo", 
 				"bug", 
+				"geizenbug", 
 				"catalog", 
 				"refresh"
 			];
 		}
 		aspects(){
-			return ["Application"];
+			return ["Bug"];
 		}
 	};
 	($mol_mem(($.$yuf_bug_catalog_flash.prototype), "Main"));
@@ -21580,7 +21582,10 @@ var $;
         class $yuf_bug_catalog_flash_catalog extends $.$yuf_bug_catalog_flash_catalog {
             ids() {
                 const ids = [];
-                for (let i = 0; i <= 25; i++) {
+                let val = Number(this.$.$mol_state_arg.value('ids_max') || 50);
+                if (Number.isNaN(val) || !val)
+                    val = 50;
+                for (let i = 0; i <= val; i++) {
                     ids.push($mol_guid());
                 }
                 return ids;
@@ -21639,13 +21644,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_bug_catalog_flash, {
-            Menu: {
-                flex: {
-                    basis: '10rem'
-                }
-            },
-        });
+        $mol_style_define($yuf_bug_catalog_flash, {});
         $mol_style_define($yuf_bug_catalog_flash_catalog, {
             Menu: {
                 flex: {

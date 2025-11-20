@@ -9937,12 +9937,10 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $yuf_bug_catalog_flash extends $mol_book2_catalog {
+	export class $yuf_bug_catalog_flash extends $mol_example_small {
 		Main( ): $yuf_bug_catalog_flash_catalog
 		title( ): string
-		spreads( ): ({ 
-			'main': ReturnType< $yuf_bug_catalog_flash['Main'] >,
-		}) 
+		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
 	}
