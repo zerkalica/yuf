@@ -37,7 +37,16 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override spread_ids(): string[] {
+		last_event2(e?: Event) {
+			if (! e) return null
+			new $mol_after_frame(this.body_scroll_top)
+			return this.last_event(e)
+		}
+
+		body_scroll_top = $mol_wire_async(() => this.Menu().body_scroll_top(0))
+
+		@ $mol_mem
+		override spread_ids() {
 			this.last_event()
 
 			return this.ids_get()
