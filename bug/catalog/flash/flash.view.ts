@@ -13,7 +13,8 @@ namespace $.$$ {
 
 		@ $mol_action
 		ids_get() {
-			this.$.$mol_wait_timeout(50)
+			const val = Number(this.$.$mol_state_arg.value('ids_get_timeout') || 500)
+			if (! Number.isNaN(val) && val) this.$.$mol_wait_timeout(val)
 			
 			const result = [] as string[]
 			const ids = this.ids()
@@ -29,7 +30,8 @@ namespace $.$$ {
 
 		@ $mol_mem
 		override spread_ids(): string[] {
-			$mol_state_time.now(200)
+			const val = Number(this.$.$mol_state_arg.value('spread_ids_refresh_rate') || 1000)
+			if (! Number.isNaN(val) && val) $mol_state_time.now(val)
 			const prev = $mol_wire_probe(() => this.spread_ids())
 
 			try {
