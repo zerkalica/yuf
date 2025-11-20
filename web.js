@@ -21458,11 +21458,21 @@ var $;
 			(obj.click) = (next) => ((this.last_event(next)));
 			return obj;
 		}
+		last_event2(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Shuffle2(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => (["Shfl+reset scroll"]);
+			(obj.click) = (next) => ((this.last_event2(next)));
+			return obj;
+		}
 		title(){
 			return "Main";
 		}
 		addon_tools(){
-			return [(this.Shuffle())];
+			return [(this.Shuffle()), (this.Shuffle2())];
 		}
 		Menu_links(){
 			const obj = new this.$.$mol_list();
@@ -21474,6 +21484,8 @@ var $;
 	};
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "last_event"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Shuffle"));
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "last_event2"));
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Shuffle2"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Menu_links"));
 
 
@@ -21513,6 +21525,13 @@ var $;
                 }
                 return result;
             }
+            last_event2(e) {
+                if (!e)
+                    return null;
+                new $mol_after_frame(this.body_scroll_top);
+                return this.last_event(e);
+            }
+            body_scroll_top = $mol_wire_async(() => this.Menu().body_scroll_top(0));
             spread_ids() {
                 this.last_event();
                 return this.ids_get();
@@ -21527,6 +21546,9 @@ var $;
         __decorate([
             $mol_action
         ], $yuf_bug_catalog_flash_catalog.prototype, "ids_get", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_catalog_flash_catalog.prototype, "last_event2", null);
         __decorate([
             $mol_mem
         ], $yuf_bug_catalog_flash_catalog.prototype, "spread_ids", null);

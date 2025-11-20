@@ -9955,17 +9955,27 @@ declare namespace $ {
 		,
 		ReturnType< $mol_button_major['click'] >
 	>
-	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_3 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_bug_catalog_flash_catalog_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_yuf_bug_catalog_flash_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['last_event2'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_5 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_list['item_height_min'] >
 	>
-	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_4 = $mol_type_enforce<
+	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_6 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['Menu_links_empty'] >
 		,
 		ReturnType< $mol_list['Empty'] >
 	>
-	type $mol_list__rows_yuf_bug_catalog_flash_catalog_5 = $mol_type_enforce<
+	type $mol_list__rows_yuf_bug_catalog_flash_catalog_7 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['menu_links'] >
 		,
 		ReturnType< $mol_list['rows'] >
@@ -9973,6 +9983,8 @@ declare namespace $ {
 	export class $yuf_bug_catalog_flash_catalog extends $mol_book2_catalog {
 		last_event( next?: any ): any
 		Shuffle( ): $mol_button_major
+		last_event2( next?: any ): any
+		Shuffle2( ): $mol_button_minor
 		title( ): string
 		addon_tools( ): readonly(any)[]
 		Menu_links( ): $mol_list
@@ -9985,6 +9997,8 @@ declare namespace $.$$ {
     class $yuf_bug_catalog_flash_catalog extends $.$yuf_bug_catalog_flash_catalog {
         ids(): string[];
         ids_get(): string[];
+        last_event2(e?: Event): any;
+        body_scroll_top: (() => Promise<number>) & {};
         spread_ids(): string[];
         spread_title(id: string): string;
     }
