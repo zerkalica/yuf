@@ -3,8 +3,10 @@ namespace $.$$ {
 		@ $mol_memo.method
 		ids() {
 			const ids = [] as string[]
+			let val = Number(this.$.$mol_state_arg.value('ids_max') || 50)
+			if (Number.isNaN(val) || ! val) val = 50
 
-			for (let i = 0; i <= 25; i++) {
+			for (let i = 0; i <= val; i++) {
 				ids.push($mol_guid())
 			}
 

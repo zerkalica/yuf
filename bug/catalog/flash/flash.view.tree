@@ -1,17 +1,17 @@
-$yuf_bug_catalog_flash $mol_book2_catalog
+$yuf_bug_catalog_flash $mol_example_small
 	title \Test app
-	spreads *
-		main <= Main $yuf_bug_catalog_flash_catalog
+	sub /
+		<= Main $yuf_bug_catalog_flash_catalog
 	tags /
 		\app
 		\list
 		\demo
 		\bug
+		\geizenbug
 		\catalog
 		\refresh
 	aspects /
-		\Application
-
+		\Bug
 
 $yuf_bug_catalog_flash_catalog $mol_book2_catalog
 	title \Main

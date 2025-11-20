@@ -1,10 +1,5 @@
 namespace $.$$ {
 	$mol_style_define( $yuf_bug_catalog_flash, {
-		Menu: {
-			flex: {
-				basis: '10rem'
-			}
-		},
 	})
 	
 	$mol_style_define( $yuf_bug_catalog_flash_catalog, {

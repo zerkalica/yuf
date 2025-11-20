@@ -11,7 +11,8 @@ $yuf_bug_log_prepend $mol_example_small
 		\list
 		\demo
 		\bug
+		\geizenbug
 		\log
 		\prepend
 	aspects /
-		\Application
+		\Bug
