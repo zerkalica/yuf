@@ -21648,7 +21648,7 @@ var $;
             $mol_mem
         ], $yuf_bug_catalog_flash_catalog.prototype, "spread_ids", null);
         __decorate([
-            $mol_mem_key
+            $mol_memo.method
         ], $yuf_bug_catalog_flash_catalog.prototype, "spread_title", null);
         $$.$yuf_bug_catalog_flash_catalog = $yuf_bug_catalog_flash_catalog;
     })($$ = $.$$ || ($.$$ = {}));
