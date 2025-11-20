@@ -43,7 +43,7 @@ namespace $.$$ {
 			return this.ids_get()
 		}
 
-		@ $mol_mem_key
+		@ $mol_memo.method
 		spread_title( id: string ) {
 			return $mol_stub_message(300)
 		}
