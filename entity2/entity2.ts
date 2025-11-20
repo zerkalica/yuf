@@ -154,14 +154,19 @@ namespace $ {
 				const id = this.id()
 				const next_id = server_id ?? id
 
-				if ( is_creating && next_id === id && id) {
-					// If server accepts client id on creating - need to subscribe
-					// On creating we never pull actual data and not subscribed to server changes
-					// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
-					this.actual(null, 'refresh')
-
-					// Pull data to subscribe to actual changes, if created - we never pull actual before
-					this.data()
+				if ( is_creating && id) {
+					if (next_id === id) {
+						// If server accepts client id on creating - need to subscribe
+						// On creating we never pull actual data and not subscribed to server changes
+						// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
+						this.actual(null, 'refresh')
+	
+						// Pull data to subscribe to actual changes, if created - we never pull actual before
+						this.data()
+					} else {
+						// Server returns new id - update current id to allow saving after creating for this entity
+						this._id = next_id
+					}
 				}
 
 				if ( is_creating && next_id) {

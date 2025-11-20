@@ -1,0 +1,21 @@
+$yuf_bug_catalog_flash $mpk_ui_book_catalog
+	title \Test app
+	spreads *
+		main <= Main $yuf_bug_catalog_flash_catalog
+	tags /
+		\app
+		\list
+		\demo
+		\bug
+		\catalog
+		\refresh
+	aspects /
+		\Application
+
+
+$yuf_bug_catalog_flash_catalog $mol_book2_catalog
+	title \Main
+	Menu_links $mol_list
+		item_height_min* 232
+		Empty <= Menu_links_empty
+		rows <= menu_links
