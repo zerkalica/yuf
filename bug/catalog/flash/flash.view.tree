@@ -1,4 +1,4 @@
-$yuf_bug_catalog_flash $mpk_ui_book_catalog
+$yuf_bug_catalog_flash $mol_book2_catalog
 	title \Test app
 	spreads *
 		main <= Main $yuf_bug_catalog_flash_catalog
