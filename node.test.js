@@ -21556,8 +21556,21 @@ var $;
 	};
 	($mol_mem(($.$yuf_bug_catalog_flash.prototype), "Main"));
 	($.$yuf_bug_catalog_flash_catalog) = class $yuf_bug_catalog_flash_catalog extends ($.$mol_book2_catalog) {
+		last_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Shuffle(){
+			const obj = new this.$.$mol_button_major();
+			(obj.sub) = () => (["Shuffle"]);
+			(obj.click) = (next) => ((this.last_event(next)));
+			return obj;
+		}
 		title(){
 			return "Main";
+		}
+		addon_tools(){
+			return [(this.Shuffle())];
 		}
 		Menu_links(){
 			const obj = new this.$.$mol_list();
@@ -21567,6 +21580,8 @@ var $;
 			return obj;
 		}
 	};
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "last_event"));
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Shuffle"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Menu_links"));
 
 
@@ -21591,9 +21606,6 @@ var $;
                 return ids;
             }
             ids_get() {
-                const val = Number(this.$.$mol_state_arg.value('ids_get_timeout') || 500);
-                if (!Number.isNaN(val) && val)
-                    this.$.$mol_wait_timeout(val);
                 const result = [];
                 const ids = this.ids();
                 const min = Math.floor(ids.length / 2);
@@ -21610,19 +21622,8 @@ var $;
                 return result;
             }
             spread_ids() {
-                const val = Number(this.$.$mol_state_arg.value('spread_ids_refresh_rate') || 1000);
-                if (!Number.isNaN(val) && val)
-                    $mol_state_time.now(val);
-                const prev = $mol_wire_probe(() => this.spread_ids());
-                try {
-                    const ids = this.ids_get();
-                    return ids;
-                }
-                catch (e) {
-                    if ($mol_promise_like(e) && prev)
-                        return prev;
-                    $mol_fail_hidden(e);
-                }
+                this.last_event();
+                return this.ids_get();
             }
             spread_title(id) {
                 return $mol_stub_message(300);

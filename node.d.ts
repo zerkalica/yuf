@@ -10002,23 +10002,36 @@ declare namespace $ {
 		aspects( ): readonly(any)[]
 	}
 	
-	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_1 = $mol_type_enforce<
+	type $mol_button_major__sub_yuf_bug_catalog_flash_catalog_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_major['sub'] >
+	>
+	type $mol_button_major__click_yuf_bug_catalog_flash_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['last_event'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_3 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_list['item_height_min'] >
 	>
-	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_2 = $mol_type_enforce<
+	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_4 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['Menu_links_empty'] >
 		,
 		ReturnType< $mol_list['Empty'] >
 	>
-	type $mol_list__rows_yuf_bug_catalog_flash_catalog_3 = $mol_type_enforce<
+	type $mol_list__rows_yuf_bug_catalog_flash_catalog_5 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['menu_links'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
 	export class $yuf_bug_catalog_flash_catalog extends $mol_book2_catalog {
+		last_event( next?: any ): any
+		Shuffle( ): $mol_button_major
 		title( ): string
+		addon_tools( ): readonly(any)[]
 		Menu_links( ): $mol_list
 	}
 	
