@@ -366,7 +366,9 @@
     "$mol_hor",
     "$yuf_bug_log_prepend",
     "$yuf_bug_log",
-    "$yuf_bug"
+    "$yuf_bug",
+    "$yuf_bug_catalog_flash",
+    "$yuf_bug_catalog"
   ],
   "dependencies": {
     "jsdom": "*"

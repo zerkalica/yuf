@@ -21418,5 +21418,144 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
+;
+	($.$yuf_bug_catalog_flash) = class $yuf_bug_catalog_flash extends ($.$mol_book2_catalog) {
+		Main(){
+			const obj = new this.$.$yuf_bug_catalog_flash_catalog();
+			return obj;
+		}
+		title(){
+			return "Test app";
+		}
+		spreads(){
+			return {"main": (this.Main())};
+		}
+		tags(){
+			return [
+				"app", 
+				"list", 
+				"demo", 
+				"bug", 
+				"catalog", 
+				"refresh"
+			];
+		}
+		aspects(){
+			return ["Application"];
+		}
+	};
+	($mol_mem(($.$yuf_bug_catalog_flash.prototype), "Main"));
+	($.$yuf_bug_catalog_flash_catalog) = class $yuf_bug_catalog_flash_catalog extends ($.$mol_book2_catalog) {
+		title(){
+			return "Main";
+		}
+		Menu_links(){
+			const obj = new this.$.$mol_list();
+			(obj.item_height_min) = (id) => (232);
+			(obj.Empty) = () => ((this.Menu_links_empty()));
+			(obj.rows) = () => ((this.menu_links()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Menu_links"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_bug_catalog_flash_catalog extends $.$yuf_bug_catalog_flash_catalog {
+            ids() {
+                const ids = [];
+                for (let i = 0; i <= 25; i++) {
+                    ids.push($mol_guid());
+                }
+                return ids;
+            }
+            ids_get() {
+                const val = Number(this.$.$mol_state_arg.value('ids_get_timeout') || 500);
+                if (!Number.isNaN(val) && val)
+                    this.$.$mol_wait_timeout(val);
+                const result = [];
+                const ids = this.ids();
+                const min = Math.floor(ids.length / 2);
+                const max = min + Math.floor((ids.length - min) * Math.random());
+                for (let i = 0; i < max; i++) {
+                    result.push(ids[Math.floor(Math.random() * ids.length)]);
+                }
+                return result;
+            }
+            spread_ids() {
+                const val = Number(this.$.$mol_state_arg.value('spread_ids_refresh_rate') || 1000);
+                if (!Number.isNaN(val) && val)
+                    $mol_state_time.now(val);
+                const prev = $mol_wire_probe(() => this.spread_ids());
+                try {
+                    const ids = this.ids_get();
+                    return ids;
+                }
+                catch (e) {
+                    if ($mol_promise_like(e) && prev)
+                        return prev;
+                    $mol_fail_hidden(e);
+                }
+            }
+            spread_title(id) {
+                return $mol_stub_message(300);
+            }
+        }
+        __decorate([
+            $mol_memo.method
+        ], $yuf_bug_catalog_flash_catalog.prototype, "ids", null);
+        __decorate([
+            $mol_action
+        ], $yuf_bug_catalog_flash_catalog.prototype, "ids_get", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_catalog_flash_catalog.prototype, "spread_ids", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_bug_catalog_flash_catalog.prototype, "spread_title", null);
+        $$.$yuf_bug_catalog_flash_catalog = $yuf_bug_catalog_flash_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_bug_catalog_flash, {
+            Menu: {
+                flex: {
+                    basis: '10rem'
+                }
+            },
+        });
+        $mol_style_define($yuf_bug_catalog_flash_catalog, {
+            Menu: {
+                flex: {
+                    basis: '30rem'
+                }
+            },
+            Menu_item: {
+                padding: $mol_gap.block,
+            },
+            Menu_link: {
+                minHeight: '232px',
+                background: {
+                    color: $mol_theme.card
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
 
 //# sourceMappingURL=web.js.map

@@ -9935,5 +9935,52 @@ declare namespace $.$$ {
 declare namespace $.$$ {
 }
 
+declare namespace $ {
+
+	export class $yuf_bug_catalog_flash extends $mol_book2_catalog {
+		Main( ): $yuf_bug_catalog_flash_catalog
+		title( ): string
+		spreads( ): ({ 
+			'main': ReturnType< $yuf_bug_catalog_flash['Main'] >,
+		}) 
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_1 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_list['item_height_min'] >
+	>
+	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['Menu_links_empty'] >
+		,
+		ReturnType< $mol_list['Empty'] >
+	>
+	type $mol_list__rows_yuf_bug_catalog_flash_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['menu_links'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	export class $yuf_bug_catalog_flash_catalog extends $mol_book2_catalog {
+		title( ): string
+		Menu_links( ): $mol_list
+	}
+	
+}
+
+//# sourceMappingURL=flash.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_bug_catalog_flash_catalog extends $.$yuf_bug_catalog_flash_catalog {
+        ids(): string[];
+        ids_get(): string[];
+        spread_ids(): string[];
+        spread_title(id: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
 export = $;
 //# sourceMappingURL=web.d.ts.map
