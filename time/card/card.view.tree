@@ -1,6 +1,5 @@
 $yuf_time_card $mol_view
 	format \normal
-	format_value \
 	formats *string
 		normal \DD Month YY hh:mm:ss
 		short \DD.MM.YY hh:mm

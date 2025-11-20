@@ -5,8 +5,8 @@ namespace $.$$ {
 			return this.local() ? moment?.toOffset() : moment
 		}
 
-		override format_value() {
-			return this.formats()[this.format()] || this.formats().normal
+		protected format_value() {
+			return this.formats()[this.format()] || this.format() || this.formats().normal
 		}
 
 		override formatted_date() {

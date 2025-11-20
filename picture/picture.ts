@@ -9,6 +9,7 @@ namespace $ {
 					? new Error(event)
 					: ( event as ErrorEvent ).error as (Error | undefined)
 
+				debugger
 				if ( ! ( err instanceof Error ) ) err = new Error('Image load error', { cause: { event, src }})
 
 				fail(err)
