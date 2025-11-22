@@ -138,6 +138,9 @@ namespace $ {
 			return next ?? null
 		}
 
+		@ $mol_action
+		protected id_grab() { return this.id() }
+
 		@ $mol_mem
 		data(next?: Partial<Data> | null, cache?: 'cache'): Data | null {
 			let actual
@@ -151,7 +154,7 @@ namespace $ {
 				actual = this.pushing_set(next)
 				// Call before draft(null) - is_draft result cached in fiber
 				const server_id = actual ? this.server_created_id(actual) : null
-				const id = this.id()
+				const id = this.id_grab()
 				const next_id = server_id ?? id
 
 				if ( is_creating && id) {
@@ -160,7 +163,7 @@ namespace $ {
 						// On creating we never pull actual data and not subscribed to server changes
 						// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
 						this.actual(null, 'refresh')
-	
+
 						// Pull data to subscribe to actual changes, if created - we never pull actual before
 						this.data()
 					} else {
