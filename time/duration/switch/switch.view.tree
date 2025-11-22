@@ -2,7 +2,8 @@ $yuf_time_duration_switch $mol_switch
 	keys /string
 		\PT10m
 		\PT1h
-	Duration* $yuf_time_duration
-		show_minus <= show_minus true
-		value <= duration* $mol_time_duration
-		formatted => option_title*
+	option_label* /
+		<= Duration* $yuf_time_duration
+			show_minus <= show_minus true
+			value <= duration* $mol_time_duration
+			formatted => option_title*
