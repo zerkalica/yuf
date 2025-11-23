@@ -23,14 +23,12 @@ namespace $ {
 		extensions: opt(vr(error_dto, arr(error_dto)))
 	})
 
-	export function $yuf_gql_pick(raw?: {} | null, error_code?: string | null) {
-		if ( raw && typeof raw === 'object' && ! Array.isArray(raw) && 'data' in raw && ! error_code) {
-			return raw.data
-		}
-
+	export function $yuf_gql_pick_error(raw?: { data?: unknown, errors?: unknown } | null) {
 		const errors = raw && typeof raw === 'object'
 			? (raw as { errors?: readonly typeof $yuf_gql_pick_message.Value[]})?.errors
 			: null
+
+		if (! errors ) return null
 
 		const error: typeof $yuf_gql_pick_message.Value = errors?.[0] ?? {
 			message: 'Unknown gql error',
@@ -43,7 +41,17 @@ namespace $ {
 		const json = extensions?.[0] ?? null
 
 		const message = json?.internal?.error?.message || json?.error || error.message || ''
-		const code = json?.internal?.error?.status_code || json?.code || error_code || 'ASSERT_FAILED'
+		const code = json?.internal?.error?.status_code || json?.code || 'ASSERT_FAILED'
+
+		return { code, message }
+	}
+
+	export function $yuf_gql_pick(json?: { data?: unknown, errors?: unknown } | null) {
+		if ( json && typeof json === 'object' && ! Array.isArray(json) && json.data !== undefined && json.errors === undefined) {
+			return json.data
+		}
+
+		const { code , message } = $yuf_gql_pick_error(json) ?? { code: 'UNKNOWN' }
 
 		throw new Error(code, { cause: { message } } )
 	}
