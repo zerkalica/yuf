@@ -36,9 +36,14 @@ namespace $.$$ {
 		override auto() {
 			this.visible()
 			this.video_enabled()
-			if (this.video_acceptable() && this.recorder().status() === 'recording') {
-				this.video_enabled(true)
+			try {
+				if (this.video_acceptable() && this.recorder().status() === 'recording') {
+					this.video_enabled(true)
+				}
+			} catch (e) {
+				$mol_fail_log(e)
 			}
+	
 			return super.auto()
 		}
 
