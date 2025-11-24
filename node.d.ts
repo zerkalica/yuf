@@ -6739,7 +6739,7 @@ declare namespace $ {
 declare namespace $ {
     class $yuf_camera_recorder extends $mol_object {
         stream(): MediaStream;
-        format(): "video" | "audio";
+        format(): keyof ReturnType<typeof $yuf_camera_recorder.codecs>;
         static codecs(): {
             video: {
                 containers: string[];
@@ -6750,7 +6750,7 @@ declare namespace $ {
                 codecs: string[];
             };
         };
-        static best_codec(format: 'video' | 'audio'): string | undefined;
+        static best_codec(format: keyof ReturnType<typeof this.codecs>): string | undefined;
         mime(): string;
         bits_per_second(): null | number;
         audio_bits_per_second(): null | number;

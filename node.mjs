@@ -15760,8 +15760,8 @@ var $;
                     codecs: ['vp9', 'vp8', 'h264', 'avc1.42E01E']
                 },
                 audio: {
-                    containers: ['audio/webm', 'audio/ogg', 'audio/mp4'],
-                    codecs: ['opus', 'vorbis', 'aac']
+                    containers: ['audio/webm', 'audio/ogg', 'audio/mp4', ''],
+                    codecs: ['opus', 'vorbis', 'aac', 'pcm']
                 },
             };
         }
