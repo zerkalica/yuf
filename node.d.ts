@@ -6739,6 +6739,18 @@ declare namespace $ {
 declare namespace $ {
     class $yuf_camera_recorder extends $mol_object {
         stream(): MediaStream;
+        format(): "video" | "audio";
+        static codecs(): {
+            video: {
+                containers: string[];
+                codecs: string[];
+            };
+            audio: {
+                containers: string[];
+                codecs: string[];
+            };
+        };
+        static best_codec(format: 'video' | 'audio'): string | undefined;
         mime(): string;
         bits_per_second(): null | number;
         audio_bits_per_second(): null | number;

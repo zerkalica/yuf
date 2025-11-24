@@ -15745,12 +15745,32 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    function codec_str_join({ containers, codecs }) {
+        return containers.flatMap(container => codecs.map(codec => `${container}${codec ? `; codecs=${codec}` : ''}`));
+    }
     class $yuf_camera_recorder extends $mol_object {
         stream() {
             return new MediaStream;
         }
+        format() { return 'video'; }
+        static codecs() {
+            return {
+                video: {
+                    containers: ['video/webm', 'video/mp4'],
+                    codecs: ['vp9', 'vp8', 'h264', 'avc1.42E01E']
+                },
+                audio: {
+                    containers: ['audio/webm', 'audio/ogg', 'audio/mp4'],
+                    codecs: ['opus', 'vorbis', 'aac']
+                },
+            };
+        }
+        static best_codec(format) {
+            const codecs = this.codecs()[format];
+            return codec_str_join(codecs).find(codec_str => MediaRecorder.isTypeSupported(codec_str));
+        }
         mime() {
-            return 'video/webm; codecs=vp9';
+            return this.$.$yuf_camera_recorder.best_codec(this.format()) || $mol_fail(new Error('Supported codecs not found'));
         }
         bits_per_second() {
             return null;
@@ -17390,8 +17410,13 @@ var $;
             auto() {
                 this.visible();
                 this.video_enabled();
-                if (this.video_acceptable() && this.recorder().status() === 'recording') {
-                    this.video_enabled(true);
+                try {
+                    if (this.video_acceptable() && this.recorder().status() === 'recording') {
+                        this.video_enabled(true);
+                    }
+                }
+                catch (e) {
+                    $mol_fail_log(e);
                 }
                 return super.auto();
             }
