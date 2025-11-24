@@ -22,7 +22,7 @@ namespace $ {
 				},
 
 				audio: {
-					containers: ['audio/webm', 'audio/ogg', 'audio/mp4', ''],
+					containers: ['audio/webm', 'audio/ogg', 'audio/mp4'],
 					codecs: ['opus', 'vorbis', 'aac', 'pcm']
 				},
 			}
@@ -33,7 +33,7 @@ namespace $ {
 			return codec_str_join(codecs).find(codec_str => MediaRecorder.isTypeSupported(codec_str))
 		}
 
-		mime() {
+		mime_type() {
 			return this.$.$yuf_camera_recorder.best_codec(this.format()) || $mol_fail(new Error('Supported codecs not found'))
 		}
 
@@ -52,7 +52,7 @@ namespace $ {
 		@ $mol_mem
 		native() {
 			const rec = new MediaRecorder(this.stream(), {
-				mimeType: this.mime(),
+				mimeType: this.mime_type(),
 				audioBitsPerSecond: this.audio_bits_per_second() ?? undefined,
 				videoBitsPerSecond: this.video_bits_per_second() ?? undefined,
 				bitsPerSecond: this.bits_per_second() ?? undefined,

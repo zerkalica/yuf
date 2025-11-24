@@ -59,7 +59,7 @@ namespace $.$$ {
 		override item_uri() {
 			return this.is_image() ? this.$.$yuf_url_object.from_blob(this.file()).url : ''
 		}
-		override file_name() { return this.file()?.name ?? '' }		
+		override file_name() { return this.file()?.name ?? '' }
 		override item_content() { return this.is_image() ? [ this.Image() ] : [] }
 		override unknown_content() { return this.is_image() ? [] : [ this.Unknown() ] }
 

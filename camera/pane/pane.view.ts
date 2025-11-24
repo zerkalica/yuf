@@ -6,19 +6,23 @@ namespace $.$$ {
 			if (! this.visible() ) return null
 			const video = this.video_enabled()
 
-			const chunks = video ? this.recorder().flush() : [ this.canvas().blob() ]
+			const recorder = video ? this.recorder() : null
+			const chunks = recorder?.flush() ?? [ this.canvas().blob() ]
+			const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type()
+
 			if (! chunks.length || ! chunks[0].size) {
 				throw new Error('No image recorded')
 			}
 
-			const type = video ? this.image_type_video() : this.image_type()
-			const file_template = video ? this.file_name_template_video() : this.file_name_template()
+			const ext = type.split('/')?.[1]?.trim() ?? 'mp4'
 
-			const date_str = new $mol_time_moment().toString('YYYYMMDD_hhmmss')
-			const name = file_template.replace('{{date}}', date_str)
+			const moment = new $mol_time_moment()
+			const name = this.file_name_template()
+				.replace('{{date}}', moment.toString('YYYYMMDD_hhmmss'))
+				.replace('{{ext}}', ext)
 
 			return new File(chunks , name, {
-				lastModified: new Date().getTime(),
+				lastModified: moment.valueOf(),
 				type
 			})
 		}
