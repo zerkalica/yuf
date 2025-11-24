@@ -1469,9 +1469,7 @@ $mol_video_camera $mol_video_player
 $yuf_camera_pane $mol_view
 	video_enabled? false
 	video_acceptable true
-	image_type_video \video/webm
-	file_name_template_video \\cam-{{date}}.mp4
-	file_name_template \\cam-{{date}}.jpeg
+	file_name_template \\cam-{{date}}.{{ext}}
 	recorder $yuf_camera_recorder
 		stream <= stream
 		status => recorder_status

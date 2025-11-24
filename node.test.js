@@ -15751,7 +15751,7 @@ var $;
                     codecs: ['vp9', 'vp8', 'h264', 'avc1.42E01E']
                 },
                 audio: {
-                    containers: ['audio/webm', 'audio/ogg', 'audio/mp4', ''],
+                    containers: ['audio/webm', 'audio/ogg', 'audio/mp4'],
                     codecs: ['opus', 'vorbis', 'aac', 'pcm']
                 },
             };
@@ -15760,7 +15760,7 @@ var $;
             const codecs = this.codecs()[format];
             return codec_str_join(codecs).find(codec_str => MediaRecorder.isTypeSupported(codec_str));
         }
-        mime() {
+        mime_type() {
             return this.$.$yuf_camera_recorder.best_codec(this.format()) || $mol_fail(new Error('Supported codecs not found'));
         }
         bits_per_second() {
@@ -15774,7 +15774,7 @@ var $;
         }
         native() {
             const rec = new MediaRecorder(this.stream(), {
-                mimeType: this.mime(),
+                mimeType: this.mime_type(),
                 audioBitsPerSecond: this.audio_bits_per_second() ?? undefined,
                 videoBitsPerSecond: this.video_bits_per_second() ?? undefined,
                 bitsPerSecond: this.bits_per_second() ?? undefined,
@@ -16666,14 +16666,8 @@ var $;
 		video_acceptable(){
 			return true;
 		}
-		image_type_video(){
-			return "video/webm";
-		}
-		file_name_template_video(){
-			return "\\cam-{{date}}.mp4";
-		}
 		file_name_template(){
-			return "\\cam-{{date}}.jpeg";
+			return "\\cam-{{date}}.{{ext}}";
 		}
 		recorder(){
 			const obj = new this.$.$yuf_camera_recorder();
@@ -17377,16 +17371,19 @@ var $;
                 if (!this.visible())
                     return null;
                 const video = this.video_enabled();
-                const chunks = video ? this.recorder().flush() : [this.canvas().blob()];
+                const recorder = video ? this.recorder() : null;
+                const chunks = recorder?.flush() ?? [this.canvas().blob()];
+                const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type();
                 if (!chunks.length || !chunks[0].size) {
                     throw new Error('No image recorded');
                 }
-                const type = video ? this.image_type_video() : this.image_type();
-                const file_template = video ? this.file_name_template_video() : this.file_name_template();
-                const date_str = new $mol_time_moment().toString('YYYYMMDD_hhmmss');
-                const name = file_template.replace('{{date}}', date_str);
+                const ext = type.split('/')?.[1]?.trim() ?? 'mp4';
+                const moment = new $mol_time_moment();
+                const name = this.file_name_template()
+                    .replace('{{date}}', moment.toString('YYYYMMDD_hhmmss'))
+                    .replace('{{ext}}', ext);
                 return new File(chunks, name, {
-                    lastModified: new Date().getTime(),
+                    lastModified: moment.valueOf(),
                     type
                 });
             }

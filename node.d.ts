@@ -6751,7 +6751,7 @@ declare namespace $ {
             };
         };
         static best_codec(format: keyof ReturnType<typeof this.codecs>): string | undefined;
-        mime(): string;
+        mime_type(): string;
         bits_per_second(): null | number;
         audio_bits_per_second(): null | number;
         video_bits_per_second(): null | number;
@@ -7281,8 +7281,6 @@ declare namespace $ {
 		Controls( ): $mol_view
 		video_enabled( next?: boolean ): boolean
 		video_acceptable( ): boolean
-		image_type_video( ): string
-		file_name_template_video( ): string
 		file_name_template( ): string
 		recorder( ): $yuf_camera_recorder
 		canvas( ): $yuf_canvas_image
