@@ -15736,6 +15736,285 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    class $yuf_camera_recorder extends $mol_object {
+        stream() {
+            return new MediaStream;
+        }
+        mime() {
+            return 'video/webm; codecs=vp9';
+        }
+        native() {
+            const rec = new MediaRecorder(this.stream(), {
+                mimeType: this.mime(),
+            });
+            rec.ondataavailable = e => this.chunks(e.data);
+            rec.onresume = rec.onstop = rec.onpause = rec.onstart = () => this.status(null);
+            rec.onerror = event => this.error_packed([event.error || new Error('Unknown', { cause: { event } })]);
+            return rec;
+        }
+        status(next) {
+            const native = this.native();
+            const current = native.state;
+            if (next === 'recording' && current === 'paused')
+                native.resume();
+            if (next === 'recording' && current === 'inactive')
+                native.start(this.chunks_rate());
+            if (next === 'paused' && current === 'recording') {
+                this.flush();
+                native.pause();
+            }
+            if (next === 'inactive' && (current === 'recording' || current === 'paused')) {
+                this.flush();
+                native.stop();
+            }
+            return native.state;
+        }
+        error_packed(next) {
+            if (next === undefined)
+                this.chunks();
+            if (next === undefined)
+                this.status();
+            if (next?.[0] !== undefined)
+                this.flush_end(next[0]);
+            return next ?? null;
+        }
+        error(reset) {
+            return this.error_packed(reset ? [reset] : reset)?.[0] ?? null;
+        }
+        chunks_rate() {
+            return 100000;
+        }
+        chunks(next) {
+            const prev = $mol_wire_probe(() => this.chunks()) ?? [];
+            if (next === undefined)
+                return prev;
+            this.flush_end();
+            return next === null ? [] : [...prev, next];
+        }
+        flush_promise = undefined;
+        flush_end(status = null) {
+            if (!$mol_promise_like(this.flush_promise))
+                return;
+            this.flush_promise.done();
+            this.flush_promise = status;
+        }
+        flush() {
+            const native = this.native();
+            if (this.flush_promise === undefined && native.state === 'recording') {
+                const err = new Error('MediaRecorder requestData timeout', { cause: { recorder: this } });
+                new $mol_after_timeout(this.flush_timeout(), () => this.flush_end(err));
+                this.flush_promise = new $mol_promise();
+                native.requestData();
+            }
+            if ($mol_promise_like(this.flush_promise))
+                $mol_fail_hidden(this.flush_promise);
+            const res = this.flush_promise;
+            this.flush_promise = undefined;
+            return res ?? this.chunks();
+        }
+        flush_timeout() { return 5000; }
+        destructor() {
+            const native = $mol_wire_probe(() => this.native());
+            if (!native)
+                return;
+            native.onerror = native.onpause = native.onresume = native.ondataavailable = native.onstart = native.onstop = null;
+            try {
+                this.chunks(null);
+                native.stop();
+            }
+            catch (e) {
+                $mol_fail_log(e);
+            }
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_camera_recorder.prototype, "native", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_camera_recorder.prototype, "status", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_camera_recorder.prototype, "error_packed", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_camera_recorder.prototype, "chunks", null);
+    __decorate([
+        $mol_action
+    ], $yuf_camera_recorder.prototype, "flush", null);
+    $.$yuf_camera_recorder = $yuf_camera_recorder;
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_stop) = class $mol_icon_stop extends ($.$mol_icon) {
+		path(){
+			return "M18,18H6V6H18V18Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_pause) = class $mol_icon_pause extends ($.$mol_icon) {
+		path(){
+			return "M14,19H18V5H14M6,19H10V5H6V19Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_record) = class $mol_icon_record extends ($.$mol_icon) {
+		path(){
+			return "M19,12C19,15.86 15.86,19 12,19C8.14,19 5,15.86 5,12C5,8.14 8.14,5 12,5C15.86,5 19,8.14 19,12Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_record_rec) = class $mol_icon_record_rec extends ($.$mol_icon) {
+		path(){
+			return "M12.5,5A7.5,7.5 0 0,0 5,12.5A7.5,7.5 0 0,0 12.5,20A7.5,7.5 0 0,0 20,12.5A7.5,7.5 0 0,0 12.5,5M7,10H9A1,1 0 0,1 10,11V12C10,12.5 9.62,12.9 9.14,12.97L10.31,15H9.15L8,13V15H7M12,10H14V11H12V12H14V13H12V14H14V15H12A1,1 0 0,1 11,14V11A1,1 0 0,1 12,10M16,10H18V11H16V14H18V15H16A1,1 0 0,1 15,14V11A1,1 0 0,1 16,10M8,11V12H9V11";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_camera_recorder_icon) = class $yuf_camera_recorder_icon extends ($.$mol_icon) {
+		Inactive(){
+			const obj = new this.$.$mol_icon_stop();
+			return obj;
+		}
+		Paused(){
+			const obj = new this.$.$mol_icon_pause();
+			return obj;
+		}
+		Recording(){
+			const obj = new this.$.$mol_icon_record_rec();
+			return obj;
+		}
+		status(){
+			return "";
+		}
+		status_icon(){
+			return {
+				"inactive": (this.Inactive()), 
+				"paused": (this.Paused()), 
+				"recording": (this.Recording())
+			};
+		}
+	};
+	($mol_mem(($.$yuf_camera_recorder_icon.prototype), "Inactive"));
+	($mol_mem(($.$yuf_camera_recorder_icon.prototype), "Paused"));
+	($mol_mem(($.$yuf_camera_recorder_icon.prototype), "Recording"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_camera_recorder_icon extends $.$yuf_camera_recorder_icon {
+            path() {
+                return this.status_icon()[this.status()]?.path() ?? super.path();
+            }
+        }
+        $$.$yuf_camera_recorder_icon = $yuf_camera_recorder_icon;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_camera_recorder_button) = class $yuf_camera_recorder_button extends ($.$mol_button_minor) {
+		error_packed(next){
+			return (this.recorder().error_packed(next));
+		}
+		recording_status(next){
+			return (this.recorder().status(next));
+		}
+		recorder_status_next(){
+			return "";
+		}
+		Icon(){
+			const obj = new this.$.$yuf_camera_recorder_icon();
+			(obj.status) = () => ((this.recorder_status_next()));
+			return obj;
+		}
+		recorder(){
+			const obj = new this.$.$yuf_camera_recorder();
+			return obj;
+		}
+		status_message(){
+			return {
+				"inactive": (this.$.$mol_locale.text("$yuf_camera_recorder_button_status_message_inactive")), 
+				"paused": (this.$.$mol_locale.text("$yuf_camera_recorder_button_status_message_paused")), 
+				"recording": (this.$.$mol_locale.text("$yuf_camera_recorder_button_status_message_recording"))
+			};
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_camera_recorder_button.prototype), "Icon"));
+	($mol_mem(($.$yuf_camera_recorder_button.prototype), "recorder"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_camera_recorder_button extends $.$yuf_camera_recorder_button {
+            hint() {
+                return this.status_message()[this.recording_status()] || this.status_message()['inactive'];
+            }
+            status(next) {
+                if ($mol_promise_like(next?.[0]))
+                    return next;
+                return this.error_packed(next) ?? [];
+            }
+            recorder_status_next() {
+                const cur = this.recording_status();
+                if (cur === 'inactive' || cur === 'paused')
+                    return 'recording';
+                return 'paused';
+            }
+            recorder_status_next_grab() {
+                return this.recorder_status_next();
+            }
+            click(e) {
+                const next = this.recorder_status_next_grab();
+                this.recording_status(next);
+            }
+        }
+        __decorate([
+            $mol_action
+        ], $yuf_camera_recorder_button.prototype, "recorder_status_next_grab", null);
+        $$.$yuf_camera_recorder_button = $yuf_camera_recorder_button;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     $.factory_caches = new WeakMap();
     function contexted(Factory) {
         let cache = $.factory_caches.get(this);
@@ -16265,11 +16544,20 @@ var $;
 
 ;
 	($.$yuf_camera_pane) = class $yuf_camera_pane extends ($.$mol_view) {
+		recorder_status(){
+			return (this.recorder().status());
+		}
+		recorder_error(){
+			return (this.recorder().error());
+		}
 		image_type(){
 			return "image/jpeg";
 		}
 		camera_node(){
 			return (this.Camera().dom_node());
+		}
+		stream(){
+			return (this.Camera().stream());
 		}
 		facing(){
 			return "environment";
@@ -16295,8 +16583,19 @@ var $;
 		controls_main(){
 			return [];
 		}
+		Video_status_button(){
+			const obj = new this.$.$yuf_camera_recorder_button();
+			(obj.recorder) = () => ((this.recorder()));
+			return obj;
+		}
+		video_controls(){
+			return [(this.Video_status_button())];
+		}
 		close_hint(){
 			return (this.$.$mol_locale.text("$yuf_camera_pane_close_hint"));
+		}
+		status(next){
+			return (this.Close().status(next));
 		}
 		Close_icon(){
 			const obj = new this.$.$mol_icon_close();
@@ -16317,15 +16616,37 @@ var $;
 			return [(this.Close())];
 		}
 		controls(){
-			return [...(this.controls_main()), ...(this.controls_close())];
+			return [
+				...(this.controls_main()), 
+				...(this.video_controls()), 
+				...(this.controls_close())
+			];
 		}
 		Controls(){
 			const obj = new this.$.$mol_view();
 			(obj.sub) = () => ((this.controls()));
 			return obj;
 		}
+		video_enabled(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		video_acceptable(){
+			return true;
+		}
+		image_type_video(){
+			return "video/webm";
+		}
+		file_name_template_video(){
+			return "\\cam-{{date}}.mp4";
+		}
 		file_name_template(){
 			return "\\cam-{{date}}.jpeg";
+		}
+		recorder(){
+			const obj = new this.$.$yuf_camera_recorder();
+			(obj.stream) = () => ((this.stream()));
+			return obj;
 		}
 		canvas(){
 			const obj = new this.$.$yuf_canvas_image();
@@ -16346,10 +16667,13 @@ var $;
 	};
 	($mol_mem(($.$yuf_camera_pane.prototype), "camera_click"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Camera"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "Video_status_button"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Close_icon"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "close_click"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Close"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Controls"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "video_enabled"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "recorder"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "canvas"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "file"));
 	($.$yuf_camera_pane_video) = class $yuf_camera_pane_video extends ($.$mol_video_camera) {
@@ -17018,15 +17342,24 @@ var $;
     (function ($$) {
         class $yuf_camera_pane extends $.$yuf_camera_pane {
             canvas_file() {
-                const blob = this.visible() ? this.canvas().blob() : null;
-                if (!blob)
+                if (!this.visible())
                     return null;
+                const video = this.video_enabled();
+                const chunks = video ? this.recorder().flush() : [this.canvas().blob()];
+                if (!chunks.length || !chunks[0].size) {
+                    throw new Error('No image recorded');
+                }
+                const type = video ? this.image_type_video() : this.image_type();
+                const file_template = video ? this.file_name_template_video() : this.file_name_template();
                 const date_str = new $mol_time_moment().toString('YYYYMMDD_hhmmss');
-                const name = this.file_name_template().replace('{{date}}', date_str);
-                return new File([blob], name, {
+                const name = file_template.replace('{{date}}', date_str);
+                return new File(chunks, name, {
                     lastModified: new Date().getTime(),
-                    type: blob.type
+                    type
                 });
+            }
+            video_controls() {
+                return this.video_acceptable() ? super.video_controls() : [];
             }
             visible(next) {
                 if (next === undefined)
@@ -17035,11 +17368,23 @@ var $;
             }
             auto() {
                 this.visible();
+                this.video_enabled();
+                if (this.video_acceptable() && this.recorder().status() === 'recording') {
+                    this.video_enabled(true);
+                }
                 return super.auto();
             }
             camera_click(event) {
                 event && $mol_dom_event.wrap(event).prevented(true);
-                this.file(this.canvas_file());
+                try {
+                    const file = this.canvas_file();
+                    this.file(file);
+                    this.status([null]);
+                }
+                catch (error) {
+                    Promise.resolve().then(() => this.status([error]));
+                    $mol_fail_hidden(error);
+                }
                 return null;
             }
         }

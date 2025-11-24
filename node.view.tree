@@ -1395,6 +1395,32 @@ $yuf_portal $yuf_blend
 
 $mol_icon_camera $mol_icon path \M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z
 
+$mol_icon_stop $mol_icon path \M18,18H6V6H18V18Z
+
+$mol_icon_pause $mol_icon path \M14,19H18V5H14M6,19H10V5H6V19Z
+
+$mol_icon_record $mol_icon path \M19,12C19,15.86 15.86,19 12,19C8.14,19 5,15.86 5,12C5,8.14 8.14,5 12,5C15.86,5 19,8.14 19,12Z
+
+$mol_icon_record_rec $mol_icon path \M12.5,5A7.5,7.5 0 0,0 5,12.5A7.5,7.5 0 0,0 12.5,20A7.5,7.5 0 0,0 20,12.5A7.5,7.5 0 0,0 12.5,5M7,10H9A1,1 0 0,1 10,11V12C10,12.5 9.62,12.9 9.14,12.97L10.31,15H9.15L8,13V15H7M12,10H14V11H12V12H14V13H12V14H14V15H12A1,1 0 0,1 11,14V11A1,1 0 0,1 12,10M16,10H18V11H16V14H18V15H16A1,1 0 0,1 15,14V11A1,1 0 0,1 16,10M8,11V12H9V11
+
+$yuf_camera_recorder_icon $mol_icon
+	status \
+	status_icon *$mol_icon
+		inactive <= Inactive $mol_icon_stop
+		paused <= Paused $mol_icon_pause
+		recording <= Recording $mol_icon_record_rec
+
+$yuf_camera_recorder_button $mol_button_minor
+	recorder $yuf_camera_recorder
+		error_packed? => error_packed?
+		status? => recording_status?
+	status_message *string
+		inactive @ \Inactive
+		paused @ \Paused
+		recording @ \Recording
+	sub / <= Icon $yuf_camera_recorder_icon
+		status <= recorder_status_next \
+
 $mol_video_player $mol_view
 	dom_name \video
 	playing? false
@@ -1441,7 +1467,15 @@ $mol_video_camera $mol_video_player
 
 
 $yuf_camera_pane $mol_view
+	video_enabled? false
+	video_acceptable true
+	image_type_video \video/webm
+	file_name_template_video \\cam-{{date}}.mp4
 	file_name_template \\cam-{{date}}.jpeg
+	recorder $yuf_camera_recorder
+		stream <= stream
+		status => recorder_status
+		error => recorder_error
 	canvas $yuf_canvas_image
 		image_type <= image_type \image/jpeg
 		node <= camera_node
@@ -1450,6 +1484,7 @@ $yuf_camera_pane $mol_view
 	sub /
 		<= Camera $yuf_camera_pane_video
 			dom_node => camera_node
+			stream => stream
 			facing <= facing \environment
 			width <= desirable_width 1280
 			height <= desirable_height 720
@@ -1457,9 +1492,13 @@ $yuf_camera_pane $mol_view
 		<= Controls $mol_view
 			sub <= controls /$mol_view_content
 				^ controls_main /$mol_view_content
+				^ video_controls /$mol_view_content
+					<= Video_status_button $yuf_camera_recorder_button
+						recorder <= recorder
 				^ controls_close /$mol_view_content
 					<= Close $mol_button_minor
 						hint <= close_hint @ \Close
+						status? => status?
 						sub / <= Close_icon $mol_icon_close
 						click? <=> close_click? null
 

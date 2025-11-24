@@ -6737,6 +6737,119 @@ declare namespace $ {
 
 //# sourceMappingURL=camera.view.tree.d.ts.map
 declare namespace $ {
+    class $yuf_camera_recorder extends $mol_object {
+        stream(): MediaStream;
+        mime(): string;
+        native(): MediaRecorder;
+        status(next?: null | 'recording' | 'paused' | 'inactive'): RecordingState;
+        error_packed(next?: null | readonly [Error | null]): readonly [Error | null] | null;
+        error(reset?: null | Error): Error | null;
+        chunks_rate(): number;
+        chunks(next?: Blob | null): Blob[];
+        protected flush_promise: undefined | null | $mol_promise<void> | Error;
+        protected flush_end(status?: null | Error): void;
+        flush(): Blob[];
+        flush_timeout(): number;
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_stop extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=stop.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_pause extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=pause.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_record extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=record.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_record_rec extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=rec.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_camera_recorder_icon extends $mol_icon {
+		Inactive( ): $mol_icon_stop
+		Paused( ): $mol_icon_pause
+		Recording( ): $mol_icon_record_rec
+		status( ): string
+		status_icon( ): Record<string, $mol_icon>
+	}
+	
+}
+
+//# sourceMappingURL=icon.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_camera_recorder_icon extends $.$yuf_camera_recorder_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+
+	type __yuf_camera_recorder_button_1 = $mol_type_enforce<
+		Parameters< $yuf_camera_recorder_button['error_packed'] >[0]
+		,
+		Parameters< ReturnType< $yuf_camera_recorder_button['recorder'] >['error_packed'] >[0]
+	>
+	type __yuf_camera_recorder_button_2 = $mol_type_enforce<
+		Parameters< $yuf_camera_recorder_button['recording_status'] >[0]
+		,
+		Parameters< ReturnType< $yuf_camera_recorder_button['recorder'] >['status'] >[0]
+	>
+	type $yuf_camera_recorder_icon__status_yuf_camera_recorder_button_3 = $mol_type_enforce<
+		ReturnType< $yuf_camera_recorder_button['recorder_status_next'] >
+		,
+		ReturnType< $yuf_camera_recorder_icon['status'] >
+	>
+	export class $yuf_camera_recorder_button extends $mol_button_minor {
+		error_packed( next?: ReturnType< ReturnType< $yuf_camera_recorder_button['recorder'] >['error_packed'] > ): ReturnType< ReturnType< $yuf_camera_recorder_button['recorder'] >['error_packed'] >
+		recording_status( next?: ReturnType< ReturnType< $yuf_camera_recorder_button['recorder'] >['status'] > ): ReturnType< ReturnType< $yuf_camera_recorder_button['recorder'] >['status'] >
+		recorder_status_next( ): string
+		Icon( ): $yuf_camera_recorder_icon
+		recorder( ): $yuf_camera_recorder
+		status_message( ): Record<string, string>
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=button.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_camera_recorder_button extends $.$yuf_camera_recorder_button {
+        hint(): string;
+        status(next?: readonly any[] | null): readonly any[];
+        recorder_status_next(): "recording" | "paused";
+        recorder_status_next_grab(): "recording" | "paused";
+        click(e?: Event): void;
+    }
+}
+
+declare namespace $ {
     type Constructor = new (...args: any) => any;
     export const factory_caches: WeakMap<typeof $, WeakMap<Constructor, Constructor>>;
     export let $mol_static: typeof $ & (<Value extends Constructor>(constructor: Value) => Value);
@@ -7069,63 +7182,94 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_camera_pane_video['click'] >
 	>
-	type $mol_button_minor__hint_yuf_camera_pane_5 = $mol_type_enforce<
+	type $yuf_camera_recorder_button__recorder_yuf_camera_pane_5 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['recorder'] >
+		,
+		ReturnType< $yuf_camera_recorder_button['recorder'] >
+	>
+	type __yuf_camera_pane_6 = $mol_type_enforce<
+		Parameters< $yuf_camera_pane['status'] >[0]
+		,
+		Parameters< ReturnType< $yuf_camera_pane['Close'] >['status'] >[0]
+	>
+	type $mol_button_minor__hint_yuf_camera_pane_7 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_hint'] >
 		,
 		ReturnType< $mol_button_minor['hint'] >
 	>
-	type $mol_button_minor__sub_yuf_camera_pane_6 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_camera_pane_8 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
 	>
-	type $mol_button_minor__click_yuf_camera_pane_7 = $mol_type_enforce<
+	type $mol_button_minor__click_yuf_camera_pane_9 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_click'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $yuf_camera_pane_controls__8 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__10 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_main'] >[number]
 		,
 		$mol_view_content
 	>
-	type $yuf_camera_pane_controls__9 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__11 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['video_controls'] >[number]
+		,
+		$mol_view_content
+	>
+	type $yuf_camera_pane_controls__12 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_close'] >[number]
 		,
 		$mol_view_content
 	>
-	type $mol_view__sub_yuf_camera_pane_10 = $mol_type_enforce<
+	type $mol_view__sub_yuf_camera_pane_13 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_canvas_image__image_type_yuf_camera_pane_11 = $mol_type_enforce<
+	type $yuf_camera_recorder__stream_yuf_camera_pane_14 = $mol_type_enforce<
+		ReturnType< $yuf_camera_pane['stream'] >
+		,
+		ReturnType< $yuf_camera_recorder['stream'] >
+	>
+	type $yuf_canvas_image__image_type_yuf_camera_pane_15 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['image_type'] >
 		,
 		ReturnType< $yuf_canvas_image['image_type'] >
 	>
-	type $yuf_canvas_image__node_yuf_camera_pane_12 = $mol_type_enforce<
+	type $yuf_canvas_image__node_yuf_camera_pane_16 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['camera_node'] >
 		,
 		ReturnType< $yuf_canvas_image['node'] >
 	>
 	export class $yuf_camera_pane extends $mol_view {
+		recorder_status( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['status'] >
+		recorder_error( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['error'] >
 		image_type( ): string
 		camera_node( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['dom_node'] >
+		stream( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['stream'] >
 		facing( ): string
 		desirable_width( ): number
 		desirable_height( ): number
 		camera_click( next?: any ): any
 		Camera( ): $yuf_camera_pane_video
 		controls_main( ): readonly($mol_view_content)[]
+		Video_status_button( ): $yuf_camera_recorder_button
+		video_controls( ): readonly($mol_view_content)[]
 		close_hint( ): string
+		status( next?: ReturnType< ReturnType< $yuf_camera_pane['Close'] >['status'] > ): ReturnType< ReturnType< $yuf_camera_pane['Close'] >['status'] >
 		Close_icon( ): $mol_icon_close
 		close_click( next?: any ): any
 		Close( ): $mol_button_minor
 		controls_close( ): readonly($mol_view_content)[]
 		controls( ): readonly($mol_view_content)[]
 		Controls( ): $mol_view
+		video_enabled( next?: boolean ): boolean
+		video_acceptable( ): boolean
+		image_type_video( ): string
+		file_name_template_video( ): string
 		file_name_template( ): string
+		recorder( ): $yuf_camera_recorder
 		canvas( ): $yuf_canvas_image
 		canvas_file( ): File | null
 		file( next?: File | null ): File | null
@@ -7145,6 +7289,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_camera_pane extends $.$yuf_camera_pane {
         canvas_file(): File | null;
+        video_controls(): readonly $mol_view_content[];
         visible(next?: boolean): boolean;
         auto(): any;
         camera_click(event?: Event): null;
