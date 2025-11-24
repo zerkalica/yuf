@@ -15743,9 +15743,21 @@ var $;
         mime() {
             return 'video/webm; codecs=vp9';
         }
+        bits_per_second() {
+            return null;
+        }
+        audio_bits_per_second() {
+            return null;
+        }
+        video_bits_per_second() {
+            return null;
+        }
         native() {
             const rec = new MediaRecorder(this.stream(), {
                 mimeType: this.mime(),
+                audioBitsPerSecond: this.audio_bits_per_second() ?? undefined,
+                videoBitsPerSecond: this.video_bits_per_second() ?? undefined,
+                bitsPerSecond: this.bits_per_second() ?? undefined,
             });
             rec.ondataavailable = e => this.chunks(e.data);
             rec.onresume = rec.onstop = rec.onpause = rec.onstart = () => this.status(null);

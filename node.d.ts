@@ -6740,6 +6740,9 @@ declare namespace $ {
     class $yuf_camera_recorder extends $mol_object {
         stream(): MediaStream;
         mime(): string;
+        bits_per_second(): null | number;
+        audio_bits_per_second(): null | number;
+        video_bits_per_second(): null | number;
         native(): MediaRecorder;
         status(next?: null | 'recording' | 'paused' | 'inactive'): RecordingState;
         error_packed(next?: null | readonly [Error | null]): readonly [Error | null] | null;
