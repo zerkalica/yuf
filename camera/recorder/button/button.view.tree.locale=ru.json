@@ -1,0 +1,5 @@
+{
+	"$yuf_camera_recorder_button_status_message_inactive": "Остановлено",
+	"$yuf_camera_recorder_button_status_message_paused": "На паузе",
+	"$yuf_camera_recorder_button_status_message_recording": "Записывается"
+}

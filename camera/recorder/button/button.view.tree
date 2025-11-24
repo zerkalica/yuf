@@ -1,0 +1,10 @@
+$yuf_camera_recorder_button $mol_button_minor
+	recorder $yuf_camera_recorder
+		error_packed? => error_packed?
+		status? => recording_status?
+	status_message *string
+		inactive @ \Inactive
+		paused @ \Paused
+		recording @ \Recording
+	sub / <= Icon $yuf_camera_recorder_icon
+		status <= recorder_status_next \

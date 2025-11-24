@@ -1,0 +1,6 @@
+$yuf_camera_recorder_icon $mol_icon
+	status \
+	status_icon *$mol_icon
+		inactive <= Inactive $mol_icon_stop
+		paused <= Paused $mol_icon_pause
+		recording <= Recording $mol_icon_record_rec

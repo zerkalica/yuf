@@ -32,11 +32,12 @@ namespace $ {
 			return this.object_url_ref(path).url
 		}
 
+		static session() { return this.$.$mol_one.$yuf_session }
+
 		@ $mol_action
 		static request_native(path: RequestInfo, init?: $yuf_transport_params) {
-			const session = this.$.$mol_one.$yuf_session
+			const session = this.session()
 			const client_id = session.client_id()
-
 			let token = init?.auth_token
 			if (token === 'new') token = session.token(null, 'refresh')
 			if (token === undefined) token = session.token()
