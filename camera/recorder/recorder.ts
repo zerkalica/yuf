@@ -12,7 +12,7 @@ namespace $ {
 			return new MediaStream
 		}
 
-		format() { return 'video' as 'video' | 'audio' }
+		format() { return 'video' as keyof ReturnType<typeof $yuf_camera_recorder.codecs> }
 
 		static codecs() {
 			return {
@@ -22,13 +22,13 @@ namespace $ {
 				},
 
 				audio: {
-					containers: ['audio/webm', 'audio/ogg', 'audio/mp4'],
-					codecs: ['opus', 'vorbis', 'aac']
+					containers: ['audio/webm', 'audio/ogg', 'audio/mp4', ''],
+					codecs: ['opus', 'vorbis', 'aac', 'pcm']
 				},
 			}
 		}
 
-		static best_codec(format: 'video' | 'audio') {
+		static best_codec(format: keyof ReturnType<typeof this.codecs>) {
 			const codecs = this.codecs()[format]
 			return codec_str_join(codecs).find(codec_str => MediaRecorder.isTypeSupported(codec_str))
 		}
