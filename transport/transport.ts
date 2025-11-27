@@ -1,10 +1,11 @@
 namespace $ {
-	export type $yuf_transport_params =  RequestInit & {
+	export type $yuf_transport_params =  Omit<RequestInit, 'headers'> & {
 		deadline?: number
+		headers?: RequestInit['headers'] | $yuf_header_rec
 		auth_token?: string | null // null - auth disabled
 	}
 
-	export class $yuf_transport extends $mol_fetch {
+	export class $yuf_transport extends $mol_object {
 
 		// custom range headers
 		static range(path: string, raw?: $yuf_transport_params & { count_prefer?: 'exact' | 'planned' }) {
@@ -25,56 +26,34 @@ namespace $ {
 
 		@ $mol_mem_key
 		protected static object_url_ref( path: string ) {
-			return this.$.$yuf_url_object.from_blob(this.request( path ).success().blob())
+			return this.$.$yuf_url_object.from_blob(this.success( path ).blob())
 		}
 
 		static object_url(path: string) {
 			return this.object_url_ref(path).url
 		}
 
-		static session() { return this.$.$mol_one.$yuf_session }
-
 		@ $mol_action
-		static request_native(path: RequestInfo, init?: $yuf_transport_params) {
-			const session = this.session()
-			const client_id = session.client_id()
-			let token = init?.auth_token
-			if (token === 'new') token = session.token(null, 'refresh')
-			if (token === undefined) token = session.token()
-
-			const deadline = init?.deadline
-			const body = init?.body
-			const headers_base = $yuf_header_normalize(init?.headers)
-
-			let content_type = headers_base.get('Content-Type')
-
-			if (content_type === undefined) {
-				if (body instanceof URLSearchParams) content_type = 'application/x-www-form-urlencoded'
-				if ( typeof body === 'string' ) content_type = 'application/json'
-			}
-
-			const id = $mol_guid()
-
-			const headers = $yuf_header_merge(headers_base, {
-				'Authorization': token ? `Bearer ${token}` : null,
-				'X-Request-ID': id,
-				'X-Request-Deadline': deadline ? `${deadline.toFixed(0)}ms` : null,
-				'X-Client-ID': client_id,
-				'Content-Type': content_type,
-			})
-
-			let url = typeof path === 'string' ? path : path.url
-			const prev = typeof path === 'string' ? url : new Request(url, path)
-
-			return new Request(prev, { ...init, headers })
+		static request(path: RequestInfo, init?: $yuf_transport_params) {
+			const native = this.$.$yuf_transport_request_make(path, init)
+			return this.$.$yuf_transport_request.make({ native })
 		}
 
-		@ $mol_action
-		static override request(path: RequestInfo, init?: $yuf_transport_params) {
-			return this.$.$yuf_transport_request.make({
-				$: this.$,
-				native_grab: auth_token => this.request_native(path, {...init, auth_token }),
-			})
+		static response(path: RequestInfo, init?: $yuf_transport_params) {
+			let response = this.request(path, init).response()
+			const code = response.code()
+			if ( init?.auth_token !== null && (code === 403 || code === 401) ) {
+				response = this.request(path, { ...init, auth_token: 'new' }).response()
+			}
+
+			return response
+		}
+
+		static success(path: RequestInfo, init?: $yuf_transport_params) {
+			const response = this.response(path, init)
+			if( response.status() === 'success' ) return response
+			
+			throw new Error( response.message(), { cause: response } )
 		}
 	}
 

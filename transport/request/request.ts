@@ -20,26 +20,8 @@ namespace $ {
 			return num * mul
 		}
 
-		@ $mol_action
-		native_grab(reset?: 'new') { return new Request('') }
-
-		need_refresh_token(response: Response) {
-			const code = response.status
-
-			return code === 403 || code === 401
-		}
-
 		async fetch_data( signal: AbortSignal ) {
-			let refresh = undefined as undefined | 'new'
-			do {
-				let native = await $mol_wire_async(this).native_grab(refresh)
-				// Save in this.native for debugging
-				;(this as $mol_type_writable<this>).native = native
-				const response = signal.aborted ? new Response() : await fetch( new Request(native, { signal }) )
-
-				if (refresh || ! this.need_refresh_token(response)) return response
-				refresh = 'new'
-			} while( true )
+			return fetch(new Request(this.native, { signal }))
 		}
 
 		override response_async() {
@@ -55,7 +37,7 @@ namespace $ {
 				if( !done && !controller.signal.aborted ) controller.abort(reason)
 			}
 
-			let timer = deadline ? setTimeout(() => destructor($mol_rest_code[$mol_rest_code['Request Timeout']])) : null
+			let timer = deadline ? setTimeout(() => destructor($mol_rest_code[$mol_rest_code['Request Timeout']]), deadline) : null
 
 			return Object.assign( promise, { destructor } )
 		}
