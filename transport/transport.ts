@@ -1,14 +1,8 @@
 namespace $ {
-	export type $yuf_transport_params =  Omit<RequestInit, 'headers'> & {
-		deadline?: number
-		headers?: RequestInit['headers'] | $yuf_header_rec
-		auth_token?: string | null // null - auth disabled
-	}
-
 	export class $yuf_transport extends $mol_object {
 
 		// custom range headers
-		static range(path: string, raw?: $yuf_transport_params & { count_prefer?: 'exact' | 'planned' }) {
+		static range(path: string, raw?: $yuf_transport_request_make_params & { count_prefer?: 'exact' | 'planned' }) {
 			const { count_prefer, ...params } = raw ?? {}
 			const res = this.request(path, {
 				...params,
@@ -34,22 +28,32 @@ namespace $ {
 		}
 
 		@ $mol_action
-		static request(path: RequestInfo, init?: $yuf_transport_params) {
+		protected static request(path: RequestInfo, init?: $yuf_transport_request_make_params) {
 			const native = this.$.$yuf_transport_request_make(path, init)
 			return this.$.$yuf_transport_request.make({ native })
 		}
 
-		static response(path: RequestInfo, init?: $yuf_transport_params) {
-			let response = this.request(path, init).response()
-			const code = response.code()
-			if ( init?.auth_token !== null && (code === 403 || code === 401) ) {
-				response = this.request(path, { ...init, auth_token: 'new' }).response()
-			}
+		static response(path: RequestInfo, init?: $yuf_transport_request_make_params) {
+			let token_second
+			const session = this.$.$mol_one.$yuf_session
+			const client_id = session.client_id()
 
-			return response
+			do {
+				let auth_token = token_second ?? init?.auth_token
+				if (auth_token === undefined) auth_token = session.token_grab()
+	
+				const response = this.request(path, { ...init, auth_token, client_id }).response()
+				const code = response.code()
+	
+				if (auth_token === null) return response
+				if (code !== 403 && code !== 401) return response
+				if (token_second) return response
+				token_second = session.token_grab(null)
+				if (! token_second) return response
+			} while(true)
 		}
 
-		static success(path: RequestInfo, init?: $yuf_transport_params) {
+		static success(path: RequestInfo, init?: $yuf_transport_request_make_params) {
 			const response = this.response(path, init)
 			if( response.status() === 'success' ) return response
 			

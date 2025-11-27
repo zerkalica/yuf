@@ -7,6 +7,11 @@ namespace $ {
 			return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null
 		}
 
+		@ $mol_action
+		token_grab(reset?: null) {
+			return this.token(reset, reset === null ? 'refresh' : undefined)
+		}
+
 		user_id() { return null as null | string }
 
 		user_id_ensure() {
