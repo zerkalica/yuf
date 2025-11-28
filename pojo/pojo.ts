@@ -9,6 +9,8 @@ namespace $ {
 	export const $yuf_pojo_serializers = new Map<Function, (val: any, options: $yuf_pojo_options) => unknown>([
 		[$mol_fetch_request, parse_mol_request],
 		[$mol_fetch_response, parse_mol_response],
+		[Date, parse_date],
+		[Event, parse_event],
 		[Request, parse_request],
 		[Response, parse_response],
 		[Headers, parse_entries],
@@ -25,7 +27,9 @@ namespace $ {
 		called.add(e)
 
 		try {
-			if ('toJSON' in e && typeof e.toJSON === 'function') return parse_pojo(e.toJSON(), options)
+			if ('toJSON' in e && typeof e.toJSON === 'function' && ! (e instanceof Date)) {
+				return parse_pojo(e.toJSON(), options)
+			}
 
 			for (const [Klass, serializer] of $yuf_pojo_serializers.entries()) {
 				if (e instanceof Klass) return serializer(e, options)
@@ -96,9 +100,24 @@ namespace $ {
 		return $yuf_pojo({
 			message: e.message,
 			name: e.name === 'Error' || e.name === 'AggregateError' ? undefined : e.name,
-			cause: $yuf_pojo(e.cause, options),
+			...$yuf_pojo(e.cause, options) || {},
 			errors: e instanceof AggregateError ? $yuf_pojo(e.errors, options) : undefined,
 			stack: options.include_stack ? e.stack : undefined,
+		}, options)
+	}
+
+	function parse_date(e: Date, options: $yuf_pojo_options) {
+		return e.toISOString()
+	}
+
+	function parse_event(e: Event & Partial<ErrorEvent>, options: $yuf_pojo_options) {
+		return $yuf_pojo({
+			event: e.type,
+			message: e?.message,
+			col: e?.colno,
+			line: e?.lineno,
+			file: e?.filename,
+			error: e.error,
 		}, options)
 	}
 
@@ -110,8 +129,8 @@ namespace $ {
 		return $yuf_pojo({
 			url: request.url,
 			method: request.method === 'GET' ? undefined : request.method,
-			referrer: request.referrer,
-			headers: $yuf_pojo(request.headers, options),
+			referrer: request.referrer === 'about:client' ? undefined : request.referrer || undefined,
+			headers: request.headers,
 		}, options)
 	}
 
@@ -121,7 +140,7 @@ namespace $ {
 			type: response.type === 'default' ? undefined : response.type,
 			status: response.status,
 			statusText: response.statusText || undefined,
-			headers: $yuf_pojo(response.headers, options),
+			headers: response.headers,
 		}, options)
 	}
 

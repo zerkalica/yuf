@@ -11,7 +11,7 @@ namespace $ {
 
 		let content_type = headers_base.get('Content-Type')
 
-		if (content_type === undefined) {
+		if (content_type === null) {
 			if (init?.body instanceof URLSearchParams) content_type = 'application/x-www-form-urlencoded'
 			if ( typeof init?.body === 'string' ) content_type = 'application/json'
 		}

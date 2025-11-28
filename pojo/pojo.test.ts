@@ -21,7 +21,6 @@ namespace $ {
 				cause: {
 					request: {
 						url: 'https://bla.local/some-url',
-						referrer: 'about:client',
 						headers: {
 							'content-type': 'application/json',
 							'x-request-id': '1231',
