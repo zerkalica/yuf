@@ -1,5 +1,6 @@
 namespace $ {
-		
+	export const $yuf_report_fallback = {}
+
 	globalThis.addEventListener('error', (event: Event | string, url?: string, line?: number, col?: number, error?: Error) => {
 		const time = new Date()
 		const options = {
@@ -25,6 +26,7 @@ namespace $ {
 		if (! container) {
 			container = doc.createElement('div')
 			container.id = id
+			container.style="top: 0; right: 0; position: absolute; z-index: 1000; width: 100px; height: 100px;"
 			container.innerHTML = `
 				<dialog id="${id}_dialog">
 					<div style="display: flex; justify-content: end; gap: 1rem;">
@@ -33,7 +35,7 @@ namespace $ {
 					</div>
 					<pre id="${id}_text" style="font-size: .8rem"></pre>
 				</dialog>
-				<button id="${id}_show" style="top: 0; right: 0; position: absolute; z-index: 1000;">Show errors</button>
+				<button id="${id}_show">Show errors</button>
 			`
 			doc.body.appendChild(container)
 		}

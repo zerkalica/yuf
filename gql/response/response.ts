@@ -8,7 +8,6 @@ namespace $ {
 				text = response.text()
 				json = JSON.parse(text)
 				if (json.data === undefined) throw new Error('Empty data', { cause: { json } })
-				throw new Error('bla')
 				if (response.ok()) return sub( json.data ) as ReturnType<Sub>
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
