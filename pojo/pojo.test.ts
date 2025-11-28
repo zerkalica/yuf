@@ -14,7 +14,7 @@ namespace $ {
 				}),
 				native: new Response(),
 			}) })
-			const json = $.$yuf_error_json(error)
+			const json = $.$yuf_pojo(error)
 
 			$mol_assert_equal(json, {
 				message: 'Response error',
@@ -40,7 +40,7 @@ namespace $ {
 				auth_data: { password: '1234', login: 'admin' }
 			} } )
 
-			const json = $.$yuf_error_json(error, { hidden_props: /^(password)$/i })
+			const json = $.$yuf_pojo(error, { hidden_props: /^(password)$/i })
 
 			$mol_assert_equal(json, {
 				message: 'Auth error',
@@ -69,7 +69,7 @@ namespace $ {
 				{ cause: { overall_id: '321' } }
 			)
 
-			const json = $.$yuf_error_json(error, { hidden_props: /^(authorization)$/i })
+			const json = $.$yuf_pojo(error, { hidden_props: /^(authorization)$/i })
 
 			$mol_assert_equal(json, {
 				message: 'All error',
@@ -116,7 +116,7 @@ namespace $ {
 				some: { my }
 			} } )
 
-			const json = $.$yuf_error_json(error)
+			const json = $.$yuf_pojo(error)
 
 			$mol_assert_equal(json, {
 				message: 'Custom error',
@@ -148,7 +148,7 @@ namespace $ {
 			const child = My.make({ url: $mol_const('child'), next: parent })
 			parent.next = child
 
-			const json = $.$yuf_error_json({ child })
+			const json = $.$yuf_pojo({ child })
 
 			$mol_assert_equal(json, {
 				child: {
@@ -172,7 +172,7 @@ namespace $ {
 
 			const node = My.make({ url: $mol_const('some') })
 			const node_error = My.make({ url: () => $mol_fail(new Error('Subpath error')) })
-			const json = $.$yuf_error_json({ node, node_error })
+			const json = $.$yuf_pojo({ node, node_error })
 
 			$mol_assert_equal(json, {
 				node: {
@@ -184,7 +184,7 @@ namespace $ {
 
 		'Include error stack'($) {
 			const err = new Error('Some')
-			const json = $.$yuf_error_json(err, { include_stack: true })
+			const json = $.$yuf_pojo(err, { include_stack: true })
 
 			$mol_assert_equal(typeof json.stack, 'string')
 			$mol_assert_equal(json.stack.length > 1, true)
