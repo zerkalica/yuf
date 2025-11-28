@@ -110,13 +110,16 @@ namespace $ {
 		return e.toISOString()
 	}
 
-	function parse_event(e: Event & Partial<ErrorEvent>, options: $yuf_pojo_options) {
+	function parse_event(e: Event & Partial<ErrorEvent & CloseEvent>, options: $yuf_pojo_options) {
 		return $yuf_pojo({
 			event: e.type,
-			message: e?.message,
-			col: e?.colno,
-			line: e?.lineno,
-			file: e?.filename,
+			code: e.code,
+			reason: e.reason,
+			clean: e.wasClean,
+			message: e.message,
+			col: e.colno,
+			line: e.lineno,
+			file: e.filename,
 			error: e.error,
 		}, options)
 	}

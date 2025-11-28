@@ -34,8 +34,8 @@ namespace $ {
 			return event.type === 'error' || (event.type === 'close' && event.code !== 1000)
 		}
 
-		protected on_error(event: Event) {
-			const err = new this.$.$yuf_ws_error(event)
+		protected on_error(event: Event & { code?: number }) {
+			const err = new Error($yuf_ws_code_text(event.code ?? 1006), { cause: { event, socket_id: this.id() } })
 			this.opened(null)
 			this.error(err)
 		}
@@ -46,7 +46,8 @@ namespace $ {
 			this.$.$mol_log3_rise({
 				place: '$yuf_ws_host.on_close()',
 				socket_id: this.id(),
-				message: new this.$.$yuf_ws_error(event).message,
+				message: $yuf_ws_code_text(event.code),
+				clean: event.wasClean,
 				hint: restartable ? `reconnecting after ${delay} ms` : 'sleep',
 			})
 
