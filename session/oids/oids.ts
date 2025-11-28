@@ -230,7 +230,7 @@ namespace $ {
 
 			return $mol_error_fence(
 				() => payload ? Token_dto( payload) : null,
-				e => new $mol_error_mix(e.message, { payload }, e)
+				e => new $mol_error_mix('Invalid token', { payload }, e)
 			)
 		}
 
@@ -430,36 +430,32 @@ namespace $ {
 				headers['Content-type'] = 'application/x-www-form-urlencoded'
 			}
 
-			return this.$.$mol_fetch.request(url, { ...params, method: params?.body ? 'POST' : 'GET', headers }).response()
+			return this.$.$mol_fetch.response(url, { ...params, method: params?.body ? 'POST' : 'GET', headers })
 		}
 
 		@ $mol_action
-		token_cut() { return this.token() }
+		protected response_authorized(url: string, init?: RequestInit) {
+			let token_second: undefined | string | null
 
-		@ $mol_action
-		protected response_authorized(url: string, params?: RequestInit) {
-			let token = this.token_cut()
-			let try_refresh = true
-
-			while (true) {
-				if (! token) return null
-
+			do {
+				const token = token_second ?? this.token_grab()
+	
 				const headers = {
 					Accept: 'application/json',
 					Authorization: 'bearer ' + token,
-					...params?.headers,
+					...init?.headers,
 				}
 
-				const response = this.response(url, { ...params, headers, credentials: 'include' })
+				const response = this.response(url, { ...init, headers })
 				const code = response.code()
-				if (try_refresh && (code === 401 || code === 403) ) {
-					token = this.token(null, 'refresh')
-					try_refresh = false
-					continue
-				}
+	
+				if (code !== 403 && code !== 401) return response
+				if (token_second) return response
 
-				return response
-			}
+				token_second = this.token_grab(null)
+
+				if (! token_second) return response
+			} while(true)
 		}
 
 		logout_use_post() { return true }

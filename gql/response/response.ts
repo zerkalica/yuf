@@ -8,6 +8,7 @@ namespace $ {
 				text = response.text()
 				json = JSON.parse(text)
 				if (json.data === undefined) throw new Error('Empty data', { cause: { json } })
+				throw new Error('bla')
 				if (response.ok()) return sub( json.data ) as ReturnType<Sub>
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
@@ -16,7 +17,7 @@ namespace $ {
 				if ( !(e instanceof SyntaxError) ) err = e as Error
 			}
 
-			const { code , message } = $yuf_gql_pick_error(json) ?? { code: 'UNKNOWN' }
+			const { code , message } = $yuf_gql_pick_error(json) ?? { code: err?.message ?? response.message() }
 			const cause = { message, response, json }
 
 			if (err) throw new $mol_error_mix(code, cause, err)
