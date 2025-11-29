@@ -290,6 +290,8 @@
     "$yuf_keyboard_layout_en",
     "$yuf_keyboard_layout",
     "$yuf_keyboard_layout_ru",
+    "$yuf_keyboard_row",
+    "$yuf_keyboard_cell",
     "$mol_form_field",
     "$mol_form",
     "$mol_button_major",

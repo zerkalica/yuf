@@ -1256,6 +1256,32 @@ $yuf_keyboard_layout_ru $yuf_keyboard_layout_en
 		\Ю
 		\Ё
 
+$yuf_keyboard_cell $mol_view
+	input? null
+	upcase true
+	style *
+		^
+		--yuf_keyboard_cell_width_mul <= width_mul null
+	event *
+		^
+		pointerdown? <=> start? null
+		pointerup? <=> end? null
+		pointercancel? <=> abort? null
+	sub /
+		<= title <= symbol \
+
+$yuf_keyboard_row $mol_view
+	layout /string
+	input? null
+	max_buttons 10
+	lang_next \en
+	sub <= cells /
+		<= Cell*0 $yuf_keyboard_cell
+			symbol <= cell_symbol* \?
+			input? <=> cell_input*? null
+			upcase <= upcase false
+			width_mul <= width_mul* null
+
 $yuf_keyboard_card $mol_view
 	layout? \en
 	variant? \
@@ -1270,32 +1296,6 @@ $yuf_keyboard_card $mol_view
 			input? <=> row_input*? null
 			upcase <= upcase? false
 			lang_next <= lang_next \en
-
-$yuf_keyboard_row $mol_view
-	layout /string
-	input? null
-	max_buttons 10
-	lang_next \en
-	sub <= cells /
-		<= Cell*0 $yuf_keyboard_cell
-			symbol <= cell_symbol* \?
-			input? <=> cell_input*? null
-			upcase <= upcase false
-			width_mul <= width_mul* null
-
-$yuf_keyboard_cell $mol_view
-	input? null
-	upcase true
-	style *
-		^
-		--yuf_keyboard_cell_width_mul <= width_mul null
-	event *
-		^
-		pointerdown? <=> start? null
-		pointerup? <=> end? null
-		pointercancel? <=> abort? null
-	sub /
-		<= title <= symbol \
 
 $yuf_keyboard_field $mol_view
 	trigger_enabled false

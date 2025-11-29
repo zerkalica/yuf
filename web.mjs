@@ -14523,6 +14523,187 @@ var $;
 "use strict";
 
 ;
+	($.$yuf_keyboard_cell) = class $yuf_keyboard_cell extends ($.$mol_view) {
+		width_mul(){
+			return null;
+		}
+		start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		abort(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		symbol(){
+			return "";
+		}
+		title(){
+			return (this.symbol());
+		}
+		input(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		upcase(){
+			return true;
+		}
+		style(){
+			return {...(super.style()), "--yuf_keyboard_cell_width_mul": (this.width_mul())};
+		}
+		event(){
+			return {
+				...(super.event()), 
+				"pointerdown": (next) => (this.start(next)), 
+				"pointerup": (next) => (this.end(next)), 
+				"pointercancel": (next) => (this.abort(next))
+			};
+		}
+		sub(){
+			return [(this.title())];
+		}
+	};
+	($mol_mem(($.$yuf_keyboard_cell.prototype), "start"));
+	($mol_mem(($.$yuf_keyboard_cell.prototype), "end"));
+	($mol_mem(($.$yuf_keyboard_cell.prototype), "abort"));
+	($mol_mem(($.$yuf_keyboard_cell.prototype), "input"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_keyboard_cell extends $.$yuf_keyboard_cell {
+            title() {
+                let title = super.title().replaceAll('', '');
+                if (!this.upcase())
+                    title = title.toLowerCase();
+                return title;
+            }
+            down_target = null;
+            start(next) {
+                if (!next)
+                    return;
+                next.preventDefault();
+                this.dom_node().releasePointerCapture(next.pointerId);
+                this.down_target = next.target;
+            }
+            end(next) {
+                if (!next)
+                    return;
+                if (next.defaultPrevented)
+                    return;
+                if (this.down_target === next.target) {
+                    this.input(new InputEvent('input', { data: this.symbol() }));
+                }
+                this.down_target = null;
+            }
+            abort(next) {
+                if (!next)
+                    return;
+                if (next.defaultPrevented)
+                    return;
+                this.input(new InputEvent('input', { data: '' }));
+            }
+        }
+        $$.$yuf_keyboard_cell = $yuf_keyboard_cell;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_keyboard_row) = class $yuf_keyboard_row extends ($.$mol_view) {
+		cell_symbol(id){
+			return "?";
+		}
+		cell_input(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		upcase(){
+			return false;
+		}
+		width_mul(id){
+			return null;
+		}
+		Cell(id){
+			const obj = new this.$.$yuf_keyboard_cell();
+			(obj.symbol) = () => ((this.cell_symbol(id)));
+			(obj.input) = (next) => ((this.cell_input(id, next)));
+			(obj.upcase) = () => ((this.upcase()));
+			(obj.width_mul) = () => ((this.width_mul(id)));
+			return obj;
+		}
+		cells(){
+			return [(this.Cell("0"))];
+		}
+		layout(){
+			return [];
+		}
+		input(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		max_buttons(){
+			return 10;
+		}
+		lang_next(){
+			return "en";
+		}
+		sub(){
+			return (this.cells());
+		}
+	};
+	($mol_mem_key(($.$yuf_keyboard_row.prototype), "cell_input"));
+	($mol_mem_key(($.$yuf_keyboard_row.prototype), "Cell"));
+	($mol_mem(($.$yuf_keyboard_row.prototype), "input"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_keyboard_row extends $.$yuf_keyboard_row {
+            cells() {
+                return this.layout().map((symbol, index) => this.Cell(index));
+            }
+            cell_symbol(col_index) {
+                const title = this.layout()[col_index] ?? super.cell_symbol(col_index);
+                if (title === 'lang')
+                    return this.lang_next();
+                return title;
+            }
+            cell_input(col_index, next) {
+                if (!next)
+                    return;
+                this.input(next);
+            }
+            width_mul(col_index) {
+                const title = this.cell_symbol(col_index);
+                if (title !== ' ')
+                    return super.width_mul(col_index);
+                const diff = this.max_buttons() - this.layout().length + 1;
+                return diff.toFixed(0);
+            }
+        }
+        $$.$yuf_keyboard_row = $yuf_keyboard_row;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_keyboard_card) = class $yuf_keyboard_card extends ($.$mol_view) {
 		Layout_en(){
 			const obj = new this.$.$yuf_keyboard_layout_en();
@@ -14588,99 +14769,6 @@ var $;
 	($mol_mem(($.$yuf_keyboard_card.prototype), "layout"));
 	($mol_mem(($.$yuf_keyboard_card.prototype), "variant"));
 	($mol_mem(($.$yuf_keyboard_card.prototype), "area"));
-	($.$yuf_keyboard_row) = class $yuf_keyboard_row extends ($.$mol_view) {
-		cell_symbol(id){
-			return "?";
-		}
-		cell_input(id, next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		upcase(){
-			return false;
-		}
-		width_mul(id){
-			return null;
-		}
-		Cell(id){
-			const obj = new this.$.$yuf_keyboard_cell();
-			(obj.symbol) = () => ((this.cell_symbol(id)));
-			(obj.input) = (next) => ((this.cell_input(id, next)));
-			(obj.upcase) = () => ((this.upcase()));
-			(obj.width_mul) = () => ((this.width_mul(id)));
-			return obj;
-		}
-		cells(){
-			return [(this.Cell("0"))];
-		}
-		layout(){
-			return [];
-		}
-		input(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		max_buttons(){
-			return 10;
-		}
-		lang_next(){
-			return "en";
-		}
-		sub(){
-			return (this.cells());
-		}
-	};
-	($mol_mem_key(($.$yuf_keyboard_row.prototype), "cell_input"));
-	($mol_mem_key(($.$yuf_keyboard_row.prototype), "Cell"));
-	($mol_mem(($.$yuf_keyboard_row.prototype), "input"));
-	($.$yuf_keyboard_cell) = class $yuf_keyboard_cell extends ($.$mol_view) {
-		width_mul(){
-			return null;
-		}
-		start(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		end(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		abort(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		symbol(){
-			return "";
-		}
-		title(){
-			return (this.symbol());
-		}
-		input(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		upcase(){
-			return true;
-		}
-		style(){
-			return {...(super.style()), "--yuf_keyboard_cell_width_mul": (this.width_mul())};
-		}
-		event(){
-			return {
-				...(super.event()), 
-				"pointerdown": (next) => (this.start(next)), 
-				"pointerup": (next) => (this.end(next)), 
-				"pointercancel": (next) => (this.abort(next))
-			};
-		}
-		sub(){
-			return [(this.title())];
-		}
-	};
-	($mol_mem(($.$yuf_keyboard_cell.prototype), "start"));
-	($mol_mem(($.$yuf_keyboard_cell.prototype), "end"));
-	($mol_mem(($.$yuf_keyboard_cell.prototype), "abort"));
-	($mol_mem(($.$yuf_keyboard_cell.prototype), "input"));
 
 
 ;
@@ -14821,64 +14909,6 @@ var $;
             $mol_action
         ], $yuf_keyboard_card.prototype, "variant_switch", null);
         $$.$yuf_keyboard_card = $yuf_keyboard_card;
-        class $yuf_keyboard_row extends $.$yuf_keyboard_row {
-            cells() {
-                return this.layout().map((symbol, index) => this.Cell(index));
-            }
-            cell_symbol(col_index) {
-                const title = this.layout()[col_index] ?? super.cell_symbol(col_index);
-                if (title === 'lang')
-                    return this.lang_next();
-                return title;
-            }
-            cell_input(col_index, next) {
-                if (!next)
-                    return;
-                this.input(next);
-            }
-            width_mul(col_index) {
-                const title = this.cell_symbol(col_index);
-                if (title !== ' ')
-                    return super.width_mul(col_index);
-                const diff = this.max_buttons() - this.layout().length + 1;
-                return diff.toFixed(0);
-            }
-        }
-        $$.$yuf_keyboard_row = $yuf_keyboard_row;
-        class $yuf_keyboard_cell extends $.$yuf_keyboard_cell {
-            title() {
-                let title = super.title().replaceAll('', '');
-                if (!this.upcase())
-                    title = title.toLowerCase();
-                return title;
-            }
-            down_target = null;
-            start(next) {
-                if (!next)
-                    return;
-                next.preventDefault();
-                this.dom_node().releasePointerCapture(next.pointerId);
-                this.down_target = next.target;
-            }
-            end(next) {
-                if (!next)
-                    return;
-                if (next.defaultPrevented)
-                    return;
-                if (this.down_target === next.target) {
-                    this.input(new InputEvent('input', { data: this.symbol() }));
-                }
-                this.down_target = null;
-            }
-            abort(next) {
-                if (!next)
-                    return;
-                if (next.defaultPrevented)
-                    return;
-                this.input(new InputEvent('input', { data: '' }));
-            }
-        }
-        $$.$yuf_keyboard_cell = $yuf_keyboard_cell;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
