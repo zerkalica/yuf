@@ -1,0 +1,13 @@
+$yuf_keyboard_cell $mol_view
+	input? null
+	upcase true
+	style *
+		^
+		--yuf_keyboard_cell_width_mul <= width_mul null
+	event *
+		^
+		pointerdown? <=> start? null
+		pointerup? <=> end? null
+		pointercancel? <=> abort? null
+	sub /
+		<= title <= symbol \

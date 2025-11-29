@@ -1,0 +1,11 @@
+$yuf_keyboard_row $mol_view
+	layout /string
+	input? null
+	max_buttons 10
+	lang_next \en
+	sub <= cells /
+		<= Cell*0 $yuf_keyboard_cell
+			symbol <= cell_symbol* \?
+			input? <=> cell_input*? null
+			upcase <= upcase false
+			width_mul <= width_mul* null
