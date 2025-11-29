@@ -14342,6 +14342,70 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_keyboard) = class $mol_icon_keyboard extends ($.$mol_icon) {
+		path(){
+			return "M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_keyboard_check) = class $yuf_keyboard_check extends ($.$mol_check_icon) {
+		tabindex(){
+			return -1;
+		}
+		attr(){
+			return {...(super.attr()), "tabindex": (this.tabindex())};
+		}
+		Icon(){
+			const obj = new this.$.$mol_icon_keyboard();
+			return obj;
+		}
+		Input(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		Target(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+	};
+	($mol_mem(($.$yuf_keyboard_check.prototype), "Icon"));
+	($mol_mem(($.$yuf_keyboard_check.prototype), "Input"));
+	($mol_mem(($.$yuf_keyboard_check.prototype), "Target"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_keyboard_check extends $.$yuf_keyboard_check {
+            checked(next) {
+                const target = this.Target();
+                const input = this.Input();
+                if (next)
+                    this.Target(input);
+                if (next === false)
+                    this.Target(null);
+                return next ?? (target === input);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_keyboard_check.prototype, "checked", null);
+        $$.$yuf_keyboard_check = $yuf_keyboard_check;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_keyboard_layout_en) = class $yuf_keyboard_layout_en extends ($.$mol_view) {
 		lang_key(){
 			return "\u0001lang";
@@ -14560,7 +14624,7 @@ var $;
 "use strict";
 
 ;
-	($.$yuf_keyboard) = class $yuf_keyboard extends ($.$mol_view) {
+	($.$yuf_keyboard_card) = class $yuf_keyboard_card extends ($.$mol_view) {
 		Layout_en(){
 			const obj = new this.$.$yuf_keyboard_layout_en();
 			return obj;
@@ -14617,14 +14681,14 @@ var $;
 			return (this.rows());
 		}
 	};
-	($mol_mem(($.$yuf_keyboard.prototype), "Layout_en"));
-	($mol_mem(($.$yuf_keyboard.prototype), "Layout_ru"));
-	($mol_mem_key(($.$yuf_keyboard.prototype), "row_input"));
-	($mol_mem(($.$yuf_keyboard.prototype), "upcase"));
-	($mol_mem_key(($.$yuf_keyboard.prototype), "Row"));
-	($mol_mem(($.$yuf_keyboard.prototype), "layout"));
-	($mol_mem(($.$yuf_keyboard.prototype), "variant"));
-	($mol_mem(($.$yuf_keyboard.prototype), "area"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "Layout_en"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "Layout_ru"));
+	($mol_mem_key(($.$yuf_keyboard_card.prototype), "row_input"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "upcase"));
+	($mol_mem_key(($.$yuf_keyboard_card.prototype), "Row"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "layout"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "variant"));
+	($mol_mem(($.$yuf_keyboard_card.prototype), "area"));
 	($.$yuf_keyboard_row) = class $yuf_keyboard_row extends ($.$mol_view) {
 		cell_symbol(id){
 			return "?";
@@ -14729,7 +14793,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_keyboard extends $.$yuf_keyboard {
+        class $yuf_keyboard_card extends $.$yuf_keyboard_card {
             row_input(row_index, next) {
                 if (!next)
                     return;
@@ -14844,20 +14908,20 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $yuf_keyboard.prototype, "max_buttons", null);
+        ], $yuf_keyboard_card.prototype, "max_buttons", null);
         __decorate([
             $mol_action
-        ], $yuf_keyboard.prototype, "layout_switch", null);
+        ], $yuf_keyboard_card.prototype, "layout_switch", null);
         __decorate([
             $mol_mem
-        ], $yuf_keyboard.prototype, "lang_next", null);
+        ], $yuf_keyboard_card.prototype, "lang_next", null);
         __decorate([
             $mol_mem
-        ], $yuf_keyboard.prototype, "variant_next", null);
+        ], $yuf_keyboard_card.prototype, "variant_next", null);
         __decorate([
             $mol_action
-        ], $yuf_keyboard.prototype, "variant_switch", null);
-        $$.$yuf_keyboard = $yuf_keyboard;
+        ], $yuf_keyboard_card.prototype, "variant_switch", null);
+        $$.$yuf_keyboard_card = $yuf_keyboard_card;
         class $yuf_keyboard_row extends $.$yuf_keyboard_row {
             cells() {
                 return this.layout().map((symbol, index) => this.Cell(index));
@@ -14925,7 +14989,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_keyboard, {
+        $mol_style_define($yuf_keyboard_card, {
             '--yuf_keyboard_button_width': '2.5rem',
             '--yuf_keyboard_button_height': 'var(--yuf_keyboard_button_width)',
             flex: {
@@ -14972,34 +15036,56 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_icon_keyboard) = class $mol_icon_keyboard extends ($.$mol_icon) {
-		path(){
-			return "M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z";
-		}
-	};
-
-
-;
-"use strict";
-
-;
-	($.$yuf_keyboard_check) = class $yuf_keyboard_check extends ($.$mol_check_icon) {
-		Icon(){
-			const obj = new this.$.$mol_icon_keyboard();
+	($.$yuf_keyboard_field) = class $yuf_keyboard_field extends ($.$mol_view) {
+		Control(){
+			const obj = new this.$.$mol_view();
 			return obj;
+		}
+		keyboard_enabled(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Trigger(){
+			const obj = new this.$.$yuf_keyboard_check();
+			(obj.checked) = (next) => ((this.keyboard_enabled(next)));
+			return obj;
+		}
+		trigger_content(){
+			return [(this.Trigger())];
+		}
+		First(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Control()), ...(this.trigger_content())]);
+			return obj;
+		}
+		input_focused(next){
+			return (this.Input().focused(next));
 		}
 		Input(){
 			const obj = new this.$.$mol_view();
 			return obj;
 		}
-		Target(next){
-			if(next !== undefined) return next;
-			return null;
+		Keyboard(){
+			const obj = new this.$.$yuf_keyboard_card();
+			(obj.area) = () => ((this.Input()));
+			return obj;
+		}
+		keyboard_content(){
+			return [(this.Keyboard())];
+		}
+		trigger_enabled(){
+			return false;
+		}
+		sub(){
+			return [(this.First()), ...(this.keyboard_content())];
 		}
 	};
-	($mol_mem(($.$yuf_keyboard_check.prototype), "Icon"));
-	($mol_mem(($.$yuf_keyboard_check.prototype), "Input"));
-	($mol_mem(($.$yuf_keyboard_check.prototype), "Target"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Control"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "keyboard_enabled"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Trigger"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "First"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Input"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Keyboard"));
 
 
 ;
@@ -15011,21 +15097,56 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_keyboard_check extends $.$yuf_keyboard_check {
-            checked(next) {
-                const target = this.Target();
-                const input = this.Input();
-                if (next)
-                    this.Target(input);
-                if (next === false)
-                    this.Target(null);
-                return next ?? (target === input);
+        class $yuf_keyboard_field extends $.$yuf_keyboard_field {
+            static keyboard_enabled(next) {
+                return next ?? false;
             }
+            static target(next) {
+                if (!this.keyboard_enabled())
+                    return null;
+                return next || null;
+            }
+            keyboard_enabled(next) {
+                if (next)
+                    this.input_focused(true);
+                return this.$.$yuf_keyboard_field.keyboard_enabled(next);
+            }
+            target(next) {
+                return this.$.$yuf_keyboard_field.target(next);
+            }
+            auto() {
+                if (this.input_focused())
+                    new $mol_after_frame(() => this.target(this.Input()));
+            }
+            trigger_content() {
+                return this.trigger_enabled() ? super.trigger_content() : [];
+            }
+            keyboard_content() {
+                return this.target() === this.Input() ? super.keyboard_content() : [];
+            }
+            Control() { return this.Input(); }
         }
         __decorate([
             $mol_mem
-        ], $yuf_keyboard_check.prototype, "checked", null);
-        $$.$yuf_keyboard_check = $yuf_keyboard_check;
+        ], $yuf_keyboard_field, "keyboard_enabled", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_keyboard_field, "target", null);
+        $$.$yuf_keyboard_field = $yuf_keyboard_field;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_keyboard_field, {
+            flex: {
+                direction: 'column',
+            }
+        });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -15066,6 +15187,63 @@ var $;
 
 ;
 "use strict";
+
+;
+	($.$mol_form_field) = class $mol_form_field extends ($.$mol_labeler) {
+		name(){
+			return "";
+		}
+		bid(){
+			return "";
+		}
+		Bid(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.bid())]);
+			return obj;
+		}
+		control(){
+			return null;
+		}
+		bids(){
+			return [];
+		}
+		label(){
+			return [(this.name()), (this.Bid())];
+		}
+		content(){
+			return [(this.control())];
+		}
+	};
+	($mol_mem(($.$mol_form_field.prototype), "Bid"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form_field extends $.$mol_form_field {
+            bid() {
+                return this.bids().filter(Boolean)[0] ?? '';
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form_field.prototype, "bid", null);
+        $$.$mol_form_field = $mol_form_field;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/field/field.view.css", "[mol_form_field] {\n\talign-items: stretch;\n}\n\n[mol_form_field_bid] {\n\tcolor: var(--mol_theme_focus);\n\tdisplay: inline-block;\n\ttext-shadow: 0 0;\n}\n\n[mol_form_field_content] {\n\tborder-radius: var(--mol_gap_round);\n}\n");
+})($ || ($ = {}));
 
 ;
 	($.$mol_icon_eye) = class $mol_icon_eye extends ($.$mol_icon) {
@@ -15160,43 +15338,234 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_keyboard_demo) = class $yuf_keyboard_demo extends ($.$mol_example_small) {
-		Keyboard_target(next){
+	($.$mol_button_major) = class $mol_button_major extends ($.$mol_button_minor) {
+		theme(){
+			return "$mol_theme_base";
+		}
+	};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/button/major/major.view.css", "[mol_button_major] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$mol_row) = class $mol_row extends ($.$mol_view) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: var(--mol_gap_block);\n\tgap: var(--mol_gap_block);\n\tflex: 0 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmax-width: 100%;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$mol_form) = class $mol_form extends ($.$mol_list) {
+		keydown(next){
 			if(next !== undefined) return next;
 			return null;
 		}
+		form_invalid(){
+			return (this.$.$mol_locale.text("$mol_form_form_invalid"));
+		}
+		form_fields(){
+			return [];
+		}
+		body(){
+			return (this.form_fields());
+		}
+		Body(){
+			const obj = new this.$.$mol_list();
+			(obj.sub) = () => ((this.body()));
+			return obj;
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$mol_form_submit_title"));
+		}
+		submit_hint(){
+			return "";
+		}
+		submit_activate(next){
+			return (this.Submit().activate(next));
+		}
+		submit(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Submit(){
+			const obj = new this.$.$mol_button_major();
+			(obj.title) = () => ((this.submit_title()));
+			(obj.hint) = () => ((this.submit_hint()));
+			(obj.click) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		result(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Result(){
+			const obj = new this.$.$mol_status();
+			(obj.message) = () => ((this.result()));
+			return obj;
+		}
+		buttons(){
+			return [(this.Submit()), (this.Result())];
+		}
+		foot(){
+			return (this.buttons());
+		}
+		Foot(){
+			const obj = new this.$.$mol_row();
+			(obj.sub) = () => ((this.foot()));
+			return obj;
+		}
+		submit_allowed(){
+			return true;
+		}
+		submit_blocked(){
+			return false;
+		}
+		event(){
+			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
+		}
+		save(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		message_done(){
+			return (this.$.$mol_locale.text("$mol_form_message_done"));
+		}
+		errors(){
+			return {"Form invalid": (this.form_invalid())};
+		}
+		rows(){
+			return [(this.Body()), (this.Foot())];
+		}
+	};
+	($mol_mem(($.$mol_form.prototype), "keydown"));
+	($mol_mem(($.$mol_form.prototype), "Body"));
+	($mol_mem(($.$mol_form.prototype), "submit"));
+	($mol_mem(($.$mol_form.prototype), "Submit"));
+	($mol_mem(($.$mol_form.prototype), "result"));
+	($mol_mem(($.$mol_form.prototype), "Result"));
+	($mol_mem(($.$mol_form.prototype), "Foot"));
+	($mol_mem(($.$mol_form.prototype), "save"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/form.view.css", "[mol_form] {\r\n\tgap: var(--mol_gap_block);\r\n}\r\n\r\n[mol_form_body] {\r\n\tgap: var(--mol_gap_block);\r\n}");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_form extends $.$mol_form {
+            form_fields() {
+                return [...this.view_find(view => view instanceof $mol_form_field)]
+                    .map(path => path[path.length - 1]);
+            }
+            submit_allowed() {
+                return this.form_fields().every(field => !field.bid());
+            }
+            submit_blocked() {
+                return !this.submit_allowed();
+            }
+            keydown(next) {
+                if (next.ctrlKey && next.keyCode === $mol_keyboard_code.enter && !this.submit_blocked())
+                    this.submit(next);
+            }
+            result(next) {
+                if (next instanceof Error)
+                    next = this.errors()[next.message] || next.message || this.form_invalid();
+                return next ?? '';
+            }
+            buttons() {
+                return [
+                    this.Submit(),
+                    ...this.result() ? [this.Result()] : [],
+                ];
+            }
+            submit(next) {
+                try {
+                    if (!this.submit_allowed()) {
+                        throw new Error('Form invalid');
+                    }
+                    this.save(next);
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    $mol_fail_log(e);
+                    this.result(e);
+                    return false;
+                }
+                this.result(this.message_done());
+                return true;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "form_fields", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "submit_allowed", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "result", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form.prototype, "buttons", null);
+        __decorate([
+            $mol_action
+        ], $mol_form.prototype, "submit", null);
+        $$.$mol_form = $mol_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_keyboard_demo) = class $yuf_keyboard_demo extends ($.$mol_example_small) {
 		username(next){
 			if(next !== undefined) return next;
 			return "";
-		}
-		username_focused(){
-			return (this.Username().focused());
 		}
 		Username(){
 			const obj = new this.$.$mol_string();
 			(obj.value) = (next) => ((this.username(next)));
 			return obj;
 		}
-		keyboard_enabled(next){
-			if(next !== undefined) return next;
-			return false;
-		}
-		Username_keyboard_check(){
-			const obj = new this.$.$yuf_keyboard_check();
-			(obj.checked) = (next) => ((this.keyboard_enabled(next)));
+		Username_keyboard(){
+			const obj = new this.$.$yuf_keyboard_field();
+			(obj.trigger_enabled) = () => (true);
+			(obj.Input) = () => ((this.Username()));
 			return obj;
 		}
 		Username_label(){
-			const obj = new this.$.$mol_labeler();
-			(obj.title) = () => ("Username:");
-			(obj.content) = () => ([(this.Username()), (this.Username_keyboard_check())]);
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ("Username");
+			(obj.control) = () => ((this.Username_keyboard()));
 			return obj;
 		}
-		Pass(){
+		Password_input(){
 			return (this.Password().Pass());
-		}
-		pass_focused(){
-			return (this.Pass().focused());
 		}
 		password(next){
 			if(next !== undefined) return next;
@@ -15207,33 +15576,28 @@ var $;
 			(obj.value) = (next) => ((this.password(next)));
 			return obj;
 		}
-		Password_label(){
-			const obj = new this.$.$mol_labeler();
-			(obj.title) = () => ("Password:");
-			(obj.content) = () => ([(this.Password())]);
+		Password_keyboard(){
+			const obj = new this.$.$yuf_keyboard_field();
+			(obj.Input) = () => ((this.Password_input()));
+			(obj.Control) = () => ((this.Password()));
 			return obj;
 		}
-		form_fields(){
-			return [(this.Username_label()), (this.Password_label())];
+		Password_label(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ("Password");
+			(obj.control) = () => ((this.Password_keyboard()));
+			return obj;
 		}
-		form_fields_with_keyboard(){
-			return (this.form_fields());
-		}
-		List(){
-			const obj = new this.$.$mol_list();
-			(obj.rows) = () => ([...(this.form_fields_with_keyboard())]);
+		Form(){
+			const obj = new this.$.$mol_form();
+			(obj.body) = () => ([(this.Username_label()), (this.Password_label())]);
 			return obj;
 		}
 		title(){
 			return "Virtial keyboard";
 		}
-		Keyboard(){
-			const obj = new this.$.$yuf_keyboard();
-			(obj.area) = () => ((this.Keyboard_target()));
-			return obj;
-		}
 		sub(){
-			return [(this.List())];
+			return [(this.Form())];
 		}
 		tags(){
 			return ["input", "button"];
@@ -15242,17 +15606,15 @@ var $;
 			return ["Widget/Control"];
 		}
 	};
-	($mol_mem(($.$yuf_keyboard_demo.prototype), "Keyboard_target"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "username"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "Username"));
-	($mol_mem(($.$yuf_keyboard_demo.prototype), "keyboard_enabled"));
-	($mol_mem(($.$yuf_keyboard_demo.prototype), "Username_keyboard_check"));
+	($mol_mem(($.$yuf_keyboard_demo.prototype), "Username_keyboard"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "Username_label"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "password"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "Password"));
+	($mol_mem(($.$yuf_keyboard_demo.prototype), "Password_keyboard"));
 	($mol_mem(($.$yuf_keyboard_demo.prototype), "Password_label"));
-	($mol_mem(($.$yuf_keyboard_demo.prototype), "List"));
-	($mol_mem(($.$yuf_keyboard_demo.prototype), "Keyboard"));
+	($mol_mem(($.$yuf_keyboard_demo.prototype), "Form"));
 
 
 ;
@@ -15265,44 +15627,7 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_keyboard_demo extends $.$yuf_keyboard_demo {
-            Keyboard_target(next) {
-                if (!this.keyboard_enabled())
-                    return null;
-                if (next !== undefined)
-                    return next;
-                return next ?? null;
-            }
-            auto() {
-                if (this.pass_focused())
-                    this.Keyboard_target(this.Pass());
-                if (this.username_focused())
-                    this.Keyboard_target(this.Username());
-                return super.auto();
-            }
-            keyboard_enabled(next) {
-                if (next) {
-                    new $mol_after_frame(() => this.Username().focused(true));
-                }
-                return next ?? false;
-            }
-            form_fields_with_keyboard() {
-                const fields = this.form_fields();
-                const target = this.Keyboard_target();
-                if (!target)
-                    return fields;
-                new $mol_after_frame(() => target.focused(true));
-                if (target === this.Username()) {
-                    return [this.Username_label(), this.Keyboard(), this.Password_label()];
-                }
-                return [...fields, this.Keyboard()];
-            }
         }
-        __decorate([
-            $mol_mem
-        ], $yuf_keyboard_demo.prototype, "Keyboard_target", null);
-        __decorate([
-            $mol_mem
-        ], $yuf_keyboard_demo.prototype, "keyboard_enabled", null);
         $$.$yuf_keyboard_demo = $yuf_keyboard_demo;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -19322,267 +19647,6 @@ var $;
             $mol_mem
         ], $mol_number.prototype, "inc_enabled", null);
         $$.$mol_number = $mol_number;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-
-;
-	($.$mol_form_field) = class $mol_form_field extends ($.$mol_labeler) {
-		name(){
-			return "";
-		}
-		bid(){
-			return "";
-		}
-		Bid(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.bid())]);
-			return obj;
-		}
-		control(){
-			return null;
-		}
-		bids(){
-			return [];
-		}
-		label(){
-			return [(this.name()), (this.Bid())];
-		}
-		content(){
-			return [(this.control())];
-		}
-	};
-	($mol_mem(($.$mol_form_field.prototype), "Bid"));
-
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_form_field extends $.$mol_form_field {
-            bid() {
-                return this.bids().filter(Boolean)[0] ?? '';
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_form_field.prototype, "bid", null);
-        $$.$mol_form_field = $mol_form_field;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/form/field/field.view.css", "[mol_form_field] {\n\talign-items: stretch;\n}\n\n[mol_form_field_bid] {\n\tcolor: var(--mol_theme_focus);\n\tdisplay: inline-block;\n\ttext-shadow: 0 0;\n}\n\n[mol_form_field_content] {\n\tborder-radius: var(--mol_gap_round);\n}\n");
-})($ || ($ = {}));
-
-;
-	($.$mol_button_major) = class $mol_button_major extends ($.$mol_button_minor) {
-		theme(){
-			return "$mol_theme_base";
-		}
-	};
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/button/major/major.view.css", "[mol_button_major] {\n\tbackground-color: var(--mol_theme_back);\n\tcolor: var(--mol_theme_text);\n}\n");
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-	($.$mol_row) = class $mol_row extends ($.$mol_view) {};
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/row/row.view.css", "[mol_row] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\talign-items: flex-start;\n\talign-content: flex-start;\n\tjustify-content: flex-start;\n\tpadding: var(--mol_gap_block);\n\tgap: var(--mol_gap_block);\n\tflex: 0 0 auto;\n\tbox-sizing: border-box;\n\tmax-width: 100%;\n}\n\n[mol_row] > * {\n\tmax-width: 100%;\n}\n");
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-	($.$mol_form) = class $mol_form extends ($.$mol_list) {
-		keydown(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		form_invalid(){
-			return (this.$.$mol_locale.text("$mol_form_form_invalid"));
-		}
-		form_fields(){
-			return [];
-		}
-		body(){
-			return (this.form_fields());
-		}
-		Body(){
-			const obj = new this.$.$mol_list();
-			(obj.sub) = () => ((this.body()));
-			return obj;
-		}
-		submit_title(){
-			return (this.$.$mol_locale.text("$mol_form_submit_title"));
-		}
-		submit_hint(){
-			return "";
-		}
-		submit_activate(next){
-			return (this.Submit().activate(next));
-		}
-		submit(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Submit(){
-			const obj = new this.$.$mol_button_major();
-			(obj.title) = () => ((this.submit_title()));
-			(obj.hint) = () => ((this.submit_hint()));
-			(obj.click) = (next) => ((this.submit(next)));
-			return obj;
-		}
-		result(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Result(){
-			const obj = new this.$.$mol_status();
-			(obj.message) = () => ((this.result()));
-			return obj;
-		}
-		buttons(){
-			return [(this.Submit()), (this.Result())];
-		}
-		foot(){
-			return (this.buttons());
-		}
-		Foot(){
-			const obj = new this.$.$mol_row();
-			(obj.sub) = () => ((this.foot()));
-			return obj;
-		}
-		submit_allowed(){
-			return true;
-		}
-		submit_blocked(){
-			return false;
-		}
-		event(){
-			return {...(super.event()), "keydown": (next) => (this.keydown(next))};
-		}
-		save(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		message_done(){
-			return (this.$.$mol_locale.text("$mol_form_message_done"));
-		}
-		errors(){
-			return {"Form invalid": (this.form_invalid())};
-		}
-		rows(){
-			return [(this.Body()), (this.Foot())];
-		}
-	};
-	($mol_mem(($.$mol_form.prototype), "keydown"));
-	($mol_mem(($.$mol_form.prototype), "Body"));
-	($mol_mem(($.$mol_form.prototype), "submit"));
-	($mol_mem(($.$mol_form.prototype), "Submit"));
-	($mol_mem(($.$mol_form.prototype), "result"));
-	($mol_mem(($.$mol_form.prototype), "Result"));
-	($mol_mem(($.$mol_form.prototype), "Foot"));
-	($mol_mem(($.$mol_form.prototype), "save"));
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("mol/form/form.view.css", "[mol_form] {\r\n\tgap: var(--mol_gap_block);\r\n}\r\n\r\n[mol_form_body] {\r\n\tgap: var(--mol_gap_block);\r\n}");
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $mol_form extends $.$mol_form {
-            form_fields() {
-                return [...this.view_find(view => view instanceof $mol_form_field)]
-                    .map(path => path[path.length - 1]);
-            }
-            submit_allowed() {
-                return this.form_fields().every(field => !field.bid());
-            }
-            submit_blocked() {
-                return !this.submit_allowed();
-            }
-            keydown(next) {
-                if (next.ctrlKey && next.keyCode === $mol_keyboard_code.enter && !this.submit_blocked())
-                    this.submit(next);
-            }
-            result(next) {
-                if (next instanceof Error)
-                    next = this.errors()[next.message] || next.message || this.form_invalid();
-                return next ?? '';
-            }
-            buttons() {
-                return [
-                    this.Submit(),
-                    ...this.result() ? [this.Result()] : [],
-                ];
-            }
-            submit(next) {
-                try {
-                    if (!this.submit_allowed()) {
-                        throw new Error('Form invalid');
-                    }
-                    this.save(next);
-                }
-                catch (e) {
-                    if ($mol_promise_like(e))
-                        $mol_fail_hidden(e);
-                    $mol_fail_log(e);
-                    this.result(e);
-                    return false;
-                }
-                this.result(this.message_done());
-                return true;
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $mol_form.prototype, "form_fields", null);
-        __decorate([
-            $mol_mem
-        ], $mol_form.prototype, "submit_allowed", null);
-        __decorate([
-            $mol_mem
-        ], $mol_form.prototype, "result", null);
-        __decorate([
-            $mol_mem
-        ], $mol_form.prototype, "buttons", null);
-        __decorate([
-            $mol_action
-        ], $mol_form.prototype, "submit", null);
-        $$.$mol_form = $mol_form;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

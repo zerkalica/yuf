@@ -6008,6 +6008,36 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	export class $mol_icon_keyboard extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=keyboard.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_keyboard_check extends $mol_check_icon {
+		tabindex( ): number
+		attr( ): ({ 
+			'tabindex': ReturnType< $yuf_keyboard_check['tabindex'] >,
+		})  & ReturnType< $mol_check_icon['attr'] >
+		Icon( ): $mol_icon_keyboard
+		Input( ): $mol_view
+		Target( next?: any ): any
+	}
+	
+}
+
+//# sourceMappingURL=check.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_keyboard_check extends $.$yuf_keyboard_check {
+        checked(next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+
 	export class $yuf_keyboard_layout_en extends $mol_view {
 		lang_key( ): string
 		before_space( ): readonly(string)[]
@@ -6207,32 +6237,32 @@ declare namespace $ {
 //# sourceMappingURL=ru.view.tree.d.ts.map
 declare namespace $ {
 
-	type $yuf_keyboard_row__max_buttons_yuf_keyboard_1 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard['max_buttons'] >
+	type $yuf_keyboard_row__max_buttons_yuf_keyboard_card_1 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_card['max_buttons'] >
 		,
 		ReturnType< $yuf_keyboard_row['max_buttons'] >
 	>
-	type $yuf_keyboard_row__layout_yuf_keyboard_2 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard['row_layout'] >
+	type $yuf_keyboard_row__layout_yuf_keyboard_card_2 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_card['row_layout'] >
 		,
 		ReturnType< $yuf_keyboard_row['layout'] >
 	>
-	type $yuf_keyboard_row__input_yuf_keyboard_3 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard['row_input'] >
+	type $yuf_keyboard_row__input_yuf_keyboard_card_3 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_card['row_input'] >
 		,
 		ReturnType< $yuf_keyboard_row['input'] >
 	>
-	type $yuf_keyboard_row__upcase_yuf_keyboard_4 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard['upcase'] >
+	type $yuf_keyboard_row__upcase_yuf_keyboard_card_4 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_card['upcase'] >
 		,
 		ReturnType< $yuf_keyboard_row['upcase'] >
 	>
-	type $yuf_keyboard_row__lang_next_yuf_keyboard_5 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard['lang_next'] >
+	type $yuf_keyboard_row__lang_next_yuf_keyboard_card_5 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_card['lang_next'] >
 		,
 		ReturnType< $yuf_keyboard_row['lang_next'] >
 	>
-	export class $yuf_keyboard extends $mol_view {
+	export class $yuf_keyboard_card extends $mol_view {
 		Layout_en( ): $yuf_keyboard_layout_en
 		Layout_ru( ): $yuf_keyboard_layout_ru
 		max_buttons( ): number
@@ -6246,7 +6276,7 @@ declare namespace $ {
 		variant( next?: string ): string
 		area( ): $mol_view
 		layouts( ): Record<string, $yuf_keyboard_layout_en>
-		sub( ): ReturnType< $yuf_keyboard['rows'] >
+		sub( ): ReturnType< $yuf_keyboard_card['rows'] >
 	}
 	
 	type $yuf_keyboard_cell__symbol_yuf_keyboard_row_1 = $mol_type_enforce<
@@ -6305,9 +6335,9 @@ declare namespace $ {
 	
 }
 
-//# sourceMappingURL=keyboard.view.tree.d.ts.map
+//# sourceMappingURL=card.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_keyboard extends $.$yuf_keyboard {
+    class $yuf_keyboard_card extends $.$yuf_keyboard_card {
         row_input(row_index: number, next?: InputEvent): void;
         max_buttons(): number;
         layout_ids(): string[];
@@ -6342,28 +6372,57 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $mol_icon_keyboard extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=keyboard.view.tree.d.ts.map
-declare namespace $ {
-
-	export class $yuf_keyboard_check extends $mol_check_icon {
-		Icon( ): $mol_icon_keyboard
+	type $yuf_keyboard_check__checked_yuf_keyboard_field_1 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_field['keyboard_enabled'] >
+		,
+		ReturnType< $yuf_keyboard_check['checked'] >
+	>
+	type $mol_view__sub_yuf_keyboard_field_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type __yuf_keyboard_field_3 = $mol_type_enforce<
+		Parameters< $yuf_keyboard_field['input_focused'] >[0]
+		,
+		Parameters< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >[0]
+	>
+	type $yuf_keyboard_card__area_yuf_keyboard_field_4 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_field['Input'] >
+		,
+		ReturnType< $yuf_keyboard_card['area'] >
+	>
+	export class $yuf_keyboard_field extends $mol_view {
+		Control( ): $mol_view
+		keyboard_enabled( next?: boolean ): boolean
+		Trigger( ): $yuf_keyboard_check
+		trigger_content( ): readonly(any)[]
+		First( ): $mol_view
+		input_focused( next?: ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] > ): ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >
 		Input( ): $mol_view
-		Target( next?: any ): any
+		Keyboard( ): $yuf_keyboard_card
+		keyboard_content( ): readonly(any)[]
+		trigger_enabled( ): boolean
+		sub( ): readonly(any)[]
 	}
 	
 }
 
-//# sourceMappingURL=check.view.tree.d.ts.map
+//# sourceMappingURL=field.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_keyboard_check extends $.$yuf_keyboard_check {
-        checked(next?: boolean): boolean;
+    class $yuf_keyboard_field extends $.$yuf_keyboard_field {
+        static keyboard_enabled(next?: boolean): boolean;
+        static target(next?: $mol_view | null): $mol_view | null;
+        keyboard_enabled(next?: boolean): boolean;
+        target(next?: $mol_view | null): $mol_view | null;
+        auto(): void;
+        trigger_content(): readonly any[];
+        keyboard_content(): readonly any[];
+        Control(): $mol_view;
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -6402,6 +6461,35 @@ declare namespace $ {
 }
 
 //# sourceMappingURL=labeler.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_view__sub_mol_form_field_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $mol_form_field extends $mol_labeler {
+		name( ): string
+		bid( ): string
+		Bid( ): $mol_view
+		control( ): any
+		bids( ): readonly(string)[]
+		label( ): readonly(any)[]
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=field.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_form_field extends $.$mol_form_field {
+        bid(): string;
+    }
+}
+
+declare namespace $ {
+}
+
 declare namespace $ {
 
 	export class $mol_icon_eye extends $mol_icon {
@@ -6472,70 +6560,179 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_button_major extends $mol_button_minor {
+		theme( ): string
+	}
+	
+}
+
+//# sourceMappingURL=major.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_row extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=row.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $mol_list__sub_mol_form_1 = $mol_type_enforce<
+		ReturnType< $mol_form['body'] >
+		,
+		ReturnType< $mol_list['sub'] >
+	>
+	type __mol_form_2 = $mol_type_enforce<
+		Parameters< $mol_form['submit_activate'] >[0]
+		,
+		Parameters< ReturnType< $mol_form['Submit'] >['activate'] >[0]
+	>
+	type $mol_button_major__title_mol_form_3 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__hint_mol_form_4 = $mol_type_enforce<
+		ReturnType< $mol_form['submit_hint'] >
+		,
+		ReturnType< $mol_button_major['hint'] >
+	>
+	type $mol_button_major__click_mol_form_5 = $mol_type_enforce<
+		ReturnType< $mol_form['submit'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_status__message_mol_form_6 = $mol_type_enforce<
+		ReturnType< $mol_form['result'] >
+		,
+		ReturnType< $mol_status['message'] >
+	>
+	type $mol_row__sub_mol_form_7 = $mol_type_enforce<
+		ReturnType< $mol_form['foot'] >
+		,
+		ReturnType< $mol_row['sub'] >
+	>
+	export class $mol_form extends $mol_list {
+		keydown( next?: any ): any
+		form_invalid( ): string
+		form_fields( ): readonly($mol_form_field)[]
+		body( ): ReturnType< $mol_form['form_fields'] >
+		Body( ): $mol_list
+		submit_title( ): string
+		submit_hint( ): string
+		submit_activate( next?: ReturnType< ReturnType< $mol_form['Submit'] >['activate'] > ): ReturnType< ReturnType< $mol_form['Submit'] >['activate'] >
+		submit( next?: any ): any
+		Submit( ): $mol_button_major
+		result( next?: any ): any
+		Result( ): $mol_status
+		buttons( ): readonly($mol_view)[]
+		foot( ): ReturnType< $mol_form['buttons'] >
+		Foot( ): $mol_row
+		submit_allowed( ): boolean
+		submit_blocked( ): boolean
+		event( ): ({ 
+			keydown( next?: ReturnType< $mol_form['keydown'] > ): ReturnType< $mol_form['keydown'] >,
+		})  & ReturnType< $mol_list['event'] >
+		save( next?: any ): any
+		message_done( ): string
+		errors( ): Record<string, string>
+		rows( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_form extends $.$mol_form {
+        form_fields(): readonly $mol_form_field[];
+        submit_allowed(): boolean;
+        submit_blocked(): boolean;
+        keydown(next: KeyboardEvent): void;
+        result(next?: string | Error): string;
+        buttons(): ($.$mol_status | $mol_button_major)[];
+        submit(next?: Event): boolean;
+    }
+}
+
+declare namespace $ {
 
 	type $mol_string__value_yuf_keyboard_demo_1 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_demo['username'] >
 		,
 		ReturnType< $mol_string['value'] >
 	>
-	type $yuf_keyboard_check__checked_yuf_keyboard_demo_2 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard_demo['keyboard_enabled'] >
+	type $yuf_keyboard_field__trigger_enabled_yuf_keyboard_demo_2 = $mol_type_enforce<
+		boolean
 		,
-		ReturnType< $yuf_keyboard_check['checked'] >
+		ReturnType< $yuf_keyboard_field['trigger_enabled'] >
 	>
-	type $mol_labeler__title_yuf_keyboard_demo_3 = $mol_type_enforce<
+	type $yuf_keyboard_field__Input_yuf_keyboard_demo_3 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_demo['Username'] >
+		,
+		ReturnType< $yuf_keyboard_field['Input'] >
+	>
+	type $mol_form_field__name_yuf_keyboard_demo_4 = $mol_type_enforce<
 		string
 		,
-		ReturnType< $mol_labeler['title'] >
+		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_labeler__content_yuf_keyboard_demo_4 = $mol_type_enforce<
-		readonly(any)[]
+	type $mol_form_field__control_yuf_keyboard_demo_5 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_demo['Username_keyboard'] >
 		,
-		ReturnType< $mol_labeler['content'] >
+		ReturnType< $mol_form_field['control'] >
 	>
-	type $mol_password__value_yuf_keyboard_demo_5 = $mol_type_enforce<
+	type $mol_password__value_yuf_keyboard_demo_6 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_demo['password'] >
 		,
 		ReturnType< $mol_password['value'] >
 	>
-	type $mol_labeler__title_yuf_keyboard_demo_6 = $mol_type_enforce<
+	type $yuf_keyboard_field__Input_yuf_keyboard_demo_7 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_demo['Password_input'] >
+		,
+		ReturnType< $yuf_keyboard_field['Input'] >
+	>
+	type $yuf_keyboard_field__Control_yuf_keyboard_demo_8 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_demo['Password'] >
+		,
+		ReturnType< $yuf_keyboard_field['Control'] >
+	>
+	type $mol_form_field__name_yuf_keyboard_demo_9 = $mol_type_enforce<
 		string
 		,
-		ReturnType< $mol_labeler['title'] >
+		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_labeler__content_yuf_keyboard_demo_7 = $mol_type_enforce<
+	type $mol_form_field__control_yuf_keyboard_demo_10 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_demo['Password_keyboard'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_form__body_yuf_keyboard_demo_11 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $mol_labeler['content'] >
-	>
-	type $mol_list__rows_yuf_keyboard_demo_8 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_list['rows'] >
-	>
-	type $yuf_keyboard__area_yuf_keyboard_demo_9 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard_demo['Keyboard_target'] >
-		,
-		ReturnType< $yuf_keyboard['area'] >
+		ReturnType< $mol_form['body'] >
 	>
 	export class $yuf_keyboard_demo extends $mol_example_small {
-		Keyboard_target( next?: any ): any
 		username( next?: string ): string
-		username_focused( ): ReturnType< ReturnType< $yuf_keyboard_demo['Username'] >['focused'] >
 		Username( ): $mol_string
-		keyboard_enabled( next?: boolean ): boolean
-		Username_keyboard_check( ): $yuf_keyboard_check
-		Username_label( ): $mol_labeler
-		Pass( ): ReturnType< ReturnType< $yuf_keyboard_demo['Password'] >['Pass'] >
-		pass_focused( ): ReturnType< ReturnType< $yuf_keyboard_demo['Pass'] >['focused'] >
+		Username_keyboard( ): $yuf_keyboard_field
+		Username_label( ): $mol_form_field
+		Password_input( ): ReturnType< ReturnType< $yuf_keyboard_demo['Password'] >['Pass'] >
 		password( next?: string ): string
 		Password( ): $mol_password
-		Password_label( ): $mol_labeler
-		form_fields( ): readonly($mol_view)[]
-		form_fields_with_keyboard( ): ReturnType< $yuf_keyboard_demo['form_fields'] >
-		List( ): $mol_list
+		Password_keyboard( ): $yuf_keyboard_field
+		Password_label( ): $mol_form_field
+		Form( ): $mol_form
 		title( ): string
-		Keyboard( ): $yuf_keyboard
 		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
@@ -6546,10 +6743,6 @@ declare namespace $ {
 //# sourceMappingURL=demo.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_keyboard_demo extends $.$yuf_keyboard_demo {
-        Keyboard_target(next?: $mol_view): $mol_view | null;
-        auto(): any;
-        keyboard_enabled(next?: boolean): boolean;
-        form_fields_with_keyboard(): readonly $mol_view[] | ($mol_view | $.$yuf_keyboard)[];
     }
 }
 
@@ -8771,140 +8964,6 @@ declare namespace $.$$ {
         value_string(next?: string): string;
         dec_enabled(): boolean;
         inc_enabled(): boolean;
-    }
-}
-
-declare namespace $ {
-
-	type $mol_view__sub_mol_form_field_1 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_view['sub'] >
-	>
-	export class $mol_form_field extends $mol_labeler {
-		name( ): string
-		bid( ): string
-		Bid( ): $mol_view
-		control( ): any
-		bids( ): readonly(string)[]
-		label( ): readonly(any)[]
-		content( ): readonly(any)[]
-	}
-	
-}
-
-//# sourceMappingURL=field.view.tree.d.ts.map
-declare namespace $.$$ {
-    class $mol_form_field extends $.$mol_form_field {
-        bid(): string;
-    }
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	export class $mol_button_major extends $mol_button_minor {
-		theme( ): string
-	}
-	
-}
-
-//# sourceMappingURL=major.view.tree.d.ts.map
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	export class $mol_row extends $mol_view {
-	}
-	
-}
-
-//# sourceMappingURL=row.view.tree.d.ts.map
-declare namespace $ {
-}
-
-declare namespace $ {
-
-	type $mol_list__sub_mol_form_1 = $mol_type_enforce<
-		ReturnType< $mol_form['body'] >
-		,
-		ReturnType< $mol_list['sub'] >
-	>
-	type __mol_form_2 = $mol_type_enforce<
-		Parameters< $mol_form['submit_activate'] >[0]
-		,
-		Parameters< ReturnType< $mol_form['Submit'] >['activate'] >[0]
-	>
-	type $mol_button_major__title_mol_form_3 = $mol_type_enforce<
-		ReturnType< $mol_form['submit_title'] >
-		,
-		ReturnType< $mol_button_major['title'] >
-	>
-	type $mol_button_major__hint_mol_form_4 = $mol_type_enforce<
-		ReturnType< $mol_form['submit_hint'] >
-		,
-		ReturnType< $mol_button_major['hint'] >
-	>
-	type $mol_button_major__click_mol_form_5 = $mol_type_enforce<
-		ReturnType< $mol_form['submit'] >
-		,
-		ReturnType< $mol_button_major['click'] >
-	>
-	type $mol_status__message_mol_form_6 = $mol_type_enforce<
-		ReturnType< $mol_form['result'] >
-		,
-		ReturnType< $mol_status['message'] >
-	>
-	type $mol_row__sub_mol_form_7 = $mol_type_enforce<
-		ReturnType< $mol_form['foot'] >
-		,
-		ReturnType< $mol_row['sub'] >
-	>
-	export class $mol_form extends $mol_list {
-		keydown( next?: any ): any
-		form_invalid( ): string
-		form_fields( ): readonly($mol_form_field)[]
-		body( ): ReturnType< $mol_form['form_fields'] >
-		Body( ): $mol_list
-		submit_title( ): string
-		submit_hint( ): string
-		submit_activate( next?: ReturnType< ReturnType< $mol_form['Submit'] >['activate'] > ): ReturnType< ReturnType< $mol_form['Submit'] >['activate'] >
-		submit( next?: any ): any
-		Submit( ): $mol_button_major
-		result( next?: any ): any
-		Result( ): $mol_status
-		buttons( ): readonly($mol_view)[]
-		foot( ): ReturnType< $mol_form['buttons'] >
-		Foot( ): $mol_row
-		submit_allowed( ): boolean
-		submit_blocked( ): boolean
-		event( ): ({ 
-			keydown( next?: ReturnType< $mol_form['keydown'] > ): ReturnType< $mol_form['keydown'] >,
-		})  & ReturnType< $mol_list['event'] >
-		save( next?: any ): any
-		message_done( ): string
-		errors( ): Record<string, string>
-		rows( ): readonly(any)[]
-	}
-	
-}
-
-//# sourceMappingURL=form.view.tree.d.ts.map
-declare namespace $.$$ {
-    class $mol_form extends $.$mol_form {
-        form_fields(): readonly $mol_form_field[];
-        submit_allowed(): boolean;
-        submit_blocked(): boolean;
-        keydown(next: KeyboardEvent): void;
-        result(next?: string | Error): string;
-        buttons(): ($.$mol_status | $mol_button_major)[];
-        submit(next?: Event): boolean;
     }
 }
 

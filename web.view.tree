@@ -1095,6 +1095,16 @@ $yuf_chess_demo $mol_example_small
 	aspects /
 		\Application
 
+$mol_icon_keyboard $mol_icon path \M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z
+
+$yuf_keyboard_check $mol_check_icon
+	attr *
+		^
+		tabindex <= tabindex -1
+	Icon $mol_icon_keyboard
+	Input $mol_view
+	Target? null
+
 $yuf_keyboard_layout_en $mol_view
 	variants *string[][]
 		\
@@ -1246,7 +1256,7 @@ $yuf_keyboard_layout_ru $yuf_keyboard_layout_en
 		\Ю
 		\Ё
 
-$yuf_keyboard $mol_view
+$yuf_keyboard_card $mol_view
 	layout? \en
 	variant? \
 	area $mol_view
@@ -1287,12 +1297,18 @@ $yuf_keyboard_cell $mol_view
 	sub /
 		<= title <= symbol \
 
-$mol_icon_keyboard $mol_icon path \M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z
-
-$yuf_keyboard_check $mol_check_icon
-	Icon $mol_icon_keyboard
-	Input $mol_view
-	Target? null
+$yuf_keyboard_field $mol_view
+	trigger_enabled false
+	sub /
+		<= First $mol_view sub /
+			<= Control $mol_view
+			^ trigger_content /
+				<= Trigger $yuf_keyboard_check
+					checked? <=> keyboard_enabled? false
+		^ keyboard_content /
+			<= Keyboard $yuf_keyboard_card
+				area <= Input $mol_view
+					focused? => input_focused?
 
 $mol_labeler $mol_list
 	rows /
@@ -1303,6 +1319,14 @@ $mol_labeler $mol_list
 		<= Content $mol_view
 			minimal_height 24
 			sub <= content /
+
+$mol_form_field $mol_labeler
+	bids /string
+	label /
+		<= name \
+		<= Bid $mol_view
+			sub / <= bid \
+	content / <= control null
 
 $mol_icon_eye $mol_icon path \M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z
 
@@ -1319,27 +1343,52 @@ $mol_password $mol_view
 			checked? <=> checked? true
 			Icon <= Show_icon $mol_icon_eye
 
+$mol_button_major $mol_button_minor
+	theme \$mol_theme_base
+
+$mol_row $mol_view
+
+$mol_form $mol_list
+	submit_allowed true
+	submit_blocked false
+	event *
+		^
+		keydown?event <=> keydown?event null
+	save?event null
+	message_done @ \Saved
+	errors *string
+		\Form invalid
+			<= form_invalid @ \Form is not valid
+	rows /
+		<= Body $mol_list
+			sub <= body <= form_fields /$mol_form_field
+		<= Foot $mol_row
+			sub <= foot <= buttons /$mol_view
+				<= Submit $mol_button_major
+					title <= submit_title @ \Save
+					hint <= submit_hint \
+					activate? => submit_activate?
+					click? <=> submit? null
+				<= Result $mol_status
+					message <= result? null
+
 $yuf_keyboard_demo $mol_example_small
 	title \Virtial keyboard
-	Keyboard $yuf_keyboard
-		area <= Keyboard_target? null
 	sub /
-		<= List $mol_list rows /
-			^ form_fields_with_keyboard <= form_fields /$mol_view
-				<= Username_label $mol_labeler
-					title \Username:
-					content /
-						<= Username $mol_string
+		<= Form $mol_form
+			body /
+				<= Username_label $mol_form_field
+					name \Username
+					control <= Username_keyboard $yuf_keyboard_field
+						trigger_enabled true
+						Input <= Username $mol_string
 							value? <=> username? \
-							focused => username_focused
-						<= Username_keyboard_check $yuf_keyboard_check
-							checked? <=> keyboard_enabled? false
-				<= Password_label $mol_labeler
-					title \Password:
-					content /
-						<= Password $mol_password
-							Pass => Pass
-								focused => pass_focused
+				<= Password_label $mol_form_field
+					name \Password
+					control <= Password_keyboard $yuf_keyboard_field
+						Input <= Password_input
+						Control <= Password $mol_password
+							Pass => Password_input
 							value? <=> password? \
 	tags /
 		\input
@@ -1841,43 +1890,6 @@ $mol_number $mol_view
 			event_click? <=> event_inc? null
 			enabled <= inc_enabled <= enabled
 			sub / <= inc_icon $mol_icon_chevron_right
-
-$mol_form_field $mol_labeler
-	bids /string
-	label /
-		<= name \
-		<= Bid $mol_view
-			sub / <= bid \
-	content / <= control null
-
-$mol_button_major $mol_button_minor
-	theme \$mol_theme_base
-
-$mol_row $mol_view
-
-$mol_form $mol_list
-	submit_allowed true
-	submit_blocked false
-	event *
-		^
-		keydown?event <=> keydown?event null
-	save?event null
-	message_done @ \Saved
-	errors *string
-		\Form invalid
-			<= form_invalid @ \Form is not valid
-	rows /
-		<= Body $mol_list
-			sub <= body <= form_fields /$mol_form_field
-		<= Foot $mol_row
-			sub <= foot <= buttons /$mol_view
-				<= Submit $mol_button_major
-					title <= submit_title @ \Save
-					hint <= submit_hint \
-					activate? => submit_activate?
-					click? <=> submit? null
-				<= Result $mol_status
-					message <= result? null
 
 $yuf_catalog_demo $mol_example_large
 	title \Catalog of pages
