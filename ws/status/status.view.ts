@@ -8,7 +8,6 @@ namespace $.$$ {
 		override status() {
 			const ws = this.ws()
 			if (ws.error_message()) return 'error'
-			if (ws.syncing()) return 'syncing'
 			if (ws.ready()) return 'open'
 			return 'connecting'
 		}

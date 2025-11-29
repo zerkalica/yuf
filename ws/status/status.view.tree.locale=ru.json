@@ -2,6 +2,5 @@
 	"$yuf_ws_status_title": "Сервер: {status}",
 	"$yuf_ws_status_status_message_error": "ошибка",
 	"$yuf_ws_status_status_message_open": "онлайн",
-	"$yuf_ws_status_status_message_connecting": "соединяется",
-	"$yuf_ws_status_status_message_syncing": "передача"
+	"$yuf_ws_status_status_message_connecting": "соединяется"
 }

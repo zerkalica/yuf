@@ -17,7 +17,6 @@ namespace $ {
 		@ $mol_mem
 		protected ws(reset?: null) {
 			this.restarts()
-			console.log('creating socket')
 			if (! this.enabled()) return null
 
 			return this.$.$yuf_ws_socket.make({
@@ -174,13 +173,10 @@ namespace $ {
 			return this.opened()
 		}
 
-		syncing() { return false }
-
 		@ $mol_mem
 		error_message() {
 			try {
 				this.ready()
-				this.syncing()
 				return this.error()?.message ?? ''
 			} catch (e) {
 				if ( ! $mol_promise_like(e) ) return (e as Error).message ?? ''

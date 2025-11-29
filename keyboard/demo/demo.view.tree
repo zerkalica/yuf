@@ -1,24 +1,20 @@
 $yuf_keyboard_demo $mol_example_small
 	title \Virtial keyboard
-	Keyboard $yuf_keyboard
-		area <= Keyboard_target? null
 	sub /
-		<= List $mol_list rows /
-			^ form_fields_with_keyboard <= form_fields /$mol_view
-				<= Username_label $mol_labeler
-					title \Username:
-					content /
-						<= Username $mol_string
+		<= Form $mol_form
+			body /
+				<= Username_label $mol_form_field
+					name \Username
+					control <= Username_keyboard $yuf_keyboard_field
+						trigger_enabled true
+						Input <= Username $mol_string
 							value? <=> username? \
-							focused => username_focused
-						<= Username_keyboard_check $yuf_keyboard_check
-							checked? <=> keyboard_enabled? false
-				<= Password_label $mol_labeler
-					title \Password:
-					content /
-						<= Password $mol_password
-							Pass => Pass
-								focused => pass_focused
+				<= Password_label $mol_form_field
+					name \Password
+					control <= Password_keyboard $yuf_keyboard_field
+						Input <= Password_input
+						Control <= Password $mol_password
+							Pass => Password_input
 							value? <=> password? \
 	tags /
 		\input

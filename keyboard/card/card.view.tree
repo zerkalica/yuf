@@ -1,4 +1,4 @@
-$yuf_keyboard $mol_view
+$yuf_keyboard_card $mol_view
 	layout? \en
 	variant? \
 	area $mol_view

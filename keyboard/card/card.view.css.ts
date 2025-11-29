@@ -1,6 +1,6 @@
 namespace $.$$ {
 	
-	$mol_style_define( $yuf_keyboard, {
+	$mol_style_define( $yuf_keyboard_card, {
 		
 		'--yuf_keyboard_button_width': '2.5rem',
 		'--yuf_keyboard_button_height': 'var(--yuf_keyboard_button_width)',

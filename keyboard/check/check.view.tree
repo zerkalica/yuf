@@ -1,4 +1,7 @@
 $yuf_keyboard_check $mol_check_icon
+	attr *
+		^
+		tabindex <= tabindex -1
 	Icon $mol_icon_keyboard
 	Input $mol_view
 	Target? null

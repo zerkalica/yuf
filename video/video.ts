@@ -12,9 +12,9 @@ namespace $ {
 		return new Promise<HTMLVideoElement>((done, fail) => {
 			const node = this.$mol_dom.document.createElement('video')
 			node.src = src
-			node.onerror = () => {
+			node.onerror = (event) => {
 				const code = media_error_code[node.error?.code ?? 0] || media_error_code[media_error_code.MEDIA_ERR_UNKNOWN]
-				const cause = { message: node.error?.message, src }
+				const cause = { message: node.error?.message, src, event }
 
 				const error = new Error(code, { cause } )
 				fail(error)

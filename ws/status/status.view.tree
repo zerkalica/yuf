@@ -9,7 +9,6 @@ $yuf_ws_status $mol_view
 		error @ \error
 		open @ \online
 		connecting @ \connecting
-		syncing @ \syncing
 	sub /
 		^ ws_error_content /
 			<= Ws_error $mol_speck

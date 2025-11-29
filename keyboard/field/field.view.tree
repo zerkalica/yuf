@@ -1,0 +1,12 @@
+$yuf_keyboard_field $mol_view
+	trigger_enabled false
+	sub /
+		<= First $mol_view sub /
+			<= Control $mol_view
+			^ trigger_content /
+				<= Trigger $yuf_keyboard_check
+					checked? <=> keyboard_enabled? false
+		^ keyboard_content /
+			<= Keyboard $yuf_keyboard_card
+				area <= Input $mol_view
+					focused? => input_focused?

@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $yuf_keyboard extends $.$yuf_keyboard {
+	export class $yuf_keyboard_card extends $.$yuf_keyboard_card {
 		
 		override row_input( row_index: number, next?: InputEvent ) {
 			if( !next ) return
