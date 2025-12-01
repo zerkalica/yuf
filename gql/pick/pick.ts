@@ -51,9 +51,9 @@ namespace $ {
 			return json.data
 		}
 
-		const { code , message } = $yuf_gql_pick_error(json) ?? { code: 'UNKNOWN' }
+		const { code , message } = $yuf_gql_pick_error(json) ?? { message: 'UNKNOWN' }
 
-		throw new Error(code, { cause: { message } } )
+		throw new Error(message, { cause: { code } } )
 	}
 
 }
