@@ -12980,7 +12980,7 @@ var $;
             const raw = this.send(`d`);
             const fen = raw.map(raw => raw.match(/^Fen: (.+)/)?.[1]).find($mol_guard_defined);
             if (!fen)
-                throw new Error('Fen empty: ' + raw.join(', '));
+                throw new Error('Required fen', { cause: { chess_engine_response: raw } });
             const checkers = raw.map(raw => raw.match(/^Checkers:((?: [a-h][1-8])+)/)?.[1].split(' ')).find($mol_guard_defined) ?? [];
             return { fen, checkers };
         }
@@ -20481,31 +20481,31 @@ var $;
             value_str(field) {
                 const val = this.value(field);
                 if (typeof val !== 'string')
-                    throw new Error('Not a string: ' + field);
+                    throw new Error('Not a string', { cause: { field } });
                 return val;
             }
             value_bool(field) {
                 const val = this.value(field);
                 if (typeof val !== 'boolean')
-                    throw new Error('Not a boolean: ' + field);
+                    throw new Error('Not a boolean', { cause: { field } });
                 return val;
             }
             value_number(field) {
                 const val = this.value(field);
                 if (typeof val !== 'number')
-                    throw new Error('Not a number: ' + field);
+                    throw new Error('Not a number', { cause: { field } });
                 return val;
             }
             list_string(field) {
                 const val = this.value(field);
                 if (Array.isArray(val))
-                    throw new Error('Not an array: ' + field);
+                    throw new Error('Not an array', { cause: { field } });
                 return val;
             }
             dictionary_bool(field) {
                 const val = this.value(field);
                 if (Array.isArray(val) || !val || typeof val !== 'object')
-                    throw new Error('Not an object: ' + field);
+                    throw new Error('Not an object', { cause: { field } });
                 return val;
             }
             format(key, str) {
@@ -20515,7 +20515,7 @@ var $;
                 const value = this.value(field);
                 if (value instanceof this.$.$mol_time_moment || typeof value === 'string')
                     return value;
-                throw new Error('Not a date ' + value);
+                throw new Error('Not a date', { cause: { value } });
             }
             min_msg_formatted(field) {
                 if (typeof this.value(field) === 'string')
