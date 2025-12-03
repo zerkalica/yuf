@@ -1,6 +1,6 @@
 namespace $ {
 
-	export function $yuf_fallback_prev<V>(cb: () => V, prev?: V | undefined) {
+	export function $yuf_error_fallback<V>(cb: () => V, prev?: V | undefined) {
 		try {
 			return cb()
 		} catch (e) {

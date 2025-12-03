@@ -5,7 +5,8 @@ namespace $ {
 			hidden_props: /^(authorization|password)$/
 		}
 
-		const event_pojo = typeof event === 'string' ? { event, error } : $yuf_pojo(event, options)
+		const event_pojo = typeof event === 'string' ? { event, error } :
+			$yuf_pojo('error' in event ? event.error : event, options)
 
 		const data = {
 			time,

@@ -3,31 +3,31 @@ namespace $.$$ {
 
 		value_str(field: string) {
 			const val = this.value(field)
-			if (typeof val !== 'string') throw new Error('Not a string: ' + field)
+			if (typeof val !== 'string') throw new Error('Not a string', { cause: { field }})
 			return val
 		}
 
 		value_bool(field: string) {
 			const val = this.value(field)
-			if (typeof val !== 'boolean') throw new Error('Not a boolean: ' + field)
+			if (typeof val !== 'boolean') throw new Error('Not a boolean', { cause: { field }})
 			return val
 		}
 
 		value_number(field: string) {
 			const val = this.value(field)
-			if (typeof val !== 'number') throw new Error('Not a number: ' + field)
+			if (typeof val !== 'number') throw new Error('Not a number', { cause: { field }})
 			return val
 		}
 
 		list_string(field: string) {
 			const val = this.value(field)
-			if (Array.isArray(val)) throw new Error('Not an array: ' + field)
+			if (Array.isArray(val)) throw new Error('Not an array', { cause: { field }})
 			return val as readonly string[]
 		}
 
 		dictionary_bool(field: string) {
 			const val = this.value(field)
-			if (Array.isArray(val) || ! val || typeof val !== 'object') throw new Error('Not an object: ' + field)
+			if (Array.isArray(val) || ! val || typeof val !== 'object') throw new Error('Not an object', { cause: { field }})
 			return val
 		}
 
@@ -42,7 +42,7 @@ namespace $.$$ {
 		override value_date(field: string) {
 			const value = this.value(field)
 			if (value instanceof this.$.$mol_time_moment || typeof value === 'string') return value
-			throw new Error('Not a date ' + value)
+			throw new Error('Not a date', { cause: { value } })
 		}
 
 		protected min_msg_formatted(field: string) {

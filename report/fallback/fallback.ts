@@ -1,4 +1,4 @@
 namespace $ {
-	export const $yuf_report_fallback = {}
+	export class $yuf_report_fallback extends $mol_object {}
 
 }

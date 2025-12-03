@@ -131,6 +131,7 @@ namespace $ {
 	function parse_request(request: Request, options: $yuf_pojo_options) {
 		return $yuf_pojo({
 			url: request.url,
+			body: request.body || undefined,
 			method: request.method === 'GET' ? undefined : request.method,
 			referrer: request.referrer === 'about:client' ? undefined : request.referrer || undefined,
 			headers: request.headers,

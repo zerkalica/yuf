@@ -206,7 +206,7 @@ namespace $ {
 			const raw = this.send(`d`)
 
 			const fen = raw.map(raw => raw.match(/^Fen: (.+)/)?.[1]).find($mol_guard_defined)
-			if (! fen) throw new Error('Fen empty: ' + raw.join(', '))
+			if (! fen) throw new Error('Required fen', { cause: { chess_engine_response: raw } })
 
 			const checkers = raw.map(raw => raw.match(/^Checkers:((?: [a-h][1-8])+)/)
 				?.[1].split(' ') as (undefined | readonly $yuf_chess_position[])

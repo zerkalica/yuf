@@ -48,7 +48,7 @@ namespace $ {
 			return token
 		}
 
-		message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
+		protected message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>) {
 			return { type, id, query, device }
 		}
 
@@ -60,7 +60,7 @@ namespace $ {
 		 * @throws if error field in message object is not empty
 		 * @returns undefined - not recognized message, null - delete patch
 		 */
-		message(obj: Partial<$yuf_ws_statefull_message>) {
+		protected message(obj: Partial<$yuf_ws_statefull_message>) {
 			if (Array.isArray(obj)) return null
 			if ( ! ('type' in obj) && ! ( 'error' in obj) ) return null
 			if ((obj as { error?: string | null }).error === null) return null
@@ -68,11 +68,7 @@ namespace $ {
 			const code = obj.error ? (this.code_normalize(obj.error) || obj.error) : null
 			if (! code) return obj
 
-			const signature = this.message_signature(obj)
-
-			throw new Error(code,
-				{ cause: { signature, req_id: obj.req_id, message: obj.message } }
-			)
+			throw new Error(code, { cause: obj } )
 		}
 
 		deadline_timeout() { return 10000 }
@@ -121,20 +117,22 @@ namespace $ {
 				const message = this.message(obj)
 				if (message) channel?.receive(message)
 			} catch (error) {
-				if (this.auth_need(error as {})) {
+				if (error instanceof Error && this.auth_need(error)) {
 					this.logout()
 				}
 				if ( ! channel ) $mol_fail_hidden(error)
 
-				const req_id = error instanceof Error && error.cause instanceof $mol_fetch_response
-					? error.cause.headers().get('X-Request-ID')
+				const req_id = error instanceof Error && typeof error.cause === 'object'
+					? ((error.cause as { req_id?: string} | null)?.req_id ?? null)
 					: null
 				channel.receive({ data: error, req_id })
 			}
 		}
 
-		auth_need(error: { cause?: { http_code?: number } }) {
-			return error.cause?.http_code === 403
+		auth_need(error: Error) {
+			return error.message === 'Unauthorized'
+				|| error.message === 'Forbidden'
+				|| error.message === 'AUTH_FAILED'
 		}
 
 	}
