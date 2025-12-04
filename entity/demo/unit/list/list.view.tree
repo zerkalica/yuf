@@ -1,8 +1,0 @@
-$yuf_entity_demo_unit_list $yuf_entity_list
-	menu_filter_enabled true
-	param \yuf_entity_demo_unit
-	menu_title \Units
-	Spread* $yuf_entity_demo_unit_page
-		model <= model*
-		remove <= remove*
-		Close <= Spread_close
