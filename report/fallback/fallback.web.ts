@@ -25,17 +25,17 @@ namespace $ {
 		if (! container) {
 			container = doc.createElement('div')
 			container.id = id
-			container.style="top: 0; right: 0; position: absolute; z-index: 1000; width: 100px; height: 100px;"
+			container.style="bottom: 0; right: 0; position: absolute; z-index: 1000; width: 2rem; height: 2rem;"
 			container.innerHTML = `
-				<dialog id="${id}_dialog">
-					<div style="display: flex; justify-content: end; gap: 1rem;">
+				<dialog id="${id}_dialog" style="padding: .5rem; border-radius: 4px; border-color: darkred">
+					<div style="display: flex; justify-content: end; gap: .5rem;">
 						<button id="${id}_copy">Copy</button>
-						<button id="${id}_forget">Forget</button>
+						<button id="${id}_forget">Clear</button>
 						<button id="${id}_close">Close</button>
 					</div>
-					<pre id="${id}_text" style="font-size: .8rem"></pre>
+					<pre id="${id}_text" style="font-size: .8rem; line-height: 1rem; margin: 0;"></pre>
 				</dialog>
-				<button id="${id}_show">Show errors</button>
+				<button id="${id}_show" style="background: darkred; color: white; border: none">!!!</button>
 			`
 			doc.body.appendChild(container)
 		}
