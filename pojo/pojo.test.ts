@@ -175,7 +175,7 @@ namespace $ {
 			const err = new Error('Some')
 			const json = $.$yuf_pojo(err, { include_stack: true })
 
-			$mol_assert_equal(Array.isArray(json.stack) || typeof json.stack === 'string', true)
+			$mol_assert_equal(typeof json.stack === 'string', true)
 			$mol_assert_equal(json.stack.length > 1, true)
 
 		}

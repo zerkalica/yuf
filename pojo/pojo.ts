@@ -108,7 +108,7 @@ namespace $ {
 			name: e.name === 'Error' || e.name === 'AggregateError' ? undefined : e.name,
 			...$yuf_pojo(e.cause, options) || {},
 			errors: e instanceof AggregateError ? $yuf_pojo(e.errors, options) : undefined,
-			stack: options.include_stack ? e.stack : undefined,
+			stack: options.include_stack ? (String(e.stack) || undefined) : undefined,
 		}, options)
 	}
 
