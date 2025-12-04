@@ -23,13 +23,17 @@ namespace $ {
 			'X-Request-ID': id,
 			'X-Request-Deadline': init?.deadline ? `${init?.deadline.toFixed(0)}ms` : null,
 			'X-Client-ID': init?.client_id,
-			'Content-Type': content_type,
+			'Content-Type': [content_type],
 		})
 
 		let url = typeof path === 'string' ? path : path.url
 		const prev = typeof path === 'string' ? url : new Request(url, path)
 
-		return new Request(prev, { ...init, headers })
+		const req = new Request(prev, { ...init, headers })
+		if (req.body && init?.body) {
+			$yuf_pojo_known.set(req, init.body)
+		}
+		return req
 	}
 
 }

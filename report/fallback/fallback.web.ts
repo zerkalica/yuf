@@ -1,5 +1,5 @@
 namespace $ {
-	globalThis.addEventListener('error', (event: Event | string, url?: string, line?: number, col?: number, error?: Error) => {
+	function report(event: Event | string, url?: string, line?: number, col?: number, error?: Error) {
 		const time = new Date()
 		const options = {
 			hidden_props: /^(authorization|password)$/
@@ -30,6 +30,7 @@ namespace $ {
 				<dialog id="${id}_dialog">
 					<div style="display: flex; justify-content: end; gap: 1rem;">
 						<button id="${id}_copy">Copy</button>
+						<button id="${id}_forget">Forget</button>
 						<button id="${id}_close">Close</button>
 					</div>
 					<pre id="${id}_text" style="font-size: .8rem"></pre>
@@ -41,15 +42,19 @@ namespace $ {
 
 		const button_show = doc.getElementById(`${id}_show`) as HTMLButtonElement
 		const button_close = doc.getElementById(`${id}_close`) as HTMLButtonElement
+		const button_forget = doc.getElementById(`${id}_forget`) as HTMLButtonElement
 		const button_copy = doc.getElementById(`${id}_copy`) as HTMLButtonElement
 		const dialog = doc.getElementById(`${id}_dialog`) as HTMLDialogElement
 		const text = doc.getElementById(`${id}_text`) as HTMLPreElement
 		button_show.onclick = e => dialog.showModal()
 		button_close.onclick = e => dialog.close()
+		button_forget.onclick = e => container.remove()
 
 		button_copy.onclick = e => navigator.clipboard.writeText(str)
 
 		text.innerText = str
-	})
+	}
+
+	globalThis.addEventListener('error', $mol_wire_async((...args) => report(...args)))
 
 }

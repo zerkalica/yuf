@@ -4,6 +4,7 @@ namespace $ {
 	export type $yuf_pojo_options = {
 		include_stack?: boolean
 		hidden_props?: RegExp
+		unwrap_promise?: boolean
 	}
 
 	export const $yuf_pojo_serializers = new Map<Function, (val: any, options: $yuf_pojo_options) => unknown>([
@@ -18,6 +19,8 @@ namespace $ {
 		[Map, parse_entries],
 		[Set, parse_set],
 	])
+
+	export const $yuf_pojo_known = new WeakMap<{}, unknown>()
 
 	export function $yuf_pojo(e: unknown, options: $yuf_pojo_options = {}): any {
 		if (typeof e === 'symbol' || typeof e === 'function') return e.toString()
@@ -34,6 +37,9 @@ namespace $ {
 			for (const [Klass, serializer] of $yuf_pojo_serializers.entries()) {
 				if (e instanceof Klass) return serializer(e, options)
 			}
+
+			const mapped = $yuf_pojo_known.get(e)
+			if (mapped) return $yuf_pojo(mapped, options)
 
 			if ( ArrayBuffer.isView( e ) ) return `Buffer(${e.byteLength})`
 			if (Array.isArray(e)) return parse_array(e, options)
@@ -129,10 +135,16 @@ namespace $ {
 	}
 
 	function parse_request(request: Request, options: $yuf_pojo_options) {
+		const mapped = $yuf_pojo_known.get(request)
+		let body = $yuf_pojo(mapped, options)
+		try {
+			body = JSON.parse(body)
+		} catch (e) {}
+
 		return $yuf_pojo({
-			url: request.url,
-			body: request.body || undefined,
 			method: request.method === 'GET' ? undefined : request.method,
+			url: request.url,
+			body,
 			referrer: request.referrer === 'about:client' ? undefined : request.referrer || undefined,
 			headers: request.headers,
 		}, options)

@@ -1,6 +1,6 @@
 namespace $ {
 
-	export type $yuf_header_rec = Record<string, string | readonly string[] | null | undefined >
+	export type $yuf_header_rec = Record<string, string | readonly (string | null | undefined)[] | null | undefined >
 
 	function assign_headers(target: Headers, rec?: $yuf_header_rec | null) {
 		for (let k in rec) {
@@ -8,6 +8,7 @@ namespace $ {
 
 			for (const val of Array.isArray(values) ? values : [ values ]) {
 				if (val === null || val === undefined) target.delete(k)
+				else if (Array.isArray(values)) target.set(k, val)
 				else target.append(k, val)
 			}
 		}
