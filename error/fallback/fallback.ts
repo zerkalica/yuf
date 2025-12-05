@@ -10,10 +10,10 @@ namespace $ {
 		try {
 			return task()
 		} catch (e) {
-			if ($mol_promise_like(e) && loading !== undefined) return loading
-			if (error === undefined) $mol_fail_hidden(e)
+			const result = $mol_promise_like(e) ? loading : error
+			if (result === undefined) $mol_fail_hidden(e)
 			$mol_fail_log(e)
-			return error
+			return result
 		}
 	}
 
