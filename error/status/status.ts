@@ -1,6 +1,6 @@
 namespace $ {
-	export function $yuf_error_status<V>(
-		cb: () => V,
+	export function $yuf_error_status<Result>(
+		cb: () => Result,
 		update_status: (e: readonly [Error | Promise<unknown>] | null) => void
 	) {
 		try {

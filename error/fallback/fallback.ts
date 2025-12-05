@@ -1,11 +1,19 @@
 namespace $ {
 
-	export function $yuf_error_fallback<V>(cb: () => V, prev?: V | undefined) {
+	export function $yuf_error_fallback<Result>(
+		task: () => Result,
+		{ loading, error }: {
+			loading?: Result | undefined
+			error?: Result | undefined
+		}
+	) {
 		try {
-			return cb()
+			return task()
 		} catch (e) {
-			if ($mol_promise_like(e) && prev) return prev
-			$mol_fail_hidden(e)
+			if ($mol_promise_like(e) && loading !== undefined) return loading
+			if (error === undefined) $mol_fail_hidden(e)
+			$mol_fail_log(e)
+			return error
 		}
 	}
 
