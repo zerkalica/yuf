@@ -169,13 +169,7 @@ var $node = new Proxy({ require }, {
             target.require.resolve(name);
         }
         catch {
-            try {
-                $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
-            }
-            catch (e) {
-                if ($$.$mol_promise_like(e))
-                    $$.$mol_fail_hidden(e);
-            }
+            $$.$mol_exec('.', 'npm', 'install', '--omit=dev', name);
             try {
                 $$.$mol_exec('.', 'npm', 'install', '--omit=dev', '@types/' + name);
             }

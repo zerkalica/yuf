@@ -383,7 +383,6 @@
     "$yuf_bug_catalog"
   ],
   "dependencies": {
-    "internal": "*",
     "jsdom": "*"
   }
 }
