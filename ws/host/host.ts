@@ -1,4 +1,5 @@
 namespace $ {
+
 	export class $yuf_ws_host extends $mol_object {
 
 		watchdog_deadline() { return 30000 }
