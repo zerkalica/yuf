@@ -5,6 +5,7 @@ namespace $ {
 		flag?: 'remove' | 'patch' | null
 	]
 
+
 	export class $yuf_entity2<Data = unknown> extends $mol_object {
 		protected factory() {
 			return this.constructor as typeof $yuf_entity2
