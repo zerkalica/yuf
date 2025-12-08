@@ -50,11 +50,11 @@ namespace $ {
 
 			if (Symbol.toPrimitive in e) return parse_primitive(e, options)
 
-			if ('toString' in e) return e.toString().replace(/^\[object /i, `[${e.constructor.name} `)
+			if ('toString' in e) return e.toString().replace(/^\[object /i, `[${e.constructor.name || 'object'} `)
 			return undefined
 		} catch(err) {
 			const message = typeof err === 'object' && err && 'message' in err ? err.message as string : ''
-			return `Serialize_error(${message})`
+			return `[${err?.constructor.name || 'object'} ${message}]`
 		} finally {
 			called.delete(e)
 		}
@@ -108,10 +108,10 @@ namespace $ {
 
 		return $yuf_pojo({
 			message: e.message,
-			name: name === 'Error' || name === 'AggregateError' ? undefined : e.name,
+			name: name === 'Error' || name === 'AggregateError' ? undefined : name,
 			cause: e.cause,
 			errors: e instanceof AggregateError ? e.errors : undefined,
-			stack: options.include_stack ? (String(e.stack) || undefined) : undefined,
+			stack: options.include_stack ? (String(e.stack).split('\n') || undefined) : undefined,
 		}, options)
 	}
 
@@ -138,13 +138,15 @@ namespace $ {
 	}
 
 	function parse_request(request: Request, options: $yuf_pojo_options) {
-		const mapped = $yuf_pojo_known.get(request)
-		let body = $yuf_pojo(mapped, options)
+		const extra_raw = $yuf_pojo_known.get(request)
+		let extra = ! extra_raw ? undefined : $yuf_pojo(extra_raw, options)
+		let body = extra?.body
 		try {
-			body = JSON.parse(body)
+			body = body ? $yuf_pojo(JSON.parse(body), options) : undefined
 		} catch (e) {}
 
 		return $yuf_pojo({
+			...extra || {},
 			method: request.method === 'GET' ? undefined : request.method,
 			url: request.url,
 			body,

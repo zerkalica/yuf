@@ -31,7 +31,7 @@ namespace $ {
 
 		const req = new Request(prev, { ...init, headers })
 		if (req.body && init?.body) {
-			$yuf_pojo_known.set(req, init.body)
+			$yuf_pojo_known.set(req, init)
 		}
 		return req
 	}

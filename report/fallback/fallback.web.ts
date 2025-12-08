@@ -22,6 +22,7 @@ namespace $ {
 			col,
 			url,
 			line,
+			stack: target instanceof Error ? String(target.stack).split('\n') : undefined,
 		}
 
 		const str = JSON.stringify(data, null, ' ')
