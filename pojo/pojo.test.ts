@@ -18,16 +18,18 @@ namespace $ {
 
 			$mol_assert_equal(json, {
 				message: 'Response error',
-				request: {
-					url: 'https://bla.local/some-url',
-					headers: {
-						'content-type': 'application/json',
-						'x-request-id': '1231',
+				cause: {
+					request: {
+						url: 'https://bla.local/some-url',
+						headers: {
+							'content-type': 'application/json',
+							'x-request-id': '1231',
+						}
+					},
+	
+					response: {
+						status: 200,
 					}
-				},
-
-				response: {
-					status: 200,
 				}
 			})
 		},
@@ -41,9 +43,11 @@ namespace $ {
 
 			$mol_assert_equal(json, {
 				message: 'Auth error',
-				auth_data: {
-					password: '*',
-					login: 'admin'
+				cause: {
+					auth_data: {
+						password: '*',
+						login: 'admin'
+					}
 				}
 			})
 
@@ -68,16 +72,20 @@ namespace $ {
 
 			$mol_assert_equal(json, {
 				message: 'All error',
-				overall_id: '321',
+				cause: {
+					overall_id: '321',
+				},
 				errors: [
 					{
 						message: 'Simple error'
 					},
 					{
 						message: 'Complex error',
-						id: 1,
-						sub_error: {
-							message: 'Error in cause'
+						cause: {
+							id: 1,
+							sub_error: {
+								message: 'Error in cause'
+							}
 						}
 					}
 				]
@@ -111,10 +119,12 @@ namespace $ {
 
 			$mol_assert_equal(json, {
 				message: 'Custom error',
-				some: {
-					my: {
-						url: 'url_val',
-						native: 'native_str'
+				cause: {
+					some: {
+						my: {
+							url: 'url_val',
+							native: 'native_str'
+						}
 					}
 				}
 			})
@@ -178,8 +188,17 @@ namespace $ {
 			$mol_assert_equal(typeof json.stack === 'string', true)
 			$mol_assert_equal(json.stack.length > 1, true)
 
-		}
+		},
 
+		'Promise to string'($) {
+			const err = new Error('Some', { cause: Object.defineProperties(Promise.resolve(), {
+				[Symbol.toStringTag]: { value: 'bla-bla' }
+			}) })
+			const json = $.$yuf_pojo(err)
+
+			$mol_assert_equal(json, { message: 'Some', cause: '[Promise bla-bla]' })
+
+		}
 
 	})
 

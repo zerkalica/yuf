@@ -5,8 +5,16 @@ namespace $ {
 			hidden_props: /^(authorization|password)$/
 		}
 
-		const event_pojo = typeof event === 'string' ? { event, error } :
-			$yuf_pojo('error' in event ? event.error : event, options)
+		const target = typeof event === 'string'
+			? { event, error }
+			: 'error' in event && event.error ? event.error : event
+
+		let event_pojo
+		try {
+			event_pojo = $yuf_pojo(target, options)
+		} catch (error) {
+			event_pojo = { error, target }
+		}
 
 		const data = {
 			time,
@@ -55,6 +63,6 @@ namespace $ {
 		text.innerText = str
 	}
 
-	globalThis.addEventListener('error', $mol_wire_async((...args) => report(...args)))
+	globalThis.addEventListener('error', (...args) => report(...args))
 
 }

@@ -50,6 +50,7 @@ namespace $ {
 
 			if (Symbol.toPrimitive in e) return parse_primitive(e, options)
 
+			if ('toString' in e) return e.toString().replace(/^\[object /i, `[${e.constructor.name} `)
 			return undefined
 		} catch(err) {
 			const message = typeof err === 'object' && err && 'message' in err ? err.message as string : ''
@@ -103,11 +104,13 @@ namespace $ {
 	}
 
 	function parse_error(e: Error, options: $yuf_pojo_options) {
+		const name = e.name || e.constructor.name
+
 		return $yuf_pojo({
 			message: e.message,
-			name: e.name === 'Error' || e.name === 'AggregateError' ? undefined : e.name,
-			...$yuf_pojo(e.cause, options) || {},
-			errors: e instanceof AggregateError ? $yuf_pojo(e.errors, options) : undefined,
+			name: name === 'Error' || name === 'AggregateError' ? undefined : e.name,
+			cause: e.cause,
+			errors: e instanceof AggregateError ? e.errors : undefined,
 			stack: options.include_stack ? (String(e.stack) || undefined) : undefined,
 		}, options)
 	}
