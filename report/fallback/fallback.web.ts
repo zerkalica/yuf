@@ -27,39 +27,86 @@ namespace $ {
 
 		const str = JSON.stringify(data, null, ' ')
 		const doc = $mol_dom_context.document
-		const id = '$yuf_report_fallback'
+		const id = 'yuf_report_fallback'
 
 		let container = doc.getElementById(id)
+		const buttons = ['copy', 'next', 'forget', 'close'] as const
 
 		if (! container) {
 			container = doc.createElement('div')
 			container.id = id
-			container.style="bottom: 0; right: 0; position: absolute; z-index: 1000; width: 2rem; height: 2rem;"
 			container.innerHTML = `
-				<dialog id="${id}_dialog" style="padding: .5rem; border-radius: 4px; border-color: darkred">
-					<div style="display: flex; justify-content: end; gap: .5rem;">
-						<button id="${id}_copy">Copy</button>
-						<button id="${id}_forget">Clear</button>
-						<button id="${id}_close">Close</button>
-					</div>
-					<pre id="${id}_text" style="font-size: .8rem; line-height: 1rem; margin: 0;"></pre>
-				</dialog>
-				<button id="${id}_show" style="background: darkred; color: white; border: none">!!!</button>
-			`
+<dialog id="${id}_dialog">
+	<div>
+		${buttons.map(suffix => `<button id="${id}_${suffix}">${suffix}</button>`).join('\n')}
+	</div>
+	<pre id="${id}_text"></pre>
+</dialog>
+<button id="${id}_show">!!!</button>
+<style>
+	#${id} {
+		bottom: 0;
+		right: 0;
+		position: absolute;
+		z-index: 1000;
+		width: 2rem;
+		height: 2rem;
+	}
+
+	#${id} > button {
+		background: darkred;
+		color: white;
+		border: none;
+	}
+
+	#${id} > dialog {
+		padding: .5rem;
+		border-radius: 4px;
+		border-color: darkred;
+	}
+
+	#${id} > dialog[open] {
+		display: flex;
+		flex-direction: column;
+		height: fit-content;
+		max-height: 98%;
+		width: 99%;
+		gap: .5rem;
+	}
+
+	#${id} > dialog > div {
+		display: flex;
+		justify-content: end;
+		gap: .5rem;
+	}
+
+	#${id} > dialog > pre {
+		flex-grow: 111;
+		font-size: .8rem;
+		line-height: 1rem;
+		justify-self: stretch;
+		margin: 0;
+		word-break: break-word;
+		white-space: break-spaces;
+		overflow-y: auto;
+		scrollbar-width: thin;
+	}
+</style>`
 			doc.body.appendChild(container)
 		}
 
-		const button_show = doc.getElementById(`${id}_show`) as HTMLButtonElement
-		const button_close = doc.getElementById(`${id}_close`) as HTMLButtonElement
-		const button_forget = doc.getElementById(`${id}_forget`) as HTMLButtonElement
-		const button_copy = doc.getElementById(`${id}_copy`) as HTMLButtonElement
+		const button = Object.fromEntries(
+			[...buttons, 'show'].map(suffix => [ suffix, doc.getElementById(`${id}_${suffix}`) ])
+		) as Record<typeof buttons[number] | 'show', HTMLButtonElement>
+
 		const dialog = doc.getElementById(`${id}_dialog`) as HTMLDialogElement
 		const text = doc.getElementById(`${id}_text`) as HTMLPreElement
-		button_show.onclick = e => dialog.showModal()
-		button_close.onclick = e => dialog.close()
-		button_forget.onclick = e => container.remove()
 
-		button_copy.onclick = e => navigator.clipboard.writeText(str)
+		button.show.onclick = e => dialog.showModal()
+		button.close.onclick = e => dialog.close()
+		button.forget.onclick = e => container.remove()
+		button.next.onclick = e => text.scrollTo({ top: dialog.scrollTop + text.scrollTop + text.offsetHeight })
+		button.copy.onclick = e => navigator.clipboard.writeText(str)
 
 		text.innerText = str
 	}

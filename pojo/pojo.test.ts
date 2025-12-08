@@ -19,6 +19,7 @@ namespace $ {
 			$mol_assert_equal(json, {
 				message: 'Response error',
 				cause: {
+					status: 200,
 					request: {
 						url: 'https://bla.local/some-url',
 						headers: {
@@ -26,10 +27,6 @@ namespace $ {
 							'x-request-id': '1231',
 						}
 					},
-	
-					response: {
-						status: 200,
-					}
 				}
 			})
 		},

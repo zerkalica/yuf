@@ -146,7 +146,6 @@ namespace $ {
 		} catch (e) {}
 
 		return $yuf_pojo({
-			...extra || {},
 			method: request.method === 'GET' ? undefined : request.method,
 			url: request.url,
 			body,
@@ -158,9 +157,9 @@ namespace $ {
 	function parse_response(response: Response, options: $yuf_pojo_options) {
 		return $yuf_pojo({
 			url: response.url || undefined,
-			type: response.type === 'default' ? undefined : response.type,
 			status: response.status,
 			statusText: response.statusText || undefined,
+			type: response.type === 'default' ? undefined : response.type,
 			headers: response.headers,
 		}, options)
 	}
@@ -170,9 +169,11 @@ namespace $ {
 	}
 
 	function parse_mol_response(response: $mol_fetch_response, options: $yuf_pojo_options) {
+		const url = response.native.url === response.request.native.url ? undefined : response.native.url || undefined
 		return {
+			...$yuf_pojo(response.native, options),
+			...url ? { url } : {},
 			request: $yuf_pojo(response.request, options),
-			response: $yuf_pojo(response.native, options),
 		}
 	}
 
