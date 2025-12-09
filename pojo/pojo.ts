@@ -41,6 +41,7 @@ namespace $ {
 			const mapped = $yuf_pojo_known.get(e)
 			if (mapped) return $yuf_pojo(mapped, options)
 
+			if ( $mol_promise_like(e) ) return parse_promise(e, options)
 			if ( ArrayBuffer.isView( e ) ) return `Buffer(${e.byteLength})`
 			if (Array.isArray(e)) return parse_array(e, options)
 			if (Symbol.iterator in e) return parse_iterable(e as Iterable<unknown>, options)
@@ -50,8 +51,7 @@ namespace $ {
 
 			if (Symbol.toPrimitive in e) return parse_primitive(e, options)
 
-			if ('toString' in e) return e.toString().replace(/^\[object /i, `[${e.constructor.name || 'object'} `)
-			return undefined
+			return object_to_string(e)
 		} catch(err) {
 			const message = typeof err === 'object' && err && 'message' in err ? err.message as string : ''
 			return `[${err?.constructor.name || 'object'} ${message}]`
@@ -60,8 +60,20 @@ namespace $ {
 		}
 	}
 
+	function object_to_string(e: Object) {
+		if (! ('toString' in e) ) return undefined
+		return e.toString().replace(/^\[object /i, `[${e.constructor.name || 'object'} `)
+	}
+
 	function parse_primitive(e: {}, options: $yuf_pojo_options) {
 		return (e as any)[ Symbol.toPrimitive ]( 'default' )
+	}
+
+	function parse_promise(p: PromiseLike<unknown> & { stack?: unknown }, options: $yuf_pojo_options) {
+		return {
+			promise: object_to_string(p),
+			stack: ! options.include_stack || ! p.stack ? undefined : String(p.stack).split('\n') || undefined
+		}
 	}
 
 	function parse_pojo(obj: Object, options: $yuf_pojo_options) {

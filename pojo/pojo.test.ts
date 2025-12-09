@@ -189,11 +189,15 @@ namespace $ {
 
 		'Promise to string'($) {
 			const err = new Error('Some', { cause: Object.defineProperties(Promise.resolve(), {
-				[Symbol.toStringTag]: { value: 'bla-bla' }
+				[Symbol.toStringTag]: { value: 'bla-bla' },
+				stack: { value: 'bla' },
 			}) })
 			const json = $.$yuf_pojo(err)
 
-			$mol_assert_equal(json, { message: 'Some', cause: '[Promise bla-bla]' })
+			$mol_assert_equal(json, { message: 'Some', cause: {
+				name: '[Promise bla-bla]',
+				stack: ['bla']
+			} })
 
 		}
 
