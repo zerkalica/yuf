@@ -1,29 +1,30 @@
 namespace $ {
 	function report(event: Event | string, url?: string, line?: number, col?: number, error?: Error) {
 		const time = new Date()
-		const options = {
-			hidden_props: /^(authorization|password)$/
-		}
-
 		const target = typeof event === 'string'
 			? { event, error }
 			: 'error' in event && event.error ? event.error : event
 
-		let event_pojo
+		let data
+
 		try {
-			event_pojo = $yuf_pojo(target, options)
+			data = $yuf_pojo(target, {
+				hidden_props: /^(authorization|password)$/
+			})
+			if (typeof data !== 'object' || Array.isArray(data)) {
+				data = { target: data }
+			}
 		} catch (error) {
-			event_pojo = { error, target }
+			data = { error, target }
 		}
 
-		const data = {
+		data = Object.assign(data, {
 			time,
-			...event_pojo || {},
 			col,
 			url,
 			line,
 			stack: target instanceof Error ? String(target.stack).split('\n') : undefined,
-		}
+		})
 
 		const str = JSON.stringify(data, null, ' ')
 		const doc = $mol_dom_context.document
