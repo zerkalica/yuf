@@ -192,12 +192,13 @@ namespace $ {
 				[Symbol.toStringTag]: { value: 'bla-bla' },
 				stack: { value: 'bla' },
 			}) })
-			const json = $.$yuf_pojo(err)
+			const json = $.$yuf_pojo(err, { include_stack: true })
 
-			$mol_assert_equal(json, { message: 'Some', cause: {
+			$mol_assert_equal('message' in json ? json.message : '', 'Some')
+			$mol_assert_equal(json.cause, {
 				promise: '[Promise bla-bla]',
 				stack: ['bla']
-			} })
+			})
 
 		}
 
