@@ -195,7 +195,7 @@ namespace $ {
 			const json = $.$yuf_pojo(err)
 
 			$mol_assert_equal(json, { message: 'Some', cause: {
-				name: '[Promise bla-bla]',
+				promise: '[Promise bla-bla]',
 				stack: ['bla']
 			} })
 
