@@ -10531,17 +10531,22 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_localizer_item_form['model'] >['text'] >[0]
 	>
-	type $mol_string__value_yuf_localizer_item_form_2 = $mol_type_enforce<
+	type $mol_string__enabled_yuf_localizer_item_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_item_form['text_edit_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__value_yuf_localizer_item_form_3 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_item_form['text'] >
 		,
 		ReturnType< $mol_string['value'] >
 	>
-	type $mol_form_field__name_yuf_localizer_item_form_3 = $mol_type_enforce<
+	type $mol_form_field__name_yuf_localizer_item_form_4 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_item_form['text_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__control_yuf_localizer_item_form_4 = $mol_type_enforce<
+	type $mol_form_field__control_yuf_localizer_item_form_5 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_item_form['Text'] >
 		,
 		ReturnType< $mol_form_field['control'] >
@@ -10554,6 +10559,7 @@ declare namespace $ {
 		text_actual( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text_actual'] >
 		lang_code( ): string
 		text_name( ): ReturnType< $yuf_localizer_item_form['lang_code'] >
+		text_edit_enabled( ): boolean
 		Text( ): $mol_string
 		Text_field( ): $mol_form_field
 		is_new_text( ): string
@@ -10570,6 +10576,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_item_form extends $.$yuf_localizer_item_form {
         text_name(): string;
+        text_edit_enabled(): boolean;
     }
 }
 

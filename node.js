@@ -22694,8 +22694,12 @@ var $;
 		text_name(){
 			return (this.lang_code());
 		}
+		text_edit_enabled(){
+			return false;
+		}
 		Text(){
 			const obj = new this.$.$mol_string();
+			(obj.enabled) = () => ((this.text_edit_enabled()));
 			(obj.value) = (next) => ((this.text(next)));
 			return obj;
 		}
@@ -22747,6 +22751,9 @@ var $;
                     this.is_not_used() ? this.is_not_used_text() : '',
                     this.text_actual() !== (this.text() || null) ? this.is_changed_text() : '',
                 ].filter(Boolean).join(', ');
+            }
+            text_edit_enabled() {
+                return !this.is_not_used();
             }
         }
         __decorate([

@@ -2373,6 +2373,7 @@ $yuf_localizer_item_form $mol_form
 		<= Text_field $mol_form_field
 			name <= text_name <= lang_code \
 			control <= Text $mol_string
+				enabled <= text_edit_enabled false
 				value? <=> text?
 
 $yuf_localizer_page $mol_page
