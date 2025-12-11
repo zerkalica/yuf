@@ -10738,6 +10738,7 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
         protected val(key: string, next?: string | null): string | null;
+        lang_code_selected(next?: string): string;
         app_url(next?: string): string;
         langs_str(next?: string): string;
         lang_main(next?: string): string;
