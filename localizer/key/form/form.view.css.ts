@@ -11,4 +11,10 @@ namespace $.$$ {
 		}
 	} )
 
+	$mol_style_define( $yuf_localizer_key_form_field, {
+		Label: {
+			gap: 0
+		}
+	})
+
 }

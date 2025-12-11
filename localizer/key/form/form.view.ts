@@ -18,6 +18,10 @@ namespace $.$$ {
 			this.model().text(null)
 		}
 
+		override reset_hint() {
+			return super.reset_hint().replace('{prev}', this.model().text_actual() || '\'\'')
+		}
+
 		override reset_content() {
 			return this.model().is_changed() ? super.reset_content() : []
 		}

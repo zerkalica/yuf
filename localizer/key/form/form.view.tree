@@ -15,7 +15,7 @@ $yuf_localizer_key_form $mol_form
 			reset_content <= reset_content /$mol_view
 				<= Reset $mol_button_minor
 					sub / <= Reset_icon $mol_icon_refresh
-					hint <= reset_hint @ \Reset
+					hint <= reset_hint @ \Reset to {prev}
 					click? <=> reset? null
 			control <= Text $mol_string
 				enabled <= text_edit_enabled false
