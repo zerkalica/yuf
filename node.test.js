@@ -23644,7 +23644,9 @@ var $;
                 const index = ids.indexOf(id);
                 const direction = key === 'up' ? -1 : 1;
                 const next = Math.min(ids.length - 1, Math.max(0, index + direction));
-                this.spread(ids[next]);
+                const id_next = this.spread(ids[next]);
+                const item = this.Menu_item(id_next);
+                this.Menu_links().ensure_visible(item);
             }
             settings_close() {
                 return this.settings_checked(false);
