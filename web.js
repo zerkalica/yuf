@@ -23422,7 +23422,7 @@ var $;
             locales_data_push(next) {
                 this.$.$mol_wait_timeout(200);
                 const str = next === null ? null : JSON.stringify(next, null, '\t');
-                this.locales_data_str(str);
+                this.locales_data_str(str === '{}' ? null : str);
                 return null;
             }
             locales_data_push_serial = $mol_wire_async(((next) => this.locales_data_push(next)));
