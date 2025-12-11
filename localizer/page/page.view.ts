@@ -21,5 +21,9 @@ namespace $.$$ {
 		override lang_code(lang_code: string) {
 			return lang_code
 		}
+
+		override autofocus(lang_code: string) {
+			return lang_code === this.lang_code_selected()
+		}
 	}
 }

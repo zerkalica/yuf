@@ -25,6 +25,18 @@ namespace $.$$ {
 		override reset_content() {
 			return this.model().is_changed() ? super.reset_content() : []
 		}
+
+		@ $mol_mem
+		focus_first() {
+			if (! this.autofocus()) return null
+			this.Text().bring()
+			return null
+		}
+
+		override auto() {
+			this.focus_first()
+		}
+
 		
 	}
 }

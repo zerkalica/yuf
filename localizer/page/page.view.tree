@@ -9,4 +9,5 @@ $yuf_localizer_page $mol_page
 		^ forms /$mol_view
 			<= Form* $yuf_localizer_key_form
 				model <= locale_by_lang_code* $yuf_localizer_key_model
+				autofocus <= autofocus* false
 				lang_code <= lang_code* \

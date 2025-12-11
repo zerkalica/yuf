@@ -7,6 +7,7 @@ $yuf_localizer_key_form $mol_form
 		is_new => is_new
 		is_not_used => is_not_used
 		text_actual => text_actual
+	autofocus false
 	rows /
 		<= Body
 	body /

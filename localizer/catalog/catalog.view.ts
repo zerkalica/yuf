@@ -98,14 +98,24 @@ namespace $.$$ {
 			return this.spread_ids_params({ keys_filter: this.keys_filter_value() })
 		}
 
+		@ $mol_action
+		override switch(key?: 'up' | 'down') {
+			const ids = this.spread_ids_filtered()
+			const id = this.spread()
+			const index = ids.indexOf(id)
+			const direction = key === 'up' ? -1 : 1
+
+			const next = Math.min(ids.length - 1, Math.max(0, index + direction))
+
+			this.spread(ids[next])
+		}
+
 		override settings_close() {
 			return this.settings_checked(false)
 		}
 
 		override diff_to_clipboard_copy(e?: Event) {
-			const diff = this.locales_data()
-
-			this.$.$mol_dom.navigator.clipboard.writeText(JSON.stringify(diff, null, '\t'))
+			this.$.$mol_dom.navigator.clipboard.writeText(this.locales_data_str())
 		}
 
 		override diff_to_clipboard_enabled() {

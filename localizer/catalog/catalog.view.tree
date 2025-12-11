@@ -56,3 +56,20 @@ $yuf_localizer_catalog $yuf_catalog
 		sub <= empty_content /$mol_view_content
 			<= setup_needed @ \No locale selected, set app url in settings
 			<= not_found_keys @ \Not found keys to translate
+	Menu $mol_page
+		Title => Menu_title
+		title <= menu_title
+		Tools => Menu_tools
+		Logo <= Menu_logo
+		tools /
+			^ menu_tools
+			^ addon_tools
+		head <= menu_head
+		body <= menu_body
+		plugins /
+			<= Hotkey $mol_hotkey
+				key *
+					up? <=> switch*up? null
+					down? <=> switch*down? null
+					left? <=> switch*up?
+					right? <=> switch*down?
