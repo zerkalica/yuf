@@ -22468,6 +22468,30 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$yuf_textarea) = class $yuf_textarea extends ($.$mol_textarea) {};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_textarea, {
+            flex: {
+                basis: '20rem',
+                shrink: 1,
+                grow: 1,
+            },
+            minHeight: '5rem',
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_localizer_settings_form) = class $yuf_localizer_settings_form extends ($.$mol_form) {
 		app_url_name(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_app_url_name"));
@@ -22516,12 +22540,16 @@ var $;
 		locales_data_name(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_locales_data_name"));
 		}
+		locales_data_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_locales_data_hint"));
+		}
 		locales_data_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
 		Locales_data(){
-			const obj = new this.$.$mol_textarea();
+			const obj = new this.$.$yuf_textarea();
+			(obj.hint) = () => ((this.locales_data_hint()));
 			(obj.value) = (next) => ((this.locales_data_str(next)));
 			return obj;
 		}

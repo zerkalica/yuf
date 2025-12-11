@@ -2405,6 +2405,8 @@ $mol_textarea_edit $mol_string
 		^
 		scrollTop 0
 
+$yuf_textarea $mol_textarea
+
 $yuf_localizer_settings_form $mol_form
 	buttons /
 	body /
@@ -2419,8 +2421,9 @@ $yuf_localizer_settings_form $mol_form
 				hint <= langs_hint @ \ru, ar
 				value? <=> langs_str? \
 		<= Locales_data_field $mol_form_field
-			name <= locales_data_name @ \Changed locales json dta
-			control <= Locales_data $mol_textarea
+			name <= locales_data_name @ \Locales raw json data
+			control <= Locales_data $yuf_textarea
+				hint <= locales_data_hint @ \Place raw json here { "locale_file_url": { "key": "val" } }
 				value? <=> locales_data_str? \
 
 $yuf_localizer_settings_page $mol_page

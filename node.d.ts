@@ -10465,6 +10465,17 @@ declare namespace $ {
 
 declare namespace $ {
 
+	export class $yuf_textarea extends $mol_textarea {
+	}
+	
+}
+
+//# sourceMappingURL=textarea.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
 	type $mol_string__hint_yuf_localizer_settings_form_1 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_settings_form['app_url_hint'] >
 		,
@@ -10505,17 +10516,22 @@ declare namespace $ {
 		,
 		ReturnType< $mol_form_field['control'] >
 	>
-	type $mol_textarea__value_yuf_localizer_settings_form_9 = $mol_type_enforce<
+	type $yuf_textarea__hint_yuf_localizer_settings_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['locales_data_hint'] >
+		,
+		ReturnType< $yuf_textarea['hint'] >
+	>
+	type $yuf_textarea__value_yuf_localizer_settings_form_10 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_settings_form['locales_data_str'] >
 		,
-		ReturnType< $mol_textarea['value'] >
+		ReturnType< $yuf_textarea['value'] >
 	>
-	type $mol_form_field__name_yuf_localizer_settings_form_10 = $mol_type_enforce<
+	type $mol_form_field__name_yuf_localizer_settings_form_11 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_settings_form['locales_data_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__control_yuf_localizer_settings_form_11 = $mol_type_enforce<
+	type $mol_form_field__control_yuf_localizer_settings_form_12 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_settings_form['Locales_data'] >
 		,
 		ReturnType< $mol_form_field['control'] >
@@ -10532,8 +10548,9 @@ declare namespace $ {
 		Langs( ): $mol_string
 		Langs_field( ): $mol_form_field
 		locales_data_name( ): string
+		locales_data_hint( ): string
 		locales_data_str( next?: string ): string
-		Locales_data( ): $mol_textarea
+		Locales_data( ): $yuf_textarea
 		Locales_data_field( ): $mol_form_field
 		buttons( ): readonly(any)[]
 		body( ): readonly(any)[]
