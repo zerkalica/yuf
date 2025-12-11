@@ -27,8 +27,10 @@ namespace $ {
 
 			const response = $mol_error_fence(
 				() => this.fetcher().success(url),
-				e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e)
+				e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? null : e
 			)
+
+			if (! response) return {}
 
 			return $mol_error_fence(
 				() => langs_dto(response.json() as any),
