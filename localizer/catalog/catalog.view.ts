@@ -27,8 +27,18 @@ namespace $.$$ {
 			return this.langs_str().split(',').map(str => str.trim()).filter(Boolean)
 		}
 
+		@ $mol_action
+		settings_checked_default() {
+			return ! this.app_url() || ! this.langs_available().length
+		}
+
+		@ $mol_mem
+		override settings_checked(next?: boolean) {
+			return next ?? this.settings_checked_default()
+		}
+
 		override placeholders() {
-			return ! this.app_url() || ! this.langs_available().length || this.settings_checked() ? super.placeholders() : []
+			return this.settings_checked() ? super.placeholders() : []
 		}
 
 		override lang_selected() {

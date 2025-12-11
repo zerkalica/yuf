@@ -1,0 +1,12 @@
+$yuf_localizer_demo $mol_example_large
+	title \Localizer
+	sub /
+		<= Localizer $yuf_localizer_catalog
+	tags /
+		\locale
+		\lang
+		\translate
+		\editor
+		\catalog
+	aspects /
+		\Application
