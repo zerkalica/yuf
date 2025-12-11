@@ -23,6 +23,8 @@ namespace $ {
 		actual() {
 			const lang_id = this.id()
 			const url = this.url()
+			if (! url) return {}
+
 			const response = $mol_error_fence(
 				() => this.fetcher().success(url),
 				e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e)

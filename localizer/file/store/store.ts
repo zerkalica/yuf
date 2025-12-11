@@ -14,7 +14,9 @@ namespace $ {
 		}
 
 		protected lang_url(lang: string) {
-			return this.base_url() + '/' + this.lang_template().replace('{lang}', lang)
+			const base_url = this.base_url().replace(/\/+$/, '')
+			if (! base_url) return ''
+			return base_url + '/' + this.lang_template().replace('{lang}', lang)
 		}
 
 		@ $mol_mem

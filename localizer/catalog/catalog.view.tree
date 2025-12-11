@@ -50,3 +50,6 @@ $yuf_localizer_catalog $yuf_catalog
 		sub <= menu_item_content*
 	item_theme_not_used \$mol_theme_special
 	item_theme_new \$mol_theme_accent
+	Menu_links_empty $mol_view
+		sub /
+			<= empty_text @ \No locale selected, set app url in settings
