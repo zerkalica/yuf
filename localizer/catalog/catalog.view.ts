@@ -107,7 +107,10 @@ namespace $.$$ {
 
 			const next = Math.min(ids.length - 1, Math.max(0, index + direction))
 
-			this.spread(ids[next])
+			const id_next = this.spread(ids[next])
+
+			const item = this.Menu_item(id_next)
+			this.Menu_links().ensure_visible(item)
 		}
 
 		override settings_close() {
