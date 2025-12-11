@@ -18881,7 +18881,6 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_link, {
             gap: $mol_gap.block,
-            alignSelf: 'stretch',
             ':active': {
                 color: $mol_theme.text,
             },
@@ -22503,7 +22502,9 @@ var $;
             const url = this.url();
             if (!url)
                 return {};
-            const response = $mol_error_fence(() => this.fetcher().success(url), e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e));
+            const response = $mol_error_fence(() => this.fetcher().success(url), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? null : e);
+            if (!response)
+                return {};
             return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
         }
         data_cut_equal_actual() {
