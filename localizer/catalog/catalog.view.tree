@@ -1,7 +1,7 @@
-$yuf_localizer_catalog $mol_book2_catalog
+$yuf_localizer_catalog $yuf_catalog
 	menu_title @ \Localizer
-	param_prefix \localizer
-	param \key
+	param_suffix \localizer
+	param \langkey
 	langs_available /string
 	menu_tools /
 		<= Selected_lang $mol_select
