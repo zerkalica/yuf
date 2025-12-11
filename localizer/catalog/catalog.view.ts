@@ -51,9 +51,9 @@ namespace $.$$ {
 			return null
 		}
 
-		protected locales_data_push_serial = (
+		protected locales_data_push_serial = $mol_wire_async((
 			(next: Parameters<typeof this.locales_data_push>[0]) => this.locales_data_push(next)
-		)
+		))
 
 		override langs_available() {
 			return this.langs_str().split(',').map(str => str.trim()).filter(Boolean)
