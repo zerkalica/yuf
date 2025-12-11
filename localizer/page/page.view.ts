@@ -14,8 +14,16 @@ namespace $.$$ {
 			return this.store().model(lang_code).item(this.locale_key())
 		}
 
+		locale_file_selected() {
+			return this.store().model(this.lang_code_selected())
+		}
+
 		override lang_code(lang_code: string) {
 			return lang_code
+		}
+
+		override reset(e?: Event) {
+			this.locale_file_selected().item(this.locale_key()).text(null)
 		}
 	}
 }

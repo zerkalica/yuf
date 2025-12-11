@@ -1,5 +1,5 @@
 namespace $.$$ {
-	export class $yuf_localizer_item_form extends $.$yuf_localizer_item_form {
+	export class $yuf_localizer_key_form extends $.$yuf_localizer_key_form {
 
 		@ $mol_mem
 		override text_name() {

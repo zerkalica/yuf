@@ -1,8 +1,8 @@
-$yuf_localizer_item_form $mol_form
+$yuf_localizer_key_form $mol_form
 	is_new_text @ \new
 	is_not_used_text @ \not used
 	is_changed_text @ \changed
-	model $yuf_localizer_item_model
+	model $yuf_localizer_key_model
 		id => title
 		text? => text?
 		is_new => is_new

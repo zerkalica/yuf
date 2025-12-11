@@ -1,6 +1,7 @@
 $yuf_localizer_catalog $mol_book2_catalog
 	menu_title @ \Localizer
-	param \localizer
+	param_prefix \localizer
+	param \key
 	langs_available /string
 	menu_tools /
 		<= Selected_lang $mol_select
@@ -13,7 +14,7 @@ $yuf_localizer_catalog $mol_book2_catalog
 				\
 					<= all_msg @ \All keys
 				is_new <= is_new_msg @ \New keys
-				is_not_used <= is_not_used_msg @ \Not used keys
+				- is_not_used <= is_not_used_msg @ \Garbage keys
 				empty <= empty_msg @ \Empty keys
 			value? <=> keys_filter_value? \
 		<= Diff_to_clipboard $mol_button_minor
@@ -33,19 +34,19 @@ $yuf_localizer_catalog $mol_book2_catalog
 			app_url? <=> app_url? \
 			langs_str? <=> langs_str? \
 			lang_main? <=> lang_main? \en
-	store $yuf_localizer_store
+	store $yuf_localizer_file_store
 		base_url <= app_url
+		data? <=> locales_data? *
 		lang_main <= lang_main \en
-	lang_selected $yuf_localizer_model
+	lang_selected $yuf_localizer_file_model
 		keys_filtered* => spread_ids_params*
-		changed_diff => changed_diff
 		keys_changed => keys_changed
 	Spread* $yuf_localizer_page
 		locale_key <= locale_key* \
 		langs_available <= langs_available
 		lang_code_selected <= lang_code_selected
 		store <= store
-		tools / <= Spread_close
+		addon_tools / <= Spread_close
 	Menu_item*0 $mol_view
 		theme <= item_theme* <= item_theme_new
 		sub <= menu_item_content*

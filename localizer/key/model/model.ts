@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_localizer_item_model extends $mol_object {
+	export class $yuf_localizer_key_model extends $mol_object {
 		id() { return '' }
 
 		text_actual() {
@@ -10,7 +10,7 @@ namespace $ {
 			return null as null | string
 		}
 
-		text(next?: string) { return next ?? '' }
+		text(next?: string | null) { return next ?? '' }
 
 		is_new() {
 			return this.text_main() !== null && ! this.text_actual()

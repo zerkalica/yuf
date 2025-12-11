@@ -8,6 +8,16 @@ namespace $.$$ {
 			},
 
 		},
+		Selected_lang: {
+			Trigger: {
+				width: '3rem',
+			}
+		},
+		Keys_filter: {
+			Trigger: {
+				minWidth: '7rem',
+			}
+		},
 		Menu_link: {
 			flex: {
 				wrap: 'wrap'

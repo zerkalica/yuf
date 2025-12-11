@@ -2,9 +2,13 @@ namespace $.$$ {
 	export class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
 		protected val(key: string, next?: string | null) {
 			return this.$.$mol_state_arg.value(
-				`${this.param()}_${key}`,
+				`${this.param_prefix()}_${key}`,
 				next === undefined || next ? next : null
 			)
+		}
+
+		override param() {
+			return `${this.param_prefix()}_${super.param()}`
 		}
 
 		override lang_code_selected(next?: string) {
@@ -22,6 +26,34 @@ namespace $.$$ {
 		override lang_main(next?: string) {
 			return this.val(`lang_main`, next) || this.langs_available()?.[0] || ''
 		}
+
+		override keys_filter_value(next?: string) {
+			return this.val('keys', next) ?? ''
+		}
+
+		protected locales_data_raw(next?: string | null) {
+			return this.val('locales_data', next)
+		}
+
+		@ $mol_mem
+		override locales_data(next?: Record<string, Record<string, string>> | null) {
+			if (next === undefined) return JSON.parse(this.locales_data_raw() ?? '{}') || {}
+
+			this.locales_data_push_serial(next)
+
+			return next
+		}
+
+		protected locales_data_push(next: Record<string, Record<string, string>> | null) {
+			this.$.$mol_wait_timeout(200)
+			const str = next === null ? null : JSON.stringify(next)
+			this.locales_data_raw(str)
+			return null
+		}
+
+		protected locales_data_push_serial = $mol_wire_async(
+			(next: Parameters<typeof this.locales_data_push>[0]) => this.locales_data_push(next)
+		)
 
 		override langs_available() {
 			return this.langs_str().split(',').map(str => str.trim()).filter(Boolean)
@@ -66,7 +98,7 @@ namespace $.$$ {
 		}
 
 		override diff_to_clipboard_copy(e?: Event) {
-			const diff = this.changed_diff()
+			const diff = this.locales_data()
 
 			this.$.$mol_dom.navigator.clipboard.writeText(JSON.stringify(diff, null, '\t'))
 		}
