@@ -22500,6 +22500,8 @@ var $;
         actual() {
             const lang_id = this.id();
             const url = this.url();
+            if (!url)
+                return {};
             const response = $mol_error_fence(() => this.fetcher().success(url), e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e));
             return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
         }
@@ -22607,7 +22609,10 @@ var $;
             return next ?? 'en';
         }
         lang_url(lang) {
-            return this.base_url() + '/' + this.lang_template().replace('{lang}', lang);
+            const base_url = this.base_url().replace(/\/+$/, '');
+            if (!base_url)
+                return '';
+            return base_url + '/' + this.lang_template().replace('{lang}', lang);
         }
         model_main() {
             return this.model(this.lang_main());
@@ -23024,6 +23029,9 @@ var $;
 		item_theme(id){
 			return (this.item_theme_new());
 		}
+		empty_text(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_empty_text"));
+		}
 		menu_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
 		}
@@ -23078,6 +23086,11 @@ var $;
 		item_theme_new(){
 			return "$mol_theme_accent";
 		}
+		Menu_links_empty(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.empty_text())]);
+			return obj;
+		}
 	};
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_code_selected"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
@@ -23099,6 +23112,7 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_selected"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Menu_item"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu_links_empty"));
 
 
 ;

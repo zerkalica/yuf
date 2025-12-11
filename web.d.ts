@@ -10696,6 +10696,11 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
+	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
 	export class $yuf_localizer_catalog extends $yuf_catalog {
 		selected_lang_hint( ): string
 		lang_code_selected( next?: string ): string
@@ -10725,6 +10730,7 @@ declare namespace $ {
 		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
 		locale_key( id: any): string
 		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
+		empty_text( ): string
 		menu_title( ): string
 		param_suffix( ): string
 		param( ): string
@@ -10737,6 +10743,7 @@ declare namespace $ {
 		Menu_item( id: any): $mol_view
 		item_theme_not_used( ): string
 		item_theme_new( ): string
+		Menu_links_empty( ): $mol_view
 	}
 	
 }

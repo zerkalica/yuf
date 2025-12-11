@@ -65,6 +65,7 @@
 	"$yuf_localizer_catalog_all_msg": "All keys",
 	"$yuf_localizer_catalog_diff_to_clipboard_hint": "Copy changed json to clipboard",
 	"$yuf_localizer_catalog_empty_msg": "Empty keys",
+	"$yuf_localizer_catalog_empty_text": "No locale selected, set app url in settings",
 	"$yuf_localizer_catalog_is_new_msg": "New keys",
 	"$yuf_localizer_catalog_key_filter_hint": "Filter locale keys",
 	"$yuf_localizer_catalog_menu_title": "Localizer",
