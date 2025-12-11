@@ -22957,8 +22957,14 @@ var $;
             langs_available() {
                 return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
             }
+            settings_checked_default() {
+                return !this.app_url() || !this.langs_available().length;
+            }
+            settings_checked(next) {
+                return next ?? this.settings_checked_default();
+            }
             placeholders() {
-                return !this.app_url() || !this.langs_available().length || this.settings_checked() ? super.placeholders() : [];
+                return this.settings_checked() ? super.placeholders() : [];
             }
             lang_selected() {
                 return this.store().model(this.lang_code_selected());
@@ -22989,6 +22995,12 @@ var $;
                 return $mol_error_fence(() => this.keys_changed().length > 0, () => false);
             }
         }
+        __decorate([
+            $mol_action
+        ], $yuf_localizer_catalog.prototype, "settings_checked_default", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_catalog.prototype, "settings_checked", null);
         $$.$yuf_localizer_catalog = $yuf_localizer_catalog;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

@@ -10818,6 +10818,8 @@ declare namespace $.$$ {
         langs_str(next?: string): string;
         lang_main(next?: string): string;
         langs_available(): string[];
+        settings_checked_default(): boolean;
+        settings_checked(next?: boolean): boolean;
         placeholders(): readonly $mol_view[];
         lang_selected(): $yuf_localizer_model;
         locale_key(key: string): string;
