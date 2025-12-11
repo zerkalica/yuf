@@ -1,0 +1,4 @@
+$yuf_button_close $mol_button_minor
+	hint @ \Close
+	sub /
+		<= Icon $mol_icon_close

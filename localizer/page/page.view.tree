@@ -1,0 +1,11 @@
+$yuf_localizer_page $mol_page
+	lang_code_selected \
+	langs_available /string
+	locale_key \
+	store $yuf_localizer_store
+	title <= locale_key
+	body /
+		^ forms /$mol_view
+			<= Form* $yuf_localizer_item_form
+				model <= locale_by_lang_code* $yuf_localizer_item_model
+				lang_code <= lang_code* \

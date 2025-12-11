@@ -1,0 +1,53 @@
+$yuf_localizer_catalog $mol_book2_catalog
+	menu_title @ \Localizer
+	param \localizer
+	langs_available /string
+	menu_tools /
+		<= Selected_lang $mol_select
+			hint <= selected_lang_hint @ \Select lang file
+			options <= langs_available
+			value? <=> lang_code_selected? \en
+		<= Keys_filter $mol_select
+			hint <= key_filter_hint @ \Filter locale keys
+			dictionary *
+				\
+					<= all_msg @ \All keys
+				is_new <= is_new_msg @ \New keys
+				is_not_used <= is_not_used_msg @ \Not used keys
+				empty <= empty_msg @ \Empty keys
+			value? <=> keys_filter_value? \
+		<= Diff_to_clipboard $mol_button_minor
+			sub / <= Diff_to_clipboard_icon $mol_icon_clipboard
+			enabled <= diff_to_clipboard_enabled false
+			hint <= diff_to_clipboard_hint @ \Copy changed json to clipboard
+			click? <=> diff_to_clipboard_copy? null
+		<= Settings_check $mol_check_icon
+			Icon <= Settings_icon $mol_icon_settings
+			hint <= settings_check_hint @ \Settings
+			checked? <=> settings_checked? false
+	placeholders /$mol_view
+		<= Settings $yuf_localizer_settings_page
+			tools /
+				<= Settings_close $yuf_button_close
+					click? <=> settings_close? null
+			app_url? <=> app_url? \
+			langs_str? <=> langs_str? \
+			lang_main? <=> lang_main? \en
+	store $yuf_localizer_store
+		base_url <= app_url
+		lang_main <= lang_main \en
+	lang_selected $yuf_localizer_model
+		keys_filtered* => spread_ids_params*
+		changed_diff => changed_diff
+		keys_changed => keys_changed
+	Spread* $yuf_localizer_page
+		locale_key <= locale_key* \
+		langs_available <= langs_available
+		lang_code_selected <= lang_code_selected
+		store <= store
+		tools / <= Spread_close
+	Menu_item*0 $mol_view
+		theme <= item_theme* <= item_theme_new
+		sub <= menu_item_content*
+	item_theme_not_used \$mol_theme_special
+	item_theme_new \$mol_theme_accent

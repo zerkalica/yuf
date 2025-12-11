@@ -1,11 +1,13 @@
 namespace $ {
+	let errors = [] as unknown[]
+
 	function report(event: Event | string, url?: string, line?: number, col?: number, error?: Error) {
 		const time = new Date()
 		const target = typeof event === 'string'
 			? { event, error }
 			: 'error' in event && event.error ? event.error : event
 
-		let data
+		let data, stack
 
 		try {
 			data = $yuf_pojo(target, {
@@ -14,19 +16,20 @@ namespace $ {
 			if (typeof data !== 'object' || Array.isArray(data)) {
 				data = { target: data }
 			}
+			stack = target && typeof target === 'object' && 'stack' in target && target.stack
+				? String(target.stack).split('\n')
+				: undefined
 		} catch (error) {
-			data = { error, target }
+			data = { data, error, target }
 		}
 
-		data = Object.assign(data, {
-			time,
-			col,
-			url,
-			line,
-			stack: target instanceof Error ? String(target.stack).split('\n') : undefined,
-		})
+		data = Object.assign(data, { time, col, url, line, stack })
 
-		const str = JSON.stringify(data, null, ' ')
+		errors.unshift(data)
+		// prevent memory leak if errors flood
+		if (errors.length > 100) errors.length = 100
+
+		const str = JSON.stringify(errors, null, ' ')
 		const doc = $mol_dom_context.document
 		const id = 'yuf_report_fallback'
 
@@ -105,7 +108,10 @@ namespace $ {
 
 		button.show.onclick = e => dialog.showModal()
 		button.close.onclick = e => dialog.close()
-		button.forget.onclick = e => container.remove()
+		button.forget.onclick = e => {
+			errors = []
+			container.remove()
+		}
 		button.next.onclick = e => text.scrollTo({ top: dialog.scrollTop + text.scrollTop + text.offsetHeight })
 		button.copy.onclick = e => navigator.clipboard.writeText(str)
 

@@ -1,0 +1,18 @@
+$yuf_localizer_settings_form $mol_form
+	buttons /
+	body /
+		<= App_url_field $mol_form_field
+			name <= app_url_name @ \App url
+			control <= App_url $mol_string
+				hint <= app_url_hint @ \App url
+				value? <=> app_url? \
+		<= Langs_field $mol_form_field
+			name <= langs_name @ \Available Langs
+			control <= Langs $mol_string
+				hint <= langs_hint @ \en, ru. First is main
+				value? <=> langs_str? \
+		<= Lang_main_field $mol_form_field
+			name <= Lang_main_name @ \Main lang code
+			control <= Lang_main $mol_select
+				options <= available_langs /string
+				value? <=> lang_main? \
