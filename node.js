@@ -23442,17 +23442,17 @@ var $;
 		Menu_tools(){
 			return (this.Menu().Tools());
 		}
-		switch(id, next){
+		select_key(id, next){
 			if(next !== undefined) return next;
 			return null;
 		}
 		Hotkey(){
 			const obj = new this.$.$mol_hotkey();
 			(obj.key) = () => ({
-				"up": (next) => (this.switch("up", next)), 
-				"down": (next) => (this.switch("down", next)), 
-				"left": (next) => (this.switch("up", next)), 
-				"right": (next) => (this.switch("down", next))
+				"up": (next) => (this.select_key("next", next)), 
+				"down": (next) => (this.select_key("prev", next)), 
+				"left": (next) => (this.select_key("next", next)), 
+				"right": (next) => (this.select_key("prev", next))
 			});
 			return obj;
 		}
@@ -23553,7 +23553,7 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "langs_str"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data_str"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data"));
-	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "switch"));
+	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "select_key"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Hotkey"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "store"));
@@ -23647,11 +23647,11 @@ var $;
                     return [];
                 return this.spread_ids_params({ keys_filter: this.keys_filter_value() });
             }
-            switch(key) {
+            select_key(key) {
                 const ids = this.spread_ids_filtered();
                 const id = this.spread();
                 const index = ids.indexOf(id);
-                const direction = key === 'up' ? -1 : 1;
+                const direction = key === 'prev' ? -1 : 1;
                 const next = Math.min(ids.length - 1, Math.max(0, index + direction));
                 const id_next = this.spread(ids[next]);
                 const item = this.Menu_item(id_next);
@@ -23683,7 +23683,7 @@ var $;
         ], $yuf_localizer_catalog.prototype, "settings_checked", null);
         __decorate([
             $mol_action
-        ], $yuf_localizer_catalog.prototype, "switch", null);
+        ], $yuf_localizer_catalog.prototype, "select_key", null);
         $$.$yuf_localizer_catalog = $yuf_localizer_catalog;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

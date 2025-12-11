@@ -10937,10 +10937,10 @@ declare namespace $ {
 	>
 	type $mol_hotkey__key_yuf_localizer_catalog_16 = $mol_type_enforce<
 		({ 
-			up( next?: ReturnType< $yuf_localizer_catalog['switch'] > ): ReturnType< $yuf_localizer_catalog['switch'] >,
-			down( next?: ReturnType< $yuf_localizer_catalog['switch'] > ): ReturnType< $yuf_localizer_catalog['switch'] >,
-			left( next?: ReturnType< $yuf_localizer_catalog['switch'] > ): ReturnType< $yuf_localizer_catalog['switch'] >,
-			right( next?: ReturnType< $yuf_localizer_catalog['switch'] > ): ReturnType< $yuf_localizer_catalog['switch'] >,
+			up( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
+			down( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
+			left( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
+			right( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
 		}) 
 		,
 		ReturnType< $mol_hotkey['key'] >
@@ -11079,7 +11079,7 @@ declare namespace $ {
 		empty_content( ): readonly($mol_view_content)[]
 		Menu_title( ): ReturnType< ReturnType< $yuf_localizer_catalog['Menu'] >['Title'] >
 		Menu_tools( ): ReturnType< ReturnType< $yuf_localizer_catalog['Menu'] >['Tools'] >
-		switch( id: any, next?: any ): any
+		select_key( id: any, next?: any ): any
 		Hotkey( ): $mol_hotkey
 		menu_title( ): string
 		param_prefix( ): string
@@ -11123,7 +11123,7 @@ declare namespace $.$$ {
         locale_key(key: string): string;
         item_theme(key: string): string;
         spread_ids(): string[];
-        switch(key?: 'up' | 'down'): void;
+        select_key(key?: 'prev' | 'next'): void;
         settings_close(): boolean;
         diff_to_clipboard_copy(e?: Event): void;
         diff_to_clipboard_enabled(): boolean;
