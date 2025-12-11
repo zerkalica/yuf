@@ -23035,7 +23035,7 @@ var $;
                 return `${this.param_base()}_langkey`;
             }
             lang_code_selected(next) {
-                return this.val('lang_code_selected', next) || this.store().lang_main();
+                return this.val('lang', next) || this.store().lang_main();
             }
             app_url(next) {
                 return this.val('url', next) ?? '';
