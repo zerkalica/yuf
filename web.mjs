@@ -22420,8 +22420,7 @@ var $;
             const local = this.data();
             if (next === undefined)
                 return local[key] ?? text_actual ?? '';
-            const data_next = { ...local, [key]: next };
-            const text_local = this.data(data_next)[key];
+            const text_local = this.data({ [key]: next })[key];
             return text_local ?? text_actual ?? '';
         }
         item(id) {
@@ -22492,7 +22491,7 @@ var $;
                 return locales_prev[url] ?? {};
             const locales = { ...locales_prev };
             if (next) {
-                next = { ...next };
+                next = { ...locales_prev[url], ...next };
                 let count = 0;
                 for (let key in next) {
                     if (next[key] == null)
