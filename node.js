@@ -22878,7 +22878,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_localizer_catalog) = class $yuf_localizer_catalog extends ($.$mol_book2_catalog) {
+	($.$yuf_localizer_catalog) = class $yuf_localizer_catalog extends ($.$yuf_catalog) {
 		selected_lang_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_lang_hint"));
 		}
@@ -23003,11 +23003,11 @@ var $;
 		menu_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
 		}
-		param_prefix(){
+		param_suffix(){
 			return "localizer";
 		}
 		param(){
-			return "key";
+			return "langkey";
 		}
 		langs_available(){
 			return [];
@@ -23094,7 +23094,7 @@ var $;
                 return `${this.param_prefix()}_${super.param()}`;
             }
             lang_code_selected(next) {
-                return this.val('lang_code_selected', next) || '';
+                return this.val('lang_code_selected', next) || this.store().lang_main();
             }
             app_url(next) {
                 return this.val('url', next) ?? '';

@@ -10769,7 +10769,7 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	export class $yuf_localizer_catalog extends $mol_book2_catalog {
+	export class $yuf_localizer_catalog extends $yuf_catalog {
 		selected_lang_hint( ): string
 		lang_code_selected( next?: string ): string
 		Selected_lang( ): $mol_select
@@ -10799,7 +10799,7 @@ declare namespace $ {
 		locale_key( id: any): string
 		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
 		menu_title( ): string
-		param_prefix( ): string
+		param_suffix( ): string
 		param( ): string
 		langs_available( ): readonly(string)[]
 		menu_tools( ): readonly(any)[]
