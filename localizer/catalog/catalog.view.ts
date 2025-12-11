@@ -12,7 +12,7 @@ namespace $.$$ {
 		}
 
 		override lang_code_selected(next?: string) {
-			return this.val('lang_code_selected', next) || this.store().lang_main()
+			return this.val('lang', next) || this.store().lang_main()
 		}
 
 		override app_url(next?: string) {
