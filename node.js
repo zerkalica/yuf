@@ -23059,8 +23059,14 @@ var $;
 		item_theme(id){
 			return (this.item_theme_new());
 		}
-		empty_text(){
-			return (this.$.$mol_locale.text("$yuf_localizer_catalog_empty_text"));
+		setup_needed(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_setup_needed"));
+		}
+		not_found_keys(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_not_found_keys"));
+		}
+		empty_content(){
+			return [(this.setup_needed()), (this.not_found_keys())];
 		}
 		menu_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
@@ -23121,7 +23127,7 @@ var $;
 		}
 		Menu_links_empty(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.empty_text())]);
+			(obj.sub) = () => ((this.empty_content()));
 			return obj;
 		}
 	};
@@ -23175,6 +23181,9 @@ var $;
             }
             keys_filter_value(next) {
                 return this.val('keys', next) ?? '';
+            }
+            empty_content() {
+                return this.app_url() ? [this.not_found_keys()] : [this.setup_needed()];
             }
             locales_data_raw(next) {
                 return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next);

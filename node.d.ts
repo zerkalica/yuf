@@ -10785,7 +10785,7 @@ declare namespace $ {
 		ReturnType< $mol_view['sub'] >
 	>
 	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
-		readonly(any)[]
+		ReturnType< $yuf_localizer_catalog['empty_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
@@ -10818,7 +10818,9 @@ declare namespace $ {
 		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
 		locale_key( id: any): string
 		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
-		empty_text( ): string
+		setup_needed( ): string
+		not_found_keys( ): string
+		empty_content( ): readonly($mol_view_content)[]
 		menu_title( ): string
 		param_prefix( ): string
 		param_suffix( ): string
@@ -10846,6 +10848,7 @@ declare namespace $.$$ {
         app_url(next?: string): string;
         langs_str(next?: string): string;
         keys_filter_value(next?: string): string;
+        empty_content(): string[];
         protected locales_data_raw(next?: string | null): string | null;
         locales_data(next?: Record<string, Record<string, string>> | null): any;
         protected locales_data_push(next: Record<string, Record<string, string>> | null): null;
