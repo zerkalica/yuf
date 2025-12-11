@@ -35,7 +35,7 @@ namespace $ {
 			const locales = { ... locales_prev }
 
 			if (next) {
-				next = { ... next }
+				next = { ...locales_prev[url], ... next }
 
 				let count = 0
 

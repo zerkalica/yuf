@@ -98,8 +98,7 @@ namespace $ {
 
 			if (next === undefined) return local[key] ?? text_actual ?? ''
 
-			const data_next = { ... local, [key]: next }
-			const text_local = this.data(data_next)[key]
+			const text_local = this.data({ [key]: next })[key]
 
 			return text_local ?? text_actual ?? ''
 		}
