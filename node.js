@@ -23158,5 +23158,48 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
+;
+	($.$yuf_localizer_demo) = class $yuf_localizer_demo extends ($.$mol_example_large) {
+		Localizer(){
+			const obj = new this.$.$yuf_localizer_catalog();
+			return obj;
+		}
+		title(){
+			return "Localizer";
+		}
+		sub(){
+			return [(this.Localizer())];
+		}
+		tags(){
+			return [
+				"locale", 
+				"lang", 
+				"translate", 
+				"editor", 
+				"catalog"
+			];
+		}
+		aspects(){
+			return ["Application"];
+		}
+	};
+	($mol_mem(($.$yuf_localizer_demo.prototype), "Localizer"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_localizer_demo extends $.$yuf_localizer_demo {
+        }
+        $$.$yuf_localizer_demo = $yuf_localizer_demo;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
 
 //# sourceMappingURL=node.js.map

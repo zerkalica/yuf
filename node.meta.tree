@@ -39,4 +39,4 @@
 	include \/yuf/date/range/demo
 	include \/yuf/bug/log/prepend
 	include \/yuf/bug/catalog/flash
-	include \/yuf/localizer/catalog
+	include \/yuf/localizer/demo

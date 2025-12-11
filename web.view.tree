@@ -2440,3 +2440,16 @@ $yuf_localizer_catalog $mol_book2_catalog
 		sub <= menu_item_content*
 	item_theme_not_used \$mol_theme_special
 	item_theme_new \$mol_theme_accent
+
+$yuf_localizer_demo $mol_example_large
+	title \Localizer
+	sub /
+		<= Localizer $yuf_localizer_catalog
+	tags /
+		\locale
+		\lang
+		\translate
+		\editor
+		\catalog
+	aspects /
+		\Application

@@ -10834,5 +10834,23 @@ declare namespace $.$$ {
 declare namespace $.$$ {
 }
 
+declare namespace $ {
+
+	export class $yuf_localizer_demo extends $mol_example_large {
+		Localizer( ): $yuf_localizer_catalog
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_localizer_demo extends $.$yuf_localizer_demo {
+    }
+}
+
 export = $;
 //# sourceMappingURL=node.d.ts.map
