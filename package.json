@@ -389,6 +389,7 @@
     "$yuf_localizer_settings_page",
     "$yuf_localizer_settings",
     "$yuf_localizer_settings_form",
+    "$mol_textarea",
     "$yuf_theme_gap",
     "$yuf_theme",
     "$yuf_localizer_file_store",

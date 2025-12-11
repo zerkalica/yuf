@@ -22201,6 +22201,273 @@ var $;
 "use strict";
 
 ;
+	($.$mol_textarea) = class $mol_textarea extends ($.$mol_stack) {
+		clickable(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		sidebar_showed(){
+			return false;
+		}
+		press(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		hover(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		value(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		hint(){
+			return " ";
+		}
+		enabled(){
+			return true;
+		}
+		spellcheck(){
+			return true;
+		}
+		length_max(){
+			return +Infinity;
+		}
+		selection(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		bring(){
+			return (this.Edit().bring());
+		}
+		submit(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		submit_with_ctrl(){
+			return true;
+		}
+		Edit(){
+			const obj = new this.$.$mol_textarea_edit();
+			(obj.value) = (next) => ((this.value(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.enabled()));
+			(obj.spellcheck) = () => ((this.spellcheck()));
+			(obj.length_max) = () => ((this.length_max()));
+			(obj.selection) = (next) => ((this.selection(next)));
+			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.submit_with_ctrl) = () => ((this.submit_with_ctrl()));
+			return obj;
+		}
+		row_numb(id){
+			return 0;
+		}
+		highlight(){
+			return "";
+		}
+		syntax(){
+			const obj = new this.$.$mol_syntax2();
+			return obj;
+		}
+		View(){
+			const obj = new this.$.$mol_text_code();
+			(obj.text) = () => ((this.value()));
+			(obj.render_visible_only) = () => (false);
+			(obj.row_numb) = (id) => ((this.row_numb(id)));
+			(obj.sidebar_showed) = () => ((this.sidebar_showed()));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.syntax) = () => ((this.syntax()));
+			return obj;
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"mol_textarea_clickable": (this.clickable()), 
+				"mol_textarea_sidebar_showed": (this.sidebar_showed())
+			};
+		}
+		event(){
+			return {"keydown": (next) => (this.press(next)), "pointermove": (next) => (this.hover(next))};
+		}
+		sub(){
+			return [(this.Edit()), (this.View())];
+		}
+		symbols_alt(){
+			return {
+				"comma": "<", 
+				"period": ">", 
+				"dash": "−", 
+				"equals": "≈", 
+				"graveAccent": "́", 
+				"forwardSlash": "÷", 
+				"E": "€", 
+				"V": "✔", 
+				"X": "×", 
+				"C": "©", 
+				"P": "§", 
+				"H": "₽", 
+				"key0": "°", 
+				"key8": "•", 
+				"key2": "@", 
+				"key3": "#", 
+				"key4": "$", 
+				"key6": "^", 
+				"key7": "&", 
+				"bracketOpen": "[", 
+				"bracketClose": "]", 
+				"slashBack": "|"
+			};
+		}
+		symbols_alt_ctrl(){
+			return {"space": " "};
+		}
+		symbols_alt_shift(){
+			return {
+				"V": "✅", 
+				"X": "❌", 
+				"O": "⭕", 
+				"key1": "❗", 
+				"key4": "💲", 
+				"key7": "❓", 
+				"comma": "«", 
+				"period": "»", 
+				"semicolon": "“", 
+				"quoteSingle": "”", 
+				"dash": "—", 
+				"equals": "≠", 
+				"graveAccent": "̱", 
+				"bracketOpen": "{", 
+				"bracketClose": "}"
+			};
+		}
+	};
+	($mol_mem(($.$mol_textarea.prototype), "clickable"));
+	($mol_mem(($.$mol_textarea.prototype), "press"));
+	($mol_mem(($.$mol_textarea.prototype), "hover"));
+	($mol_mem(($.$mol_textarea.prototype), "value"));
+	($mol_mem(($.$mol_textarea.prototype), "selection"));
+	($mol_mem(($.$mol_textarea.prototype), "submit"));
+	($mol_mem(($.$mol_textarea.prototype), "Edit"));
+	($mol_mem(($.$mol_textarea.prototype), "syntax"));
+	($mol_mem(($.$mol_textarea.prototype), "View"));
+	($.$mol_textarea_edit) = class $mol_textarea_edit extends ($.$mol_string) {
+		dom_name(){
+			return "textarea";
+		}
+		enter(){
+			return "enter";
+		}
+		field(){
+			return {...(super.field()), "scrollTop": 0};
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_textarea extends $.$mol_textarea {
+            indent_inc() {
+                let text = this.value();
+                let [from, to] = this.selection();
+                const rows = text.split('\n');
+                let start = 0;
+                for (let i = 0; i < rows.length; ++i) {
+                    let end = start + rows[i].length;
+                    if (end >= from && start <= to) {
+                        if (to === from || start !== to) {
+                            rows[i] = '\t' + rows[i];
+                            to += 1;
+                            end += 1;
+                        }
+                    }
+                    start = end + 1;
+                }
+                this.value(rows.join('\n'));
+                this.selection([from + 1, to]);
+            }
+            indent_dec() {
+                let text = this.value();
+                let [from, to] = this.selection();
+                const rows = text.split('\n');
+                let start = 0;
+                for (let i = 0; i < rows.length; ++i) {
+                    const end = start + rows[i].length;
+                    if (end >= from && start <= to && rows[i].startsWith('\t')) {
+                        rows[i] = rows[i].slice(1);
+                        to -= 1;
+                        if (start < from)
+                            from -= 1;
+                    }
+                    start = end + 1;
+                }
+                this.value(rows.join('\n'));
+                this.selection([from, to]);
+            }
+            symbol_insert(event) {
+                const symbol = event.shiftKey
+                    ? this.symbols_alt_shift()[$mol_keyboard_code[event.keyCode]]
+                    : event.ctrlKey
+                        ? this.symbols_alt_ctrl()[$mol_keyboard_code[event.keyCode]]
+                        : this.symbols_alt()[$mol_keyboard_code[event.keyCode]];
+                if (!symbol)
+                    return;
+                event.preventDefault();
+                document.execCommand('insertText', false, symbol);
+            }
+            clickable(next) {
+                if (!this.enabled())
+                    return true;
+                return next ?? false;
+            }
+            hover(event) {
+                this.clickable(event.ctrlKey);
+            }
+            press(event) {
+                if (event.altKey) {
+                    this.symbol_insert(event);
+                }
+                else {
+                    switch (event.keyCode) {
+                        case !event.shiftKey && $mol_keyboard_code.tab:
+                            this.indent_inc();
+                            break;
+                        case event.shiftKey && $mol_keyboard_code.tab:
+                            this.indent_dec();
+                            break;
+                        default: return;
+                    }
+                    event.preventDefault();
+                }
+            }
+            row_numb(index) {
+                return index;
+            }
+            syntax() {
+                return this.$.$mol_syntax2_md_code;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_textarea.prototype, "clickable", null);
+        $$.$mol_textarea = $mol_textarea;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n\tpointer-events: none;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n\tuser-select: none;\n}\n\n[mol_textarea_view_copy] {\n\tpointer-events: all;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n\tpointer-events: all;\n\tuser-select: auto;\n}\n\n[mol_textarea_clickable] > [mol_textarea_edit] {\n\tuser-select: none;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
+})($ || ($ = {}));
+
+;
 	($.$yuf_localizer_settings_form) = class $yuf_localizer_settings_form extends ($.$mol_form) {
 		app_url_name(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_app_url_name"));
@@ -22246,11 +22513,33 @@ var $;
 			(obj.control) = () => ((this.Langs()));
 			return obj;
 		}
+		locales_data_name(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_locales_data_name"));
+		}
+		locales_data_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Locales_data(){
+			const obj = new this.$.$mol_textarea();
+			(obj.value) = (next) => ((this.locales_data_str(next)));
+			return obj;
+		}
+		Locales_data_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.locales_data_name()));
+			(obj.control) = () => ((this.Locales_data()));
+			return obj;
+		}
 		buttons(){
 			return [];
 		}
 		body(){
-			return [(this.App_url_field()), (this.Langs_field())];
+			return [
+				(this.App_url_field()), 
+				(this.Langs_field()), 
+				(this.Locales_data_field())
+			];
 		}
 	};
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "app_url"));
@@ -22259,6 +22548,9 @@ var $;
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "langs_str"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs_field"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "locales_data_str"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Locales_data"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Locales_data_field"));
 
 
 ;
@@ -22277,7 +22569,26 @@ var $;
 })($ || ($ = {}));
 
 ;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_localizer_settings_form, {
+            Locales_data: {
+                flex: {
+                    shrink: 1,
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_localizer_settings_page) = class $yuf_localizer_settings_page extends ($.$mol_page) {
+		addon_tools(){
+			return [];
+		}
 		app_url(next){
 			if(next !== undefined) return next;
 			return "";
@@ -22286,14 +22597,22 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
+		locales_data_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
 		Form(){
 			const obj = new this.$.$yuf_localizer_settings_form();
 			(obj.app_url) = (next) => ((this.app_url(next)));
 			(obj.langs_str) = (next) => ((this.langs_str(next)));
+			(obj.locales_data_str) = (next) => ((this.locales_data_str(next)));
 			return obj;
 		}
 		title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_page_title"));
+		}
+		tools(){
+			return [...(this.addon_tools())];
 		}
 		body(){
 			return [(this.Form())];
@@ -22301,6 +22620,7 @@ var $;
 	};
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "app_url"));
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "locales_data_str"));
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "Form"));
 
 
@@ -23028,6 +23348,10 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
+		locales_data_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
 		locales_data(next){
 			if(next !== undefined) return next;
 			return {};
@@ -23078,9 +23402,10 @@ var $;
 		}
 		Settings(){
 			const obj = new this.$.$yuf_localizer_settings_page();
-			(obj.tools) = () => ([(this.Settings_close())]);
+			(obj.addon_tools) = () => ([(this.Settings_close())]);
 			(obj.app_url) = (next) => ((this.app_url(next)));
 			(obj.langs_str) = (next) => ((this.langs_str(next)));
+			(obj.locales_data_str) = (next) => ((this.locales_data_str(next)));
 			return obj;
 		}
 		store(){
@@ -23137,6 +23462,7 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "app_url"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data_str"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "store"));
@@ -23177,19 +23503,19 @@ var $;
             empty_content() {
                 return this.app_url() ? [this.not_found_keys()] : [this.setup_needed()];
             }
-            locales_data_raw(next) {
-                return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next);
+            locales_data_str(next) {
+                return this.$.$mol_state_local.value(this.state_key('locales_data_str'), next) || '';
             }
             locales_data(next) {
                 if (next === undefined)
-                    return JSON.parse(this.locales_data_raw() ?? '{}') || {};
+                    return JSON.parse(this.locales_data_str() || '{}') || {};
                 this.locales_data_push_serial(next);
                 return next;
             }
             locales_data_push(next) {
                 this.$.$mol_wait_timeout(200);
-                const str = next === null ? null : JSON.stringify(next);
-                this.locales_data_raw(str);
+                const str = next === null ? null : JSON.stringify(next, null, '\t');
+                this.locales_data_str(str);
                 return null;
             }
             locales_data_push_serial = $mol_wire_async(((next) => this.locales_data_push(next)));

@@ -79,6 +79,7 @@
 	"$yuf_localizer_settings_form_app_url_name": "App url",
 	"$yuf_localizer_settings_form_langs_hint": "ru, ar",
 	"$yuf_localizer_settings_form_langs_name": "Available Langs",
+	"$yuf_localizer_settings_form_locales_data_name": "Changed locales json dta",
 	"$yuf_localizer_settings_page_title": "Settings",
 	"$yuf_login_form_login_error": "Wrong login or password",
 	"$yuf_login_form_login_label": "User name",

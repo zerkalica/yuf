@@ -10316,6 +10316,155 @@ declare namespace $ {
 //# sourceMappingURL=close.view.tree.d.ts.map
 declare namespace $ {
 
+	type $mol_textarea_edit__value_mol_textarea_1 = $mol_type_enforce<
+		ReturnType< $mol_textarea['value'] >
+		,
+		ReturnType< $mol_textarea_edit['value'] >
+	>
+	type $mol_textarea_edit__hint_mol_textarea_2 = $mol_type_enforce<
+		ReturnType< $mol_textarea['hint'] >
+		,
+		ReturnType< $mol_textarea_edit['hint'] >
+	>
+	type $mol_textarea_edit__enabled_mol_textarea_3 = $mol_type_enforce<
+		ReturnType< $mol_textarea['enabled'] >
+		,
+		ReturnType< $mol_textarea_edit['enabled'] >
+	>
+	type $mol_textarea_edit__spellcheck_mol_textarea_4 = $mol_type_enforce<
+		ReturnType< $mol_textarea['spellcheck'] >
+		,
+		ReturnType< $mol_textarea_edit['spellcheck'] >
+	>
+	type $mol_textarea_edit__length_max_mol_textarea_5 = $mol_type_enforce<
+		ReturnType< $mol_textarea['length_max'] >
+		,
+		ReturnType< $mol_textarea_edit['length_max'] >
+	>
+	type $mol_textarea_edit__selection_mol_textarea_6 = $mol_type_enforce<
+		ReturnType< $mol_textarea['selection'] >
+		,
+		ReturnType< $mol_textarea_edit['selection'] >
+	>
+	type $mol_textarea_edit__submit_mol_textarea_7 = $mol_type_enforce<
+		ReturnType< $mol_textarea['submit'] >
+		,
+		ReturnType< $mol_textarea_edit['submit'] >
+	>
+	type $mol_textarea_edit__submit_with_ctrl_mol_textarea_8 = $mol_type_enforce<
+		ReturnType< $mol_textarea['submit_with_ctrl'] >
+		,
+		ReturnType< $mol_textarea_edit['submit_with_ctrl'] >
+	>
+	type $mol_text_code__text_mol_textarea_9 = $mol_type_enforce<
+		ReturnType< $mol_textarea['value'] >
+		,
+		ReturnType< $mol_text_code['text'] >
+	>
+	type $mol_text_code__render_visible_only_mol_textarea_10 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_text_code['render_visible_only'] >
+	>
+	type $mol_text_code__row_numb_mol_textarea_11 = $mol_type_enforce<
+		ReturnType< $mol_textarea['row_numb'] >
+		,
+		ReturnType< $mol_text_code['row_numb'] >
+	>
+	type $mol_text_code__sidebar_showed_mol_textarea_12 = $mol_type_enforce<
+		ReturnType< $mol_textarea['sidebar_showed'] >
+		,
+		ReturnType< $mol_text_code['sidebar_showed'] >
+	>
+	type $mol_text_code__highlight_mol_textarea_13 = $mol_type_enforce<
+		ReturnType< $mol_textarea['highlight'] >
+		,
+		ReturnType< $mol_text_code['highlight'] >
+	>
+	type $mol_text_code__syntax_mol_textarea_14 = $mol_type_enforce<
+		ReturnType< $mol_textarea['syntax'] >
+		,
+		ReturnType< $mol_text_code['syntax'] >
+	>
+	export class $mol_textarea extends $mol_stack {
+		clickable( next?: boolean ): boolean
+		sidebar_showed( ): boolean
+		press( next?: any ): any
+		hover( next?: any ): any
+		value( next?: string ): string
+		hint( ): string
+		enabled( ): boolean
+		spellcheck( ): boolean
+		length_max( ): number
+		selection( next?: readonly(number)[] ): readonly(number)[]
+		bring( ): ReturnType< ReturnType< $mol_textarea['Edit'] >['bring'] >
+		submit( next?: any ): any
+		submit_with_ctrl( ): boolean
+		Edit( ): $mol_textarea_edit
+		row_numb( id: any): number
+		highlight( ): string
+		syntax( ): $mol_syntax2
+		View( ): $mol_text_code
+		attr( ): ({ 
+			'mol_textarea_clickable': ReturnType< $mol_textarea['clickable'] >,
+			'mol_textarea_sidebar_showed': ReturnType< $mol_textarea['sidebar_showed'] >,
+		})  & ReturnType< $mol_stack['attr'] >
+		event( ): ({ 
+			keydown( next?: ReturnType< $mol_textarea['press'] > ): ReturnType< $mol_textarea['press'] >,
+			pointermove( next?: ReturnType< $mol_textarea['hover'] > ): ReturnType< $mol_textarea['hover'] >,
+		}) 
+		sub( ): readonly(any)[]
+		symbols_alt( ): Record<string, string>
+		symbols_alt_ctrl( ): Record<string, string>
+		symbols_alt_shift( ): Record<string, string>
+	}
+	
+	export class $mol_textarea_edit extends $mol_string {
+		dom_name( ): string
+		enter( ): string
+		field( ): ({ 
+			'scrollTop': number,
+		})  & ReturnType< $mol_string['field'] >
+	}
+	
+}
+
+//# sourceMappingURL=textarea.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_textarea extends $.$mol_textarea {
+        indent_inc(): void;
+        indent_dec(): void;
+        symbol_insert(event: KeyboardEvent): void;
+        clickable(next?: boolean): boolean;
+        hover(event: PointerEvent): void;
+        press(event: KeyboardEvent): void;
+        row_numb(index: number): number;
+        syntax(): $mol_syntax2<{
+            'code-indent': RegExp;
+            'code-docs': RegExp;
+            'code-comment-block': RegExp;
+            'code-link': RegExp;
+            'code-comment-inline': RegExp;
+            'code-string': RegExp;
+            'code-number': RegExp;
+            'code-call': RegExp;
+            'code-sexpr': RegExp;
+            'code-field': RegExp;
+            'code-keyword': RegExp;
+            'code-global': RegExp;
+            'code-word': RegExp;
+            'code-decorator': RegExp;
+            'code-tag': RegExp;
+            'code-punctuation': RegExp;
+        }>;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
 	type $mol_string__hint_yuf_localizer_settings_form_1 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_settings_form['app_url_hint'] >
 		,
@@ -10356,6 +10505,21 @@ declare namespace $ {
 		,
 		ReturnType< $mol_form_field['control'] >
 	>
+	type $mol_textarea__value_yuf_localizer_settings_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['locales_data_str'] >
+		,
+		ReturnType< $mol_textarea['value'] >
+	>
+	type $mol_form_field__name_yuf_localizer_settings_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['locales_data_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_localizer_settings_form_11 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['Locales_data'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
 	export class $yuf_localizer_settings_form extends $mol_form {
 		app_url_name( ): string
 		app_url_hint( ): string
@@ -10367,6 +10531,10 @@ declare namespace $ {
 		langs_str( next?: string ): string
 		Langs( ): $mol_string
 		Langs_field( ): $mol_form_field
+		locales_data_name( ): string
+		locales_data_str( next?: string ): string
+		Locales_data( ): $mol_textarea
+		Locales_data_field( ): $mol_form_field
 		buttons( ): readonly(any)[]
 		body( ): readonly(any)[]
 	}
@@ -10377,6 +10545,9 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -10405,11 +10576,24 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_localizer_settings_form['langs_str'] >
 	>
+	type $yuf_localizer_settings_form__locales_data_str_yuf_localizer_settings_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_page['locales_data_str'] >
+		,
+		ReturnType< $yuf_localizer_settings_form['locales_data_str'] >
+	>
+	type $yuf_localizer_settings_page_tools__4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_page['addon_tools'] >[number]
+		,
+		$mol_view
+	>
 	export class $yuf_localizer_settings_page extends $mol_page {
+		addon_tools( ): readonly($mol_view)[]
 		app_url( next?: string ): string
 		langs_str( next?: string ): string
+		locales_data_str( next?: string ): string
 		Form( ): $yuf_localizer_settings_form
 		title( ): string
+		tools( ): readonly($mol_view)[]
 		body( ): readonly(any)[]
 	}
 	
@@ -10724,10 +10908,10 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
 	>
-	type $yuf_localizer_settings_page__tools_yuf_localizer_catalog_16 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__addon_tools_yuf_localizer_catalog_16 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $yuf_localizer_settings_page['tools'] >
+		ReturnType< $yuf_localizer_settings_page['addon_tools'] >
 	>
 	type $yuf_localizer_settings_page__app_url_yuf_localizer_catalog_17 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
@@ -10739,52 +10923,57 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_localizer_settings_page['langs_str'] >
 	>
-	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_19 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__locales_data_str_yuf_localizer_catalog_19 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['locales_data_str'] >
+		,
+		ReturnType< $yuf_localizer_settings_page['locales_data_str'] >
+	>
+	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_20 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
 		,
 		ReturnType< $yuf_localizer_file_store['base_url'] >
 	>
-	type $yuf_localizer_file_store__data_yuf_localizer_catalog_20 = $mol_type_enforce<
+	type $yuf_localizer_file_store__data_yuf_localizer_catalog_21 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locales_data'] >
 		,
 		ReturnType< $yuf_localizer_file_store['data'] >
 	>
-	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_21 = $mol_type_enforce<
+	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_22 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locale_key'] >
 		,
 		ReturnType< $yuf_localizer_page['locale_key'] >
 	>
-	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_22 = $mol_type_enforce<
+	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_23 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_available'] >
 		,
 		ReturnType< $yuf_localizer_page['langs_available'] >
 	>
-	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_23 = $mol_type_enforce<
+	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_24 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code_selected'] >
 		,
 		ReturnType< $yuf_localizer_page['lang_code_selected'] >
 	>
-	type $yuf_localizer_page__store_yuf_localizer_catalog_24 = $mol_type_enforce<
+	type $yuf_localizer_page__store_yuf_localizer_catalog_25 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['store'] >
 		,
 		ReturnType< $yuf_localizer_page['store'] >
 	>
-	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_25 = $mol_type_enforce<
+	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_26 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_localizer_page['addon_tools'] >
 	>
-	type $mol_view__theme_yuf_localizer_catalog_26 = $mol_type_enforce<
+	type $mol_view__theme_yuf_localizer_catalog_27 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['item_theme'] >
 		,
 		ReturnType< $mol_view['theme'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_27 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_item_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_29 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['empty_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
@@ -10812,6 +11001,7 @@ declare namespace $ {
 		Settings_close( ): $yuf_button_close
 		app_url( next?: string ): string
 		langs_str( next?: string ): string
+		locales_data_str( next?: string ): string
 		locales_data( next?: Record<string, any> ): Record<string, any>
 		spread_ids_params( id: any): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >
 		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
@@ -10849,7 +11039,7 @@ declare namespace $.$$ {
         langs_str(next?: string): string;
         keys_filter_value(next?: string): string;
         empty_content(): string[];
-        protected locales_data_raw(next?: string | null): string | null;
+        locales_data_str(next?: string | null): string;
         locales_data(next?: Record<string, Record<string, string>> | null): any;
         protected locales_data_push(next: Record<string, Record<string, string>> | null): null;
         protected locales_data_push_serial: ((next: Record<string, Record<string, string>> | null) => Promise<null>) & {};
