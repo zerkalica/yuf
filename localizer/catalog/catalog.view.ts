@@ -47,7 +47,7 @@ namespace $.$$ {
 		protected locales_data_push(next: Record<string, Record<string, string>> | null) {
 			this.$.$mol_wait_timeout(200)
 			const str = next === null ? null : JSON.stringify(next, null, '\t')
-			this.locales_data_str(str)
+			this.locales_data_str(str === '{}' ? null : str)
 			return null
 		}
 
