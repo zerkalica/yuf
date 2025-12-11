@@ -12,6 +12,8 @@ namespace $ {
 
 		text(next?: string | null) { return next ?? '' }
 
+		is_changed() { return this.text() && this.text_actual() !== this.text() }
+
 		is_new() {
 			return this.text_main() !== null && ! this.text_actual()
 		}

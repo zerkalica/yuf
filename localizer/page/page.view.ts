@@ -21,9 +21,5 @@ namespace $.$$ {
 		override lang_code(lang_code: string) {
 			return lang_code
 		}
-
-		override reset(e?: Event) {
-			this.locale_file_selected().item(this.locale_key()).text(null)
-		}
 	}
 }

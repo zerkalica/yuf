@@ -1,7 +1,6 @@
 $yuf_localizer_key_form $mol_form
 	is_new_text @ \new
 	is_not_used_text @ \not used
-	is_changed_text @ \changed
 	model $yuf_localizer_key_model
 		id => title
 		text? => text?
@@ -11,8 +10,19 @@ $yuf_localizer_key_form $mol_form
 	rows /
 		<= Body
 	body /
-		<= Text_field $mol_form_field
+		<= Text_field $yuf_localizer_key_form_field
 			name <= text_name <= lang_code \
+			reset_content <= reset_content /$mol_view
+				<= Reset $mol_button_minor
+					sub / <= Reset_icon $mol_icon_refresh
+					hint <= reset_hint @ \Reset
+					click? <=> reset? null
 			control <= Text $mol_string
 				enabled <= text_edit_enabled false
 				value? <=> text?
+
+$yuf_localizer_key_form_field $mol_form_field
+	label /
+		<= name
+		<= Bid
+		^ reset_content /$mol_view

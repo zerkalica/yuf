@@ -4,10 +4,6 @@ $yuf_localizer_page $mol_page
 	store $yuf_localizer_file_store
 	title <= locale_key \
 	tools /$mol_view_content
-		<= Reset $mol_button_minor
-			sub / <= Reset_icon $mol_icon_refresh
-			hint <= reset_hint @ \Reset
-			click? <=> reset? null
 		^ addon_tools /$mol_view_content
 	body /
 		^ forms /$mol_view

@@ -83,10 +83,10 @@ namespace $.$$ {
 		override item_theme(key: string) {
 			const model = this.lang_selected()
 			const item = model.item(key)
-
-			return item.is_new()
-				? this.item_theme_new()
-				: item.is_not_used() ? this.item_theme_not_used() : null!
+			if (item.is_changed()) return this.item_theme_changed()
+			if (item.is_new()) return this.item_theme_new()
+			if (item.is_not_used()) return this.item_theme_not_used()
+			return null!
 		}
 
 		override spread_ids() {
