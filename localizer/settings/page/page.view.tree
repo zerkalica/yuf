@@ -4,4 +4,3 @@ $yuf_localizer_settings_page $mol_page
 		<= Form $yuf_localizer_settings_form
 			app_url? <=> app_url? \
 			langs_str? <=> langs_str? \
-			lang_main? <=> lang_main? \

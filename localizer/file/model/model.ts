@@ -21,11 +21,16 @@ namespace $ {
 
 		@ $mol_mem
 		actual() {
-			const response = this.fetcher().success(this.url())
+			const lang_id = this.id()
+			const url = this.url()
+			const response = $mol_error_fence(
+				() => this.fetcher().success(url),
+				e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e)
+			)
 
 			return $mol_error_fence(
 				() => langs_dto(response.json() as any),
-				e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, response, e)
+				e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e)
 			)
 		}
 
@@ -54,16 +59,6 @@ namespace $ {
 			const actual = this.actual()
 
 			return Object.keys(local).filter(key => local[key] !== actual[key])
-		}
-
-		@ $mol_mem
-		changed_diff() {
-			const result = {} as Record<string, string>
-			for (const key of this.keys_changed()) {
-				result[key] = this.key_text(key)
-			}
-
-			return result
 		}
 
 		@ $mol_mem_key

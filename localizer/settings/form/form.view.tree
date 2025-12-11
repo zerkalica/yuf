@@ -9,10 +9,5 @@ $yuf_localizer_settings_form $mol_form
 		<= Langs_field $mol_form_field
 			name <= langs_name @ \Available Langs
 			control <= Langs $mol_string
-				hint <= langs_hint @ \en, ru. First is main
+				hint <= langs_hint @ \ru, ar
 				value? <=> langs_str? \
-		<= Lang_main_field $mol_form_field
-			name <= Lang_main_name @ \Main lang code
-			control <= Lang_main $mol_select
-				options <= available_langs /string
-				value? <=> lang_main? \

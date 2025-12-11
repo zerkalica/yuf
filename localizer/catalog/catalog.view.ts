@@ -23,10 +23,6 @@ namespace $.$$ {
 			return this.val(`langs`, next) ?? ''
 		}
 
-		override lang_main(next?: string) {
-			return this.val(`lang_main`, next) || this.langs_available()?.[0] || ''
-		}
-
 		override keys_filter_value(next?: string) {
 			return this.val('keys', next) ?? ''
 		}
@@ -55,8 +51,13 @@ namespace $.$$ {
 			(next: Parameters<typeof this.locales_data_push>[0]) => this.locales_data_push(next)
 		))
 
+		@ $mol_mem
 		override langs_available() {
-			return this.langs_str().split(',').map(str => str.trim()).filter(Boolean)
+			const main = this.store().lang_main()
+			return [
+				main,
+				...this.langs_str().split(',').map(str => str.trim()).filter(str => str && str !== main)
+			]
 		}
 
 		@ $mol_action

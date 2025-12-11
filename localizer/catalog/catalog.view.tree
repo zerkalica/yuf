@@ -33,11 +33,9 @@ $yuf_localizer_catalog $mol_book2_catalog
 					click? <=> settings_close? null
 			app_url? <=> app_url? \
 			langs_str? <=> langs_str? \
-			lang_main? <=> lang_main? \en
 	store $yuf_localizer_file_store
 		base_url <= app_url
 		data? <=> locales_data? *
-		lang_main <= lang_main \en
 	lang_selected $yuf_localizer_file_model
 		keys_filtered* => spread_ids_params*
 		keys_changed => keys_changed
