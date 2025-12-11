@@ -23065,11 +23065,11 @@ var $;
 		menu_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
 		}
+		param_prefix(){
+			return "app";
+		}
 		param_suffix(){
 			return "localizer";
-		}
-		param(){
-			return "langkey";
 		}
 		langs_available(){
 			return [];
@@ -23159,10 +23159,10 @@ var $;
     (function ($$) {
         class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
             val(key, next) {
-                return this.$.$mol_state_arg.value(`${this.param_prefix()}_${key}`, next === undefined || next ? next : null);
+                return this.$.$mol_state_arg.value(`${this.param_base()}_${key}`, next === undefined || next ? next : null);
             }
             param() {
-                return `${this.param_prefix()}_${super.param()}`;
+                return `${this.param_base()}_langkey`;
             }
             lang_code_selected(next) {
                 return this.val('lang_code_selected', next) || this.store().lang_main();

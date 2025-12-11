@@ -2397,8 +2397,8 @@ $yuf_localizer_page $mol_page
 
 $yuf_localizer_catalog $yuf_catalog
 	menu_title @ \Localizer
+	param_prefix \app
 	param_suffix \localizer
-	param \langkey
 	langs_available /string
 	menu_tools /
 		<= Selected_lang $mol_select

@@ -10745,8 +10745,8 @@ declare namespace $ {
 		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
 		empty_text( ): string
 		menu_title( ): string
+		param_prefix( ): string
 		param_suffix( ): string
-		param( ): string
 		langs_available( ): readonly(string)[]
 		menu_tools( ): readonly(any)[]
 		placeholders( ): readonly($mol_view)[]
