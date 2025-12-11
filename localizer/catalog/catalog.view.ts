@@ -7,6 +7,10 @@ namespace $.$$ {
 			)
 		}
 
+		override lang_code_selected(next?: string) {
+			return this.val('lang_code_selected', next) || ''
+		}
+
 		override app_url(next?: string) {
 			return this.val('url', next) ?? ''
 		}
@@ -43,6 +47,7 @@ namespace $.$$ {
 		}
 
 		override spread_ids() {
+			if (! this.lang_code_selected()) return []
 			return this.spread_ids_params({ keys_filter: this.keys_filter_value() })
 		}
 
@@ -57,7 +62,8 @@ namespace $.$$ {
 		}
 
 		override diff_to_clipboard_enabled() {
-			return this.keys_changed().length > 0
+			if (! this.lang_code_selected()) return false
+			return $mol_error_fence(() => this.keys_changed().length > 0, () => false)
 		}
 
 	}
