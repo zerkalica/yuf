@@ -3796,7 +3796,7 @@ declare namespace $.$$ {
         col_head_content(colId: string): readonly string[];
         rows(): readonly $mol_view[];
         cells(row_id: string[]): readonly $mol_view[];
-        col_type(col_id: string): "number" | "text" | "branch";
+        col_type(col_id: string): "text" | "number" | "branch";
         Cell(id: {
             row: string[];
             col: string;
@@ -10222,6 +10222,534 @@ declare namespace $.$$ {
         body_scroll_top: (() => Promise<number>) & {};
         spread_ids(): string[];
         spread_title(id: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_button_close extends $mol_button_minor {
+		Icon( ): $mol_icon_close
+		hint( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=close.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_string__hint_yuf_localizer_settings_form_1 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['app_url_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__value_yuf_localizer_settings_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['app_url'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_localizer_settings_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['app_url_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_localizer_settings_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['App_url'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_string__hint_yuf_localizer_settings_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['langs_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__value_yuf_localizer_settings_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['langs_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_localizer_settings_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['langs_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_localizer_settings_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['Langs'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_select__options_yuf_localizer_settings_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['available_langs'] >
+		,
+		ReturnType< $mol_select['options'] >
+	>
+	type $mol_select__value_yuf_localizer_settings_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['lang_main'] >
+		,
+		ReturnType< $mol_select['value'] >
+	>
+	type $mol_form_field__name_yuf_localizer_settings_form_11 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['Lang_main_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_localizer_settings_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_form['Lang_main'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	export class $yuf_localizer_settings_form extends $mol_form {
+		app_url_name( ): string
+		app_url_hint( ): string
+		app_url( next?: string ): string
+		App_url( ): $mol_string
+		App_url_field( ): $mol_form_field
+		langs_name( ): string
+		langs_hint( ): string
+		langs_str( next?: string ): string
+		Langs( ): $mol_string
+		Langs_field( ): $mol_form_field
+		Lang_main_name( ): string
+		available_langs( ): readonly(string)[]
+		lang_main( next?: string ): string
+		Lang_main( ): $mol_select
+		Lang_main_field( ): $mol_form_field
+		buttons( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
+        available_langs(): string[];
+    }
+}
+
+declare namespace $ {
+    const $yuf_theme: Record<"accept" | "accent" | "back_soft" | "control_hover" | "decline", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+    let $yuf_theme_gap: Record<"round_s" | "page_s" | "page_m" | "page_l" | "page_xl", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $yuf_localizer_settings_form__app_url_yuf_localizer_settings_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_page['app_url'] >
+		,
+		ReturnType< $yuf_localizer_settings_form['app_url'] >
+	>
+	type $yuf_localizer_settings_form__langs_str_yuf_localizer_settings_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_page['langs_str'] >
+		,
+		ReturnType< $yuf_localizer_settings_form['langs_str'] >
+	>
+	type $yuf_localizer_settings_form__lang_main_yuf_localizer_settings_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_settings_page['lang_main'] >
+		,
+		ReturnType< $yuf_localizer_settings_form['lang_main'] >
+	>
+	export class $yuf_localizer_settings_page extends $mol_page {
+		app_url( next?: string ): string
+		langs_str( next?: string ): string
+		lang_main( next?: string ): string
+		Form( ): $yuf_localizer_settings_form
+		title( ): string
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    type $mol_data_value<Input = any, Output = any> = (val: Input) => Output;
+}
+
+declare namespace $ {
+    function $mol_data_setup<Value extends $mol_data_value, Config = never>(value: Value, config: Config): Value & {
+        config: Config;
+        Value: ReturnType<Value>;
+    };
+}
+
+declare namespace $ {
+    class $mol_data_error extends $mol_error_mix {
+    }
+}
+
+declare namespace $ {
+    function $mol_data_dict<Sub extends $mol_data_value>(sub: Sub): ((val: Readonly<Record<string, ReturnType<Sub>>>) => Readonly<Record<string, ReturnType<Sub>>>) & {
+        config: Sub;
+        Value: Readonly<Record<string, ReturnType<Sub>>>;
+    };
+}
+
+declare namespace $ {
+    let $mol_data_string: (val: string) => string;
+}
+
+declare namespace $ {
+    function $mol_error_fence<Data>(task: () => Data, fallback: (parent: Error) => Error | Data): Data;
+}
+
+declare namespace $ {
+    class $yuf_localizer_item_model extends $mol_object {
+        id(): string;
+        text_actual(): null | string;
+        text_main(): null | string;
+        text(next?: string): string;
+        is_new(): boolean;
+        is_not_used(): boolean;
+    }
+}
+
+declare namespace $ {
+    class $yuf_localizer_model extends $mol_object {
+        url(): string;
+        id(): string;
+        main(): null | $yuf_localizer_model;
+        protected static store(lang_code: string, next?: Record<string, string> | null): Record<string, string> | null;
+        protected data_local(next?: null | Record<string, string | null>): Record<string, string>;
+        protected fetcher(): typeof $mol_fetch;
+        data_actual(): Readonly<Record<string, string>>;
+        keys(): string[];
+        keys_filtered(params: {
+            keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty';
+        }): string[];
+        keys_changed(): string[];
+        changed_diff(): Record<string, string>;
+        item_text(key: string, next?: string | null): string;
+        item(id: string): $yuf_localizer_item_model;
+    }
+}
+
+declare namespace $ {
+    class $yuf_localizer_store extends $mol_object {
+        base_url(next?: string): string;
+        lang_template(): string;
+        lang_main(next?: string): string;
+        protected lang_url(lang: string): string;
+        model_main(): $yuf_localizer_model;
+        model(lang: string): $yuf_localizer_model;
+    }
+}
+
+declare namespace $ {
+
+	type __yuf_localizer_item_form_1 = $mol_type_enforce<
+		Parameters< $yuf_localizer_item_form['text'] >[0]
+		,
+		Parameters< ReturnType< $yuf_localizer_item_form['model'] >['text'] >[0]
+	>
+	type $mol_string__value_yuf_localizer_item_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_item_form['text'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_localizer_item_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_item_form['text_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_localizer_item_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_item_form['Text'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	export class $yuf_localizer_item_form extends $mol_form {
+		title( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['id'] >
+		text( next?: ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text'] > ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text'] >
+		is_new( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['is_new'] >
+		is_not_used( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['is_not_used'] >
+		text_actual( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text_actual'] >
+		lang_code( ): string
+		text_name( ): ReturnType< $yuf_localizer_item_form['lang_code'] >
+		Text( ): $mol_string
+		Text_field( ): $mol_form_field
+		is_new_text( ): string
+		is_not_used_text( ): string
+		is_changed_text( ): string
+		model( ): $yuf_localizer_item_model
+		rows( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_localizer_item_form extends $.$yuf_localizer_item_form {
+        text_name(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_localizer_item_form__model_yuf_localizer_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_page['locale_by_lang_code'] >
+		,
+		ReturnType< $yuf_localizer_item_form['model'] >
+	>
+	type $yuf_localizer_item_form__lang_code_yuf_localizer_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_page['lang_code'] >
+		,
+		ReturnType< $yuf_localizer_item_form['lang_code'] >
+	>
+	export class $yuf_localizer_page extends $mol_page {
+		locale_by_lang_code( id: any): $yuf_localizer_item_model
+		lang_code( id: any): string
+		Form( id: any): $yuf_localizer_item_form
+		forms( ): readonly($mol_view)[]
+		lang_code_selected( ): string
+		langs_available( ): readonly(string)[]
+		locale_key( ): string
+		store( ): $yuf_localizer_store
+		title( ): ReturnType< $yuf_localizer_page['locale_key'] >
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_localizer_page extends $.$yuf_localizer_page {
+        langs(): string[];
+        forms(): $.$yuf_localizer_item_form[];
+        locale_by_lang_code(lang_code: string): $yuf_localizer_item_model;
+        lang_code(lang_code: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_select__hint_yuf_localizer_catalog_1 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['selected_lang_hint'] >
+		,
+		ReturnType< $mol_select['hint'] >
+	>
+	type $mol_select__options_yuf_localizer_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['langs_available'] >
+		,
+		ReturnType< $mol_select['options'] >
+	>
+	type $mol_select__value_yuf_localizer_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['lang_code_selected'] >
+		,
+		ReturnType< $mol_select['value'] >
+	>
+	type $mol_select__hint_yuf_localizer_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['key_filter_hint'] >
+		,
+		ReturnType< $mol_select['hint'] >
+	>
+	type $mol_select__dictionary_yuf_localizer_catalog_5 = $mol_type_enforce<
+		({ 
+			'': ReturnType< $yuf_localizer_catalog['all_msg'] >,
+			'is_new': ReturnType< $yuf_localizer_catalog['is_new_msg'] >,
+			'is_not_used': ReturnType< $yuf_localizer_catalog['is_not_used_msg'] >,
+			'empty': ReturnType< $yuf_localizer_catalog['empty_msg'] >,
+		}) 
+		,
+		ReturnType< $mol_select['dictionary'] >
+	>
+	type $mol_select__value_yuf_localizer_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['keys_filter_value'] >
+		,
+		ReturnType< $mol_select['value'] >
+	>
+	type $mol_button_minor__sub_yuf_localizer_catalog_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__enabled_yuf_localizer_catalog_8 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_enabled'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__hint_yuf_localizer_catalog_9 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_yuf_localizer_catalog_10 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_copy'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_check_icon__Icon_yuf_localizer_catalog_11 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['Settings_icon'] >
+		,
+		ReturnType< $mol_check_icon['Icon'] >
+	>
+	type $mol_check_icon__hint_yuf_localizer_catalog_12 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['settings_check_hint'] >
+		,
+		ReturnType< $mol_check_icon['hint'] >
+	>
+	type $mol_check_icon__checked_yuf_localizer_catalog_13 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['settings_checked'] >
+		,
+		ReturnType< $mol_check_icon['checked'] >
+	>
+	type $yuf_button_close__click_yuf_localizer_catalog_14 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['settings_close'] >
+		,
+		ReturnType< $yuf_button_close['click'] >
+	>
+	type $yuf_localizer_settings_page__tools_yuf_localizer_catalog_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_localizer_settings_page['tools'] >
+	>
+	type $yuf_localizer_settings_page__app_url_yuf_localizer_catalog_16 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['app_url'] >
+		,
+		ReturnType< $yuf_localizer_settings_page['app_url'] >
+	>
+	type $yuf_localizer_settings_page__langs_str_yuf_localizer_catalog_17 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['langs_str'] >
+		,
+		ReturnType< $yuf_localizer_settings_page['langs_str'] >
+	>
+	type $yuf_localizer_settings_page__lang_main_yuf_localizer_catalog_18 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['lang_main'] >
+		,
+		ReturnType< $yuf_localizer_settings_page['lang_main'] >
+	>
+	type __yuf_localizer_catalog_19 = $mol_type_enforce<
+		Parameters< $yuf_localizer_catalog['spread_ids_params'] >[0]
+		,
+		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
+	>
+	type $yuf_localizer_store__base_url_yuf_localizer_catalog_20 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['app_url'] >
+		,
+		ReturnType< $yuf_localizer_store['base_url'] >
+	>
+	type $yuf_localizer_store__lang_main_yuf_localizer_catalog_21 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['lang_main'] >
+		,
+		ReturnType< $yuf_localizer_store['lang_main'] >
+	>
+	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_22 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['locale_key'] >
+		,
+		ReturnType< $yuf_localizer_page['locale_key'] >
+	>
+	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_23 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['langs_available'] >
+		,
+		ReturnType< $yuf_localizer_page['langs_available'] >
+	>
+	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_24 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['lang_code_selected'] >
+		,
+		ReturnType< $yuf_localizer_page['lang_code_selected'] >
+	>
+	type $yuf_localizer_page__store_yuf_localizer_catalog_25 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['store'] >
+		,
+		ReturnType< $yuf_localizer_page['store'] >
+	>
+	type $yuf_localizer_page__tools_yuf_localizer_catalog_26 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_localizer_page['tools'] >
+	>
+	type $mol_view__theme_yuf_localizer_catalog_27 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['item_theme'] >
+		,
+		ReturnType< $mol_view['theme'] >
+	>
+	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['menu_item_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_localizer_catalog extends $mol_book2_catalog {
+		selected_lang_hint( ): string
+		lang_code_selected( next?: string ): string
+		Selected_lang( ): $mol_select
+		key_filter_hint( ): string
+		all_msg( ): string
+		is_new_msg( ): string
+		is_not_used_msg( ): string
+		empty_msg( ): string
+		keys_filter_value( next?: string ): string
+		Keys_filter( ): $mol_select
+		Diff_to_clipboard_icon( ): $mol_icon_clipboard
+		diff_to_clipboard_enabled( ): boolean
+		diff_to_clipboard_hint( ): string
+		diff_to_clipboard_copy( next?: any ): any
+		Diff_to_clipboard( ): $mol_button_minor
+		Settings_icon( ): $mol_icon_settings
+		settings_check_hint( ): string
+		settings_checked( next?: boolean ): boolean
+		Settings_check( ): $mol_check_icon
+		settings_close( next?: any ): any
+		Settings_close( ): $yuf_button_close
+		app_url( next?: string ): string
+		langs_str( next?: string ): string
+		lang_main( ): string
+		Settings( ): $yuf_localizer_settings_page
+		spread_ids_params( id: any): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >
+		changed_diff( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['changed_diff'] >
+		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
+		locale_key( id: any): string
+		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
+		menu_title( ): string
+		param( ): string
+		langs_available( ): readonly(string)[]
+		menu_tools( ): readonly(any)[]
+		placeholders( ): readonly($mol_view)[]
+		store( ): $yuf_localizer_store
+		lang_selected( ): $yuf_localizer_model
+		Spread( id: any): $yuf_localizer_page
+		Menu_item( id: any): $mol_view
+		item_theme_not_used( ): string
+		item_theme_new( ): string
+	}
+	
+}
+
+//# sourceMappingURL=catalog.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
+        protected val(key: string, next?: string | null): string | null;
+        app_url(next?: string): string;
+        langs_str(next?: string): string;
+        lang_main(next?: string): string;
+        langs_available(): string[];
+        placeholders(): readonly $mol_view[];
+        lang_selected(): $yuf_localizer_model;
+        locale_key(key: string): string;
+        item_theme(key: string): string;
+        spread_ids(): string[];
+        settings_close(): boolean;
+        diff_to_clipboard_copy(e?: Event): void;
+        diff_to_clipboard_enabled(): boolean;
     }
 }
 

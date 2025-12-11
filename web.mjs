@@ -22061,6 +22061,954 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
+;
+	($.$yuf_button_close) = class $yuf_button_close extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_close();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_button_close_hint"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_close.prototype), "Icon"));
+
+
+;
+"use strict";
+
+;
+	($.$yuf_localizer_settings_form) = class $yuf_localizer_settings_form extends ($.$mol_form) {
+		app_url_name(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_app_url_name"));
+		}
+		app_url_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_app_url_hint"));
+		}
+		app_url(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		App_url(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ((this.app_url_hint()));
+			(obj.value) = (next) => ((this.app_url(next)));
+			return obj;
+		}
+		App_url_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.app_url_name()));
+			(obj.control) = () => ((this.App_url()));
+			return obj;
+		}
+		langs_name(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_langs_name"));
+		}
+		langs_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_langs_hint"));
+		}
+		langs_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Langs(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ((this.langs_hint()));
+			(obj.value) = (next) => ((this.langs_str(next)));
+			return obj;
+		}
+		Langs_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.langs_name()));
+			(obj.control) = () => ((this.Langs()));
+			return obj;
+		}
+		Lang_main_name(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_Lang_main_name"));
+		}
+		available_langs(){
+			return [];
+		}
+		lang_main(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Lang_main(){
+			const obj = new this.$.$mol_select();
+			(obj.options) = () => ((this.available_langs()));
+			(obj.value) = (next) => ((this.lang_main(next)));
+			return obj;
+		}
+		Lang_main_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.Lang_main_name()));
+			(obj.control) = () => ((this.Lang_main()));
+			return obj;
+		}
+		buttons(){
+			return [];
+		}
+		body(){
+			return [
+				(this.App_url_field()), 
+				(this.Langs_field()), 
+				(this.Lang_main_field())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "app_url"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "App_url"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "App_url_field"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs_field"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "lang_main"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Lang_main"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Lang_main_field"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
+            available_langs() {
+                return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
+            }
+        }
+        $$.$yuf_localizer_settings_form = $yuf_localizer_settings_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_localizer_settings_page) = class $yuf_localizer_settings_page extends ($.$mol_page) {
+		app_url(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		langs_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		lang_main(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Form(){
+			const obj = new this.$.$yuf_localizer_settings_form();
+			(obj.app_url) = (next) => ((this.app_url(next)));
+			(obj.langs_str) = (next) => ((this.langs_str(next)));
+			(obj.lang_main) = (next) => ((this.lang_main(next)));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_localizer_settings_page_title"));
+		}
+		body(){
+			return [(this.Form())];
+		}
+	};
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "app_url"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "lang_main"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "Form"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_theme = $mol_style_prop('yuf_theme', [
+        'accent',
+        'back_soft',
+        'control_hover',
+        'accept',
+        'decline',
+    ]);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/theme/theme.css", "[mol_button_typed]:active {\n    color: inherit;\n}\n\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\n\t--mol_theme_luma: -1;\n\t--mol_theme_image: invert(1) hue-rotate( 180deg );\n\t--mol_theme_spirit: hsl( 0deg, 0%, 0%, .75 );\n\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 10% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 20%, .25 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 8%, .25 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 80% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 60%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 65% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 60%, 65% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 60%, 65% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 60%, 65% );\n\n} @supports( color: oklch( 0% 0 0deg ) ) {\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\t\n\t--mol_theme_back: oklch( 20% .03 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 30% .05 var(--mol_theme_hue) / .25 );\n\t--mol_theme_field: oklch( 15% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_hover: oklch( 70% 0 var(--mol_theme_hue) / .1 );\n\t\n\t--mol_theme_text: oklch( 80% 0 var(--mol_theme_hue) );\n\t--mol_theme_shade: oklch( 60% 0 var(--mol_theme_hue) );\n\t--mol_theme_line: oklch( 60% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_focus: oklch( 80% .2 calc( var(--mol_theme_hue) + 180deg ) );\n\t\n\t--mol_theme_control: oklch( 70% .1 var(--mol_theme_hue) );\n\t--mol_theme_current: oklch( 70% .2 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_special: oklch( 70% .2 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\n} }\n\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: oklch( 25% .075 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 35% .1 var(--mol_theme_hue) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 35% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 45% .15 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n\n[mol_theme=\"$yuf_theme_light\"], :where([mol_theme=\"$yuf_theme_light\"]) [mol_theme] {\n\t--mol_theme_luma: 1;\n\t--mol_theme_image: none;\n\t--mol_theme_spirit: hsl( 0deg, 0%, 100%, .75 );\n\t\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 92% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 100%, .5 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 100%, .75 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 0% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 40%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 40% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 80%, 30% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 80%, 30% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 80%, 30% );\n\n\t--yuf_theme_back_soft: #f5f5f5;\n\t--yuf_theme_accept: #176323;\n\t--yuf_theme_decline: #631723;\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: #FFD76B;\n\t--mol_theme_card: oklch( 98% .03 var(--mol_theme_hue) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 83% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_theme_gap = $mol_style_prop('yuf_theme_gap', [
+        'round_s',
+        'page_s',
+        'page_m',
+        'page_l',
+        'page_xl',
+    ]);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/theme/gap/gap.css", ":root {\n\t--mol_gap_round: .625rem;\n\t--mol_gap_block: .625rem;\n\t\n\t--yuf_theme_gap_round_s: .3125rem;\n\t--yuf_theme_gap_page_s: 14rem;\n\t--yuf_theme_gap_page_m: 20rem;\n\t--yuf_theme_gap_page_l: 26rem;\n\n\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );\n}\n\n@media (max-width: 480px) {\n\t:root {\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t\t--yuf_theme_gap_page_l: 100vw;\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t}\n}\n\n/* 481-767 Low resolution Tablets and iPads */\n@media (min-width: 481px) and (max-width: 767px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t}\n}\n\n/*\t768-1024 Tablets iPads (Portrait) */\n\n@media (min-width: 768px) and (max-width: 1024px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );\n\t}\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_localizer_settings_page, {
+            flex: {
+                basis: $yuf_theme_gap.page_l
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_data_setup(value, config) {
+        return Object.assign(value, {
+            config,
+            Value: null
+        });
+    }
+    $.$mol_data_setup = $mol_data_setup;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_data_error extends $mol_error_mix {
+    }
+    $.$mol_data_error = $mol_data_error;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_data_dict(sub) {
+        return $mol_data_setup((val) => {
+            if (Object.getPrototypeOf(val) !== Object.prototype) {
+                return $mol_fail(new $mol_data_error(`${val} is not an Object`));
+            }
+            const res = {};
+            for (const field in val) {
+                try {
+                    res[field] = sub(val[field]);
+                }
+                catch (error) {
+                    if (error instanceof Promise)
+                        return $mol_fail_hidden(error);
+                    error.message = `[${JSON.stringify(field)}] ${error.message}`;
+                    return $mol_fail(error);
+                }
+            }
+            return res;
+        }, sub);
+    }
+    $.$mol_data_dict = $mol_data_dict;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_data_string = (val) => {
+        if (typeof val === 'string')
+            return val;
+        return $mol_fail(new $mol_data_error(`${val} is not a string`));
+    };
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_error_fence(task, fallback) {
+        try {
+            return task();
+        }
+        catch (error) {
+            if (!(error instanceof Error))
+                $mol_fail_hidden(error);
+            try {
+                error = fallback(error);
+            }
+            catch (sub_error) {
+                $mol_fail_log(sub_error);
+            }
+            return error instanceof Error ? $mol_fail_hidden(error) : error;
+        }
+    }
+    $.$mol_error_fence = $mol_error_fence;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_localizer_item_model extends $mol_object {
+        id() { return ''; }
+        text_actual() {
+            return null;
+        }
+        text_main() {
+            return null;
+        }
+        text(next) { return next ?? ''; }
+        is_new() {
+            return this.text_main() !== null && !this.text_actual();
+        }
+        is_not_used() {
+            return this.text_main() === null && Boolean(this.text_actual());
+        }
+    }
+    $.$yuf_localizer_item_model = $yuf_localizer_item_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const dict = $mol_data_dict;
+    const str = $mol_data_string;
+    const langs_dto = dict(str);
+    class $yuf_localizer_model extends $mol_object {
+        url() {
+            return '';
+        }
+        id() { return ''; }
+        main() { return null; }
+        static store(lang_code, next) {
+            return this.$.$mol_state_local.value(`${this}.store('${lang_code}')`, next === undefined || next ? next : null);
+        }
+        data_local(next) {
+            const factory = this.$.$yuf_localizer_model;
+            if (next) {
+                next = { ...next };
+                let count = 0;
+                for (let key in next) {
+                    if (next[key] == null)
+                        delete next[key];
+                    else
+                        count++;
+                }
+                if (!count)
+                    next = null;
+            }
+            const lang_code = this.id();
+            return factory.store(lang_code, next) ?? {};
+        }
+        fetcher() { return this.$.$mol_static.$mol_fetch; }
+        data_actual() {
+            const response = this.fetcher().success(this.url());
+            return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, response, e));
+        }
+        keys() {
+            return Object.keys({ ...this.main()?.data_actual(), ...this.data_actual(), ...this.data_local() });
+        }
+        keys_filtered(params) {
+            const kf = params.keys_filter;
+            return this.keys().filter(key => kf === 'is_new'
+                ? this.item(key).is_new()
+                : kf === 'is_not_used'
+                    ? this.item(key).is_not_used()
+                    : kf === 'empty'
+                        ? !this.item(key).text()
+                        : true);
+        }
+        keys_changed() {
+            const local = this.data_local();
+            const actual = this.data_actual();
+            return Object.keys(local).filter(key => local[key] !== actual[key]);
+        }
+        changed_diff() {
+            const result = {};
+            for (const key of this.keys_changed()) {
+                result[key] = this.item_text(key);
+            }
+            return result;
+        }
+        item_text(key, next) {
+            if (next)
+                next = next.trim();
+            const local = this.data_local();
+            const actual = this.data_actual();
+            const text_actual = actual[key];
+            if (next === text_actual)
+                next == null;
+            const text_local = this.data_local(next === undefined ? next : { ...local, [key]: next })[key];
+            return text_local ?? text_actual ?? '';
+        }
+        item(id) {
+            return this.$.$yuf_localizer_item_model.make({
+                id: $mol_const(id),
+                text_main: () => (this.main() ?? this).item_text(id),
+                text_actual: () => this.data_actual()[id] ?? null,
+                text: next => this.item_text(id, next)
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_model.prototype, "data_local", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_model.prototype, "data_actual", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_model.prototype, "keys", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_model.prototype, "keys_filtered", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_model.prototype, "keys_changed", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_model.prototype, "changed_diff", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_model.prototype, "item_text", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_model.prototype, "item", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_model, "store", null);
+    $.$yuf_localizer_model = $yuf_localizer_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_localizer_store extends $mol_object {
+        base_url(next) {
+            return '';
+        }
+        lang_template() {
+            return 'web.locale={lang}.json';
+        }
+        lang_main(next) {
+            return next ?? 'en';
+        }
+        lang_url(lang) {
+            return this.base_url() + '/' + this.lang_template().replace('{lang}', lang);
+        }
+        model_main() {
+            return this.model(this.lang_main());
+        }
+        model(lang) {
+            return this.$.$yuf_localizer_model.make({
+                id: $mol_const(lang),
+                url: () => this.lang_url(lang),
+                main: () => lang === this.lang_main() ? null : this.model_main(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_store.prototype, "lang_main", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_store.prototype, "model_main", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_store.prototype, "model", null);
+    $.$yuf_localizer_store = $yuf_localizer_store;
+})($ || ($ = {}));
+
+;
+	($.$yuf_localizer_item_form) = class $yuf_localizer_item_form extends ($.$mol_form) {
+		title(){
+			return (this.model().id());
+		}
+		text(next){
+			return (this.model().text(next));
+		}
+		is_new(){
+			return (this.model().is_new());
+		}
+		is_not_used(){
+			return (this.model().is_not_used());
+		}
+		text_actual(){
+			return (this.model().text_actual());
+		}
+		lang_code(){
+			return "";
+		}
+		text_name(){
+			return (this.lang_code());
+		}
+		Text(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.text(next)));
+			return obj;
+		}
+		Text_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.text_name()));
+			(obj.control) = () => ((this.Text()));
+			return obj;
+		}
+		is_new_text(){
+			return (this.$.$mol_locale.text("$yuf_localizer_item_form_is_new_text"));
+		}
+		is_not_used_text(){
+			return (this.$.$mol_locale.text("$yuf_localizer_item_form_is_not_used_text"));
+		}
+		is_changed_text(){
+			return (this.$.$mol_locale.text("$yuf_localizer_item_form_is_changed_text"));
+		}
+		model(){
+			const obj = new this.$.$yuf_localizer_item_model();
+			return obj;
+		}
+		rows(){
+			return [(this.Body())];
+		}
+		body(){
+			return [(this.Text_field())];
+		}
+	};
+	($mol_mem(($.$yuf_localizer_item_form.prototype), "Text"));
+	($mol_mem(($.$yuf_localizer_item_form.prototype), "Text_field"));
+	($mol_mem(($.$yuf_localizer_item_form.prototype), "model"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_localizer_item_form extends $.$yuf_localizer_item_form {
+            text_name() {
+                return [
+                    this.lang_code(),
+                    this.is_new() ? this.is_new_text() : '',
+                    this.is_not_used() ? this.is_not_used_text() : '',
+                    this.text_actual() !== this.text() ? this.is_changed_text() : '',
+                ].filter(Boolean).join(', ');
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_item_form.prototype, "text_name", null);
+        $$.$yuf_localizer_item_form = $yuf_localizer_item_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_localizer_item_form, {
+            padding: 0,
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_localizer_page) = class $yuf_localizer_page extends ($.$mol_page) {
+		locale_by_lang_code(id){
+			const obj = new this.$.$yuf_localizer_item_model();
+			return obj;
+		}
+		lang_code(id){
+			return "";
+		}
+		Form(id){
+			const obj = new this.$.$yuf_localizer_item_form();
+			(obj.model) = () => ((this.locale_by_lang_code(id)));
+			(obj.lang_code) = () => ((this.lang_code(id)));
+			return obj;
+		}
+		forms(){
+			return [(this.Form(id))];
+		}
+		lang_code_selected(){
+			return "";
+		}
+		langs_available(){
+			return [];
+		}
+		locale_key(){
+			return "";
+		}
+		store(){
+			const obj = new this.$.$yuf_localizer_store();
+			return obj;
+		}
+		title(){
+			return (this.locale_key());
+		}
+		body(){
+			return [...(this.forms())];
+		}
+	};
+	($mol_mem_key(($.$yuf_localizer_page.prototype), "locale_by_lang_code"));
+	($mol_mem_key(($.$yuf_localizer_page.prototype), "Form"));
+	($mol_mem(($.$yuf_localizer_page.prototype), "store"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_localizer_page extends $.$yuf_localizer_page {
+            langs() {
+                const selected = this.lang_code_selected();
+                return [selected, ...this.langs_available().filter(lang => lang !== selected)];
+            }
+            forms() {
+                return this.langs().map(lang_code => this.Form(lang_code));
+            }
+            locale_by_lang_code(lang_code) {
+                return this.store().model(lang_code).item(this.locale_key());
+            }
+            lang_code(lang_code) {
+                return lang_code;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_page.prototype, "forms", null);
+        $$.$yuf_localizer_page = $yuf_localizer_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_localizer_page, {
+            flex: {
+                basis: $yuf_theme_gap.page_l
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_localizer_catalog) = class $yuf_localizer_catalog extends ($.$mol_book2_catalog) {
+		selected_lang_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_lang_hint"));
+		}
+		lang_code_selected(next){
+			if(next !== undefined) return next;
+			return "en";
+		}
+		Selected_lang(){
+			const obj = new this.$.$mol_select();
+			(obj.hint) = () => ((this.selected_lang_hint()));
+			(obj.options) = () => ((this.langs_available()));
+			(obj.value) = (next) => ((this.lang_code_selected(next)));
+			return obj;
+		}
+		key_filter_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_key_filter_hint"));
+		}
+		all_msg(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_all_msg"));
+		}
+		is_new_msg(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_is_new_msg"));
+		}
+		is_not_used_msg(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_is_not_used_msg"));
+		}
+		empty_msg(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_empty_msg"));
+		}
+		keys_filter_value(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Keys_filter(){
+			const obj = new this.$.$mol_select();
+			(obj.hint) = () => ((this.key_filter_hint()));
+			(obj.dictionary) = () => ({
+				"": (this.all_msg()), 
+				"is_new": (this.is_new_msg()), 
+				"is_not_used": (this.is_not_used_msg()), 
+				"empty": (this.empty_msg())
+			});
+			(obj.value) = (next) => ((this.keys_filter_value(next)));
+			return obj;
+		}
+		Diff_to_clipboard_icon(){
+			const obj = new this.$.$mol_icon_clipboard();
+			return obj;
+		}
+		diff_to_clipboard_enabled(){
+			return false;
+		}
+		diff_to_clipboard_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_diff_to_clipboard_hint"));
+		}
+		diff_to_clipboard_copy(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Diff_to_clipboard(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Diff_to_clipboard_icon())]);
+			(obj.enabled) = () => ((this.diff_to_clipboard_enabled()));
+			(obj.hint) = () => ((this.diff_to_clipboard_hint()));
+			(obj.click) = (next) => ((this.diff_to_clipboard_copy(next)));
+			return obj;
+		}
+		Settings_icon(){
+			const obj = new this.$.$mol_icon_settings();
+			return obj;
+		}
+		settings_check_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_settings_check_hint"));
+		}
+		settings_checked(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Settings_check(){
+			const obj = new this.$.$mol_check_icon();
+			(obj.Icon) = () => ((this.Settings_icon()));
+			(obj.hint) = () => ((this.settings_check_hint()));
+			(obj.checked) = (next) => ((this.settings_checked(next)));
+			return obj;
+		}
+		settings_close(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Settings_close(){
+			const obj = new this.$.$yuf_button_close();
+			(obj.click) = (next) => ((this.settings_close(next)));
+			return obj;
+		}
+		app_url(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		langs_str(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		lang_main(){
+			return "en";
+		}
+		Settings(){
+			const obj = new this.$.$yuf_localizer_settings_page();
+			(obj.tools) = () => ([(this.Settings_close())]);
+			(obj.app_url) = (next) => ((this.app_url(next)));
+			(obj.langs_str) = (next) => ((this.langs_str(next)));
+			(obj.lang_main) = (next) => ((this.lang_main(next)));
+			return obj;
+		}
+		spread_ids_params(id){
+			return (this.lang_selected().keys_filtered(id));
+		}
+		changed_diff(){
+			return (this.lang_selected().changed_diff());
+		}
+		keys_changed(){
+			return (this.lang_selected().keys_changed());
+		}
+		locale_key(id){
+			return "";
+		}
+		item_theme(id){
+			return (this.item_theme_new());
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
+		}
+		param(){
+			return "localizer";
+		}
+		langs_available(){
+			return [];
+		}
+		menu_tools(){
+			return [
+				(this.Selected_lang()), 
+				(this.Keys_filter()), 
+				(this.Diff_to_clipboard()), 
+				(this.Settings_check())
+			];
+		}
+		placeholders(){
+			return [(this.Settings())];
+		}
+		store(){
+			const obj = new this.$.$yuf_localizer_store();
+			(obj.base_url) = () => ((this.app_url()));
+			(obj.lang_main) = () => ((this.lang_main()));
+			return obj;
+		}
+		lang_selected(){
+			const obj = new this.$.$yuf_localizer_model();
+			return obj;
+		}
+		Spread(id){
+			const obj = new this.$.$yuf_localizer_page();
+			(obj.locale_key) = () => ((this.locale_key(id)));
+			(obj.langs_available) = () => ((this.langs_available()));
+			(obj.lang_code_selected) = () => ((this.lang_code_selected()));
+			(obj.store) = () => ((this.store()));
+			(obj.tools) = () => ([(this.Spread_close())]);
+			return obj;
+		}
+		Menu_item(id){
+			const obj = new this.$.$mol_view();
+			(obj.theme) = () => ((this.item_theme(id)));
+			(obj.sub) = () => ((this.menu_item_content(id)));
+			return obj;
+		}
+		item_theme_not_used(){
+			return "$mol_theme_special";
+		}
+		item_theme_new(){
+			return "$mol_theme_accent";
+		}
+	};
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_code_selected"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter_value"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Keys_filter"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard_icon"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "diff_to_clipboard_copy"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_icon"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_checked"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_check"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_close"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "app_url"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "store"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_selected"));
+	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
+	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Menu_item"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
+            val(key, next) {
+                return this.$.$mol_state_arg.value(`${this.param()}_${key}`, next === undefined || next ? next : null);
+            }
+            app_url(next) {
+                return this.val('url', next) ?? '';
+            }
+            langs_str(next) {
+                return this.val(`langs`, next) ?? '';
+            }
+            lang_main(next) {
+                return this.val(`lang_main`, next) || this.langs_available()?.[0] || '';
+            }
+            langs_available() {
+                return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
+            }
+            placeholders() {
+                return !this.app_url() || !this.langs_available().length || this.settings_checked() ? super.placeholders() : [];
+            }
+            lang_selected() {
+                return this.store().model(this.lang_code_selected());
+            }
+            locale_key(key) { return key; }
+            item_theme(key) {
+                const model = this.lang_selected();
+                const item = model.item(key);
+                return item.is_new()
+                    ? this.item_theme_new()
+                    : item.is_not_used() ? this.item_theme_not_used() : null;
+            }
+            spread_ids() {
+                return this.spread_ids_params({ keys_filter: this.keys_filter_value() });
+            }
+            settings_close() {
+                return this.settings_checked(false);
+            }
+            diff_to_clipboard_copy(e) {
+                const diff = this.changed_diff();
+                this.$.$mol_dom.navigator.clipboard.writeText(JSON.stringify(diff, null, '\t'));
+            }
+            diff_to_clipboard_enabled() {
+                return this.keys_changed().length > 0;
+            }
+        }
+        $$.$yuf_localizer_catalog = $yuf_localizer_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_localizer_catalog, {
+            Menu: {
+                flex: {
+                    basis: $yuf_theme_gap.page_l,
+                },
+            },
+            Menu_link: {
+                flex: {
+                    wrap: 'wrap'
+                },
+                wordBreak: 'break-all',
+                whiteSpace: 'break-spaces',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
 
 export default $
 //# sourceMappingURL=web.js.map
