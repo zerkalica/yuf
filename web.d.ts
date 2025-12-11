@@ -10281,26 +10281,6 @@ declare namespace $ {
 		,
 		ReturnType< $mol_form_field['control'] >
 	>
-	type $mol_select__options_yuf_localizer_settings_form_9 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_settings_form['available_langs'] >
-		,
-		ReturnType< $mol_select['options'] >
-	>
-	type $mol_select__value_yuf_localizer_settings_form_10 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_settings_form['lang_main'] >
-		,
-		ReturnType< $mol_select['value'] >
-	>
-	type $mol_form_field__name_yuf_localizer_settings_form_11 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_settings_form['Lang_main_name'] >
-		,
-		ReturnType< $mol_form_field['name'] >
-	>
-	type $mol_form_field__control_yuf_localizer_settings_form_12 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_settings_form['Lang_main'] >
-		,
-		ReturnType< $mol_form_field['control'] >
-	>
 	export class $yuf_localizer_settings_form extends $mol_form {
 		app_url_name( ): string
 		app_url_hint( ): string
@@ -10312,11 +10292,6 @@ declare namespace $ {
 		langs_str( next?: string ): string
 		Langs( ): $mol_string
 		Langs_field( ): $mol_form_field
-		Lang_main_name( ): string
-		available_langs( ): readonly(string)[]
-		lang_main( next?: string ): string
-		Lang_main( ): $mol_select
-		Lang_main_field( ): $mol_form_field
 		buttons( ): readonly(any)[]
 		body( ): readonly(any)[]
 	}
@@ -10326,7 +10301,6 @@ declare namespace $ {
 //# sourceMappingURL=form.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
-        available_langs(): string[];
     }
 }
 
@@ -10356,15 +10330,9 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_localizer_settings_form['langs_str'] >
 	>
-	type $yuf_localizer_settings_form__lang_main_yuf_localizer_settings_page_3 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_settings_page['lang_main'] >
-		,
-		ReturnType< $yuf_localizer_settings_form['lang_main'] >
-	>
 	export class $yuf_localizer_settings_page extends $mol_page {
 		app_url( next?: string ): string
 		langs_str( next?: string ): string
-		lang_main( next?: string ): string
 		Form( ): $yuf_localizer_settings_form
 		title( ): string
 		body( ): readonly(any)[]
@@ -10431,7 +10399,6 @@ declare namespace $ {
             keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty';
         }): string[];
         keys_changed(): string[];
-        changed_diff(): Record<string, string>;
         protected key_text(key: string, next?: string | null): string;
         item(id: string): $yuf_localizer_key_model;
     }
@@ -10677,62 +10644,52 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_localizer_settings_page['langs_str'] >
 	>
-	type $yuf_localizer_settings_page__lang_main_yuf_localizer_catalog_18 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['lang_main'] >
-		,
-		ReturnType< $yuf_localizer_settings_page['lang_main'] >
-	>
-	type __yuf_localizer_catalog_19 = $mol_type_enforce<
+	type __yuf_localizer_catalog_18 = $mol_type_enforce<
 		Parameters< $yuf_localizer_catalog['spread_ids_params'] >[0]
 		,
 		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
 	>
-	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_20 = $mol_type_enforce<
+	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_19 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
 		,
 		ReturnType< $yuf_localizer_file_store['base_url'] >
 	>
-	type $yuf_localizer_file_store__data_yuf_localizer_catalog_21 = $mol_type_enforce<
+	type $yuf_localizer_file_store__data_yuf_localizer_catalog_20 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locales_data'] >
 		,
 		ReturnType< $yuf_localizer_file_store['data'] >
 	>
-	type $yuf_localizer_file_store__lang_main_yuf_localizer_catalog_22 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['lang_main'] >
-		,
-		ReturnType< $yuf_localizer_file_store['lang_main'] >
-	>
-	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_23 = $mol_type_enforce<
+	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_21 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locale_key'] >
 		,
 		ReturnType< $yuf_localizer_page['locale_key'] >
 	>
-	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_24 = $mol_type_enforce<
+	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_22 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_available'] >
 		,
 		ReturnType< $yuf_localizer_page['langs_available'] >
 	>
-	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_25 = $mol_type_enforce<
+	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_23 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code_selected'] >
 		,
 		ReturnType< $yuf_localizer_page['lang_code_selected'] >
 	>
-	type $yuf_localizer_page__store_yuf_localizer_catalog_26 = $mol_type_enforce<
+	type $yuf_localizer_page__store_yuf_localizer_catalog_24 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['store'] >
 		,
 		ReturnType< $yuf_localizer_page['store'] >
 	>
-	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_27 = $mol_type_enforce<
+	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_25 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_localizer_page['addon_tools'] >
 	>
-	type $mol_view__theme_yuf_localizer_catalog_28 = $mol_type_enforce<
+	type $mol_view__theme_yuf_localizer_catalog_26 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['item_theme'] >
 		,
 		ReturnType< $mol_view['theme'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_29 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_27 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_item_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
@@ -10760,7 +10717,6 @@ declare namespace $ {
 		Settings_close( ): $yuf_button_close
 		app_url( next?: string ): string
 		langs_str( next?: string ): string
-		lang_main( ): string
 		Settings( ): $yuf_localizer_settings_page
 		locales_data( next?: Record<string, any> ): Record<string, any>
 		spread_ids_params( id: any): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >
@@ -10791,7 +10747,6 @@ declare namespace $.$$ {
         lang_code_selected(next?: string): string;
         app_url(next?: string): string;
         langs_str(next?: string): string;
-        lang_main(next?: string): string;
         keys_filter_value(next?: string): string;
         protected locales_data_raw(next?: string | null): string | null;
         locales_data(next?: Record<string, Record<string, string>> | null): any;

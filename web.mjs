@@ -22126,37 +22126,11 @@ var $;
 			(obj.control) = () => ((this.Langs()));
 			return obj;
 		}
-		Lang_main_name(){
-			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_Lang_main_name"));
-		}
-		available_langs(){
-			return [];
-		}
-		lang_main(next){
-			if(next !== undefined) return next;
-			return "";
-		}
-		Lang_main(){
-			const obj = new this.$.$mol_select();
-			(obj.options) = () => ((this.available_langs()));
-			(obj.value) = (next) => ((this.lang_main(next)));
-			return obj;
-		}
-		Lang_main_field(){
-			const obj = new this.$.$mol_form_field();
-			(obj.name) = () => ((this.Lang_main_name()));
-			(obj.control) = () => ((this.Lang_main()));
-			return obj;
-		}
 		buttons(){
 			return [];
 		}
 		body(){
-			return [
-				(this.App_url_field()), 
-				(this.Langs_field()), 
-				(this.Lang_main_field())
-			];
+			return [(this.App_url_field()), (this.Langs_field())];
 		}
 	};
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "app_url"));
@@ -22165,9 +22139,6 @@ var $;
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "langs_str"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs_field"));
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "lang_main"));
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Lang_main"));
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Lang_main_field"));
 
 
 ;
@@ -22180,9 +22151,6 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
-            available_langs() {
-                return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
-            }
         }
         $$.$yuf_localizer_settings_form = $yuf_localizer_settings_form;
     })($$ = $.$$ || ($.$$ = {}));
@@ -22198,15 +22166,10 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
-		lang_main(next){
-			if(next !== undefined) return next;
-			return "";
-		}
 		Form(){
 			const obj = new this.$.$yuf_localizer_settings_form();
 			(obj.app_url) = (next) => ((this.app_url(next)));
 			(obj.langs_str) = (next) => ((this.langs_str(next)));
-			(obj.lang_main) = (next) => ((this.lang_main(next)));
 			return obj;
 		}
 		title(){
@@ -22218,7 +22181,6 @@ var $;
 	};
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "app_url"));
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "langs_str"));
-	($mol_mem(($.$yuf_localizer_settings_page.prototype), "lang_main"));
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "Form"));
 
 
@@ -22406,8 +22368,10 @@ var $;
         }
         fetcher() { return this.$.$mol_static.$mol_fetch; }
         actual() {
-            const response = this.fetcher().success(this.url());
-            return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, response, e));
+            const lang_id = this.id();
+            const url = this.url();
+            const response = $mol_error_fence(() => this.fetcher().success(url), e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e));
+            return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
         }
         keys() {
             return Object.keys({ ...this.main()?.actual(), ...this.actual(), ...this.data() });
@@ -22426,13 +22390,6 @@ var $;
             const local = this.data();
             const actual = this.actual();
             return Object.keys(local).filter(key => local[key] !== actual[key]);
-        }
-        changed_diff() {
-            const result = {};
-            for (const key of this.keys_changed()) {
-                result[key] = this.key_text(key);
-            }
-            return result;
         }
         key_text(key, next) {
             if (next)
@@ -22472,9 +22429,6 @@ var $;
     __decorate([
         $mol_mem
     ], $yuf_localizer_file_model.prototype, "keys_changed", null);
-    __decorate([
-        $mol_mem
-    ], $yuf_localizer_file_model.prototype, "changed_diff", null);
     __decorate([
         $mol_mem_key
     ], $yuf_localizer_file_model.prototype, "key_text", null);
@@ -22893,15 +22847,11 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
-		lang_main(){
-			return "en";
-		}
 		Settings(){
 			const obj = new this.$.$yuf_localizer_settings_page();
 			(obj.tools) = () => ([(this.Settings_close())]);
 			(obj.app_url) = (next) => ((this.app_url(next)));
 			(obj.langs_str) = (next) => ((this.langs_str(next)));
-			(obj.lang_main) = (next) => ((this.lang_main(next)));
 			return obj;
 		}
 		locales_data(next){
@@ -22947,7 +22897,6 @@ var $;
 			const obj = new this.$.$yuf_localizer_file_store();
 			(obj.base_url) = () => ((this.app_url()));
 			(obj.data) = (next) => ((this.locales_data(next)));
-			(obj.lang_main) = () => ((this.lang_main()));
 			return obj;
 		}
 		lang_selected(){
@@ -23023,9 +22972,6 @@ var $;
             langs_str(next) {
                 return this.val(`langs`, next) ?? '';
             }
-            lang_main(next) {
-                return this.val(`lang_main`, next) || this.langs_available()?.[0] || '';
-            }
             keys_filter_value(next) {
                 return this.val('keys', next) ?? '';
             }
@@ -23046,7 +22992,11 @@ var $;
             }
             locales_data_push_serial = $mol_wire_async(((next) => this.locales_data_push(next)));
             langs_available() {
-                return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
+                const main = this.store().lang_main();
+                return [
+                    main,
+                    ...this.langs_str().split(',').map(str => str.trim()).filter(str => str && str !== main)
+                ];
             }
             settings_checked_default() {
                 return !this.app_url() || !this.langs_available().length;
@@ -23089,6 +23039,9 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_localizer_catalog.prototype, "locales_data", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_catalog.prototype, "langs_available", null);
         __decorate([
             $mol_action
         ], $yuf_localizer_catalog.prototype, "settings_checked_default", null);
