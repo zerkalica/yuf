@@ -74,8 +74,8 @@ namespace $.$$ {
 			return next ?? this.settings_checked_default()
 		}
 
-		override placeholders() {
-			return this.settings_checked() ? super.placeholders() : []
+		override pages() {
+			return this.settings_checked() ? [...super.pages(), this.Settings()] : super.pages()
 		}
 
 		override lang_selected() {
