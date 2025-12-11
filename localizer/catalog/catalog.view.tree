@@ -69,7 +69,7 @@ $yuf_localizer_catalog $yuf_catalog
 		plugins /
 			<= Hotkey $mol_hotkey
 				key *
-					up? <=> switch*up? null
-					down? <=> switch*down? null
-					left? <=> switch*up?
-					right? <=> switch*down?
+					up? <=> select_key*next? null
+					down? <=> select_key*prev? null
+					left? <=> select_key*next?
+					right? <=> select_key*prev?

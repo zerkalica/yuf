@@ -99,11 +99,11 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		override switch(key?: 'up' | 'down') {
+		override select_key(key?: 'prev' | 'next') {
 			const ids = this.spread_ids_filtered()
 			const id = this.spread()
 			const index = ids.indexOf(id)
-			const direction = key === 'up' ? -1 : 1
+			const direction = key === 'prev' ? -1 : 1
 
 			const next = Math.min(ids.length - 1, Math.max(0, index + direction))
 
