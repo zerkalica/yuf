@@ -2423,13 +2423,13 @@ $yuf_localizer_catalog $yuf_catalog
 			Icon <= Settings_icon $mol_icon_settings
 			hint <= settings_check_hint @ \Settings
 			checked? <=> settings_checked? false
-	placeholders /$mol_view
-		<= Settings $yuf_localizer_settings_page
-			tools /
-				<= Settings_close $yuf_button_close
-					click? <=> settings_close? null
-			app_url? <=> app_url? \
-			langs_str? <=> langs_str? \
+	placeholders /
+	Settings $yuf_localizer_settings_page
+		tools /
+			<= Settings_close $yuf_button_close
+				click? <=> settings_close? null
+		app_url? <=> app_url? \
+		langs_str? <=> langs_str? \
 	store $yuf_localizer_file_store
 		base_url <= app_url
 		data? <=> locales_data? *

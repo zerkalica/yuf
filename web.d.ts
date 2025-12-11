@@ -10644,25 +10644,25 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_button_close['click'] >
 	>
-	type $yuf_localizer_settings_page__tools_yuf_localizer_catalog_15 = $mol_type_enforce<
+	type __yuf_localizer_catalog_15 = $mol_type_enforce<
+		Parameters< $yuf_localizer_catalog['spread_ids_params'] >[0]
+		,
+		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
+	>
+	type $yuf_localizer_settings_page__tools_yuf_localizer_catalog_16 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_localizer_settings_page['tools'] >
 	>
-	type $yuf_localizer_settings_page__app_url_yuf_localizer_catalog_16 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__app_url_yuf_localizer_catalog_17 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
 		,
 		ReturnType< $yuf_localizer_settings_page['app_url'] >
 	>
-	type $yuf_localizer_settings_page__langs_str_yuf_localizer_catalog_17 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__langs_str_yuf_localizer_catalog_18 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_str'] >
 		,
 		ReturnType< $yuf_localizer_settings_page['langs_str'] >
-	>
-	type __yuf_localizer_catalog_18 = $mol_type_enforce<
-		Parameters< $yuf_localizer_catalog['spread_ids_params'] >[0]
-		,
-		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
 	>
 	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_19 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
@@ -10737,7 +10737,6 @@ declare namespace $ {
 		Settings_close( ): $yuf_button_close
 		app_url( next?: string ): string
 		langs_str( next?: string ): string
-		Settings( ): $yuf_localizer_settings_page
 		locales_data( next?: Record<string, any> ): Record<string, any>
 		spread_ids_params( id: any): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >
 		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
@@ -10751,7 +10750,8 @@ declare namespace $ {
 		param_suffix( ): string
 		langs_available( ): readonly(string)[]
 		menu_tools( ): readonly(any)[]
-		placeholders( ): readonly($mol_view)[]
+		placeholders( ): readonly(any)[]
+		Settings( ): $yuf_localizer_settings_page
 		store( ): $yuf_localizer_file_store
 		lang_selected( ): $yuf_localizer_file_model
 		Spread( id: any): $yuf_localizer_page
@@ -10781,7 +10781,7 @@ declare namespace $.$$ {
         langs_available(): string[];
         settings_checked_default(): boolean;
         settings_checked(next?: boolean): boolean;
-        placeholders(): readonly $mol_view[];
+        pages(): readonly any[];
         lang_selected(): $yuf_localizer_file_model;
         locale_key(key: string): string;
         item_theme(key: string): string;

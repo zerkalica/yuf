@@ -23037,13 +23037,6 @@ var $;
 			if(next !== undefined) return next;
 			return "";
 		}
-		Settings(){
-			const obj = new this.$.$yuf_localizer_settings_page();
-			(obj.tools) = () => ([(this.Settings_close())]);
-			(obj.app_url) = (next) => ((this.app_url(next)));
-			(obj.langs_str) = (next) => ((this.langs_str(next)));
-			return obj;
-		}
 		locales_data(next){
 			if(next !== undefined) return next;
 			return {};
@@ -23090,7 +23083,14 @@ var $;
 			];
 		}
 		placeholders(){
-			return [(this.Settings())];
+			return [];
+		}
+		Settings(){
+			const obj = new this.$.$yuf_localizer_settings_page();
+			(obj.tools) = () => ([(this.Settings_close())]);
+			(obj.app_url) = (next) => ((this.app_url(next)));
+			(obj.langs_str) = (next) => ((this.langs_str(next)));
+			return obj;
 		}
 		store(){
 			const obj = new this.$.$yuf_localizer_file_store();
@@ -23146,8 +23146,8 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "app_url"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "langs_str"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "store"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_selected"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
@@ -23215,8 +23215,8 @@ var $;
             settings_checked(next) {
                 return next ?? this.settings_checked_default();
             }
-            placeholders() {
-                return this.settings_checked() ? super.placeholders() : [];
+            pages() {
+                return this.settings_checked() ? [...super.pages(), this.Settings()] : super.pages();
             }
             lang_selected() {
                 return this.store().model(this.lang_code_selected());
