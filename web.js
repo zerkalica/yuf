@@ -22373,7 +22373,26 @@ var $;
             const response = $mol_error_fence(() => this.fetcher().success(url), e => new $mol_error_mix(e.message + ' ' + lang_id, { lang_id, url }, e));
             return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
         }
+        data_cut_equal_actual() {
+            const actual = this.actual();
+            const local = this.data();
+            const patch = {};
+            let delete_count = 0;
+            for (let key in local) {
+                if (local[key] && local[key] === actual[key]) {
+                    delete_count++;
+                    patch[key] = null;
+                }
+            }
+            if (delete_count)
+                this.data(patch);
+            return null;
+        }
+        data_cut_equal_actual_once() {
+            return this.data_cut_equal_actual();
+        }
         keys() {
+            this.data_cut_equal_actual_once();
             return Object.keys({ ...this.main()?.actual(), ...this.actual(), ...this.data() });
         }
         keys_filtered(params) {
@@ -22420,6 +22439,12 @@ var $;
     __decorate([
         $mol_mem
     ], $yuf_localizer_file_model.prototype, "actual", null);
+    __decorate([
+        $mol_action
+    ], $yuf_localizer_file_model.prototype, "data_cut_equal_actual", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_localizer_file_model.prototype, "data_cut_equal_actual_once", null);
     __decorate([
         $mol_mem
     ], $yuf_localizer_file_model.prototype, "keys", null);

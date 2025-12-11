@@ -10394,6 +10394,8 @@ declare namespace $ {
         data(next?: null | Record<string, string | null>): Record<string, string | null>;
         protected fetcher(): typeof $mol_fetch;
         actual(): Readonly<Record<string, string>>;
+        data_cut_equal_actual(): null;
+        data_cut_equal_actual_once(): null;
         keys(): string[];
         keys_filtered(params: {
             keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty';
