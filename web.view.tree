@@ -2357,11 +2357,13 @@ $yuf_localizer_settings_page $mol_page
 			langs_str? <=> langs_str? \
 			lang_main? <=> lang_main? \
 
-$yuf_localizer_item_form $mol_form
+$mol_icon_refresh $mol_icon path \M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z
+
+$yuf_localizer_key_form $mol_form
 	is_new_text @ \new
 	is_not_used_text @ \not used
 	is_changed_text @ \changed
-	model $yuf_localizer_item_model
+	model $yuf_localizer_key_model
 		id => title
 		text? => text?
 		is_new => is_new
@@ -2379,18 +2381,24 @@ $yuf_localizer_item_form $mol_form
 $yuf_localizer_page $mol_page
 	lang_code_selected \
 	langs_available /string
-	locale_key \
-	store $yuf_localizer_store
-	title <= locale_key
+	store $yuf_localizer_file_store
+	title <= locale_key \
+	tools /$mol_view_content
+		<= Reset $mol_button_minor
+			sub / <= Reset_icon $mol_icon_refresh
+			hint <= reset_hint @ \Reset
+			click? <=> reset? null
+		^ addon_tools /$mol_view_content
 	body /
 		^ forms /$mol_view
-			<= Form* $yuf_localizer_item_form
-				model <= locale_by_lang_code* $yuf_localizer_item_model
+			<= Form* $yuf_localizer_key_form
+				model <= locale_by_lang_code* $yuf_localizer_key_model
 				lang_code <= lang_code* \
 
 $yuf_localizer_catalog $mol_book2_catalog
 	menu_title @ \Localizer
-	param \localizer
+	param_prefix \localizer
+	param \key
 	langs_available /string
 	menu_tools /
 		<= Selected_lang $mol_select
@@ -2403,7 +2411,7 @@ $yuf_localizer_catalog $mol_book2_catalog
 				\
 					<= all_msg @ \All keys
 				is_new <= is_new_msg @ \New keys
-				is_not_used <= is_not_used_msg @ \Not used keys
+				- is_not_used <= is_not_used_msg @ \Garbage keys
 				empty <= empty_msg @ \Empty keys
 			value? <=> keys_filter_value? \
 		<= Diff_to_clipboard $mol_button_minor
@@ -2423,19 +2431,19 @@ $yuf_localizer_catalog $mol_book2_catalog
 			app_url? <=> app_url? \
 			langs_str? <=> langs_str? \
 			lang_main? <=> lang_main? \en
-	store $yuf_localizer_store
+	store $yuf_localizer_file_store
 		base_url <= app_url
+		data? <=> locales_data? *
 		lang_main <= lang_main \en
-	lang_selected $yuf_localizer_model
+	lang_selected $yuf_localizer_file_model
 		keys_filtered* => spread_ids_params*
-		changed_diff => changed_diff
 		keys_changed => keys_changed
 	Spread* $yuf_localizer_page
 		locale_key <= locale_key* \
 		langs_available <= langs_available
 		lang_code_selected <= lang_code_selected
 		store <= store
-		tools / <= Spread_close
+		addon_tools / <= Spread_close
 	Menu_item*0 $mol_view
 		theme <= item_theme* <= item_theme_new
 		sub <= menu_item_content*

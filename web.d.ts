@@ -10408,89 +10408,99 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $yuf_localizer_item_model extends $mol_object {
+    class $yuf_localizer_key_model extends $mol_object {
         id(): string;
         text_actual(): null | string;
         text_main(): null | string;
-        text(next?: string): string;
+        text(next?: string | null): string;
         is_new(): boolean;
         is_not_used(): boolean;
     }
 }
 
 declare namespace $ {
-    class $yuf_localizer_model extends $mol_object {
+    class $yuf_localizer_file_model extends $mol_object {
         url(): string;
         id(): string;
-        main(): null | $yuf_localizer_model;
-        protected static store(lang_code: string, next?: Record<string, string> | null): Record<string, string> | null;
-        protected data_local(next?: null | Record<string, string | null>): Record<string, string>;
+        main(): null | $yuf_localizer_file_model;
+        data(next?: null | Record<string, string | null>): Record<string, string | null>;
         protected fetcher(): typeof $mol_fetch;
-        data_actual(): Readonly<Record<string, string>>;
+        actual(): Readonly<Record<string, string>>;
         keys(): string[];
         keys_filtered(params: {
             keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty';
         }): string[];
         keys_changed(): string[];
         changed_diff(): Record<string, string>;
-        item_text(key: string, next?: string | null): string;
-        item(id: string): $yuf_localizer_item_model;
+        protected key_text(key: string, next?: string | null): string;
+        item(id: string): $yuf_localizer_key_model;
     }
 }
 
 declare namespace $ {
-    class $yuf_localizer_store extends $mol_object {
+    class $yuf_localizer_file_store extends $mol_object {
         base_url(next?: string): string;
         lang_template(): string;
         lang_main(next?: string): string;
         protected lang_url(lang: string): string;
-        model_main(): $yuf_localizer_model;
-        model(lang: string): $yuf_localizer_model;
+        model_main(): $yuf_localizer_file_model;
+        data(next?: Record<string, Record<string, string>> | null): Record<string, Record<string, string>>;
+        locale_data(url: string, next?: Record<string, string | null> | null): Record<string, string>;
+        model(lang: string): $yuf_localizer_file_model;
     }
 }
 
 declare namespace $ {
 
-	type __yuf_localizer_item_form_1 = $mol_type_enforce<
-		Parameters< $yuf_localizer_item_form['text'] >[0]
+	export class $mol_icon_refresh extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=refresh.view.tree.d.ts.map
+declare namespace $ {
+
+	type __yuf_localizer_key_form_1 = $mol_type_enforce<
+		Parameters< $yuf_localizer_key_form['text'] >[0]
 		,
-		Parameters< ReturnType< $yuf_localizer_item_form['model'] >['text'] >[0]
+		Parameters< ReturnType< $yuf_localizer_key_form['model'] >['text'] >[0]
 	>
-	type $mol_string__enabled_yuf_localizer_item_form_2 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_item_form['text_edit_enabled'] >
+	type $mol_string__enabled_yuf_localizer_key_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['text_edit_enabled'] >
 		,
 		ReturnType< $mol_string['enabled'] >
 	>
-	type $mol_string__value_yuf_localizer_item_form_3 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_item_form['text'] >
+	type $mol_string__value_yuf_localizer_key_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['text'] >
 		,
 		ReturnType< $mol_string['value'] >
 	>
-	type $mol_form_field__name_yuf_localizer_item_form_4 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_item_form['text_name'] >
+	type $mol_form_field__name_yuf_localizer_key_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['text_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__control_yuf_localizer_item_form_5 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_item_form['Text'] >
+	type $mol_form_field__control_yuf_localizer_key_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['Text'] >
 		,
 		ReturnType< $mol_form_field['control'] >
 	>
-	export class $yuf_localizer_item_form extends $mol_form {
-		title( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['id'] >
-		text( next?: ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text'] > ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text'] >
-		is_new( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['is_new'] >
-		is_not_used( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['is_not_used'] >
-		text_actual( ): ReturnType< ReturnType< $yuf_localizer_item_form['model'] >['text_actual'] >
+	export class $yuf_localizer_key_form extends $mol_form {
+		title( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['id'] >
+		text( next?: ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['text'] > ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['text'] >
+		is_new( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['is_new'] >
+		is_not_used( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['is_not_used'] >
+		text_actual( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['text_actual'] >
 		lang_code( ): string
-		text_name( ): ReturnType< $yuf_localizer_item_form['lang_code'] >
+		text_name( ): ReturnType< $yuf_localizer_key_form['lang_code'] >
 		text_edit_enabled( ): boolean
 		Text( ): $mol_string
 		Text_field( ): $mol_form_field
 		is_new_text( ): string
 		is_not_used_text( ): string
 		is_changed_text( ): string
-		model( ): $yuf_localizer_item_model
+		model( ): $yuf_localizer_key_model
 		rows( ): readonly(any)[]
 		body( ): readonly(any)[]
 	}
@@ -10499,7 +10509,7 @@ declare namespace $ {
 
 //# sourceMappingURL=form.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_localizer_item_form extends $.$yuf_localizer_item_form {
+    class $yuf_localizer_key_form extends $.$yuf_localizer_key_form {
         text_name(): string;
         text_edit_enabled(): boolean;
     }
@@ -10510,26 +10520,52 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_localizer_item_form__model_yuf_localizer_page_1 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_localizer_page_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__hint_yuf_localizer_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_page['reset_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_yuf_localizer_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_page['reset'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $yuf_localizer_key_form__model_yuf_localizer_page_4 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_page['locale_by_lang_code'] >
 		,
-		ReturnType< $yuf_localizer_item_form['model'] >
+		ReturnType< $yuf_localizer_key_form['model'] >
 	>
-	type $yuf_localizer_item_form__lang_code_yuf_localizer_page_2 = $mol_type_enforce<
+	type $yuf_localizer_key_form__lang_code_yuf_localizer_page_5 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_page['lang_code'] >
 		,
-		ReturnType< $yuf_localizer_item_form['lang_code'] >
+		ReturnType< $yuf_localizer_key_form['lang_code'] >
+	>
+	type $yuf_localizer_page_tools__6 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_page['addon_tools'] >[number]
+		,
+		$mol_view_content
 	>
 	export class $yuf_localizer_page extends $mol_page {
-		locale_by_lang_code( id: any): $yuf_localizer_item_model
+		locale_key( ): string
+		Reset_icon( ): $mol_icon_refresh
+		reset_hint( ): string
+		reset( next?: any ): any
+		Reset( ): $mol_button_minor
+		addon_tools( ): readonly($mol_view_content)[]
+		locale_by_lang_code( id: any): $yuf_localizer_key_model
 		lang_code( id: any): string
-		Form( id: any): $yuf_localizer_item_form
+		Form( id: any): $yuf_localizer_key_form
 		forms( ): readonly($mol_view)[]
 		lang_code_selected( ): string
 		langs_available( ): readonly(string)[]
-		locale_key( ): string
-		store( ): $yuf_localizer_store
+		store( ): $yuf_localizer_file_store
 		title( ): ReturnType< $yuf_localizer_page['locale_key'] >
+		tools( ): readonly($mol_view_content)[]
 		body( ): readonly(any)[]
 	}
 	
@@ -10539,9 +10575,11 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_page extends $.$yuf_localizer_page {
         langs(): string[];
-        forms(): $.$yuf_localizer_item_form[];
-        locale_by_lang_code(lang_code: string): $yuf_localizer_item_model;
+        forms(): $.$yuf_localizer_key_form[];
+        locale_by_lang_code(lang_code: string): $yuf_localizer_key_model;
+        locale_file_selected(): $yuf_localizer_file_model;
         lang_code(lang_code: string): string;
+        reset(e?: Event): void;
     }
 }
 
@@ -10574,7 +10612,6 @@ declare namespace $ {
 		({ 
 			'': ReturnType< $yuf_localizer_catalog['all_msg'] >,
 			'is_new': ReturnType< $yuf_localizer_catalog['is_new_msg'] >,
-			'is_not_used': ReturnType< $yuf_localizer_catalog['is_not_used_msg'] >,
 			'empty': ReturnType< $yuf_localizer_catalog['empty_msg'] >,
 		}) 
 		,
@@ -10650,47 +10687,52 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >[0]
 	>
-	type $yuf_localizer_store__base_url_yuf_localizer_catalog_20 = $mol_type_enforce<
+	type $yuf_localizer_file_store__base_url_yuf_localizer_catalog_20 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['app_url'] >
 		,
-		ReturnType< $yuf_localizer_store['base_url'] >
+		ReturnType< $yuf_localizer_file_store['base_url'] >
 	>
-	type $yuf_localizer_store__lang_main_yuf_localizer_catalog_21 = $mol_type_enforce<
+	type $yuf_localizer_file_store__data_yuf_localizer_catalog_21 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['locales_data'] >
+		,
+		ReturnType< $yuf_localizer_file_store['data'] >
+	>
+	type $yuf_localizer_file_store__lang_main_yuf_localizer_catalog_22 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_main'] >
 		,
-		ReturnType< $yuf_localizer_store['lang_main'] >
+		ReturnType< $yuf_localizer_file_store['lang_main'] >
 	>
-	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_22 = $mol_type_enforce<
+	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_23 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locale_key'] >
 		,
 		ReturnType< $yuf_localizer_page['locale_key'] >
 	>
-	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_23 = $mol_type_enforce<
+	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_24 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_available'] >
 		,
 		ReturnType< $yuf_localizer_page['langs_available'] >
 	>
-	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_24 = $mol_type_enforce<
+	type $yuf_localizer_page__lang_code_selected_yuf_localizer_catalog_25 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code_selected'] >
 		,
 		ReturnType< $yuf_localizer_page['lang_code_selected'] >
 	>
-	type $yuf_localizer_page__store_yuf_localizer_catalog_25 = $mol_type_enforce<
+	type $yuf_localizer_page__store_yuf_localizer_catalog_26 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['store'] >
 		,
 		ReturnType< $yuf_localizer_page['store'] >
 	>
-	type $yuf_localizer_page__tools_yuf_localizer_catalog_26 = $mol_type_enforce<
+	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_27 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $yuf_localizer_page['tools'] >
+		ReturnType< $yuf_localizer_page['addon_tools'] >
 	>
-	type $mol_view__theme_yuf_localizer_catalog_27 = $mol_type_enforce<
+	type $mol_view__theme_yuf_localizer_catalog_28 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['item_theme'] >
 		,
 		ReturnType< $mol_view['theme'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_28 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_29 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_item_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
@@ -10702,7 +10744,6 @@ declare namespace $ {
 		key_filter_hint( ): string
 		all_msg( ): string
 		is_new_msg( ): string
-		is_not_used_msg( ): string
 		empty_msg( ): string
 		keys_filter_value( next?: string ): string
 		Keys_filter( ): $mol_select
@@ -10721,18 +10762,19 @@ declare namespace $ {
 		langs_str( next?: string ): string
 		lang_main( ): string
 		Settings( ): $yuf_localizer_settings_page
+		locales_data( next?: Record<string, any> ): Record<string, any>
 		spread_ids_params( id: any): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_filtered'] >
-		changed_diff( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['changed_diff'] >
 		keys_changed( ): ReturnType< ReturnType< $yuf_localizer_catalog['lang_selected'] >['keys_changed'] >
 		locale_key( id: any): string
 		item_theme( id: any): ReturnType< $yuf_localizer_catalog['item_theme_new'] >
 		menu_title( ): string
+		param_prefix( ): string
 		param( ): string
 		langs_available( ): readonly(string)[]
 		menu_tools( ): readonly(any)[]
 		placeholders( ): readonly($mol_view)[]
-		store( ): $yuf_localizer_store
-		lang_selected( ): $yuf_localizer_model
+		store( ): $yuf_localizer_file_store
+		lang_selected( ): $yuf_localizer_file_model
 		Spread( id: any): $yuf_localizer_page
 		Menu_item( id: any): $mol_view
 		item_theme_not_used( ): string
@@ -10745,15 +10787,21 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
         protected val(key: string, next?: string | null): string | null;
+        param(): string;
         lang_code_selected(next?: string): string;
         app_url(next?: string): string;
         langs_str(next?: string): string;
         lang_main(next?: string): string;
+        keys_filter_value(next?: string): string;
+        protected locales_data_raw(next?: string | null): string | null;
+        locales_data(next?: Record<string, Record<string, string>> | null): any;
+        protected locales_data_push(next: Record<string, Record<string, string>> | null): null;
+        protected locales_data_push_serial: ((next: Record<string, Record<string, string>> | null) => Promise<null>) & {};
         langs_available(): string[];
         settings_checked_default(): boolean;
         settings_checked(next?: boolean): boolean;
         placeholders(): readonly $mol_view[];
-        lang_selected(): $yuf_localizer_model;
+        lang_selected(): $yuf_localizer_file_model;
         locale_key(key: string): string;
         item_theme(key: string): string;
         spread_ids(): string[];
