@@ -22340,6 +22340,7 @@ var $;
             return null;
         }
         text(next) { return next ?? ''; }
+        is_changed() { return this.text() && this.text_actual() !== this.text(); }
         is_new() {
             return this.text_main() !== null && !this.text_actual();
         }
@@ -22574,6 +22575,27 @@ var $;
 		text_name(){
 			return (this.lang_code());
 		}
+		Reset_icon(){
+			const obj = new this.$.$mol_icon_refresh();
+			return obj;
+		}
+		reset_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_key_form_reset_hint"));
+		}
+		reset(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Reset(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Reset_icon())]);
+			(obj.hint) = () => ((this.reset_hint()));
+			(obj.click) = (next) => ((this.reset(next)));
+			return obj;
+		}
+		reset_content(){
+			return [(this.Reset())];
+		}
 		text_edit_enabled(){
 			return false;
 		}
@@ -22584,8 +22606,9 @@ var $;
 			return obj;
 		}
 		Text_field(){
-			const obj = new this.$.$mol_form_field();
+			const obj = new this.$.$yuf_localizer_key_form_field();
 			(obj.name) = () => ((this.text_name()));
+			(obj.reset_content) = () => ((this.reset_content()));
 			(obj.control) = () => ((this.Text()));
 			return obj;
 		}
@@ -22594,9 +22617,6 @@ var $;
 		}
 		is_not_used_text(){
 			return (this.$.$mol_locale.text("$yuf_localizer_key_form_is_not_used_text"));
-		}
-		is_changed_text(){
-			return (this.$.$mol_locale.text("$yuf_localizer_key_form_is_changed_text"));
 		}
 		model(){
 			const obj = new this.$.$yuf_localizer_key_model();
@@ -22609,9 +22629,24 @@ var $;
 			return [(this.Text_field())];
 		}
 	};
+	($mol_mem(($.$yuf_localizer_key_form.prototype), "Reset_icon"));
+	($mol_mem(($.$yuf_localizer_key_form.prototype), "reset"));
+	($mol_mem(($.$yuf_localizer_key_form.prototype), "Reset"));
 	($mol_mem(($.$yuf_localizer_key_form.prototype), "Text"));
 	($mol_mem(($.$yuf_localizer_key_form.prototype), "Text_field"));
 	($mol_mem(($.$yuf_localizer_key_form.prototype), "model"));
+	($.$yuf_localizer_key_form_field) = class $yuf_localizer_key_form_field extends ($.$mol_form_field) {
+		reset_content(){
+			return [];
+		}
+		label(){
+			return [
+				(this.name()), 
+				(this.Bid()), 
+				...(this.reset_content())
+			];
+		}
+	};
 
 
 ;
@@ -22629,11 +22664,16 @@ var $;
                     this.lang_code(),
                     this.is_new() ? this.is_new_text() : '',
                     this.is_not_used() ? this.is_not_used_text() : '',
-                    this.text_actual() !== (this.text() || null) ? this.is_changed_text() : '',
                 ].filter(Boolean).join(', ');
             }
             text_edit_enabled() {
                 return !this.is_not_used();
+            }
+            reset() {
+                this.model().text(null);
+            }
+            reset_content() {
+                return this.model().is_changed() ? super.reset_content() : [];
             }
         }
         __decorate([
@@ -22651,6 +22691,12 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_localizer_key_form, {
             padding: 0,
+            Reset: {
+                margin: {
+                    top: '-.5rem',
+                    bottom: '-.5rem'
+                }
+            }
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -22659,24 +22705,6 @@ var $;
 	($.$yuf_localizer_page) = class $yuf_localizer_page extends ($.$mol_page) {
 		locale_key(){
 			return "";
-		}
-		Reset_icon(){
-			const obj = new this.$.$mol_icon_refresh();
-			return obj;
-		}
-		reset_hint(){
-			return (this.$.$mol_locale.text("$yuf_localizer_page_reset_hint"));
-		}
-		reset(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Reset(){
-			const obj = new this.$.$mol_button_minor();
-			(obj.sub) = () => ([(this.Reset_icon())]);
-			(obj.hint) = () => ((this.reset_hint()));
-			(obj.click) = (next) => ((this.reset(next)));
-			return obj;
 		}
 		addon_tools(){
 			return [];
@@ -22711,15 +22739,12 @@ var $;
 			return (this.locale_key());
 		}
 		tools(){
-			return [(this.Reset()), ...(this.addon_tools())];
+			return [...(this.addon_tools())];
 		}
 		body(){
 			return [...(this.forms())];
 		}
 	};
-	($mol_mem(($.$yuf_localizer_page.prototype), "Reset_icon"));
-	($mol_mem(($.$yuf_localizer_page.prototype), "reset"));
-	($mol_mem(($.$yuf_localizer_page.prototype), "Reset"));
 	($mol_mem_key(($.$yuf_localizer_page.prototype), "locale_by_lang_code"));
 	($mol_mem_key(($.$yuf_localizer_page.prototype), "Form"));
 	($mol_mem(($.$yuf_localizer_page.prototype), "store"));
@@ -22750,9 +22775,6 @@ var $;
             }
             lang_code(lang_code) {
                 return lang_code;
-            }
-            reset(e) {
-                this.locale_file_selected().item(this.locale_key()).text(null);
             }
         }
         __decorate([
@@ -22951,9 +22973,12 @@ var $;
 			return obj;
 		}
 		item_theme_not_used(){
-			return "$mol_theme_special";
+			return "$mol_theme_base";
 		}
 		item_theme_new(){
+			return "$mol_theme_special";
+		}
+		item_theme_changed(){
 			return "$mol_theme_accent";
 		}
 		Menu_links_empty(){
@@ -23052,9 +23077,13 @@ var $;
             item_theme(key) {
                 const model = this.lang_selected();
                 const item = model.item(key);
-                return item.is_new()
-                    ? this.item_theme_new()
-                    : item.is_not_used() ? this.item_theme_not_used() : null;
+                if (item.is_changed())
+                    return this.item_theme_changed();
+                if (item.is_new())
+                    return this.item_theme_new();
+                if (item.is_not_used())
+                    return this.item_theme_not_used();
+                return null;
             }
             spread_ids() {
                 if (!this.lang_code_selected())

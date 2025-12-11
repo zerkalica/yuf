@@ -404,8 +404,8 @@
     "$yuf_localizer_key_model",
     "$yuf_localizer_key",
     "$yuf_localizer_page",
-    "$mol_icon_refresh",
-    "$yuf_localizer_key_form"
+    "$yuf_localizer_key_form",
+    "$mol_icon_refresh"
   ],
   "dependencies": {
     "autoinstall": "*",

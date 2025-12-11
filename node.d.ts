@@ -3854,7 +3854,7 @@ declare namespace $.$$ {
         col_head_content(colId: string): readonly string[];
         rows(): readonly $mol_view[];
         cells(row_id: string[]): readonly $mol_view[];
-        col_type(col_id: string): "text" | "number" | "branch";
+        col_type(col_id: string): "number" | "text" | "branch";
         Cell(id: {
             row: string[];
             col: string;
@@ -10456,6 +10456,7 @@ declare namespace $ {
         text_actual(): null | string;
         text_main(): null | string;
         text(next?: string | null): string;
+        is_changed(): boolean | "";
         is_new(): boolean;
         is_not_used(): boolean;
     }
@@ -10510,25 +10511,45 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_localizer_key_form['model'] >['text'] >[0]
 	>
-	type $mol_string__enabled_yuf_localizer_key_form_2 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_localizer_key_form_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__hint_yuf_localizer_key_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['reset_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_yuf_localizer_key_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['reset'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_string__enabled_yuf_localizer_key_form_5 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_key_form['text_edit_enabled'] >
 		,
 		ReturnType< $mol_string['enabled'] >
 	>
-	type $mol_string__value_yuf_localizer_key_form_3 = $mol_type_enforce<
+	type $mol_string__value_yuf_localizer_key_form_6 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_key_form['text'] >
 		,
 		ReturnType< $mol_string['value'] >
 	>
-	type $mol_form_field__name_yuf_localizer_key_form_4 = $mol_type_enforce<
+	type $yuf_localizer_key_form_field__name_yuf_localizer_key_form_7 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_key_form['text_name'] >
 		,
-		ReturnType< $mol_form_field['name'] >
+		ReturnType< $yuf_localizer_key_form_field['name'] >
 	>
-	type $mol_form_field__control_yuf_localizer_key_form_5 = $mol_type_enforce<
+	type $yuf_localizer_key_form_field__reset_content_yuf_localizer_key_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_key_form['reset_content'] >
+		,
+		ReturnType< $yuf_localizer_key_form_field['reset_content'] >
+	>
+	type $yuf_localizer_key_form_field__control_yuf_localizer_key_form_9 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_key_form['Text'] >
 		,
-		ReturnType< $mol_form_field['control'] >
+		ReturnType< $yuf_localizer_key_form_field['control'] >
 	>
 	export class $yuf_localizer_key_form extends $mol_form {
 		title( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['id'] >
@@ -10538,15 +10559,24 @@ declare namespace $ {
 		text_actual( ): ReturnType< ReturnType< $yuf_localizer_key_form['model'] >['text_actual'] >
 		lang_code( ): string
 		text_name( ): ReturnType< $yuf_localizer_key_form['lang_code'] >
+		Reset_icon( ): $mol_icon_refresh
+		reset_hint( ): string
+		reset( next?: any ): any
+		Reset( ): $mol_button_minor
+		reset_content( ): readonly($mol_view)[]
 		text_edit_enabled( ): boolean
 		Text( ): $mol_string
-		Text_field( ): $mol_form_field
+		Text_field( ): $yuf_localizer_key_form_field
 		is_new_text( ): string
 		is_not_used_text( ): string
-		is_changed_text( ): string
 		model( ): $yuf_localizer_key_model
 		rows( ): readonly(any)[]
 		body( ): readonly(any)[]
+	}
+	
+	export class $yuf_localizer_key_form_field extends $mol_form_field {
+		reset_content( ): readonly($mol_view)[]
+		label( ): readonly(any)[]
 	}
 	
 }
@@ -10556,6 +10586,8 @@ declare namespace $.$$ {
     class $yuf_localizer_key_form extends $.$yuf_localizer_key_form {
         text_name(): string;
         text_edit_enabled(): boolean;
+        reset(): void;
+        reset_content(): readonly $mol_view[];
     }
 }
 
@@ -10564,42 +10596,23 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_button_minor__sub_yuf_localizer_page_1 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_button_minor['sub'] >
-	>
-	type $mol_button_minor__hint_yuf_localizer_page_2 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_page['reset_hint'] >
-		,
-		ReturnType< $mol_button_minor['hint'] >
-	>
-	type $mol_button_minor__click_yuf_localizer_page_3 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_page['reset'] >
-		,
-		ReturnType< $mol_button_minor['click'] >
-	>
-	type $yuf_localizer_key_form__model_yuf_localizer_page_4 = $mol_type_enforce<
+	type $yuf_localizer_key_form__model_yuf_localizer_page_1 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_page['locale_by_lang_code'] >
 		,
 		ReturnType< $yuf_localizer_key_form['model'] >
 	>
-	type $yuf_localizer_key_form__lang_code_yuf_localizer_page_5 = $mol_type_enforce<
+	type $yuf_localizer_key_form__lang_code_yuf_localizer_page_2 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_page['lang_code'] >
 		,
 		ReturnType< $yuf_localizer_key_form['lang_code'] >
 	>
-	type $yuf_localizer_page_tools__6 = $mol_type_enforce<
+	type $yuf_localizer_page_tools__3 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_page['addon_tools'] >[number]
 		,
 		$mol_view_content
 	>
 	export class $yuf_localizer_page extends $mol_page {
 		locale_key( ): string
-		Reset_icon( ): $mol_icon_refresh
-		reset_hint( ): string
-		reset( next?: any ): any
-		Reset( ): $mol_button_minor
 		addon_tools( ): readonly($mol_view_content)[]
 		locale_by_lang_code( id: any): $yuf_localizer_key_model
 		lang_code( id: any): string
@@ -10623,7 +10636,6 @@ declare namespace $.$$ {
         locale_by_lang_code(lang_code: string): $yuf_localizer_key_model;
         locale_file_selected(): $yuf_localizer_file_model;
         lang_code(lang_code: string): string;
-        reset(e?: Event): void;
     }
 }
 
@@ -10818,6 +10830,7 @@ declare namespace $ {
 		Menu_item( id: any): $mol_view
 		item_theme_not_used( ): string
 		item_theme_new( ): string
+		item_theme_changed( ): string
 		Menu_links_empty( ): $mol_view
 	}
 	
