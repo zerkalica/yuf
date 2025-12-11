@@ -10871,7 +10871,7 @@ declare namespace $.$$ {
         protected locales_data_raw(next?: string | null): string | null;
         locales_data(next?: Record<string, Record<string, string>> | null): any;
         protected locales_data_push(next: Record<string, Record<string, string>> | null): null;
-        protected locales_data_push_serial: (next: Parameters<typeof this.locales_data_push>[0]) => null;
+        protected locales_data_push_serial: ((next: Record<string, Record<string, string>> | null) => Promise<null>) & {};
         langs_available(): string[];
         settings_checked_default(): boolean;
         settings_checked(next?: boolean): boolean;

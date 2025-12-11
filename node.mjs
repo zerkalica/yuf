@@ -23174,7 +23174,7 @@ var $;
                 this.locales_data_raw(str);
                 return null;
             }
-            locales_data_push_serial = ((next) => this.locales_data_push(next));
+            locales_data_push_serial = $mol_wire_async(((next) => this.locales_data_push(next)));
             langs_available() {
                 return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
             }
