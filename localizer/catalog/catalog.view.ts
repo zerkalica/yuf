@@ -31,13 +31,13 @@ namespace $.$$ {
 			return this.app_url() ? [ this.not_found_keys() ] : [ this.setup_needed() ]
 		}
 
-		protected locales_data_raw(next?: string | null) {
-			return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next)
+		override locales_data_str(next?: string | null) {
+			return this.$.$mol_state_local.value(this.state_key('locales_data_str'), next) || ''
 		}
 
 		@ $mol_mem
 		override locales_data(next?: Record<string, Record<string, string>> | null) {
-			if (next === undefined) return JSON.parse(this.locales_data_raw() ?? '{}') || {}
+			if (next === undefined) return JSON.parse(this.locales_data_str() || '{}') || {}
 
 			this.locales_data_push_serial(next)
 
@@ -46,8 +46,8 @@ namespace $.$$ {
 
 		protected locales_data_push(next: Record<string, Record<string, string>> | null) {
 			this.$.$mol_wait_timeout(200)
-			const str = next === null ? null : JSON.stringify(next)
-			this.locales_data_raw(str)
+			const str = next === null ? null : JSON.stringify(next, null, '\t')
+			this.locales_data_str(str)
 			return null
 		}
 

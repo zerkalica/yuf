@@ -1,6 +1,9 @@
 $yuf_localizer_settings_page $mol_page
 	title @ \Settings
+	tools /$mol_view
+		^ addon_tools /$mol_view
 	body /
 		<= Form $yuf_localizer_settings_form
 			app_url? <=> app_url? \
 			langs_str? <=> langs_str? \
+			locales_data_str? <=> locales_data_str? \

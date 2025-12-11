@@ -11,3 +11,7 @@ $yuf_localizer_settings_form $mol_form
 			control <= Langs $mol_string
 				hint <= langs_hint @ \ru, ar
 				value? <=> langs_str? \
+		<= Locales_data_field $mol_form_field
+			name <= locales_data_name @ \Changed locales json dta
+			control <= Locales_data $mol_textarea
+				value? <=> locales_data_str? \

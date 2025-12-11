@@ -28,11 +28,12 @@ $yuf_localizer_catalog $yuf_catalog
 			checked? <=> settings_checked? false
 	placeholders /
 	Settings $yuf_localizer_settings_page
-		tools /
+		addon_tools /
 			<= Settings_close $yuf_button_close
 				click? <=> settings_close? null
 		app_url? <=> app_url? \
 		langs_str? <=> langs_str? \
+		locales_data_str? <=> locales_data_str? \
 	store $yuf_localizer_file_store
 		base_url <= app_url
 		data? <=> locales_data? *
