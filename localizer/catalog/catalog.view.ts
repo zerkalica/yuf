@@ -32,7 +32,7 @@ namespace $.$$ {
 		}
 
 		protected locales_data_raw(next?: string | null) {
-			return this.val('locales_data', next)
+			return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next)
 		}
 
 		@ $mol_mem
@@ -51,7 +51,7 @@ namespace $.$$ {
 			return null
 		}
 
-		protected locales_data_push_serial = $mol_wire_async(
+		protected locales_data_push_serial = (
 			(next: Parameters<typeof this.locales_data_push>[0]) => this.locales_data_push(next)
 		)
 
