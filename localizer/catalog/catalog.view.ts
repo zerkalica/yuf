@@ -27,6 +27,10 @@ namespace $.$$ {
 			return this.val('keys', next) ?? ''
 		}
 
+		override empty_content() {
+			return this.app_url() ? [ this.not_found_keys() ] : [ this.setup_needed() ]
+		}
+
 		protected locales_data_raw(next?: string | null) {
 			return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next)
 		}

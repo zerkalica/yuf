@@ -52,5 +52,6 @@ $yuf_localizer_catalog $yuf_catalog
 	item_theme_new \$mol_theme_special
 	item_theme_changed \$mol_theme_accent
 	Menu_links_empty $mol_view
-		sub /
-			<= empty_text @ \No locale selected, set app url in settings
+		sub <= empty_content /$mol_view_content
+			<= setup_needed @ \No locale selected, set app url in settings
+			<= not_found_keys @ \Not found keys to translate
