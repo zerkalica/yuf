@@ -22802,6 +22802,9 @@ var $;
             reset() {
                 this.model().text(null);
             }
+            reset_hint() {
+                return super.reset_hint().replace('{prev}', this.model().text_actual() || '\'\'');
+            }
             reset_content() {
                 return this.model().is_changed() ? super.reset_content() : [];
             }
@@ -22826,6 +22829,11 @@ var $;
                     top: '-.5rem',
                     bottom: '-.5rem'
                 }
+            }
+        });
+        $mol_style_define($yuf_localizer_key_form_field, {
+            Label: {
+                gap: 0
             }
         });
     })($$ = $.$$ || ($.$$ = {}));

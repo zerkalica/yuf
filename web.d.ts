@@ -10512,6 +10512,7 @@ declare namespace $.$$ {
         text_name(): string;
         text_edit_enabled(): boolean;
         reset(): void;
+        reset_hint(): string;
         reset_content(): readonly $mol_view[];
     }
 }

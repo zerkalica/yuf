@@ -73,7 +73,7 @@
 	"$yuf_localizer_catalog_settings_check_hint": "Settings",
 	"$yuf_localizer_key_form_is_new_text": "new",
 	"$yuf_localizer_key_form_is_not_used_text": "not used",
-	"$yuf_localizer_key_form_reset_hint": "Reset",
+	"$yuf_localizer_key_form_reset_hint": "Reset to {prev}",
 	"$yuf_localizer_settings_form_app_url_hint": "App url",
 	"$yuf_localizer_settings_form_app_url_name": "App url",
 	"$yuf_localizer_settings_form_langs_hint": "ru, ar",
