@@ -23151,7 +23151,7 @@ var $;
                 return this.val('keys', next) ?? '';
             }
             locales_data_raw(next) {
-                return this.val('locales_data', next);
+                return this.$.$mol_state_local.value(this.state_key('locales_data_raw'), next);
             }
             locales_data(next) {
                 if (next === undefined)
@@ -23165,7 +23165,7 @@ var $;
                 this.locales_data_raw(str);
                 return null;
             }
-            locales_data_push_serial = $mol_wire_async((next) => this.locales_data_push(next));
+            locales_data_push_serial = ((next) => this.locales_data_push(next));
             langs_available() {
                 return this.langs_str().split(',').map(str => str.trim()).filter(Boolean);
             }
