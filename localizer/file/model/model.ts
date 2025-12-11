@@ -34,8 +34,34 @@ namespace $ {
 			)
 		}
 
+		@ $mol_action
+		data_cut_equal_actual() {
+			const actual = this.actual()
+			const local = this.data()
+			const patch = {} as Record<string, string | null>
+
+			let delete_count = 0
+
+			for ( let key in local) {
+				if (local[key] && local[key] === actual[key]) {
+					delete_count++
+					patch[key] = null
+				}
+			}
+
+			if (delete_count) this.data(patch)
+
+			return null
+		}
+
+		@ $mol_mem
+		data_cut_equal_actual_once() {
+			return this.data_cut_equal_actual()
+		}
+
 		@ $mol_mem
 		keys() {
+			this.data_cut_equal_actual_once()
 			return Object.keys({ ...this.main()?.actual(), ...this.actual(), ...this.data() })
 		}
 
