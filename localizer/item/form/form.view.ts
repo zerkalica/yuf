@@ -10,6 +10,10 @@ namespace $.$$ {
 				this.text_actual() !== (this.text() || null) ? this.is_changed_text() : '',
 			].filter(Boolean).join(', ')
 		}
+
+		override text_edit_enabled() {
+			return ! this.is_not_used()
+		}
 		
 	}
 }
