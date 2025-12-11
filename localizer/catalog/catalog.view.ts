@@ -2,13 +2,13 @@ namespace $.$$ {
 	export class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
 		protected val(key: string, next?: string | null) {
 			return this.$.$mol_state_arg.value(
-				`${this.param_prefix()}_${key}`,
+				`${this.param_base()}_${key}`,
 				next === undefined || next ? next : null
 			)
 		}
 
 		override param() {
-			return `${this.param_prefix()}_${super.param()}`
+			return `${this.param_base()}_langkey`
 		}
 
 		override lang_code_selected(next?: string) {
