@@ -4,6 +4,6 @@ $yuf_localizer_settings_page $mol_page
 		^ addon_tools /$mol_view
 	body /
 		<= Form $yuf_localizer_settings_form
-			app_url? <=> app_url? \
-			langs_str? <=> langs_str? \
-			locales_data_str? <=> locales_data_str? \
+			projects_urls_str? <=> projects_urls_str? \
+			langs_available_str? <=> langs_available_str? \
+			locales? <=> locales? *

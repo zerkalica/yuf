@@ -3,6 +3,8 @@ namespace $ {
 	const str = $mol_data_string
 	const langs_dto = dict(str)
 
+	export type $yuf_localizer_file_model_filter_type = '' | 'is_new' | 'is_not_used' | 'empty' | 'changed'
+
 	export class $yuf_localizer_file_model extends $mol_object {
 		url() {
 			return ''
@@ -36,7 +38,7 @@ namespace $ {
 		actual() {
 			$mol_wire_solid()
 			const lang_id = this.id()
-			const url = this.url()
+			let url = this.url()
 			if (! url) return {}
 
 			const response = $mol_error_fence(
@@ -86,7 +88,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		keys_filtered(params: { keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty' | 'changed' }) {
+		keys_filtered(params: { keys_filter?: $yuf_localizer_file_model_filter_type }) {
 			const kf = params.keys_filter
 			const result = [] as string[]
 			for (const key of this.keys()) {

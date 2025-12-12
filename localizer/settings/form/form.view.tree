@@ -1,18 +1,19 @@
 $yuf_localizer_settings_form $mol_form
 	buttons /
+	locales? *
 	body /
 		<= App_url_field $mol_form_field
-			name <= app_url_name @ \App url
-			control <= App_url $mol_string
-				hint <= app_url_hint @ \App url
-				value? <=> app_url? \
+			name <= app_url_name @ \Application urls, enter/tab separated
+			control <= App_url $yuf_textarea
+				hint <= app_url_hint @ \Application urls
+				value? <=> projects_urls_str? \
 		<= Langs_field $mol_form_field
-			name <= langs_name @ \Available Langs
+			name <= langs_name @ \Available Langs, comma/space separated
 			control <= Langs $mol_string
 				hint <= langs_hint @ \ru, ar
-				value? <=> langs_str? \
+				value? <=> langs_available_str? \
 		<= Locales_data_field $mol_form_field
 			name <= locales_data_name @ \Locales raw json data
 			control <= Locales_data $yuf_textarea
-				hint <= locales_data_hint @ \Place raw json here { "locale_file_url": { "key": "val" } }
-				value? <=> locales_data_str? \
+				hint <= locales_data_hint @ \Place raw json here { "lang": { "key": "val" } }
+				value? <=> locales_str? \

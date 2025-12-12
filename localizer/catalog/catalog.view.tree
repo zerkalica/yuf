@@ -1,13 +1,18 @@
 $yuf_localizer_catalog $yuf_catalog
-	menu_title @ \Localizer
+	title @ \Localizer
 	param_prefix \app
 	param_suffix \localizer
-	langs_available /string
+	Menu_logo $mol_icon_transcribe
 	menu_tools /
+		<= Selected_project $mol_select
+			Trigger_icon null
+			hint <= selected_project_hint @ \Select project
+			options <= projects_urls /string
+			value? <=> project_url? \
 		<= Selected_lang $mol_select
 			hint <= selected_lang_hint @ \Select lang file
-			options <= langs_available
-			value? <=> lang_code_selected? \en
+			options <= langs_available /string
+			value? <=> lang_code? \en
 		<= Keys_filter $mol_select
 			hint <= key_filter_hint @ \Filter locale keys
 			dictionary *
@@ -17,7 +22,7 @@ $yuf_localizer_catalog $yuf_catalog
 				- is_not_used <= is_not_used_msg @ \Garbage keys
 				empty <= empty_msg @ \Empty keys
 				changed <= changed_msg @ \Changed keys
-			value? <=> keys_filter_value? \
+			value? <=> keys_filter? \
 		<= Diff_to_clipboard $mol_button_minor
 			sub / <= Diff_to_clipboard_icon $mol_icon_clipboard
 			enabled <= diff_to_clipboard_enabled false
@@ -28,23 +33,21 @@ $yuf_localizer_catalog $yuf_catalog
 			hint <= settings_check_hint @ \Settings
 			checked? <=> settings_checked? false
 	placeholders /
+	val_str*? \
 	Settings $yuf_localizer_settings_page
 		addon_tools /
 			<= Settings_close $yuf_button_close
 				click? <=> settings_close? null
-		app_url? <=> app_url? \
-		langs_str? <=> langs_str? \
-		locales_data_str? <=> locales_data_str? \
-	project $yuf_localizer_project_model
-		url <= app_url
-	lang_selected $yuf_localizer_file_model
-		keys_filtered* => spread_ids_params*
-		keys_changed => keys_changed
+		projects_urls_str? <=> val_str*projects? \
+		langs_available_str? <=> val_str*langs? \
+		locales? <=> locales?
+	projects $yuf_localizer_project_store
+		locales? => locales?
 	Spread* $yuf_localizer_page
 		locale_key <= locale_key* \
 		langs_available <= langs_available
-		lang_code_selected <= lang_code_selected
-		project <= project
+		lang_code <= lang_code
+		project <= project null $yuf_localizer_project_model
 		addon_tools / <= Spread_close
 	Menu_item*0 $mol_view
 		theme <= item_theme* <= item_theme_new

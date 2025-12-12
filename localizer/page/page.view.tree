@@ -1,7 +1,7 @@
 $yuf_localizer_page $mol_page
-	lang_code_selected \
+	lang_code \
 	langs_available /string
-	project $yuf_localizer_project_model
+	project null $yuf_localizer_project_model
 	title <= locale_key \
 	tools /$mol_view_content
 		^ addon_tools /$mol_view_content
@@ -10,4 +10,4 @@ $yuf_localizer_page $mol_page
 			<= Form* $yuf_localizer_key_form
 				model <= locale_by_lang_code* $yuf_localizer_key_model
 				autofocus <= autofocus* false
-				lang_code <= lang_code* \
+				lang_code <= lang_code_id* \

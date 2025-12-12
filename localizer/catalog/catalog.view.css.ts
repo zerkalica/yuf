@@ -6,6 +6,29 @@ namespace $.$$ {
 				basis: $yuf_theme_gap.page_l,
 			},
 
+			Title: {
+				padding: 0,
+				gap: 0,
+			},
+
+		},
+		Menu_logo: {
+			width: '3rem',
+			height: '2.5rem',
+		},
+
+		Selected_project: {
+			Trigger: {
+				flex: {
+					wrap: 'nowrap',
+				},
+				display: 'block',
+				overflow: 'hidden',
+				textOverflow: 'ellipsis',
+				whiteSpace: 'nowrap',
+				maxWidth: '6rem',
+			},
+
 		},
 		Selected_lang: {
 			Trigger: {
