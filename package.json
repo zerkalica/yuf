@@ -386,7 +386,6 @@
     "$yuf_localizer_catalog",
     "$yuf_button_close",
     "$yuf_button",
-    "$mol_icon_transcribe",
     "$yuf_localizer_settings_page",
     "$yuf_localizer_settings",
     "$yuf_localizer_settings_form",

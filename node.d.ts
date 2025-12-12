@@ -10324,15 +10324,6 @@ declare namespace $ {
 //# sourceMappingURL=close.view.tree.d.ts.map
 declare namespace $ {
 
-	export class $mol_icon_transcribe extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=transcribe.view.tree.d.ts.map
-declare namespace $ {
-
 	type $mol_textarea_edit__value_mol_textarea_1 = $mol_type_enforce<
 		ReturnType< $mol_textarea['value'] >
 		,
@@ -10912,27 +10903,47 @@ declare namespace $ {
 		,
 		ReturnType< $mol_select['value'] >
 	>
-	type $mol_select__hint_yuf_localizer_catalog_5 = $mol_type_enforce<
+	type $mol_check_icon__Icon_yuf_localizer_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['Settings_icon'] >
+		,
+		ReturnType< $mol_check_icon['Icon'] >
+	>
+	type $mol_check_icon__hint_yuf_localizer_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['settings_check_hint'] >
+		,
+		ReturnType< $mol_check_icon['hint'] >
+	>
+	type $mol_check_icon__checked_yuf_localizer_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['settings_checked'] >
+		,
+		ReturnType< $mol_check_icon['checked'] >
+	>
+	type $mol_view__sub_yuf_localizer_catalog_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_select__hint_yuf_localizer_catalog_9 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['selected_lang_hint'] >
 		,
 		ReturnType< $mol_select['hint'] >
 	>
-	type $mol_select__options_yuf_localizer_catalog_6 = $mol_type_enforce<
+	type $mol_select__options_yuf_localizer_catalog_10 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_available'] >
 		,
 		ReturnType< $mol_select['options'] >
 	>
-	type $mol_select__value_yuf_localizer_catalog_7 = $mol_type_enforce<
+	type $mol_select__value_yuf_localizer_catalog_11 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code'] >
 		,
 		ReturnType< $mol_select['value'] >
 	>
-	type $mol_select__hint_yuf_localizer_catalog_8 = $mol_type_enforce<
+	type $mol_select__hint_yuf_localizer_catalog_12 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['key_filter_hint'] >
 		,
 		ReturnType< $mol_select['hint'] >
 	>
-	type $mol_select__dictionary_yuf_localizer_catalog_9 = $mol_type_enforce<
+	type $mol_select__dictionary_yuf_localizer_catalog_13 = $mol_type_enforce<
 		({ 
 			'': ReturnType< $yuf_localizer_catalog['all_msg'] >,
 			'is_new': ReturnType< $yuf_localizer_catalog['is_new_msg'] >,
@@ -10942,57 +10953,42 @@ declare namespace $ {
 		,
 		ReturnType< $mol_select['dictionary'] >
 	>
-	type $mol_select__value_yuf_localizer_catalog_10 = $mol_type_enforce<
+	type $mol_select__value_yuf_localizer_catalog_14 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['keys_filter'] >
 		,
 		ReturnType< $mol_select['value'] >
 	>
-	type $mol_button_minor__sub_yuf_localizer_catalog_11 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_localizer_catalog_15 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
 	>
-	type $mol_button_minor__enabled_yuf_localizer_catalog_12 = $mol_type_enforce<
+	type $mol_button_minor__enabled_yuf_localizer_catalog_16 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_enabled'] >
 		,
 		ReturnType< $mol_button_minor['enabled'] >
 	>
-	type $mol_button_minor__hint_yuf_localizer_catalog_13 = $mol_type_enforce<
+	type $mol_button_minor__hint_yuf_localizer_catalog_17 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_hint'] >
 		,
 		ReturnType< $mol_button_minor['hint'] >
 	>
-	type $mol_button_minor__click_yuf_localizer_catalog_14 = $mol_type_enforce<
+	type $mol_button_minor__click_yuf_localizer_catalog_18 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['diff_to_clipboard_copy'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $mol_check_icon__Icon_yuf_localizer_catalog_15 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['Settings_icon'] >
-		,
-		ReturnType< $mol_check_icon['Icon'] >
-	>
-	type $mol_check_icon__hint_yuf_localizer_catalog_16 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['settings_check_hint'] >
-		,
-		ReturnType< $mol_check_icon['hint'] >
-	>
-	type $mol_check_icon__checked_yuf_localizer_catalog_17 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['settings_checked'] >
-		,
-		ReturnType< $mol_check_icon['checked'] >
-	>
-	type $yuf_button_close__click_yuf_localizer_catalog_18 = $mol_type_enforce<
+	type $yuf_button_close__click_yuf_localizer_catalog_19 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['settings_close'] >
 		,
 		ReturnType< $yuf_button_close['click'] >
 	>
-	type __yuf_localizer_catalog_19 = $mol_type_enforce<
+	type __yuf_localizer_catalog_20 = $mol_type_enforce<
 		Parameters< $yuf_localizer_catalog['locales'] >[0]
 		,
 		Parameters< ReturnType< $yuf_localizer_catalog['projects'] >['locales'] >[0]
 	>
-	type $mol_hotkey__key_yuf_localizer_catalog_20 = $mol_type_enforce<
+	type $mol_hotkey__key_yuf_localizer_catalog_21 = $mol_type_enforce<
 		({ 
 			up( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
 			down( next?: ReturnType< $yuf_localizer_catalog['select_key'] > ): ReturnType< $yuf_localizer_catalog['select_key'] >,
@@ -11002,92 +10998,97 @@ declare namespace $ {
 		,
 		ReturnType< $mol_hotkey['key'] >
 	>
-	type $yuf_localizer_settings_page__addon_tools_yuf_localizer_catalog_21 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__addon_tools_yuf_localizer_catalog_22 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_localizer_settings_page['addon_tools'] >
 	>
-	type $yuf_localizer_settings_page__projects_urls_str_yuf_localizer_catalog_22 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__projects_urls_str_yuf_localizer_catalog_23 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['val_str'] >
 		,
 		ReturnType< $yuf_localizer_settings_page['projects_urls_str'] >
 	>
-	type $yuf_localizer_settings_page__langs_available_str_yuf_localizer_catalog_23 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__langs_available_str_yuf_localizer_catalog_24 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['val_str'] >
 		,
 		ReturnType< $yuf_localizer_settings_page['langs_available_str'] >
 	>
-	type $yuf_localizer_settings_page__locales_yuf_localizer_catalog_24 = $mol_type_enforce<
+	type $yuf_localizer_settings_page__locales_yuf_localizer_catalog_25 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locales'] >
 		,
 		ReturnType< $yuf_localizer_settings_page['locales'] >
 	>
-	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_25 = $mol_type_enforce<
+	type $yuf_localizer_page__locale_key_yuf_localizer_catalog_26 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['locale_key'] >
 		,
 		ReturnType< $yuf_localizer_page['locale_key'] >
 	>
-	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_26 = $mol_type_enforce<
+	type $yuf_localizer_page__langs_available_yuf_localizer_catalog_27 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['langs_available'] >
 		,
 		ReturnType< $yuf_localizer_page['langs_available'] >
 	>
-	type $yuf_localizer_page__lang_code_yuf_localizer_catalog_27 = $mol_type_enforce<
+	type $yuf_localizer_page__lang_code_yuf_localizer_catalog_28 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code'] >
 		,
 		ReturnType< $yuf_localizer_page['lang_code'] >
 	>
-	type $yuf_localizer_page__project_yuf_localizer_catalog_28 = $mol_type_enforce<
+	type $yuf_localizer_page__project_yuf_localizer_catalog_29 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['project'] >
 		,
 		ReturnType< $yuf_localizer_page['project'] >
 	>
-	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_29 = $mol_type_enforce<
+	type $yuf_localizer_page__addon_tools_yuf_localizer_catalog_30 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_localizer_page['addon_tools'] >
 	>
-	type $mol_view__theme_yuf_localizer_catalog_30 = $mol_type_enforce<
+	type $mol_view__theme_yuf_localizer_catalog_31 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['item_theme'] >
 		,
 		ReturnType< $mol_view['theme'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_31 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_32 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_item_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_view__sub_yuf_localizer_catalog_32 = $mol_type_enforce<
+	type $mol_view__sub_yuf_localizer_catalog_33 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['empty_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_page__title_yuf_localizer_catalog_33 = $mol_type_enforce<
+	type $mol_page__title_yuf_localizer_catalog_34 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_title'] >
 		,
 		ReturnType< $mol_page['title'] >
 	>
-	type $mol_page__Logo_yuf_localizer_catalog_34 = $mol_type_enforce<
+	type $mol_page__Logo_yuf_localizer_catalog_35 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['Menu_logo'] >
 		,
 		ReturnType< $mol_page['Logo'] >
 	>
-	type $mol_page__tools_yuf_localizer_catalog_35 = $mol_type_enforce<
+	type $mol_page__tools_yuf_localizer_catalog_36 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['tools'] >
 	>
-	type $mol_page__head_yuf_localizer_catalog_36 = $mol_type_enforce<
+	type $mol_page__head_yuf_localizer_catalog_37 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_head'] >
 		,
 		ReturnType< $mol_page['head'] >
 	>
-	type $mol_page__body_yuf_localizer_catalog_37 = $mol_type_enforce<
+	type $mol_page__body_yuf_localizer_catalog_38 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['menu_body'] >
 		,
 		ReturnType< $mol_page['body'] >
 	>
-	type $mol_page__plugins_yuf_localizer_catalog_38 = $mol_type_enforce<
+	type $mol_page__foot_yuf_localizer_catalog_39 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['menu_foot'] >
+		,
+		ReturnType< $mol_page['foot'] >
+	>
+	type $mol_page__plugins_yuf_localizer_catalog_40 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['plugins'] >
@@ -11097,6 +11098,11 @@ declare namespace $ {
 		projects_urls( ): readonly(string)[]
 		project_url( next?: string ): string
 		Selected_project( ): $mol_select
+		Settings_icon( ): $mol_icon_settings
+		settings_check_hint( ): string
+		settings_checked( next?: boolean ): boolean
+		Settings_check( ): $mol_check_icon
+		Foot_tools( ): $mol_view
 		selected_lang_hint( ): string
 		langs_available( ): readonly(string)[]
 		lang_code( next?: string ): string
@@ -11113,10 +11119,6 @@ declare namespace $ {
 		diff_to_clipboard_hint( ): string
 		diff_to_clipboard_copy( next?: any ): any
 		Diff_to_clipboard( ): $mol_button_minor
-		Settings_icon( ): $mol_icon_settings
-		settings_check_hint( ): string
-		settings_checked( next?: boolean ): boolean
-		Settings_check( ): $mol_check_icon
 		settings_close( next?: any ): any
 		Settings_close( ): $yuf_button_close
 		val_str( id: any, next?: string ): string
@@ -11131,10 +11133,10 @@ declare namespace $ {
 		Menu_tools( ): ReturnType< ReturnType< $yuf_localizer_catalog['Menu'] >['Tools'] >
 		select_key( id: any, next?: any ): any
 		Hotkey( ): $mol_hotkey
-		title( ): string
+		menu_title( ): string
 		param_prefix( ): string
 		param_suffix( ): string
-		Menu_logo( ): $mol_icon_transcribe
+		menu_foot( ): readonly(any)[]
 		menu_tools( ): readonly(any)[]
 		placeholders( ): readonly(any)[]
 		Settings( ): $yuf_localizer_settings_page

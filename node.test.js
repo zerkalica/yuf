@@ -22215,17 +22215,6 @@ var $;
 "use strict";
 
 ;
-	($.$mol_icon_transcribe) = class $mol_icon_transcribe extends ($.$mol_icon) {
-		path(){
-			return "M20,5A2,2 0 0,1 22,7V17A2,2 0 0,1 20,19H4C2.89,19 2,18.1 2,17V7C2,5.89 2.89,5 4,5H20M18,17V15H12.5L10.5,17H18M6,17H8.5L15.35,10.12C15.55,9.93 15.55,9.61 15.35,9.41L13.59,7.65C13.39,7.45 13.07,7.45 12.88,7.65L6,14.53V17Z";
-		}
-	};
-
-
-;
-"use strict";
-
-;
 	($.$mol_textarea) = class $mol_textarea extends ($.$mol_stack) {
 		clickable(next){
 			if(next !== undefined) return next;
@@ -23427,6 +23416,29 @@ var $;
 			(obj.value) = (next) => ((this.project_url(next)));
 			return obj;
 		}
+		Settings_icon(){
+			const obj = new this.$.$mol_icon_settings();
+			return obj;
+		}
+		settings_check_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_settings_check_hint"));
+		}
+		settings_checked(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Settings_check(){
+			const obj = new this.$.$mol_check_icon();
+			(obj.Icon) = () => ((this.Settings_icon()));
+			(obj.hint) = () => ((this.settings_check_hint()));
+			(obj.checked) = (next) => ((this.settings_checked(next)));
+			return obj;
+		}
+		Foot_tools(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Settings_check())]);
+			return obj;
+		}
 		selected_lang_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_lang_hint"));
 		}
@@ -23497,24 +23509,6 @@ var $;
 			(obj.click) = (next) => ((this.diff_to_clipboard_copy(next)));
 			return obj;
 		}
-		Settings_icon(){
-			const obj = new this.$.$mol_icon_settings();
-			return obj;
-		}
-		settings_check_hint(){
-			return (this.$.$mol_locale.text("$yuf_localizer_catalog_settings_check_hint"));
-		}
-		settings_checked(next){
-			if(next !== undefined) return next;
-			return false;
-		}
-		Settings_check(){
-			const obj = new this.$.$mol_check_icon();
-			(obj.Icon) = () => ((this.Settings_icon()));
-			(obj.hint) = () => ((this.settings_check_hint()));
-			(obj.checked) = (next) => ((this.settings_checked(next)));
-			return obj;
-		}
 		settings_close(next){
 			if(next !== undefined) return next;
 			return null;
@@ -23569,8 +23563,8 @@ var $;
 			});
 			return obj;
 		}
-		title(){
-			return (this.$.$mol_locale.text("$yuf_localizer_catalog_title"));
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
 		}
 		param_prefix(){
 			return "app";
@@ -23578,17 +23572,14 @@ var $;
 		param_suffix(){
 			return "localizer";
 		}
-		Menu_logo(){
-			const obj = new this.$.$mol_icon_transcribe();
-			return obj;
+		menu_foot(){
+			return [(this.Selected_project()), (this.Foot_tools())];
 		}
 		menu_tools(){
 			return [
-				(this.Selected_project()), 
 				(this.Selected_lang()), 
 				(this.Keys_filter()), 
-				(this.Diff_to_clipboard()), 
-				(this.Settings_check())
+				(this.Diff_to_clipboard())
 			];
 		}
 		placeholders(){
@@ -23642,12 +23633,17 @@ var $;
 			(obj.tools) = () => ([...(this.menu_tools()), ...(this.addon_tools())]);
 			(obj.head) = () => ((this.menu_head()));
 			(obj.body) = () => ((this.menu_body()));
+			(obj.foot) = () => ((this.menu_foot()));
 			(obj.plugins) = () => ([(this.Hotkey())]);
 			return obj;
 		}
 	};
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "project_url"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_project"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_icon"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_checked"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_check"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Foot_tools"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_code"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter"));
@@ -23655,15 +23651,11 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard_icon"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "diff_to_clipboard_copy"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_icon"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_checked"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_check"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_close"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "val_str"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "select_key"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Hotkey"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu_logo"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "projects"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
@@ -23703,7 +23695,7 @@ var $;
             }
             projects_urls() {
                 const str = this.val_str('projects') ?? '';
-                return str.split(/[\n\t]/).map(str => str.match(/^(?:https?)?:?([^#?]+)(?:\/$)?/)?.[1]?.trim() ?? '').filter(Boolean);
+                return str.split(/[\n\t]/).map(str => str.match(/^(?:https?)?:?(\/+[^#&?]+)/)?.[1]?.replace(/\/+(?:[\w\d]+\.[\w\d]+)?$/, '')?.trim() ?? '').filter(Boolean);
             }
             lang_main() {
                 return this.project()?.lang_main() ?? 'en';
@@ -23816,13 +23808,11 @@ var $;
                     basis: $yuf_theme_gap.page_l,
                 },
                 Title: {
-                    padding: 0,
                     gap: 0,
                 },
-            },
-            Menu_logo: {
-                width: '3rem',
-                height: '2.5rem',
+                Foot: {
+                    justifyContent: 'space-between',
+                }
             },
             Selected_project: {
                 Trigger: {
@@ -23833,7 +23823,6 @@ var $;
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
-                    maxWidth: '6rem',
                 },
             },
             Selected_lang: {
