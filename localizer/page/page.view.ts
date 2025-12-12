@@ -11,11 +11,11 @@ namespace $.$$ {
 		}
 
 		override locale_by_lang_code(lang_code: string) {
-			return this.store().model(lang_code).item(this.locale_key())
+			return this.project().file(lang_code).item(this.locale_key())
 		}
 
 		locale_file_selected() {
-			return this.store().model(this.lang_code_selected())
+			return this.project().file(this.lang_code_selected())
 		}
 
 		override lang_code(lang_code: string) {

@@ -16,6 +16,7 @@ $yuf_localizer_catalog $yuf_catalog
 				is_new <= is_new_msg @ \New keys
 				- is_not_used <= is_not_used_msg @ \Garbage keys
 				empty <= empty_msg @ \Empty keys
+				changed <= changed_msg @ \Changed keys
 			value? <=> keys_filter_value? \
 		<= Diff_to_clipboard $mol_button_minor
 			sub / <= Diff_to_clipboard_icon $mol_icon_clipboard
@@ -34,9 +35,8 @@ $yuf_localizer_catalog $yuf_catalog
 		app_url? <=> app_url? \
 		langs_str? <=> langs_str? \
 		locales_data_str? <=> locales_data_str? \
-	store $yuf_localizer_file_store
-		base_url <= app_url
-		data? <=> locales_data? *
+	project $yuf_localizer_project_model
+		url <= app_url
 	lang_selected $yuf_localizer_file_model
 		keys_filtered* => spread_ids_params*
 		keys_changed => keys_changed
@@ -44,7 +44,7 @@ $yuf_localizer_catalog $yuf_catalog
 		locale_key <= locale_key* \
 		langs_available <= langs_available
 		lang_code_selected <= lang_code_selected
-		store <= store
+		project <= project
 		addon_tools / <= Spread_close
 	Menu_item*0 $mol_view
 		theme <= item_theme* <= item_theme_new

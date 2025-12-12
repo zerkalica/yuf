@@ -17,6 +17,19 @@ namespace $ {
 			return next ?? {}
 		}
 
+		@ $mol_mem
+		data_own() {
+			const data = this.data()
+			const result = {} as ReturnType<typeof this.data>
+			for (const key of this.keys()) {
+				const val = data[key]
+				if (! val) continue
+				result[key] = val
+			}
+
+			return result
+		}
+
 		protected fetcher() { return this.$.$mol_static.$mol_fetch }
 
 		@ $mol_mem
@@ -69,21 +82,23 @@ namespace $ {
 		@ $mol_mem
 		keys() {
 			this.data_cut_equal_actual_once()
-			return Object.keys({ ...this.main()?.actual(), ...this.actual(), ...this.data() })
+			return Object.keys({ ...this.main()?.actual(), ...this.actual() })
 		}
 
 		@ $mol_mem_key
-		keys_filtered(params: { keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty' }) {
+		keys_filtered(params: { keys_filter?: '' | 'is_new' | 'is_not_used' | 'empty' | 'changed' }) {
 			const kf = params.keys_filter
-			return this.keys().filter(
-				key => kf === 'is_new'
-					? this.item(key).is_new()
-					: kf === 'is_not_used'
-						? this.item(key).is_not_used()
-						: kf === 'empty'
-							? ! this.item(key).text()
-							: true
-			)
+			const result = [] as string[]
+			for (const key of this.keys()) {
+				const row = this.item(key)
+				if (kf === 'is_new' && ! row.is_new()) continue
+				if (kf === 'is_not_used' && ! row.is_not_used()) continue
+				if (kf === 'empty' && row.text()) continue
+				if (kf === 'changed' && ! row.is_changed()) continue
+				result.push(key)
+			}
+
+			return result
 		}
 
 		@ $mol_mem
@@ -91,7 +106,7 @@ namespace $ {
 			const local = this.data()
 			const actual = this.actual()
 
-			return Object.keys(local).filter(key => local[key] !== actual[key])
+			return Object.keys(actual).filter(key => local[key] !== actual[key])
 		}
 
 		@ $mol_mem_key
@@ -116,7 +131,7 @@ namespace $ {
 				id: $mol_const(id),
 				text_main: () => (this.main() ?? this).key_text(id),
 				text_actual: () => this.actual()[id] ?? null,
-				text: next => this.key_text(id, next)
+				text_stored: next => this.key_text(id, next)
 			})
 		}
 

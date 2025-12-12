@@ -12,7 +12,7 @@ namespace $.$$ {
 		}
 
 		override lang_code_selected(next?: string) {
-			return this.val('lang', next) || this.store().lang_main()
+			return this.val('lang', next) || this.project().lang_main()
 		}
 
 		override app_url(next?: string) {
@@ -31,33 +31,19 @@ namespace $.$$ {
 			return this.app_url() ? [ this.not_found_keys() ] : [ this.setup_needed() ]
 		}
 
-		override locales_data_str(next?: string | null) {
-			return this.$.$mol_state_local.value(this.state_key('locales_data_str'), next) || ''
+		all_data(next?: Parameters<typeof $yuf_localizer_project_model.data>[0]) {
+			return this.$.$mol_static.$yuf_localizer_project_model.data(next)
 		}
 
 		@ $mol_mem
-		override locales_data(next?: Record<string, Record<string, string>> | null) {
-			if (next === undefined) return JSON.parse(this.locales_data_str() || '{}') || {}
-
-			this.locales_data_push_serial(next)
-
-			return next
+		override locales_data_str(next?: string) {
+			const data = this.all_data(next === undefined ? next : JSON.parse(next || '{}'))
+			return JSON.stringify(data, null, '\t')
 		}
-
-		protected locales_data_push(next: Record<string, Record<string, string>> | null) {
-			this.$.$mol_wait_timeout(200)
-			const str = next === null ? null : JSON.stringify(next, null, '\t')
-			this.locales_data_str(str === '{}' ? null : str)
-			return null
-		}
-
-		protected locales_data_push_serial = $mol_wire_async((
-			(next: Parameters<typeof this.locales_data_push>[0]) => this.locales_data_push(next)
-		))
 
 		@ $mol_mem
 		override langs_available() {
-			const main = this.store().lang_main()
+			const main = this.project().lang_main()
 			return [
 				main,
 				...this.langs_str().split(',').map(str => str.trim()).filter(str => str && str !== main)
@@ -79,7 +65,7 @@ namespace $.$$ {
 		}
 
 		override lang_selected() {
-			return this.store().model(this.lang_code_selected())
+			return this.project().file(this.lang_code_selected())
 		}
 
 		override locale_key(key: string) { return key }
@@ -118,7 +104,9 @@ namespace $.$$ {
 		}
 
 		override diff_to_clipboard_copy(e?: Event) {
-			this.$.$mol_dom.navigator.clipboard.writeText(this.locales_data_str())
+			const data = this.lang_selected().data_own()
+			const str = JSON.stringify(data, null, '\t')
+			this.$.$mol_dom.navigator.clipboard.writeText(str)
 		}
 
 		override diff_to_clipboard_enabled() {

@@ -5,6 +5,7 @@
 	"$yuf_localizer_catalog_is_new_msg": "Новые ключи",
 	"$yuf_localizer_catalog_is_not_used_msg": "Мусорные ключи",
 	"$yuf_localizer_catalog_empty_msg": "Пустые ключи",
+	"$yuf_localizer_catalog_changed_msg": "Измененные ключи",
 	"$yuf_localizer_catalog_diff_to_clipboard_hint": "Сохранить данные в буфер обмена",
 	"$yuf_localizer_catalog_settings_check_hint": "Настройки",
 	"$yuf_localizer_catalog_menu_title": "Локализатор"
