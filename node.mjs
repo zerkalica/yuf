@@ -23449,10 +23449,10 @@ var $;
 		Hotkey(){
 			const obj = new this.$.$mol_hotkey();
 			(obj.key) = () => ({
-				"up": (next) => (this.select_key("next", next)), 
-				"down": (next) => (this.select_key("prev", next)), 
-				"left": (next) => (this.select_key("next", next)), 
-				"right": (next) => (this.select_key("prev", next))
+				"up": (next) => (this.select_key("prev", next)), 
+				"down": (next) => (this.select_key("next", next)), 
+				"left": (next) => (this.select_key("prev", next)), 
+				"right": (next) => (this.select_key("next", next))
 			});
 			return obj;
 		}
