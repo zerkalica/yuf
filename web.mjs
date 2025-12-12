@@ -22716,6 +22716,7 @@ var $;
         }
         fetcher() { return this.$.$mol_static.$mol_fetch; }
         actual() {
+            $mol_wire_solid();
             const lang_id = this.id();
             const url = this.url();
             if (!url)
@@ -22723,7 +22724,8 @@ var $;
             const response = $mol_error_fence(() => this.fetcher().success(url), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? null : e);
             if (!response)
                 return {};
-            return $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
+            const res = $mol_error_fence(() => langs_dto(response.json()), e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e));
+            return res;
         }
         data_cut_equal_actual() {
             const actual = this.actual();
@@ -23570,15 +23572,18 @@ var $;
                     basis: $yuf_theme_gap.page_l,
                 },
             },
+            $mol_pop_bubble: {
+                transform: 'translateZ(0)',
+            },
             Selected_lang: {
                 Trigger: {
                     width: '3rem',
-                }
+                },
             },
             Keys_filter: {
                 Trigger: {
                     minWidth: '7rem',
-                }
+                },
             },
             Menu_link: {
                 flex: {
