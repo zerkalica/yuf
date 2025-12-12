@@ -23368,7 +23368,8 @@ var $;
         class $yuf_localizer_page extends $.$yuf_localizer_page {
             langs() {
                 const lang = this.lang_code();
-                return [lang, ...this.langs_available().filter(lang => lang !== lang)];
+                const available = this.langs_available();
+                return [lang, ...available.filter(src => src !== lang)];
             }
             forms() {
                 if (!this.project())
