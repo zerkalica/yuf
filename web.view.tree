@@ -2333,6 +2333,8 @@ $yuf_button_close $mol_button_minor
 	sub /
 		<= Icon $mol_icon_close
 
+$mol_icon_transcribe $mol_icon path \M20,5A2,2 0 0,1 22,7V17A2,2 0 0,1 20,19H4C2.89,19 2,18.1 2,17V7C2,5.89 2.89,5 4,5H20M18,17V15H12.5L10.5,17H18M6,17H8.5L15.35,10.12C15.55,9.93 15.55,9.61 15.35,9.41L13.59,7.65C13.39,7.45 13.07,7.45 12.88,7.65L6,14.53V17Z
+
 $mol_textarea $mol_stack
 	attr *
 		^
@@ -2412,22 +2414,23 @@ $yuf_textarea $mol_textarea
 
 $yuf_localizer_settings_form $mol_form
 	buttons /
+	locales? *
 	body /
 		<= App_url_field $mol_form_field
-			name <= app_url_name @ \App url
-			control <= App_url $mol_string
-				hint <= app_url_hint @ \App url
-				value? <=> app_url? \
+			name <= app_url_name @ \Application urls, enter/tab separated
+			control <= App_url $yuf_textarea
+				hint <= app_url_hint @ \Application urls
+				value? <=> projects_urls_str? \
 		<= Langs_field $mol_form_field
-			name <= langs_name @ \Available Langs
+			name <= langs_name @ \Available Langs, comma/space separated
 			control <= Langs $mol_string
 				hint <= langs_hint @ \ru, ar
-				value? <=> langs_str? \
+				value? <=> langs_available_str? \
 		<= Locales_data_field $mol_form_field
 			name <= locales_data_name @ \Locales raw json data
 			control <= Locales_data $yuf_textarea
-				hint <= locales_data_hint @ \Place raw json here { "locale_file_url": { "key": "val" } }
-				value? <=> locales_data_str? \
+				hint <= locales_data_hint @ \Place raw json here { "lang": { "key": "val" } }
+				value? <=> locales_str? \
 
 $yuf_localizer_settings_page $mol_page
 	title @ \Settings
@@ -2435,9 +2438,9 @@ $yuf_localizer_settings_page $mol_page
 		^ addon_tools /$mol_view
 	body /
 		<= Form $yuf_localizer_settings_form
-			app_url? <=> app_url? \
-			langs_str? <=> langs_str? \
-			locales_data_str? <=> locales_data_str? \
+			projects_urls_str? <=> projects_urls_str? \
+			langs_available_str? <=> langs_available_str? \
+			locales? <=> locales? *
 
 $mol_icon_refresh $mol_icon path \M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z
 
@@ -2472,9 +2475,9 @@ $yuf_localizer_key_form_field $mol_form_field
 		^ reset_content /$mol_view
 
 $yuf_localizer_page $mol_page
-	lang_code_selected \
+	lang_code \
 	langs_available /string
-	project $yuf_localizer_project_model
+	project null $yuf_localizer_project_model
 	title <= locale_key \
 	tools /$mol_view_content
 		^ addon_tools /$mol_view_content
@@ -2483,18 +2486,23 @@ $yuf_localizer_page $mol_page
 			<= Form* $yuf_localizer_key_form
 				model <= locale_by_lang_code* $yuf_localizer_key_model
 				autofocus <= autofocus* false
-				lang_code <= lang_code* \
+				lang_code <= lang_code_id* \
 
 $yuf_localizer_catalog $yuf_catalog
-	menu_title @ \Localizer
+	title @ \Localizer
 	param_prefix \app
 	param_suffix \localizer
-	langs_available /string
+	Menu_logo $mol_icon_transcribe
 	menu_tools /
+		<= Selected_project $mol_select
+			Trigger_icon null
+			hint <= selected_project_hint @ \Select project
+			options <= projects_urls /string
+			value? <=> project_url? \
 		<= Selected_lang $mol_select
 			hint <= selected_lang_hint @ \Select lang file
-			options <= langs_available
-			value? <=> lang_code_selected? \en
+			options <= langs_available /string
+			value? <=> lang_code? \en
 		<= Keys_filter $mol_select
 			hint <= key_filter_hint @ \Filter locale keys
 			dictionary *
@@ -2504,7 +2512,7 @@ $yuf_localizer_catalog $yuf_catalog
 				- is_not_used <= is_not_used_msg @ \Garbage keys
 				empty <= empty_msg @ \Empty keys
 				changed <= changed_msg @ \Changed keys
-			value? <=> keys_filter_value? \
+			value? <=> keys_filter? \
 		<= Diff_to_clipboard $mol_button_minor
 			sub / <= Diff_to_clipboard_icon $mol_icon_clipboard
 			enabled <= diff_to_clipboard_enabled false
@@ -2515,23 +2523,21 @@ $yuf_localizer_catalog $yuf_catalog
 			hint <= settings_check_hint @ \Settings
 			checked? <=> settings_checked? false
 	placeholders /
+	val_str*? \
 	Settings $yuf_localizer_settings_page
 		addon_tools /
 			<= Settings_close $yuf_button_close
 				click? <=> settings_close? null
-		app_url? <=> app_url? \
-		langs_str? <=> langs_str? \
-		locales_data_str? <=> locales_data_str? \
-	project $yuf_localizer_project_model
-		url <= app_url
-	lang_selected $yuf_localizer_file_model
-		keys_filtered* => spread_ids_params*
-		keys_changed => keys_changed
+		projects_urls_str? <=> val_str*projects? \
+		langs_available_str? <=> val_str*langs? \
+		locales? <=> locales?
+	projects $yuf_localizer_project_store
+		locales? => locales?
 	Spread* $yuf_localizer_page
 		locale_key <= locale_key* \
 		langs_available <= langs_available
-		lang_code_selected <= lang_code_selected
-		project <= project
+		lang_code <= lang_code
+		project <= project null $yuf_localizer_project_model
 		addon_tools / <= Spread_close
 	Menu_item*0 $mol_view
 		theme <= item_theme* <= item_theme_new

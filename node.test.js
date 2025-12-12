@@ -22215,6 +22215,17 @@ var $;
 "use strict";
 
 ;
+	($.$mol_icon_transcribe) = class $mol_icon_transcribe extends ($.$mol_icon) {
+		path(){
+			return "M20,5A2,2 0 0,1 22,7V17A2,2 0 0,1 20,19H4C2.89,19 2,18.1 2,17V7C2,5.89 2.89,5 4,5H20M18,17V15H12.5L10.5,17H18M6,17H8.5L15.35,10.12C15.55,9.93 15.55,9.61 15.35,9.41L13.59,7.65C13.39,7.45 13.07,7.45 12.88,7.65L6,14.53V17Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
 	($.$mol_textarea) = class $mol_textarea extends ($.$mol_stack) {
 		clickable(next){
 			if(next !== undefined) return next;
@@ -22513,14 +22524,14 @@ var $;
 		app_url_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_app_url_hint"));
 		}
-		app_url(next){
+		projects_urls_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
 		App_url(){
-			const obj = new this.$.$mol_string();
+			const obj = new this.$.$yuf_textarea();
 			(obj.hint) = () => ((this.app_url_hint()));
-			(obj.value) = (next) => ((this.app_url(next)));
+			(obj.value) = (next) => ((this.projects_urls_str(next)));
 			return obj;
 		}
 		App_url_field(){
@@ -22535,14 +22546,14 @@ var $;
 		langs_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_langs_hint"));
 		}
-		langs_str(next){
+		langs_available_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
 		Langs(){
 			const obj = new this.$.$mol_string();
 			(obj.hint) = () => ((this.langs_hint()));
-			(obj.value) = (next) => ((this.langs_str(next)));
+			(obj.value) = (next) => ((this.langs_available_str(next)));
 			return obj;
 		}
 		Langs_field(){
@@ -22557,14 +22568,14 @@ var $;
 		locales_data_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_settings_form_locales_data_hint"));
 		}
-		locales_data_str(next){
+		locales_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
 		Locales_data(){
 			const obj = new this.$.$yuf_textarea();
 			(obj.hint) = () => ((this.locales_data_hint()));
-			(obj.value) = (next) => ((this.locales_data_str(next)));
+			(obj.value) = (next) => ((this.locales_str(next)));
 			return obj;
 		}
 		Locales_data_field(){
@@ -22576,6 +22587,10 @@ var $;
 		buttons(){
 			return [];
 		}
+		locales(next){
+			if(next !== undefined) return next;
+			return {};
+		}
 		body(){
 			return [
 				(this.App_url_field()), 
@@ -22584,15 +22599,16 @@ var $;
 			];
 		}
 	};
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "app_url"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "projects_urls_str"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "App_url"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "App_url_field"));
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "langs_str"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "langs_available_str"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Langs_field"));
-	($mol_mem(($.$yuf_localizer_settings_form.prototype), "locales_data_str"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "locales_str"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Locales_data"));
 	($mol_mem(($.$yuf_localizer_settings_form.prototype), "Locales_data_field"));
+	($mol_mem(($.$yuf_localizer_settings_form.prototype), "locales"));
 
 
 ;
@@ -22604,8 +22620,17 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
+        function split(str) {
+            return str.split(/[\n\t,]/).map(str => str.trim()).filter(Boolean);
         }
+        class $yuf_localizer_settings_form extends $.$yuf_localizer_settings_form {
+            locales_str(next) {
+                return JSON.stringify(this.locales(next === undefined ? next : JSON.parse(next)) || '{}', null, '\t');
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_settings_form.prototype, "locales_str", null);
         $$.$yuf_localizer_settings_form = $yuf_localizer_settings_form;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -22631,23 +22656,23 @@ var $;
 		addon_tools(){
 			return [];
 		}
-		app_url(next){
+		projects_urls_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
-		langs_str(next){
+		langs_available_str(next){
 			if(next !== undefined) return next;
 			return "";
 		}
-		locales_data_str(next){
+		locales(next){
 			if(next !== undefined) return next;
-			return "";
+			return {};
 		}
 		Form(){
 			const obj = new this.$.$yuf_localizer_settings_form();
-			(obj.app_url) = (next) => ((this.app_url(next)));
-			(obj.langs_str) = (next) => ((this.langs_str(next)));
-			(obj.locales_data_str) = (next) => ((this.locales_data_str(next)));
+			(obj.projects_urls_str) = (next) => ((this.projects_urls_str(next)));
+			(obj.langs_available_str) = (next) => ((this.langs_available_str(next)));
+			(obj.locales) = (next) => ((this.locales(next)));
 			return obj;
 		}
 		title(){
@@ -22660,9 +22685,9 @@ var $;
 			return [(this.Form())];
 		}
 	};
-	($mol_mem(($.$yuf_localizer_settings_page.prototype), "app_url"));
-	($mol_mem(($.$yuf_localizer_settings_page.prototype), "langs_str"));
-	($mol_mem(($.$yuf_localizer_settings_page.prototype), "locales_data_str"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "projects_urls_str"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "langs_available_str"));
+	($mol_mem(($.$yuf_localizer_settings_page.prototype), "locales"));
 	($mol_mem(($.$yuf_localizer_settings_page.prototype), "Form"));
 
 
@@ -22898,7 +22923,7 @@ var $;
         actual() {
             $mol_wire_solid();
             const lang_id = this.id();
-            const url = this.url();
+            let url = this.url();
             if (!url)
                 return {};
             const response = $mol_error_fence(() => this.fetcher().success(url), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? null : e);
@@ -23011,14 +23036,14 @@ var $;
 var $;
 (function ($) {
     class $yuf_localizer_project_model extends $mol_object {
-        url(next) {
+        url() {
             return '';
         }
         lang_template() {
             return 'web.locale={lang}.json';
         }
-        lang_main(next) {
-            return next ?? 'en';
+        lang_main() {
+            return 'en';
         }
         lang_url(lang) {
             const url = this.url().replace(/\/+$/, '');
@@ -23029,18 +23054,16 @@ var $;
         model_main() {
             return this.file(this.lang_main());
         }
-        static data(next) {
-            return this.$.$mol_state_local.value(`${this}.data()`, next) ?? {};
+        data(next) {
+            return next ?? {};
         }
         lang_data(lang, next) {
-            const store = this.$.$mol_static.$yuf_localizer_project_model;
-            const prev = store.data();
+            const prev = this.data();
             if (next === undefined)
                 return prev[lang] ?? {};
-            return store.data($yuf_dict_degrease({
-                ...prev,
+            return this.data({
                 [lang]: next ? $yuf_dict_degrease({ ...prev[lang], ...next }) : null
-            }))[lang] ?? {};
+            })[lang] ?? {};
         }
         file(lang) {
             return this.$.$yuf_localizer_file_model.make({
@@ -23053,20 +23076,50 @@ var $;
     }
     __decorate([
         $mol_mem
-    ], $yuf_localizer_project_model.prototype, "lang_main", null);
+    ], $yuf_localizer_project_model.prototype, "model_main", null);
     __decorate([
         $mol_mem
-    ], $yuf_localizer_project_model.prototype, "model_main", null);
+    ], $yuf_localizer_project_model.prototype, "data", null);
     __decorate([
         $mol_mem_key
     ], $yuf_localizer_project_model.prototype, "lang_data", null);
     __decorate([
         $mol_mem_key
     ], $yuf_localizer_project_model.prototype, "file", null);
+    $.$yuf_localizer_project_model = $yuf_localizer_project_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_localizer_project_store extends $mol_object {
+        static locales(next) {
+            return this.$.$mol_state_local.value(`${this}.locales()`, next) ?? {};
+        }
+        locales(next) {
+            return this.$.$yuf_localizer_project_store.locales(next) ?? {};
+        }
+        locales_patchable(next) {
+            const prev = this.locales();
+            if (next === undefined)
+                return prev ?? {};
+            return this.locales(!next ? next : $yuf_dict_degrease({ ...prev, ...next })) ?? {};
+        }
+        project(url) {
+            return this.$.$yuf_localizer_project_model.make({
+                url: $mol_const(url),
+                data: next => this.locales_patchable(next),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_localizer_project_store.prototype, "project", null);
     __decorate([
         $mol_mem
-    ], $yuf_localizer_project_model, "data", null);
-    $.$yuf_localizer_project_model = $yuf_localizer_project_model;
+    ], $yuf_localizer_project_store, "locales", null);
+    $.$yuf_localizer_project_store = $yuf_localizer_project_store;
 })($ || ($ = {}));
 
 ;
@@ -23267,28 +23320,27 @@ var $;
 		autofocus(id){
 			return false;
 		}
-		lang_code(id){
+		lang_code_id(id){
 			return "";
 		}
 		Form(id){
 			const obj = new this.$.$yuf_localizer_key_form();
 			(obj.model) = () => ((this.locale_by_lang_code(id)));
 			(obj.autofocus) = () => ((this.autofocus(id)));
-			(obj.lang_code) = () => ((this.lang_code(id)));
+			(obj.lang_code) = () => ((this.lang_code_id(id)));
 			return obj;
 		}
 		forms(){
 			return [(this.Form(id))];
 		}
-		lang_code_selected(){
+		lang_code(){
 			return "";
 		}
 		langs_available(){
 			return [];
 		}
 		project(){
-			const obj = new this.$.$yuf_localizer_project_model();
-			return obj;
+			return null;
 		}
 		title(){
 			return (this.locale_key());
@@ -23302,7 +23354,6 @@ var $;
 	};
 	($mol_mem_key(($.$yuf_localizer_page.prototype), "locale_by_lang_code"));
 	($mol_mem_key(($.$yuf_localizer_page.prototype), "Form"));
-	($mol_mem(($.$yuf_localizer_page.prototype), "project"));
 
 
 ;
@@ -23316,23 +23367,22 @@ var $;
     (function ($$) {
         class $yuf_localizer_page extends $.$yuf_localizer_page {
             langs() {
-                const selected = this.lang_code_selected();
-                return [selected, ...this.langs_available().filter(lang => lang !== selected)];
+                const lang = this.lang_code();
+                return [lang, ...this.langs_available().filter(lang => lang !== lang)];
             }
             forms() {
+                if (!this.project())
+                    return [];
                 return this.langs().map(lang_code => this.Form(lang_code));
             }
             locale_by_lang_code(lang_code) {
                 return this.project().file(lang_code).item(this.locale_key());
             }
-            locale_file_selected() {
-                return this.project().file(this.lang_code_selected());
-            }
-            lang_code(lang_code) {
+            lang_code_id(lang_code) {
                 return lang_code;
             }
             autofocus(lang_code) {
-                return lang_code === this.lang_code_selected();
+                return lang_code === this.lang_code();
             }
         }
         __decorate([
@@ -23358,10 +23408,31 @@ var $;
 
 ;
 	($.$yuf_localizer_catalog) = class $yuf_localizer_catalog extends ($.$yuf_catalog) {
+		selected_project_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_project_hint"));
+		}
+		projects_urls(){
+			return [];
+		}
+		project_url(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Selected_project(){
+			const obj = new this.$.$mol_select();
+			(obj.Trigger_icon) = () => (null);
+			(obj.hint) = () => ((this.selected_project_hint()));
+			(obj.options) = () => ((this.projects_urls()));
+			(obj.value) = (next) => ((this.project_url(next)));
+			return obj;
+		}
 		selected_lang_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_lang_hint"));
 		}
-		lang_code_selected(next){
+		langs_available(){
+			return [];
+		}
+		lang_code(next){
 			if(next !== undefined) return next;
 			return "en";
 		}
@@ -23369,7 +23440,7 @@ var $;
 			const obj = new this.$.$mol_select();
 			(obj.hint) = () => ((this.selected_lang_hint()));
 			(obj.options) = () => ((this.langs_available()));
-			(obj.value) = (next) => ((this.lang_code_selected(next)));
+			(obj.value) = (next) => ((this.lang_code(next)));
 			return obj;
 		}
 		key_filter_hint(){
@@ -23387,7 +23458,7 @@ var $;
 		changed_msg(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_changed_msg"));
 		}
-		keys_filter_value(next){
+		keys_filter(next){
 			if(next !== undefined) return next;
 			return "";
 		}
@@ -23400,7 +23471,7 @@ var $;
 				"empty": (this.empty_msg()), 
 				"changed": (this.changed_msg())
 			});
-			(obj.value) = (next) => ((this.keys_filter_value(next)));
+			(obj.value) = (next) => ((this.keys_filter(next)));
 			return obj;
 		}
 		Diff_to_clipboard_icon(){
@@ -23452,26 +23523,18 @@ var $;
 			(obj.click) = (next) => ((this.settings_close(next)));
 			return obj;
 		}
-		app_url(next){
+		val_str(id, next){
 			if(next !== undefined) return next;
 			return "";
 		}
-		langs_str(next){
-			if(next !== undefined) return next;
-			return "";
-		}
-		locales_data_str(next){
-			if(next !== undefined) return next;
-			return "";
-		}
-		spread_ids_params(id){
-			return (this.lang_selected().keys_filtered(id));
-		}
-		keys_changed(){
-			return (this.lang_selected().keys_changed());
+		locales(next){
+			return (this.projects().locales(next));
 		}
 		locale_key(id){
 			return "";
+		}
+		project(){
+			return null;
 		}
 		item_theme(id){
 			return (this.item_theme_new());
@@ -23505,8 +23568,8 @@ var $;
 			});
 			return obj;
 		}
-		menu_title(){
-			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
+		title(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_title"));
 		}
 		param_prefix(){
 			return "app";
@@ -23514,11 +23577,13 @@ var $;
 		param_suffix(){
 			return "localizer";
 		}
-		langs_available(){
-			return [];
+		Menu_logo(){
+			const obj = new this.$.$mol_icon_transcribe();
+			return obj;
 		}
 		menu_tools(){
 			return [
+				(this.Selected_project()), 
 				(this.Selected_lang()), 
 				(this.Keys_filter()), 
 				(this.Diff_to_clipboard()), 
@@ -23531,25 +23596,20 @@ var $;
 		Settings(){
 			const obj = new this.$.$yuf_localizer_settings_page();
 			(obj.addon_tools) = () => ([(this.Settings_close())]);
-			(obj.app_url) = (next) => ((this.app_url(next)));
-			(obj.langs_str) = (next) => ((this.langs_str(next)));
-			(obj.locales_data_str) = (next) => ((this.locales_data_str(next)));
+			(obj.projects_urls_str) = (next) => ((this.val_str("projects", next)));
+			(obj.langs_available_str) = (next) => ((this.val_str("langs", next)));
+			(obj.locales) = (next) => ((this.locales(next)));
 			return obj;
 		}
-		project(){
-			const obj = new this.$.$yuf_localizer_project_model();
-			(obj.url) = () => ((this.app_url()));
-			return obj;
-		}
-		lang_selected(){
-			const obj = new this.$.$yuf_localizer_file_model();
+		projects(){
+			const obj = new this.$.$yuf_localizer_project_store();
 			return obj;
 		}
 		Spread(id){
 			const obj = new this.$.$yuf_localizer_page();
 			(obj.locale_key) = () => ((this.locale_key(id)));
 			(obj.langs_available) = () => ((this.langs_available()));
-			(obj.lang_code_selected) = () => ((this.lang_code_selected()));
+			(obj.lang_code) = () => ((this.lang_code()));
 			(obj.project) = () => ((this.project()));
 			(obj.addon_tools) = () => ([(this.Spread_close())]);
 			return obj;
@@ -23585,9 +23645,11 @@ var $;
 			return obj;
 		}
 	};
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_code_selected"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "project_url"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_project"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_code"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter_value"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Keys_filter"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard_icon"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "diff_to_clipboard_copy"));
@@ -23597,14 +23659,12 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_check"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_close"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "app_url"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "langs_str"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "locales_data_str"));
+	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "val_str"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "select_key"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Hotkey"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu_logo"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "project"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "lang_selected"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "projects"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Menu_item"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu_links_empty"));
@@ -23621,43 +23681,52 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_localizer_catalog extends $.$yuf_localizer_catalog {
-            val(key, next) {
-                return this.$.$mol_state_arg.value(`${this.param_base()}_${key}`, next === undefined || next ? next : null);
+            val_str(key, next) {
+                return this.$.$mol_state_arg.value(`${this.param_base()}_${key}`, next === undefined || next ? next : null) ?? '';
             }
             param() {
                 return `${this.param_base()}_langkey`;
             }
-            lang_code_selected(next) {
-                return this.val('lang', next) || this.project().lang_main();
+            lang_code(next) {
+                return this.val_str('lang', next) || super.lang_code();
             }
-            app_url(next) {
-                return this.val('url', next) ?? '';
+            project_url(next) {
+                const urls = this.projects_urls();
+                const prev = this.val_str('project');
+                if (!urls.includes(prev))
+                    next = null;
+                return this.val_str('project', next) || urls?.[0] || '';
             }
-            langs_str(next) {
-                return this.val(`langs`, next) ?? '';
+            keys_filter(next) {
+                return this.val_str('keys', next);
             }
-            keys_filter_value(next) {
-                return this.val('keys', next) ?? '';
+            projects_urls() {
+                const str = this.val_str('projects') ?? '';
+                return str.split(/[\n\t]/).map(str => str.match(/^(?:https?)?:?([^#?]+)(?:\/$)?/)?.[1]?.trim() ?? '').filter(Boolean);
             }
-            empty_content() {
-                return this.app_url() ? [this.not_found_keys()] : [this.setup_needed()];
-            }
-            all_data(next) {
-                return this.$.$mol_static.$yuf_localizer_project_model.data(next);
-            }
-            locales_data_str(next) {
-                const data = this.all_data(next === undefined ? next : JSON.parse(next || '{}'));
-                return JSON.stringify(data, null, '\t');
+            lang_main() {
+                return this.project()?.lang_main() ?? 'en';
             }
             langs_available() {
-                const main = this.project().lang_main();
+                const lang_main = this.lang_main();
+                const str = this.val_str('langs') ?? '';
                 return [
-                    main,
-                    ...this.langs_str().split(',').map(str => str.trim()).filter(str => str && str !== main)
+                    lang_main,
+                    ...str.split(/[\s,~]/).map(str => str.trim()).filter(str => str && str !== lang_main)
                 ];
             }
+            project() {
+                return this.project_url() ? this.projects().project(this.project_url()) : null;
+            }
+            lang() {
+                const code = this.lang_code();
+                return !code ? null : this.project()?.file(code);
+            }
+            empty_content() {
+                return this.project_url() ? [this.not_found_keys()] : [this.setup_needed()];
+            }
             settings_checked_default() {
-                return !this.app_url() || !this.langs_available().length;
+                return !this.project_url() || !this.langs_available().length;
             }
             settings_checked(next) {
                 return next ?? this.settings_checked_default();
@@ -23665,12 +23734,11 @@ var $;
             pages() {
                 return this.settings_checked() ? [...super.pages(), this.Settings()] : super.pages();
             }
-            lang_selected() {
-                return this.project().file(this.lang_code_selected());
-            }
             locale_key(key) { return key; }
             item_theme(key) {
-                const model = this.lang_selected();
+                const model = this.lang();
+                if (!model)
+                    return null;
                 const item = model.item(key);
                 if (item.is_changed())
                     return this.item_theme_changed();
@@ -23681,11 +23749,12 @@ var $;
                 return null;
             }
             spread_ids() {
-                if (!this.lang_code_selected())
-                    return [];
-                return this.spread_ids_params({ keys_filter: this.keys_filter_value() });
+                const keys_filter = this.keys_filter();
+                return this.lang()?.keys_filtered({ keys_filter }) ?? [];
             }
             select_key(key) {
+                if (this.settings_checked())
+                    return null;
                 const ids = this.spread_ids_filtered();
                 const id = this.spread();
                 const index = ids.indexOf(id);
@@ -23699,19 +23768,22 @@ var $;
                 return this.settings_checked(false);
             }
             diff_to_clipboard_copy(e) {
-                const data = this.lang_selected().data_own();
+                const data = this.lang()?.data_own();
+                if (!data)
+                    return null;
                 const str = JSON.stringify(data, null, '\t');
                 this.$.$mol_dom.navigator.clipboard.writeText(str);
             }
             diff_to_clipboard_enabled() {
-                if (!this.lang_code_selected())
-                    return false;
-                return $mol_error_fence(() => this.keys_changed().length > 0, () => false);
+                return $mol_error_fence(() => Boolean(this.lang()?.keys_changed().length), () => false);
             }
         }
         __decorate([
+            $mol_mem_key
+        ], $yuf_localizer_catalog.prototype, "val_str", null);
+        __decorate([
             $mol_mem
-        ], $yuf_localizer_catalog.prototype, "locales_data_str", null);
+        ], $yuf_localizer_catalog.prototype, "projects_urls", null);
         __decorate([
             $mol_mem
         ], $yuf_localizer_catalog.prototype, "langs_available", null);
@@ -23721,6 +23793,9 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_localizer_catalog.prototype, "settings_checked", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_catalog.prototype, "spread_ids", null);
         __decorate([
             $mol_action
         ], $yuf_localizer_catalog.prototype, "select_key", null);
@@ -23738,6 +23813,26 @@ var $;
             Menu: {
                 flex: {
                     basis: $yuf_theme_gap.page_l,
+                },
+                Title: {
+                    padding: 0,
+                    gap: 0,
+                },
+            },
+            Menu_logo: {
+                width: '3rem',
+                height: '2.5rem',
+            },
+            Selected_project: {
+                Trigger: {
+                    flex: {
+                        wrap: 'nowrap',
+                    },
+                    display: 'block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    maxWidth: '6rem',
                 },
             },
             Selected_lang: {

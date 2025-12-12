@@ -63,7 +63,6 @@
 	"$yuf_localizer_catalog_empty_msg": "Пустые ключи",
 	"$yuf_localizer_catalog_is_new_msg": "Новые ключи",
 	"$yuf_localizer_catalog_key_filter_hint": "Фильтровать по ключам",
-	"$yuf_localizer_catalog_menu_title": "Локализатор",
 	"$yuf_localizer_catalog_selected_lang_hint": "Выберите файл с локализацией",
 	"$yuf_localizer_catalog_settings_check_hint": "Настройки",
 	"$yuf_login_form_login_error": "Неправильный логин или пароль",
