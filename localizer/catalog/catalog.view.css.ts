@@ -8,9 +8,6 @@ namespace $.$$ {
 			},
 
 		},
-		$mol_pop_bubble: {
-			transform: 'translateZ(0)',
-		},
 		Selected_lang: {
 			Trigger: {
 				width: '3rem',
