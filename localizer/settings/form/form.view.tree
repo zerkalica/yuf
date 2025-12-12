@@ -8,12 +8,12 @@ $yuf_localizer_settings_form $mol_form
 				hint <= app_url_hint @ \Application urls
 				value? <=> projects_urls_str? \
 		<= Langs_field $mol_form_field
-			name <= langs_name @ \Available Langs, comma/space separated
+			name <= langs_name @ \Available langs, comma/space separated
 			control <= Langs $mol_string
 				hint <= langs_hint @ \ru, ar
 				value? <=> langs_available_str? \
 		<= Locales_data_field $mol_form_field
-			name <= locales_data_name @ \Locales raw json data
+			name <= locales_data_name @ \All changed locales raw json data
 			control <= Locales_data $yuf_textarea
 				hint <= locales_data_hint @ \Place raw json here { "lang": { "key": "val" } }
 				value? <=> locales_str? \

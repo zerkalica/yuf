@@ -1,14 +1,19 @@
 $yuf_localizer_catalog $yuf_catalog
-	title @ \Localizer
+	menu_title @ \Localizer
 	param_prefix \app
 	param_suffix \localizer
-	Menu_logo $mol_icon_transcribe
-	menu_tools /
+	menu_foot /
 		<= Selected_project $mol_select
 			Trigger_icon null
 			hint <= selected_project_hint @ \Select project
 			options <= projects_urls /string
 			value? <=> project_url? \
+		<= Foot_tools $mol_view sub /
+			<= Settings_check $mol_check_icon
+				Icon <= Settings_icon $mol_icon_settings
+				hint <= settings_check_hint @ \Settings
+				checked? <=> settings_checked? false
+	menu_tools /
 		<= Selected_lang $mol_select
 			hint <= selected_lang_hint @ \Select lang file
 			options <= langs_available /string
@@ -28,10 +33,6 @@ $yuf_localizer_catalog $yuf_catalog
 			enabled <= diff_to_clipboard_enabled false
 			hint <= diff_to_clipboard_hint @ \Copy changed json to clipboard
 			click? <=> diff_to_clipboard_copy? null
-		<= Settings_check $mol_check_icon
-			Icon <= Settings_icon $mol_icon_settings
-			hint <= settings_check_hint @ \Settings
-			checked? <=> settings_checked? false
 	placeholders /
 	val_str*? \
 	Settings $yuf_localizer_settings_page
@@ -69,6 +70,7 @@ $yuf_localizer_catalog $yuf_catalog
 			^ addon_tools
 		head <= menu_head
 		body <= menu_body
+		foot <= menu_foot
 		plugins /
 			<= Hotkey $mol_hotkey
 				key *

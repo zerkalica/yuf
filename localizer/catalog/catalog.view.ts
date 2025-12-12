@@ -34,7 +34,7 @@ namespace $.$$ {
 			const str = this.val_str('projects') ?? ''
 
 			return str.split(/[\n\t]/).map(
-				str => str.match(/^(?:https?)?:?([^#?]+)(?:\/$)?/)?.[1]?.trim() ?? ''
+				str => str.match(/^(?:https?)?:?(\/+[^#&?]+)/)?.[1]?.replace(/\/+(?:[\w\d]+\.[\w\d]+)?$/, '')?.trim() ?? ''
 			).filter(Boolean)
 		}
 

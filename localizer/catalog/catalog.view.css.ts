@@ -7,14 +7,13 @@ namespace $.$$ {
 			},
 
 			Title: {
-				padding: 0,
 				gap: 0,
 			},
 
-		},
-		Menu_logo: {
-			width: '3rem',
-			height: '2.5rem',
+			Foot: {
+				justifyContent: 'space-between',
+			}
+
 		},
 
 		Selected_project: {
@@ -26,7 +25,6 @@ namespace $.$$ {
 				overflow: 'hidden',
 				textOverflow: 'ellipsis',
 				whiteSpace: 'nowrap',
-				maxWidth: '6rem',
 			},
 
 		},
