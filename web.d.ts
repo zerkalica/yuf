@@ -6334,7 +6334,12 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >[0]
 	>
-	type $yuf_keyboard_card__area_yuf_keyboard_field_4 = $mol_type_enforce<
+	type $yuf_keyboard_card__layouts_yuf_keyboard_field_4 = $mol_type_enforce<
+		ReturnType< $yuf_keyboard_field['layouts'] >
+		,
+		ReturnType< $yuf_keyboard_card['layouts'] >
+	>
+	type $yuf_keyboard_card__area_yuf_keyboard_field_5 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_field['Input'] >
 		,
 		ReturnType< $yuf_keyboard_card['area'] >
@@ -6345,6 +6350,9 @@ declare namespace $ {
 		Trigger( ): $yuf_keyboard_check
 		trigger_content( ): readonly(any)[]
 		First( ): $mol_view
+		Layout_en( ): $yuf_keyboard_layout_en
+		Layout_ru( ): $yuf_keyboard_layout_ru
+		layouts( ): Record<string, $yuf_keyboard_layout_en>
 		input_focused( next?: ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] > ): ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >
 		Input( ): $mol_view
 		Keyboard( ): $yuf_keyboard_card
@@ -11078,6 +11086,9 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_localizer_demo extends $.$yuf_localizer_demo {
     }
+}
+
+declare namespace $ {
 }
 
 export = $;

@@ -1307,6 +1307,9 @@ $yuf_keyboard_field $mol_view
 					checked? <=> keyboard_enabled? false
 		^ keyboard_content /
 			<= Keyboard $yuf_keyboard_card
+				layouts <= layouts *$yuf_keyboard_layout_en
+					en <= Layout_en $yuf_keyboard_layout_en
+					ru <= Layout_ru $yuf_keyboard_layout_ru
 				area <= Input $mol_view
 					focused? => input_focused?
 

@@ -14993,6 +14993,17 @@ var $;
 			(obj.sub) = () => ([(this.Control()), ...(this.trigger_content())]);
 			return obj;
 		}
+		Layout_en(){
+			const obj = new this.$.$yuf_keyboard_layout_en();
+			return obj;
+		}
+		Layout_ru(){
+			const obj = new this.$.$yuf_keyboard_layout_ru();
+			return obj;
+		}
+		layouts(){
+			return {"en": (this.Layout_en()), "ru": (this.Layout_ru())};
+		}
 		input_focused(next){
 			return (this.Input().focused(next));
 		}
@@ -15002,6 +15013,7 @@ var $;
 		}
 		Keyboard(){
 			const obj = new this.$.$yuf_keyboard_card();
+			(obj.layouts) = () => ((this.layouts()));
 			(obj.area) = () => ((this.Input()));
 			return obj;
 		}
@@ -15019,6 +15031,8 @@ var $;
 	($mol_mem(($.$yuf_keyboard_field.prototype), "keyboard_enabled"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Trigger"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "First"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Layout_en"));
+	($mol_mem(($.$yuf_keyboard_field.prototype), "Layout_ru"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Input"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Keyboard"));
 
@@ -22684,8 +22698,7 @@ var $;
                 normalized = $mol_promise_like(error) ? loading(error) : fallback(error);
             }
             catch (sub_error) {
-                $mol_fail_log(sub_error);
-                normalized = error;
+                normalized = $mol_promise_like(sub_error) ? sub_error : new $mol_error_mix(sub_error.message, { error }, sub_error);
             }
             if (normalized instanceof Error || $mol_promise_like(normalized)) {
                 $mol_fail_hidden(normalized);
@@ -23657,6 +23670,13 @@ var $;
         }
         $$.$yuf_localizer_demo = $yuf_localizer_demo;
     })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/localizer/demo/demo.view.css", "[mol_page_head] {\n\tz-index: unset;\n\tposition: unset;\n}\n");
 })($ || ($ = {}));
 
 
