@@ -58,6 +58,7 @@
 	"$yuf_form_bid_value_in_range_msg": "{range}",
 	"$yuf_link_close_hint": "Закрыть",
 	"$yuf_localizer_catalog_all_msg": "Все ключи",
+	"$yuf_localizer_catalog_changed_msg": "Измененные ключи",
 	"$yuf_localizer_catalog_diff_to_clipboard_hint": "Сохранить данные в буфер обмена",
 	"$yuf_localizer_catalog_empty_msg": "Пустые ключи",
 	"$yuf_localizer_catalog_is_new_msg": "Новые ключи",

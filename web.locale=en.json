@@ -63,6 +63,7 @@
 	"$yuf_form_bid_value_in_range_msg": "{range}",
 	"$yuf_link_close_hint": "Close",
 	"$yuf_localizer_catalog_all_msg": "All keys",
+	"$yuf_localizer_catalog_changed_msg": "Changed keys",
 	"$yuf_localizer_catalog_diff_to_clipboard_hint": "Copy changed json to clipboard",
 	"$yuf_localizer_catalog_empty_msg": "Empty keys",
 	"$yuf_localizer_catalog_is_new_msg": "New keys",
