@@ -8,15 +8,18 @@ namespace $.$$ {
 			},
 
 		},
+		$mol_pop_bubble: {
+			transform: 'translateZ(0)',
+		},
 		Selected_lang: {
 			Trigger: {
 				width: '3rem',
-			}
+			},
 		},
 		Keys_filter: {
 			Trigger: {
 				minWidth: '7rem',
-			}
+			},
 		},
 		Menu_link: {
 			flex: {

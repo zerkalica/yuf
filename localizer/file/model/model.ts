@@ -21,6 +21,7 @@ namespace $ {
 
 		@ $mol_mem
 		actual() {
+			$mol_wire_solid()
 			const lang_id = this.id()
 			const url = this.url()
 			if (! url) return {}
@@ -32,10 +33,12 @@ namespace $ {
 
 			if (! response) return {}
 
-			return $mol_error_fence(
+			const res = $mol_error_fence(
 				() => langs_dto(response.json() as any),
 				e => new $mol_error_mix(e instanceof TypeError ? 'Invalid json' : e.message, { lang_id, url }, e)
 			)
+
+			return res
 		}
 
 		@ $mol_action
