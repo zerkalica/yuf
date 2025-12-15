@@ -7,7 +7,7 @@
 	--yuf_theme_gap_page_m: 20rem;
 	--yuf_theme_gap_page_l: 26rem;
 
-	--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );
+	--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_l) );
 }
 
 @media (max-width: 480px) {
@@ -30,6 +30,6 @@
 
 @media (min-width: 768px) and (max-width: 1024px) {
 	:root {
-		--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );
+		--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_l) );
 	}
 }

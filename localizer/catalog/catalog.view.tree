@@ -9,6 +9,8 @@ $yuf_localizer_catalog $yuf_catalog
 			options <= projects_urls /string
 			value? <=> project_url? \
 		<= Foot_tools $mol_view sub /
+			<= Lights $yuf_lights_toggle
+				hint <= version \
 			<= Settings_check $mol_check_icon
 				Icon <= Settings_icon $mol_icon_settings
 				hint <= settings_check_hint @ \Settings
@@ -20,20 +22,62 @@ $yuf_localizer_catalog $yuf_catalog
 			value? <=> lang_code? \en
 		<= Keys_filter $mol_select
 			hint <= key_filter_hint @ \Filter locale keys
+			Filter null
 			dictionary *
 				\
 					<= all_msg @ \All keys
-				is_new <= is_new_msg @ \New keys
-				- is_not_used <= is_not_used_msg @ \Garbage keys
-				empty <= empty_msg @ \Empty keys
-				changed <= changed_msg @ \Changed keys
+				is_new <= is_new_msg @ \🔥 Differs
+				empty <= empty_msg @ \🔥 Empty
+				changed <= changed_msg @ \✅ Changed
+				is_not_used <= is_not_used_msg @ \❌ Obsolete
 			value? <=> keys_filter? \
-		<= Diff_to_clipboard $mol_button_minor
-			sub / <= Diff_to_clipboard_icon $mol_icon_clipboard
-			enabled <= diff_to_clipboard_enabled false
-			hint <= diff_to_clipboard_hint @ \Copy changed json to clipboard
-			click? <=> diff_to_clipboard_copy? null
+		<= Save $mol_pick
+			hint @ save_hint \Click to show save menu
+			trigger_content /
+				<= Save_trigger_icon $mol_icon_content_save_all
+			bubble_content /
+				<= Save_content $mol_list rows /
+					<= Locale_file_all_download $mol_button_download
+						blob <= locale_file_blob*all
+						enabled <= diff_to_clipboard_enabled false
+						file_name <= locale_file_all_name <= locale_file_all_name_tpl \{app}_{time}.locales.json
+						title <= locale_file_all_hint @ \Download all changes
+					<= Locale_copypaste_all $mol_button_copy
+						title <= locale_copypaste_all_hint @ \Copy-paste all changes
+						enabled <= diff_to_clipboard_enabled
+						text <= locale_file_json*all
+					<= Locale_file_whole_download $mol_button_download
+						blob <= locale_file_blob*whole null Blob
+						file_name <= locale_file_whole_name <= locale_file_whole_name_tpl \{app}_{time}.locale={lang}.json
+						title <= locale_file_whole_hint @ \Download locale
+					<= Locale_copypaste $mol_button_copy
+						title <= locale_copypaste_hint @ \Copy-paste locale
+						text <= locale_file_json*whole \
 	placeholders /
+		<= Description_page $mol_page
+			title <= description_title @ \Readme
+			body /
+				<= Description_list $mol_text text <= description @ \## Setup
+					\
+					\Click settings button at the bottom of the menu and copy paste project urls and lang codes into form
+					\## Navigate
+					\Use keyboard arrows to navigate between keys in list
+					\## Key marks
+					\🔥 Keys to translate, exists only in the sources as en locale
+					\✅ Changed, but not committed keys, exists only in the browser local storage
+					\❌ Obsolete keys that exist only in localStorage but not in the selected project sources (may be deleted or renamed in the project)
+					\## Importing into modules
+					\Best way - to merge changes into all mam modules and share locales between projects.
+					\* commit changes in your projects
+					\* build project to ensure all deps downloaded
+					\* download or copypaste **all changes** into mam root via diskette button in menu header
+					\* run "node yuf/localizer/import/cli.mjs"
+					\* make pull requests from affected namespaces, which cli returns
+					\## Overriding in application
+					\Use, if you can't commit some keys to the mol ecosystem.
+					\* download or copypaste selected locale via diskette button in menu header
+					\* place it into builded application source directory as app.locale=ru.json
+					\* commit locale into your app project
 	val_str*? \
 	Settings $yuf_localizer_settings_page
 		addon_tools /
@@ -50,12 +94,14 @@ $yuf_localizer_catalog $yuf_catalog
 		lang_code <= lang_code
 		project <= project null $yuf_localizer_project_model
 		addon_tools / <= Spread_close
-	Menu_item*0 $mol_view
-		theme <= item_theme* <= item_theme_new
-		sub <= menu_item_content*
-	item_theme_not_used \$mol_theme_base
-	item_theme_new \$mol_theme_special
-	item_theme_changed \$mol_theme_accent
+	Menu_link*0 $yuf_link
+		arg <= arg*
+		default <= menu_link_default*
+		hint <= menu_link_hint*
+		content <= menu_link_content*
+	item_theme_not_used \not_used
+	item_theme_new \new
+	item_theme_changed \changed
 	Menu_links_empty $mol_view
 		sub <= empty_content /$mol_view_content
 			<= setup_needed @ \No locale selected, set app url in settings
@@ -72,9 +118,14 @@ $yuf_localizer_catalog $yuf_catalog
 		body <= menu_body
 		foot <= menu_foot
 		plugins /
+			^
 			<= Hotkey $mol_hotkey
 				key *
 					up? <=> select_key*prev? null
 					down? <=> select_key*next? null
 					left? <=> select_key*prev?
 					right? <=> select_key*next?
+			<= Theme $yuf_theme_plugin
+
+$yuf_localizer_catalog_link $yuf_link
+	unselectable true

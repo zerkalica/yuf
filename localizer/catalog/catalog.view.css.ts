@@ -1,4 +1,5 @@
 namespace $.$$ {
+
 	
 	$mol_style_define( $yuf_localizer_catalog, {
 		Menu: {
@@ -14,6 +15,34 @@ namespace $.$$ {
 				justifyContent: 'space-between',
 			}
 
+		},
+
+		$mol_text_span: {
+			'@': {
+				'mol_text_type': {
+					'emphasis': {
+						color: $mol_theme.current,
+					}
+				}
+			}
+		},
+
+		Description_list: {
+			flex: {
+				shrink: 1,
+			},
+		},
+		Description_page: {
+			flex: {
+				basis: $yuf_theme_gap.page_xl
+			},
+			Body_content: {
+				padding: 0,
+			}
+		},
+
+		Menu_item: {
+			padding: 0
 		},
 
 		Selected_project: {

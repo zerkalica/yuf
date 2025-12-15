@@ -29,7 +29,7 @@ namespace $ {
 		is_changed() { return this.text() && this.text_actual() !== this.text() }
 
 		is_new() {
-			return this.text_main() !== null && ! this.text_actual()
+			return Boolean(this.text_main()) && ! this.text_actual()
 		}
 
 		is_not_used() {

@@ -19,14 +19,15 @@ namespace $ {
 			return next ?? {}
 		}
 
-		@ $mol_mem
-		data_own() {
+		@ $mol_mem_key
+		data_own(key: 'changed' | 'whole') {
 			const data = this.data()
+			const keys = key === 'changed' ? Object.keys(data) : this.keys()
 			const result = {} as ReturnType<typeof this.data>
-			for (const key of this.keys()) {
+
+			for (const key of keys) {
 				const val = data[key]
-				if (! val) continue
-				result[key] = val
+				result[key] = val || ''
 			}
 
 			return result
@@ -108,7 +109,7 @@ namespace $ {
 			const local = this.data()
 			const actual = this.actual()
 
-			return Object.keys(actual).filter(key => local[key] !== actual[key])
+			return Object.keys(local).filter(key => local[key] !== actual[key])
 		}
 
 		@ $mol_mem_key

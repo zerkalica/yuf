@@ -82,18 +82,6 @@ namespace $.$$ {
 
 		override locale_key(key: string) { return key }
 
-		override item_theme(key: string) {
-			const model = this.lang()
-			if (! model ) return null!
-
-			const item = model.item(key)
-			if (item.is_changed()) return this.item_theme_changed()
-			if (item.is_new()) return this.item_theme_new()
-			if (item.is_not_used()) return this.item_theme_not_used()
-
-			return null!
-		}
-
 		@ $mol_mem
 		override spread_ids() {
 			const keys_filter = this.keys_filter()
@@ -120,15 +108,59 @@ namespace $.$$ {
 			return this.settings_checked(false)
 		}
 
-		override diff_to_clipboard_copy(e?: Event) {
-			const data = this.lang()?.data_own()
-			if (! data) return null
-			const str = JSON.stringify(data, null, '\t')
-			this.$.$mol_dom.navigator.clipboard.writeText(str)
-		}
-
 		override diff_to_clipboard_enabled() {
 			return $mol_error_fence(() => Boolean(this.lang()?.keys_changed().length) , () => false)
+		}
+
+		override placeholders() {
+			return this.pages().length > 1 ? [] : super.placeholders()
+		}
+
+		override spread_title(key: string) {
+			const str = this.Spread(key).title()
+			const item = this.lang()?.item(key)
+			if (! item) return str
+			let prefix = ''
+			if (item.is_not_used()) prefix += '❌'
+			else if (item.is_changed()) prefix += '✅'
+			else if (item.is_new()) prefix += '🔥'
+
+			if (prefix) prefix += ' '
+
+			return prefix + str
+		}
+
+		project_name_normalized(str: string) {
+			const url = this.project_url()
+				.replace(/[^\w\d\s]/g, '_')
+				.replace(/_{2,}/g, '_')
+				.replace(/^_+(.*)_+/g, '$1')
+				.trim()
+
+			const time = new $mol_time_moment().toString('YYYY-MM-DD_hh:mm:ss')
+			return str.replace('{lang}', this.lang_code())
+				.replace('{time}', time)
+				.replace('{app}', url)
+		}
+
+		override locale_file_all_name() {
+			return this.project_name_normalized(this.locale_file_all_name_tpl())
+		}
+
+		override locale_file_whole_name() {
+			return this.project_name_normalized(this.locale_file_whole_name_tpl())
+		}
+
+		@ $mol_mem_key
+		override locale_file_json(key: 'all' | 'changed' | 'whole') {
+			const data = key === 'all' ? this.projects().locales() : this.lang()?.data_own(key) ?? ''
+			return JSON.stringify(data, null, '\t') || '{}'
+		}
+
+		@ $mol_mem_key
+		override locale_file_blob(key: Parameters<typeof this.locale_file_json>[0]) {
+			const str = this.locale_file_json(key)
+			return new Blob([str], { type: 'application/json' } )
 		}
 
 	}

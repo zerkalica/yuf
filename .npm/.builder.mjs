@@ -3,7 +3,7 @@
 import url from 'node:url'
 import { basename, join } from 'node:path'
 import { stat, writeFile, readFile } from 'node:fs/promises'
-import { spawn } from 'node:child_process'
+import { YufNpmCore } from './.core.mjs'
 
 /**
  * @param {unknown} value
@@ -42,64 +42,9 @@ export class YufNpmBuilder {
      * @param {string} metaUrl
      * @param {readonly string[]} args
      */
-    constructor(metaUrl, args = YufNpmBuilder.args) {
+    constructor(metaUrl, args = YufNpmCore.args) {
         this.metaUrl = metaUrl
         this.args = args
-    }
-
-    /** @type {string[]} */
-    // @ts-ignore
-    static args = typeof Deno !== 'undefined' ? Deno.args : process.argv.slice(2)
-    /** @type {() => string} */
-    // @ts-ignore
-    static cwd = typeof Deno !== 'undefined' ? Deno.cwd.bind(Deno) : process.cwd.bind(process)
-    // @ts-ignore
-    static isWin = typeof Deno !== 'undefined' ? Deno.build.os === 'windows' : process.platform === 'win32'
-
-    /**
-     * @param {string[]} argsRaw
-     * @param {Partial<Parameters<typeof spawn>[2] & { stderr: string }>} optsRaw
-     */
-    static spawn(argsRaw, optsRaw) {
-        /**
-         * @type {Parameters<typeof spawn>[2] & { stderr: string }}
-         */
-        const opts = {
-            stdio: 'inherit',
-            stderr: 'inherit',
-            shell: this.isWin,
-            ...optsRaw,
-        }
-        const prog = argsRaw[0]
-        const args = argsRaw.slice(1)
-
-        console.log(opts.cwd, `"${argsRaw.join(' ')}"`)
-
-        /**
-         * @type Promise<number>
-         */
-        const result = new Promise((resolve, rejectRaw) => {
-            const p = spawn(prog, args, opts)
-
-            /**
-             * @param {Error} error
-             */
-            const reject = error => {
-                rejectRaw(
-                    new Error(
-                        `"${prog} ${args.join(' ')}" returns ${error} ${p.stderr ? `: ${p.stderr}` : ''}`,
-                        // @ts-ignore
-                        { cause: { error, p } }
-                    )
-                )
-            }
-
-            p.on('error', reject)
-            p.on('close', code => ((code ?? 0) > 0 ? reject(new Error('Exit code 1')) : resolve(code || 0)))
-            return p
-        })
-
-        return result
     }
 
     /**
@@ -112,18 +57,22 @@ export class YufNpmBuilder {
         return { files, watch, polyfill }
     }
 
-    /**
+	static get selfPath() {
+		return url.fileURLToPath(new URL('.', import.meta.url))
+	}
+
+	/**
      * @param {{watch?: boolean, args?: readonly string[], cwd?: string} | undefined} rec
      */
     static async run(rec) {
-        const root = rec?.cwd || this.cwd()
-        const { files, watch, polyfill } = this.commands(rec?.args?.length ? rec?.args : this.args)
+        const root = rec?.cwd || YufNpmCore.cwd()
+        const { files, watch, polyfill } = this.commands(rec?.args?.length ? rec?.args : YufNpmCore.args)
 
 		const selfPath = this.selfPath
 
-		await this.spawn(['npm', 'install'], { cwd: selfPath })
+		await YufNpmCore.spawn(['npm', 'install'], { cwd: selfPath })
 		if (polyfill) {
-			await this.spawn(['npm', 'install', 'core-js'], { cwd: selfPath })
+			await YufNpmCore.spawn(['npm', 'install', 'core-js'], { cwd: selfPath })
 		}
 
         const npmDirs = (
@@ -138,27 +87,23 @@ export class YufNpmBuilder {
 
         for (const path of npmDirs) {
             const dir = join(root, path)
-			await this.spawn(['npm', 'install'], { cwd: dir })
+			await YufNpmCore.spawn(['npm', 'install'], { cwd: dir })
 
 			if (watch) continue
-			await this.spawn(['npm', 'run', 'build'], { cwd: dir })
+			await YufNpmCore.spawn(['npm', 'run', 'build'], { cwd: dir })
         }
 
         if (!watch) {
-            await this.spawn(['npm', 'start', ...files], { cwd: root })
+            await YufNpmCore.spawn(['npm', 'start', ...files], { cwd: root })
             if (polyfill) await this.polyfill({ args: files, cwd: root })
             return
         }
 
         return Promise.all([
-            ...npmDirs.map(npmDir => (npmDir ? this.spawn(['npm', 'run', 'watch'], { cwd: join(root, npmDir) }) : null)),
-            this.spawn(['npm', 'start'], { cwd: root }),
+            ...npmDirs.map(npmDir => (npmDir ? YufNpmCore.spawn(['npm', 'run', 'watch'], { cwd: join(root, npmDir) }) : null)),
+            YufNpmCore.spawn(['npm', 'start'], { cwd: root }),
         ])
     }
-
-	static get selfPath() {
-        return url.fileURLToPath(new URL('.', import.meta.url))
-	}
 
 	static async coreJsPath() {
 		let selfPath = this.selfPath
@@ -187,7 +132,7 @@ export class YufNpmBuilder {
             const absWorkingDir = join(cwd, prj_dir_relative)
             const file = 'web'
 			
-            const builder = new YufNpmBuilder(`file://${absWorkingDir}/${file}.js`, this.args)
+            const builder = new YufNpmBuilder(`file://${absWorkingDir}/${file}.js`, YufNpmCore.args)
             builder.keepNames = () => true
             builder.entryPoints = () => [
                 {
@@ -383,7 +328,7 @@ export class YufNpmBuilder {
 	async install() {
 		const factory = this.factory()
 		for (const cwd of [factory.selfPath, this.absWorkingDir() ] ) {
-			await factory.spawn(['npm', 'install'], { cwd })
+			await YufNpmCore.spawn(['npm', 'install'], { cwd })
 		}
 	}
 
