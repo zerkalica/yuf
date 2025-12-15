@@ -121,9 +121,9 @@ namespace $.$$ {
 			const item = this.lang()?.item(key)
 			if (! item) return str
 			let prefix = ''
-			if (item.is_not_used()) prefix += '❌'
-			else if (item.is_changed()) prefix += '✅'
-			else if (item.is_new()) prefix += '🔥'
+			if (item.is_not_used()) prefix += '⚠️'
+			else if (item.is_changed()) prefix += '☑️'
+			else if (item.is_new()) prefix += '❓'
 
 			if (prefix) prefix += ' '
 

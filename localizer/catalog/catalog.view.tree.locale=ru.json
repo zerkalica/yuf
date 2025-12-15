@@ -2,7 +2,7 @@
 	"$yuf_localizer_catalog_selected_lang_hint": "Выберите файл с локализацией",
 	"$yuf_localizer_catalog_key_filter_hint": "Фильтровать по ключам",
 	"$yuf_localizer_catalog_all_msg": "Все ключи",
-	"$yuf_localizer_catalog_is_new_msg": "❓+☑️ Отличающиеся",
+	"$yuf_localizer_catalog_is_new_msg": "❓+☑️ Переводимые",
 	"$yuf_localizer_catalog_is_not_used_msg": "⚠️ Мусорные",
 	"$yuf_localizer_catalog_empty_msg": "❓ Пустые",
 	"$yuf_localizer_catalog_changed_msg": "☑️ Измененные",
