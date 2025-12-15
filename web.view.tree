@@ -2537,7 +2537,7 @@ $yuf_localizer_catalog $yuf_catalog
 			dictionary *
 				\
 					<= all_msg @ \All keys
-				is_new <= is_new_msg @ \❓+☑️ Differs
+				is_new <= is_new_msg @ \❓+☑️ Translating
 				empty <= empty_msg @ \❓ Empty
 				changed <= changed_msg @ \☑️ Changed
 				is_not_used <= is_not_used_msg @ \⚠️ Obsolete

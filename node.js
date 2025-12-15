@@ -24019,11 +24019,11 @@ var $;
                     return str;
                 let prefix = '';
                 if (item.is_not_used())
-                    prefix += '❌';
+                    prefix += '⚠️';
                 else if (item.is_changed())
-                    prefix += '✅';
+                    prefix += '☑️';
                 else if (item.is_new())
-                    prefix += '🔥';
+                    prefix += '❓';
                 if (prefix)
                     prefix += ' ';
                 return prefix + str;
