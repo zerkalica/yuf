@@ -70,5 +70,8 @@ namespace $.$$ {
 	}
 
 	export class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
+		override dom_safe() {
+			return this.dom_final() || this.dom_node()
+		}
 	}
 }
