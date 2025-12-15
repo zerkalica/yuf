@@ -3,6 +3,7 @@ namespace $.$$ {
 		
 		@ $mol_action
 		override canvas_file() {
+			this.camera_node()
 			if (! this.visible() ) return null
 			const video = this.video_enabled()
 
@@ -66,5 +67,8 @@ namespace $.$$ {
 			return null
 		}
 
+	}
+
+	export class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
 	}
 }

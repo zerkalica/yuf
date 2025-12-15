@@ -25,6 +25,9 @@ namespace $ {
 
 		override render_options() {
 			const node = this.node() as Exclude< CanvasImageSource, VideoFrame >
+			const [ w ,h ] = $yuf_canvas_image.sizes(node)
+
+			if (! w || ! h) throw new Error('Camera window is zero size', { cause: { node } })
 
 			return {
 				...super.render_options(),

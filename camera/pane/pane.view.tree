@@ -13,7 +13,7 @@ $yuf_camera_pane $mol_view
 	file? null File
 	sub /
 		<= Camera $yuf_camera_pane_video
-			dom_node => camera_node
+			dom_final => camera_node
 			stream => stream
 			facing <= facing \environment
 			width <= desirable_width 1280
