@@ -22196,6 +22196,120 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$yuf_lights_toggle) = class $yuf_lights_toggle extends ($.$mol_check) {
+		Icon(){
+			const obj = new this.$.$mol_icon_brightness_4();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_lights_toggle_hint"));
+		}
+	};
+	($mol_mem(($.$yuf_lights_toggle.prototype), "Icon"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_lights_toggle extends $.$yuf_lights_toggle {
+            checked(next) {
+                return this.$.$mol_lights(next);
+            }
+        }
+        $$.$yuf_lights_toggle = $yuf_lights_toggle;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_content_save) = class $mol_icon_content_save extends ($.$mol_icon) {
+		path(){
+			return "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_content_save_all) = class $mol_icon_content_save_all extends ($.$mol_icon) {
+		path(){
+			return "M17,7V3H7V7H17M14,17A3,3 0 0,0 17,14A3,3 0 0,0 14,11A3,3 0 0,0 11,14A3,3 0 0,0 14,17M19,1L23,5V17A2,2 0 0,1 21,19H7C5.89,19 5,18.1 5,17V3A2,2 0 0,1 7,1H19M1,7H3V21H17V23H3A2,2 0 0,1 1,21V7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_download) = class $mol_icon_download extends ($.$mol_icon) {
+		path(){
+			return "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_button_download) = class $mol_button_download extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_download();
+			return obj;
+		}
+		title(){
+			return "";
+		}
+		blob(){
+			return null;
+		}
+		uri(){
+			return "";
+		}
+		file_name(){
+			return "blob.bin";
+		}
+		sub(){
+			return [(this.Icon()), (this.title())];
+		}
+	};
+	($mol_mem(($.$mol_button_download.prototype), "Icon"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_button_download extends $.$mol_button_download {
+            uri() {
+                return URL.createObjectURL(this.blob());
+            }
+            click() {
+                const a = $mol_jsx("a", { href: this.uri(), download: this.file_name() });
+                a.click();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_button_download.prototype, "uri", null);
+        $$.$mol_button_download = $mol_button_download;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
 	($.$yuf_button_close) = class $yuf_button_close extends ($.$mol_button_minor) {
 		Icon(){
 			const obj = new this.$.$mol_icon_close();
@@ -22209,6 +22323,40 @@ var $;
 		}
 	};
 	($mol_mem(($.$yuf_button_close.prototype), "Icon"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_theme = $mol_style_prop('yuf_theme', [
+        'accent',
+        'back_soft',
+        'control_hover',
+        'accept',
+        'decline',
+    ]);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/theme/theme.css", "[mol_button_typed]:active {\n    color: inherit;\n}\n\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\n\t--mol_theme_luma: -1;\n\t--mol_theme_image: invert(1) hue-rotate( 180deg );\n\t--mol_theme_spirit: hsl( 0deg, 0%, 0%, .75 );\n\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 10% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 20%, .25 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 8%, .25 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 80% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 60%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 65% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 60%, 65% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 60%, 65% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 60%, 65% );\n\n} @supports( color: oklch( 0% 0 0deg ) ) {\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\t\n\t--mol_theme_back: oklch( 20% .03 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 30% .05 var(--mol_theme_hue) / .25 );\n\t--mol_theme_field: oklch( 15% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_hover: oklch( 70% 0 var(--mol_theme_hue) / .1 );\n\t\n\t--mol_theme_text: oklch( 80% 0 var(--mol_theme_hue) );\n\t--mol_theme_shade: oklch( 60% 0 var(--mol_theme_hue) );\n\t--mol_theme_line: oklch( 60% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_focus: oklch( 80% .2 calc( var(--mol_theme_hue) + 180deg ) );\n\t\n\t--mol_theme_control: oklch( 70% .1 var(--mol_theme_hue) );\n\t--mol_theme_current: oklch( 70% .2 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_special: oklch( 70% .2 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\n} }\n\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: oklch( 25% .075 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 35% .1 var(--mol_theme_hue) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 35% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 45% .15 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n\n[mol_theme=\"$yuf_theme_light\"], :where([mol_theme=\"$yuf_theme_light\"]) [mol_theme] {\n\t--mol_theme_luma: 1;\n\t--mol_theme_image: none;\n\t--mol_theme_spirit: hsl( 0deg, 0%, 100%, .75 );\n\t\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 92% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 100%, .5 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 100%, .75 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 0% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 40%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 40% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 80%, 30% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 80%, 30% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 80%, 30% );\n\n\t--yuf_theme_back_soft: #f5f5f5;\n\t--yuf_theme_accept: #176323;\n\t--yuf_theme_decline: #631723;\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: #FFD76B;\n\t--mol_theme_card: oklch( 98% .03 var(--mol_theme_hue) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 83% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$yuf_theme_plugin) = class $yuf_theme_plugin extends ($.$mol_theme_auto) {
+		light(){
+			return "$yuf_theme_light";
+		}
+		dark(){
+			return "$yuf_theme_dark";
+		}
+	};
 
 
 ;
@@ -22684,26 +22832,6 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_theme = $mol_style_prop('yuf_theme', [
-        'accent',
-        'back_soft',
-        'control_hover',
-        'accept',
-        'decline',
-    ]);
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("yuf/theme/theme.css", "[mol_button_typed]:active {\n    color: inherit;\n}\n\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\n\t--mol_theme_luma: -1;\n\t--mol_theme_image: invert(1) hue-rotate( 180deg );\n\t--mol_theme_spirit: hsl( 0deg, 0%, 0%, .75 );\n\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 10% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 20%, .25 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 8%, .25 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 80% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 60%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 65% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 60%, 65% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 60%, 65% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 60%, 65% );\n\n} @supports( color: oklch( 0% 0 0deg ) ) {\n:root, [mol_theme=\"$yuf_theme_dark\"], :where([mol_theme=\"$yuf_theme_dark\"]) [mol_theme]  {\n\t\n\t--mol_theme_back: oklch( 20% .03 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 30% .05 var(--mol_theme_hue) / .25 );\n\t--mol_theme_field: oklch( 15% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_hover: oklch( 70% 0 var(--mol_theme_hue) / .1 );\n\t\n\t--mol_theme_text: oklch( 80% 0 var(--mol_theme_hue) );\n\t--mol_theme_shade: oklch( 60% 0 var(--mol_theme_hue) );\n\t--mol_theme_line: oklch( 60% 0 var(--mol_theme_hue) / .25 );\n\t--mol_theme_focus: oklch( 80% .2 calc( var(--mol_theme_hue) + 180deg ) );\n\t\n\t--mol_theme_control: oklch( 70% .1 var(--mol_theme_hue) );\n\t--mol_theme_current: oklch( 70% .2 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_special: oklch( 70% .2 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\n} }\n\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: oklch( 25% .075 var(--mol_theme_hue) );\n\t--mol_theme_card: oklch( 35% .1 var(--mol_theme_hue) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 25% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 35% .1 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n:where( :root, [mol_theme=\"$yuf_theme_dark\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 35% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 45% .15 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n\n[mol_theme=\"$yuf_theme_light\"], :where([mol_theme=\"$yuf_theme_light\"]) [mol_theme] {\n\t--mol_theme_luma: 1;\n\t--mol_theme_image: none;\n\t--mol_theme_spirit: hsl( 0deg, 0%, 100%, .75 );\n\t\n\t--mol_theme_back: hsl( var(--mol_theme_hue), 20%, 92% );\n\t--mol_theme_card: hsl( var(--mol_theme_hue), 50%, 100%, .5 );\n\t--mol_theme_field: hsl( var(--mol_theme_hue), 50%, 100%, .75 );\n\t--mol_theme_hover: hsl( var(--mol_theme_hue), 0%, 50%, .1 );\n\t\n\t--mol_theme_text: hsl( var(--mol_theme_hue), 0%, 0% );\n\t--mol_theme_shade: hsl( var(--mol_theme_hue), 0%, 40%, 1 );\n\t--mol_theme_line: hsl( var(--mol_theme_hue), 0%, 50%, .25 );\n\t--mol_theme_focus: hsl( calc( var(--mol_theme_hue) + 180deg ), 100%, 40% );\n\t\n\t--mol_theme_control: hsl( var(--mol_theme_hue), 80%, 30% );\n\t--mol_theme_current: hsl( calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ), 80%, 30% );\n\t--mol_theme_special: hsl( calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ), 80%, 30% );\n\n\t--yuf_theme_back_soft: #f5f5f5;\n\t--yuf_theme_accept: #176323;\n\t--yuf_theme_decline: #631723;\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_base\"] {\n\t--mol_theme_back: #FFD76B;\n\t--mol_theme_card: oklch( 98% .03 var(--mol_theme_hue) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_current\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) - var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_special\"] {\n\t--mol_theme_back: oklch( 85% .05 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + var(--mol_theme_hue_spread) ) / .25 );\n}\n\n:where( [mol_theme=\"$yuf_theme_light\"] ) [mol_theme=\"$mol_theme_accent\"] {\n\t--mol_theme_back: oklch( 83% .1 calc( var(--mol_theme_hue) + 180deg ) );\n\t--mol_theme_card: oklch( 98% .03 calc( var(--mol_theme_hue) + 180deg ) / .25 );\n}\n");
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
     $.$yuf_theme_gap = $mol_style_prop('yuf_theme_gap', [
         'round_s',
         'page_s',
@@ -22717,7 +22845,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("yuf/theme/gap/gap.css", ":root {\n\t--mol_gap_round: .625rem;\n\t--mol_gap_block: .625rem;\n\t\n\t--yuf_theme_gap_round_s: .3125rem;\n\t--yuf_theme_gap_page_s: 14rem;\n\t--yuf_theme_gap_page_m: 20rem;\n\t--yuf_theme_gap_page_l: 26rem;\n\n\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );\n}\n\n@media (max-width: 480px) {\n\t:root {\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t\t--yuf_theme_gap_page_l: 100vw;\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t}\n}\n\n/* 481-767 Low resolution Tablets and iPads */\n@media (min-width: 481px) and (max-width: 767px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t}\n}\n\n/*\t768-1024 Tablets iPads (Portrait) */\n\n@media (min-width: 768px) and (max-width: 1024px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_m) );\n\t}\n}\n");
+    $mol_style_attach("yuf/theme/gap/gap.css", ":root {\n\t--mol_gap_round: .625rem;\n\t--mol_gap_block: .625rem;\n\t\n\t--yuf_theme_gap_round_s: .3125rem;\n\t--yuf_theme_gap_page_s: 14rem;\n\t--yuf_theme_gap_page_m: 20rem;\n\t--yuf_theme_gap_page_l: 26rem;\n\n\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_l) );\n}\n\n@media (max-width: 480px) {\n\t:root {\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t\t--yuf_theme_gap_page_l: 100vw;\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t}\n}\n\n/* 481-767 Low resolution Tablets and iPads */\n@media (min-width: 481px) and (max-width: 767px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: 100vw;\n\t\t--yuf_theme_gap_page_m: 100vw;\n\t}\n}\n\n/*\t768-1024 Tablets iPads (Portrait) */\n\n@media (min-width: 768px) and (max-width: 1024px) {\n\t:root {\n\t\t--yuf_theme_gap_page_xl: calc( 100vw - var(--yuf_theme_gap_page_l) );\n\t}\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -22869,7 +22997,7 @@ var $;
         }
         is_changed() { return this.text() && this.text_actual() !== this.text(); }
         is_new() {
-            return this.text_main() !== null && !this.text_actual();
+            return Boolean(this.text_main()) && !this.text_actual();
         }
         is_not_used() {
             return this.text_main() === null && Boolean(this.text_actual());
@@ -22897,14 +23025,13 @@ var $;
         data(next) {
             return next ?? {};
         }
-        data_own() {
+        data_own(key) {
             const data = this.data();
+            const keys = key === 'changed' ? Object.keys(data) : this.keys();
             const result = {};
-            for (const key of this.keys()) {
+            for (const key of keys) {
                 const val = data[key];
-                if (!val)
-                    continue;
-                result[key] = val;
+                result[key] = val || '';
             }
             return result;
         }
@@ -22963,7 +23090,7 @@ var $;
         keys_changed() {
             const local = this.data();
             const actual = this.actual();
-            return Object.keys(actual).filter(key => local[key] !== actual[key]);
+            return Object.keys(local).filter(key => local[key] !== actual[key]);
         }
         key_text(key, next) {
             if (next)
@@ -22991,7 +23118,7 @@ var $;
         $mol_mem
     ], $yuf_localizer_file_model.prototype, "data", null);
     __decorate([
-        $mol_mem
+        $mol_mem_key
     ], $yuf_localizer_file_model.prototype, "data_own", null);
     __decorate([
         $mol_mem
@@ -23416,6 +23543,14 @@ var $;
 			(obj.value) = (next) => ((this.project_url(next)));
 			return obj;
 		}
+		version(){
+			return "";
+		}
+		Lights(){
+			const obj = new this.$.$yuf_lights_toggle();
+			(obj.hint) = () => ((this.version()));
+			return obj;
+		}
 		Settings_icon(){
 			const obj = new this.$.$mol_icon_settings();
 			return obj;
@@ -23436,7 +23571,7 @@ var $;
 		}
 		Foot_tools(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.Settings_check())]);
+			(obj.sub) = () => ([(this.Lights()), (this.Settings_check())]);
 			return obj;
 		}
 		selected_lang_hint(){
@@ -23471,6 +23606,9 @@ var $;
 		changed_msg(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_changed_msg"));
 		}
+		is_not_used_msg(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_is_not_used_msg"));
+		}
 		keys_filter(next){
 			if(next !== undefined) return next;
 			return "";
@@ -23478,35 +23616,114 @@ var $;
 		Keys_filter(){
 			const obj = new this.$.$mol_select();
 			(obj.hint) = () => ((this.key_filter_hint()));
+			(obj.Filter) = () => (null);
 			(obj.dictionary) = () => ({
 				"": (this.all_msg()), 
 				"is_new": (this.is_new_msg()), 
 				"empty": (this.empty_msg()), 
-				"changed": (this.changed_msg())
+				"changed": (this.changed_msg()), 
+				"is_not_used": (this.is_not_used_msg())
 			});
 			(obj.value) = (next) => ((this.keys_filter(next)));
 			return obj;
 		}
-		Diff_to_clipboard_icon(){
-			const obj = new this.$.$mol_icon_clipboard();
+		Save_trigger_icon(){
+			const obj = new this.$.$mol_icon_content_save_all();
 			return obj;
 		}
 		diff_to_clipboard_enabled(){
 			return false;
 		}
-		diff_to_clipboard_hint(){
-			return (this.$.$mol_locale.text("$yuf_localizer_catalog_diff_to_clipboard_hint"));
+		locale_file_all_name_tpl(){
+			return "{app}_{time}.locales.json";
 		}
-		diff_to_clipboard_copy(next){
-			if(next !== undefined) return next;
+		locale_file_all_name(){
+			return (this.locale_file_all_name_tpl());
+		}
+		locale_file_all_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_locale_file_all_hint"));
+		}
+		Locale_file_all_download(){
+			const obj = new this.$.$mol_button_download();
+			(obj.blob) = () => ((this.locale_file_blob("all")));
+			(obj.enabled) = () => ((this.diff_to_clipboard_enabled()));
+			(obj.file_name) = () => ((this.locale_file_all_name()));
+			(obj.title) = () => ((this.locale_file_all_hint()));
+			return obj;
+		}
+		locale_copypaste_all_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_locale_copypaste_all_hint"));
+		}
+		Locale_copypaste_all(){
+			const obj = new this.$.$mol_button_copy();
+			(obj.title) = () => ((this.locale_copypaste_all_hint()));
+			(obj.enabled) = () => ((this.diff_to_clipboard_enabled()));
+			(obj.text) = () => ((this.locale_file_json("all")));
+			return obj;
+		}
+		locale_file_blob(id){
 			return null;
 		}
-		Diff_to_clipboard(){
-			const obj = new this.$.$mol_button_minor();
-			(obj.sub) = () => ([(this.Diff_to_clipboard_icon())]);
-			(obj.enabled) = () => ((this.diff_to_clipboard_enabled()));
-			(obj.hint) = () => ((this.diff_to_clipboard_hint()));
-			(obj.click) = (next) => ((this.diff_to_clipboard_copy(next)));
+		locale_file_whole_name_tpl(){
+			return "{app}_{time}.locale={lang}.json";
+		}
+		locale_file_whole_name(){
+			return (this.locale_file_whole_name_tpl());
+		}
+		locale_file_whole_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_locale_file_whole_hint"));
+		}
+		Locale_file_whole_download(){
+			const obj = new this.$.$mol_button_download();
+			(obj.blob) = () => ((this.locale_file_blob("whole")));
+			(obj.file_name) = () => ((this.locale_file_whole_name()));
+			(obj.title) = () => ((this.locale_file_whole_hint()));
+			return obj;
+		}
+		locale_copypaste_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_locale_copypaste_hint"));
+		}
+		locale_file_json(id){
+			return "";
+		}
+		Locale_copypaste(){
+			const obj = new this.$.$mol_button_copy();
+			(obj.title) = () => ((this.locale_copypaste_hint()));
+			(obj.text) = () => ((this.locale_file_json("whole")));
+			return obj;
+		}
+		Save_content(){
+			const obj = new this.$.$mol_list();
+			(obj.rows) = () => ([
+				(this.Locale_file_all_download()), 
+				(this.Locale_copypaste_all()), 
+				(this.Locale_file_whole_download()), 
+				(this.Locale_copypaste())
+			]);
+			return obj;
+		}
+		Save(){
+			const obj = new this.$.$mol_pick();
+			(obj.hint) = () => ((this.$.$mol_locale.text("$yuf_localizer_catalog_Save_hint")));
+			(obj.trigger_content) = () => ([(this.Save_trigger_icon())]);
+			(obj.bubble_content) = () => ([(this.Save_content())]);
+			return obj;
+		}
+		description_title(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_description_title"));
+		}
+		description(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_description"));
+		}
+		Description_list(){
+			const obj = new this.$.$mol_text();
+			(obj.text) = () => ((this.description()));
+			return obj;
+		}
+		Description_page(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ((this.description_title()));
+			(obj.body) = () => ([(this.Description_list())]);
 			return obj;
 		}
 		settings_close(next){
@@ -23530,9 +23747,6 @@ var $;
 		}
 		project(){
 			return null;
-		}
-		item_theme(id){
-			return (this.item_theme_new());
 		}
 		setup_needed(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_setup_needed"));
@@ -23563,6 +23777,10 @@ var $;
 			});
 			return obj;
 		}
+		Theme(){
+			const obj = new this.$.$yuf_theme_plugin();
+			return obj;
+		}
 		menu_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_menu_title"));
 		}
@@ -23579,11 +23797,11 @@ var $;
 			return [
 				(this.Selected_lang()), 
 				(this.Keys_filter()), 
-				(this.Diff_to_clipboard())
+				(this.Save())
 			];
 		}
 		placeholders(){
-			return [];
+			return [(this.Description_page())];
 		}
 		Settings(){
 			const obj = new this.$.$yuf_localizer_settings_page();
@@ -23606,20 +23824,22 @@ var $;
 			(obj.addon_tools) = () => ([(this.Spread_close())]);
 			return obj;
 		}
-		Menu_item(id){
-			const obj = new this.$.$mol_view();
-			(obj.theme) = () => ((this.item_theme(id)));
-			(obj.sub) = () => ((this.menu_item_content(id)));
+		Menu_link(id){
+			const obj = new this.$.$yuf_link();
+			(obj.arg) = () => ((this.arg(id)));
+			(obj.default) = () => ((this.menu_link_default(id)));
+			(obj.hint) = () => ((this.menu_link_hint(id)));
+			(obj.content) = () => ((this.menu_link_content(id)));
 			return obj;
 		}
 		item_theme_not_used(){
-			return "$mol_theme_base";
+			return "not_used";
 		}
 		item_theme_new(){
-			return "$mol_theme_special";
+			return "new";
 		}
 		item_theme_changed(){
-			return "$mol_theme_accent";
+			return "changed";
 		}
 		Menu_links_empty(){
 			const obj = new this.$.$mol_view();
@@ -23634,12 +23854,17 @@ var $;
 			(obj.head) = () => ((this.menu_head()));
 			(obj.body) = () => ((this.menu_body()));
 			(obj.foot) = () => ((this.menu_foot()));
-			(obj.plugins) = () => ([(this.Hotkey())]);
+			(obj.plugins) = () => ([
+				...(this.$.$mol_page.prototype.plugins.call(obj)), 
+				(this.Hotkey()), 
+				(this.Theme())
+			]);
 			return obj;
 		}
 	};
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "project_url"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_project"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Lights"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_icon"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_checked"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_check"));
@@ -23648,20 +23873,32 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Keys_filter"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard_icon"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "diff_to_clipboard_copy"));
-	($mol_mem(($.$yuf_localizer_catalog.prototype), "Diff_to_clipboard"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Save_trigger_icon"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_file_all_download"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_copypaste_all"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_file_whole_download"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_copypaste"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Save_content"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Save"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Description_list"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Description_page"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "settings_close"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings_close"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "val_str"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "select_key"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Hotkey"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Theme"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Settings"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "projects"));
 	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Spread"));
-	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Menu_item"));
+	($mol_mem_key(($.$yuf_localizer_catalog.prototype), "Menu_link"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu_links_empty"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Menu"));
+	($.$yuf_localizer_catalog_link) = class $yuf_localizer_catalog_link extends ($.$yuf_link) {
+		unselectable(){
+			return true;
+		}
+	};
 
 
 ;
@@ -23728,19 +23965,6 @@ var $;
                 return this.settings_checked() ? [...super.pages(), this.Settings()] : super.pages();
             }
             locale_key(key) { return key; }
-            item_theme(key) {
-                const model = this.lang();
-                if (!model)
-                    return null;
-                const item = model.item(key);
-                if (item.is_changed())
-                    return this.item_theme_changed();
-                if (item.is_new())
-                    return this.item_theme_new();
-                if (item.is_not_used())
-                    return this.item_theme_not_used();
-                return null;
-            }
             spread_ids() {
                 const keys_filter = this.keys_filter();
                 return this.lang()?.keys_filtered({ keys_filter }) ?? [];
@@ -23760,15 +23984,52 @@ var $;
             settings_close() {
                 return this.settings_checked(false);
             }
-            diff_to_clipboard_copy(e) {
-                const data = this.lang()?.data_own();
-                if (!data)
-                    return null;
-                const str = JSON.stringify(data, null, '\t');
-                this.$.$mol_dom.navigator.clipboard.writeText(str);
-            }
             diff_to_clipboard_enabled() {
                 return $mol_error_fence(() => Boolean(this.lang()?.keys_changed().length), () => false);
+            }
+            placeholders() {
+                return this.pages().length > 1 ? [] : super.placeholders();
+            }
+            spread_title(key) {
+                const str = this.Spread(key).title();
+                const item = this.lang()?.item(key);
+                if (!item)
+                    return str;
+                let prefix = '';
+                if (item.is_not_used())
+                    prefix += '❌';
+                else if (item.is_changed())
+                    prefix += '✅';
+                else if (item.is_new())
+                    prefix += '🔥';
+                if (prefix)
+                    prefix += ' ';
+                return prefix + str;
+            }
+            project_name_normalized(str) {
+                const url = this.project_url()
+                    .replace(/[^\w\d\s]/g, '_')
+                    .replace(/_{2,}/g, '_')
+                    .replace(/^_+(.*)_+/g, '$1')
+                    .trim();
+                const time = new $mol_time_moment().toString('YYYY-MM-DD_hh:mm:ss');
+                return str.replace('{lang}', this.lang_code())
+                    .replace('{time}', time)
+                    .replace('{app}', url);
+            }
+            locale_file_all_name() {
+                return this.project_name_normalized(this.locale_file_all_name_tpl());
+            }
+            locale_file_whole_name() {
+                return this.project_name_normalized(this.locale_file_whole_name_tpl());
+            }
+            locale_file_json(key) {
+                const data = key === 'all' ? this.projects().locales() : this.lang()?.data_own(key) ?? '';
+                return JSON.stringify(data, null, '\t') || '{}';
+            }
+            locale_file_blob(key) {
+                const str = this.locale_file_json(key);
+                return new Blob([str], { type: 'application/json' });
             }
         }
         __decorate([
@@ -23792,6 +24053,12 @@ var $;
         __decorate([
             $mol_action
         ], $yuf_localizer_catalog.prototype, "select_key", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_localizer_catalog.prototype, "locale_file_json", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_localizer_catalog.prototype, "locale_file_blob", null);
         $$.$yuf_localizer_catalog = $yuf_localizer_catalog;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -23813,6 +24080,31 @@ var $;
                 Foot: {
                     justifyContent: 'space-between',
                 }
+            },
+            $mol_text_span: {
+                '@': {
+                    'mol_text_type': {
+                        'emphasis': {
+                            color: $mol_theme.current,
+                        }
+                    }
+                }
+            },
+            Description_list: {
+                flex: {
+                    shrink: 1,
+                },
+            },
+            Description_page: {
+                flex: {
+                    basis: $yuf_theme_gap.page_xl
+                },
+                Body_content: {
+                    padding: 0,
+                }
+            },
+            Menu_item: {
+                padding: 0
             },
             Selected_project: {
                 Trigger: {
