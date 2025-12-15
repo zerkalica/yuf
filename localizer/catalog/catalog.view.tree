@@ -26,10 +26,10 @@ $yuf_localizer_catalog $yuf_catalog
 			dictionary *
 				\
 					<= all_msg @ \All keys
-				is_new <= is_new_msg @ \🔥 Differs
-				empty <= empty_msg @ \🔥 Empty
-				changed <= changed_msg @ \✅ Changed
-				is_not_used <= is_not_used_msg @ \❌ Obsolete
+				is_new <= is_new_msg @ \❓+☑️ Differs
+				empty <= empty_msg @ \❓ Empty
+				changed <= changed_msg @ \☑️ Changed
+				is_not_used <= is_not_used_msg @ \⚠️ Obsolete
 			value? <=> keys_filter? \
 		<= Save $mol_pick
 			hint @ save_hint \Click to show save menu
@@ -63,9 +63,9 @@ $yuf_localizer_catalog $yuf_catalog
 					\## Navigate
 					\Use keyboard arrows to navigate between keys in list
 					\## Key marks
-					\🔥 Keys to translate, exists only in the sources as en locale
-					\✅ Changed, but not committed keys, exists only in the browser local storage
-					\❌ Obsolete keys that exist only in localStorage but not in the selected project sources (may be deleted or renamed in the project)
+					\❓ Keys to translate, exists only in the sources as en locale
+					\☑️ Changed, but not committed keys, exists only in the browser local storage
+					\⚠️ Obsolete keys that exist only in localStorage but not in the selected project sources (may be deleted or renamed in the project)
 					\## Importing into modules
 					\Best way - to merge changes into all mam modules and share locales between projects.
 					\* commit changes in your projects
