@@ -16523,6 +16523,9 @@ var $;
         }
         render_options() {
             const node = this.node();
+            const [w, h] = $yuf_canvas_image.sizes(node);
+            if (!w || !h)
+                throw new Error('Camera window is zero size', { cause: { node } });
             return {
                 ...super.render_options(),
                 node,
@@ -16865,7 +16868,7 @@ var $;
 			return "image/jpeg";
 		}
 		camera_node(){
-			return (this.Camera().dom_node());
+			return (this.Camera().dom_safe());
 		}
 		stream(){
 			return (this.Camera().stream());
@@ -16985,6 +16988,9 @@ var $;
 		click(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		dom_safe(){
+			return (this.dom_node());
 		}
 		event(){
 			return {...(super.event()), "click": (next) => (this.click(next))};
@@ -17647,6 +17653,7 @@ var $;
     (function ($$) {
         class $yuf_camera_pane extends $.$yuf_camera_pane {
             canvas_file() {
+                this.camera_node();
                 if (!this.visible())
                     return null;
                 const video = this.video_enabled();
@@ -17708,6 +17715,12 @@ var $;
             $mol_mem
         ], $yuf_camera_pane.prototype, "visible", null);
         $$.$yuf_camera_pane = $yuf_camera_pane;
+        class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
+            dom_safe() {
+                return this.dom_final() || this.dom_node();
+            }
+        }
+        $$.$yuf_camera_pane_video = $yuf_camera_pane_video;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

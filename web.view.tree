@@ -1533,7 +1533,7 @@ $yuf_camera_pane $mol_view
 	file? null File
 	sub /
 		<= Camera $yuf_camera_pane_video
-			dom_node => camera_node
+			dom_safe => camera_node
 			stream => stream
 			facing <= facing \environment
 			width <= desirable_width 1280
@@ -1553,6 +1553,7 @@ $yuf_camera_pane $mol_view
 						click? <=> close_click? null
 
 $yuf_camera_pane_video $mol_video_camera
+	dom_safe <= dom_node
 	event *
 		^
 		click? <=> click? null

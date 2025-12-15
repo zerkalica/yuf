@@ -7484,7 +7484,7 @@ declare namespace $ {
 		recorder_status( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['status'] >
 		recorder_error( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['error'] >
 		image_type( ): string
-		camera_node( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['dom_node'] >
+		camera_node( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['dom_safe'] >
 		stream( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['stream'] >
 		facing( ): string
 		desirable_width( ): number
@@ -7514,6 +7514,7 @@ declare namespace $ {
 	
 	export class $yuf_camera_pane_video extends $mol_video_camera {
 		click( next?: any ): any
+		dom_safe( ): ReturnType< $yuf_camera_pane_video['dom_node'] >
 		event( ): ({ 
 			click( next?: ReturnType< $yuf_camera_pane_video['click'] > ): ReturnType< $yuf_camera_pane_video['click'] >,
 		})  & ReturnType< $mol_video_camera['event'] >
@@ -7529,6 +7530,9 @@ declare namespace $.$$ {
         visible(next?: boolean): boolean;
         auto(): any;
         camera_click(event?: Event): null;
+    }
+    class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
+        dom_safe(): Element;
     }
 }
 
