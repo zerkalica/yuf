@@ -22986,7 +22986,6 @@ var $;
             if (normalized instanceof Error || $mol_promise_like(normalized)) {
                 $mol_fail_hidden(normalized);
             }
-            $mol_fail_log(error);
             return normalized;
         }
     }
