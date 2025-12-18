@@ -12,3 +12,7 @@ pkg - updates package.json in mam root and copies into .ci/package-lock.json
 sm [mask] - updates git submodules in .ci, where optional mask used to filter uptable projects
 update - updates all submodules and package.json
 ```
+
+## Typical depser project
+
+See [depser-demo](https://github.com/zerkalica/yuf/tree/master/depser)

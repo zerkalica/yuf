@@ -68,7 +68,6 @@ depser_sm() {
 depser_update() {
   depser_sm "${1}"
   depser_pkg
-  test -e ./.env || echo "PROJECT_NAME=$(basename "$SRC_PATH")" > .env
 }
 
 depser_init() {
