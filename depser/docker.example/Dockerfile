@@ -13,7 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 COPY --from=builder /tmp/mam/app/-/ /var/www/static
 
-COPY ["./.ci/mpk/.docker/default.conf.template", \
+COPY ["./.ci/yuf/depser/docker/default.conf.template", \
       "/etc/nginx/"]
 
 RUN rm -f /etc/nginx/sites-enabled/* \
@@ -22,13 +22,13 @@ RUN rm -f /etc/nginx/sites-enabled/* \
     && sed -i 's/www-data/root/g' /etc/nginx/nginx.conf \
     && sed -i "s/0.0.0-0/$VERSION/g" /etc/nginx/default.conf.template
 
-COPY ["./.ci/mpk/.docker/docker-entrypoint.sh", \
+COPY ["./.ci/yuf/depser/docker/docker-entrypoint.sh", \
       "/usr/local/bin/"]
 
 RUN ln -s /usr/local/bin/docker-entrypoint.sh \
           /docker-entrypoint.d/docker-entrypoint.sh
 
-COPY ["./.ci/mpk/.docker/start.sh", \
+COPY ["./.ci/yuf/depser/docker/start.sh", \
       "/start.sh"]
 
 ENTRYPOINT ["docker-entrypoint.sh"]
