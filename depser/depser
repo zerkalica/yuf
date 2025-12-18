@@ -1,0 +1,178 @@
+#!/bin/sh
+
+: "${SRC_PATH:=$(pwd)}"
+
+MAM_DIR="${SRC_PATH}/.ci/mam"
+GITHUB_BASE="https://github.com"
+
+# Do not link this dirs from .ci/* to mam root
+DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack$'
+
+depser_pkg() {
+  local cur="${SRC_PATH}"
+  local root="${cur}"
+
+  echo "Updating ${cur}/.ci/package-lock.json"
+  while test ! -e "${root}/.meta.tree"; do
+    root=$(dirname "${root}")
+    test "$root" = "." -o "$root" = "/" -o -z "$root" && {
+      echo "Mam root not found"
+      exit 1
+    }
+  done
+
+  echo "Updating $root/package.json"
+
+  pushd "$root" || exit 1
+  rm "$cur/.ci/package-lock.json" 2> /dev/null
+
+  test -e ./package-lock.json || npm install || exit 1
+  npm install --ignore-scripts --package-lock-only || exit 1
+  cp package-lock.json "${cur}/.ci" || exit 1
+
+  echo "${cur}/.ci/package-lock.json updated"
+  cd "$cur"
+}
+
+depser_add() {
+  local url="$1"
+  local dir=".ci/$2"
+  local branch="${3:-master}"
+  local new_path="${4}"
+  mkdir -p "${SRC_PATH}/.ci"
+
+  git submodule status | grep " $dir " -q || {
+    echo "Adding submodule $url to $dir"
+    git submodule add --depth 100 -b $branch "$url" "$dir" || exit 1
+  }
+
+  test -z "$new_path" && return 0
+
+  local part=$(echo "$url" | sed 's#\([\.\-\:]\)#\\\1#g')
+
+  sed "s#\(.*url[ ]*=[ ]*\)${part}#\1${new_path}#" -i ./.gitmodules && {
+    echo "Fixing .gitmodules: ${part} to ${new_path}"
+  }
+
+  return 0
+}
+
+depser_sm() {
+  local MASK="${1}"
+  echo "Updating submodules in .ci"
+  git submodule update --init --depth=100 \
+    && git submodule foreach '[ -z "$MASK" -o "$path" = "$MASK" ] || exit 0 && git fetch && git checkout $(git branch | grep -o -m1 "\b\(main\|master\)\b") && git pull' \
+    && echo "Now make: git add .ci && git commit -m 'updated deps'"
+}
+
+depser_update() {
+  depser_sm "${1}"
+  depser_pkg
+  test -e ./.env || echo "PROJECT_NAME=$(basename "$SRC_PATH")" > .env
+}
+
+depser_init() {
+  depser_add "$GITHUB_BASE/hyoo-ru/mam.git" mam
+  depser_add "$GITHUB_BASE/hyoo-ru/mam_node.git" node
+  depser_add "$GITHUB_BASE/hyoo-ru/mam_mol.git" mol
+  depser_add "$GITHUB_BASE/nin-jin/mol_icon.git" mol-icon
+  depser_update
+}
+
+depser_app_path() {
+  test -e "${SRC_PATH}/app/app.view.tree" || {
+    echo "Required entry point component: ${SRC_PATH}/app/app.view.tree"
+    exit 1
+  }
+
+  local app_path="$(cat "${SRC_PATH}/app/app.view.tree" | sed -n 's/^\$\([^ ]*\).*/\1/p' | sed 's/_/\//g')"
+  test -z "$app_path" && {
+    echo "Required a valid fqn app name in ${SRC_PATH}/app/app.view.tree"
+    exit 1
+  }
+  echo "$app_path"
+}
+
+
+depser_symlink_list() {
+  for i in "${SRC_PATH}/.ci"/* ; do
+    [ ! -d "${i}" ] && continue
+    # replace mol-icon to mol/icon, etc
+    local name="$(basename "${i}" | sed 's/-/\//g')"
+    echo "$name" | grep -q -e "$DEPSER_EXCLUDE_MASK" && continue
+
+    echo "${i}	${MAM_DIR}/${name}"
+  done
+  
+  local APP_PATH="$(depser_app_path)"
+
+  # node require cant find node_modules if script inside symlinked directory
+  # echo "${MAM_DIR}/node_modules	${SRC_PATH}/.ci/node_modules"
+  echo "${MAM_DIR}/node_modules	${SRC_PATH}/node_modules"
+  echo "${SRC_PATH}	${MAM_DIR}/${APP_PATH}"
+  echo "${SRC_PATH}/.ci/package-lock.json"	"${MAM_DIR}/package-lock.json"
+}
+
+depser_dirs_link() {
+  depser_symlink_list | sort | while read from to; do
+    echo "link $from -> $to"
+    [ -e "${to}" ] && continue
+    mkdir -p "$(dirname "${to}")"
+    ln -s "${from}" "${to}"
+  done
+}
+
+depser_dirs_unlink() {
+  depser_symlink_list | sort | while read from to; do
+    echo "unlink $to"
+    [ -L "${to}" ] || continue
+    unlink "${to}"
+  done
+}
+
+depser_check_app() {
+  if [ ! -e "$SRC_PATH/app/app.view.tree" ] ; then
+    echo "ERROR: $PROJECT_NAME not a mam application, not found $SRC_PATH/app/app.view.tree"
+    exit 1
+  fi
+}
+
+depser_build() {
+  local APP_PATH="$(depser_app_path)"
+
+  depser_dirs_link \
+&& cd "${MAM_DIR}" \
+&& echo "Step 1. install npm" \
+&& npm install --ignore-scripts || {
+    depser_dirs_unlink
+    echo "ERROR: Step 1"
+    exit 1
+  }
+
+  echo "Step 2. Build app ${MAM_DIR}/${APP_PATH}/app" \
+    && MAM_PULL_DISABLED=1 npm exec mam "${APP_PATH}/app" || {
+      depser_dirs_unlink
+      echo "ERROR: Step 2"
+      exit 1
+    }
+
+  depser_dirs_unlink
+  echo "SUCCESS. Build in ${SRC_PATH}/app/-"
+}
+
+depser_help() {
+  echo "Versioning submodule deps system for mam"
+  echo ""
+  echo "Run it from some/project directory, not a mam root, project directory must inside mam root"
+  echo "Project must include app/app.view.tree entry point module"
+  echo "Use $(basename "$0") <command>, where command:"
+  echo ""
+  echo "init - init base git submodules in .ci"
+  echo "add <url> <dir name> - add submodule from git url to .ci/<dir name>"
+  echo "build - build, using only submodules in .ci as deps"
+  echo "pkg - updates package.json in mam root and copies into .ci/package-lock.json"
+  echo "sm [mask] - updates git submodules in .ci, where optional mask used to filter uptable projects"
+  echo "update - updates all submodules and package.json"
+}
+
+"depser_${1:-help}" $2 $3 $4 $5
