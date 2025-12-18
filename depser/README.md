@@ -15,4 +15,4 @@ update - updates all submodules and package.json
 
 ## Typical depser project
 
-See [depser-demo](https://github.com/zerkalica/yuf/tree/master/depser)
+See [depser-demo](https://github.com/zerkalica/depser-demo)
