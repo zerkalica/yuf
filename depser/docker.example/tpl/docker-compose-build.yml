@@ -1,0 +1,5 @@
+services:
+  __PROJECT_NAME__:
+    extends:
+      file: .ci/yuf/depser/docker/docker-compose.yml
+      service: front-app-dev

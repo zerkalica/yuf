@@ -1,0 +1,30 @@
+server {
+    listen 4200 default;
+
+    resolver 127.0.0.11 valid=30s;
+
+    ssl_certificate /etc/nginx/certs/nginx.crt;
+    ssl_certificate_key /etc/nginx/certs/nginx.key;
+
+    root /var/www;
+
+    client_max_body_size 1024M;
+
+    location / {
+        root /var/www/static;
+
+        location ~* \.mjs$ {
+            types {
+                text/javascript mjs;
+            }
+        }
+        location ~* \.graphql$ {
+            types {
+                text/plain graphql;
+            }
+        }
+    }
+
+    access_log /dev/stdout combined;
+    error_log /dev/stdout info;
+}

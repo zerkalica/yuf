@@ -1,0 +1,13 @@
+services:
+  front-app: &front-app
+    container_name: ${PROJECT_NAME}
+    image: ${APP_IMAGE_BASE:-regi}/${PROJECT_NAME}/${PROJECT_NAME}:${VERSION:-latest}
+    restart: unless-stopped
+
+  front-app-dev: &front-app-dev
+    <<: *front-app
+    ports:
+      - ${PORT_DEV:-4200}:4200
+    build:
+      context: ../../../
+      dockerfile: .ci/yuf/depser/docker/Dockerfile
