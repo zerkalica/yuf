@@ -32,11 +32,15 @@ hyoo-about will be linked to hyoo/about in depser build.
 
 ## Build
 
-From acme/depser directory:
+From zero:
 
+* `git clone https://github.com/zerkalica/depser-demo`
+* `cd depser-demo`
+* `git submodule update --init --depth=100`
 * `.ci/yuf/depser/depser build`
 
 Build in `./app/-`
+
 
 ## Update and fix deps
 
