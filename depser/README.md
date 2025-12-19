@@ -1,18 +1,47 @@
-# Versioning submodule deps system for mam
+# Dependencies fixer for mam
 
-Run it from some/project directory, not a mam root, project directory must inside mam root
-Project must include `app/app.view.tree` entry point module
-Use `depser <command>`, where `command`:
+Add submodules, manually update versions, reproduce source tree in builds.
 
-```
-init - init base git submodules in .ci
-add <url> <dir name> - add submodule from git url to .ci/<dir name>
-build - build, using only submodules in .ci as deps
-pkg - updates package.json in mam root and copies into .ci/package-lock.json
-sm [mask] - updates git submodules in .ci, where optional mask used to filter uptable projects
-update - updates all submodules and package.json
-```
-
-## Typical depser project
+## Example
 
 See [depser-demo](https://github.com/zerkalica/depser-demo)
+
+`acme/depser` - example project
+
+For new project need to create and setup git as regular project.
+
+* `mkdir -p acme/depser && cd acme/depser`
+* Setup git repo, add .gitignore, etc
+
+Update existing project:
+
+* `mkdir -p .ci && git submodule add --depth 100 https://github.com/zerkalica/yuf.git .ci/yuf`
+* `.ci/yuf/depser/depser init`
+* `mkdir -p app && echo '$acme_depser_app $mol_page' > app/app.view.tree`
+* `git add .ci app && git commit -m 'updated deps`
+
+## Add extra deps
+
+From acme/depser directory:
+
+* `.ci/yuf/depser/depser add "https://github.com/hyoo-ru/mam_hyoo.git" "hyoo"`
+* `.ci/yuf/depser/depser add "https://github.com/hyoo-ru/about.hyoo.ru.git" "hyoo-about"`
+* `git add .ci && git commit -m 'updated deps`
+
+hyoo-about will be linked to hyoo/about in depser build.
+
+## Build
+
+From acme/depser directory:
+
+* `.ci/yuf/depser/depser build`
+
+Build in `./app/-`
+
+## Update and fix deps
+
+From acme/depser directory:
+
+* `.ci/yuf/depser/depser update`
+* `git add .ci && git commit -m "updated deps"`
+
