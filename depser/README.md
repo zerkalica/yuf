@@ -2,7 +2,7 @@
 
 Add submodules, manually update versions, reproduce source tree in builds.
 
-## Example
+## Init
 
 See [depser-demo](https://github.com/zerkalica/depser-demo)
 
@@ -13,7 +13,7 @@ For new project need to create and setup git as regular project.
 * `mkdir -p acme/depser && cd acme/depser`
 * Setup git repo, add .gitignore, etc
 
-Update existing project:
+Convert existing project:
 
 * `mkdir -p .ci && git submodule add --depth 100 https://github.com/zerkalica/yuf.git .ci/yuf`
 * `.ci/yuf/depser/depser init`
