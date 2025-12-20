@@ -8,7 +8,7 @@ const cwd = typeof Deno !== 'undefined' ? Deno.cwd.bind(Deno) : process.cwd.bind
 let version = ''
 
 try {
-  version = execSync('git describe --long --tags').toString()
+  version = execSync('git describe --long --tags', { stdio: [ 'pipe', 'pipe', 'ignore' ] }).toString()
   version = version.replace(/\-0\-.*/, '').replace(/\-[\d]+\-/, '-')
 } catch (e) {}
 
@@ -16,7 +16,7 @@ let hash = ''
 
 if (! version) {
   try {
-    hash = execSync('git rev-parse --short HEAD').toString()
+    hash = execSync('git rev-parse --short HEAD', { stdio: [ 'pipe', 'pipe', 'ignore' ] }).toString()
   } catch (e) {}
 
   let raw = ''
