@@ -6,7 +6,7 @@ MAM_DIR="${SRC_PATH}/.ci/mam"
 GITHUB_BASE="https://github.com"
 
 # Do not link this dirs from .ci/* to mam root
-DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack$'
+DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack\|links$'
 
 depser_pkg() {
   local cur="${SRC_PATH}"
@@ -89,7 +89,7 @@ depser_app_path() {
     echo "Required a valid fqn app name in ${SRC_PATH}/app/app.view.tree"
     exit 1
   }
-  echo "$app_path"
+  echo "$(dirname "$app_path")"
 }
 
 
@@ -110,21 +110,27 @@ depser_symlink_list() {
   echo "${MAM_DIR}/node_modules	${SRC_PATH}/node_modules"
   echo "${SRC_PATH}	${MAM_DIR}/${APP_PATH}"
   echo "${SRC_PATH}/.ci/package-lock.json"	"${MAM_DIR}/package-lock.json"
+  test -e "${SRC_PATH}/.ci/links.txt" && cat "${SRC_PATH}/.ci/links.txt" | while read from to; do
+    echo "${SRC_PATH}/.ci/${from}	${SRC_PATH}/.ci/${to}"
+  done
 }
 
 depser_dirs_link() {
-  depser_symlink_list | sort | while read from to; do
+  depser_symlink_list | sed '/^$/d' | sort | while read from to; do
     echo "link $from -> $to"
-    [ -e "${to}" ] && continue
+    [ -e "${to}" ] && {
+      echo "${to} exists - not linked"
+      continue
+    }
     mkdir -p "$(dirname "${to}")" || exit 1
     ln -s "${from}" "${to}" || exit 1
   done
 }
 
 depser_dirs_unlink() {
-  depser_symlink_list | sort | while read from to; do
-    echo "unlink $to"
+  depser_symlink_list | sed '/^$/d' | sort -r | while read from to; do
     [ -L "${to}" ] || continue
+    echo "unlink $to"
     unlink "${to}"
   done
 }
