@@ -116,8 +116,8 @@ depser_dirs_link() {
   depser_symlink_list | sort | while read from to; do
     echo "link $from -> $to"
     [ -e "${to}" ] && continue
-    mkdir -p "$(dirname "${to}")"
-    ln -s "${from}" "${to}"
+    mkdir -p "$(dirname "${to}")" || exit 1
+    ln -s "${from}" "${to}" || exit 1
   done
 }
 
