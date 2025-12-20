@@ -2,9 +2,7 @@ namespace $ {
 	type Draft_data<Data = unknown> = [
 		store_id?: string | null,
 		tmp_data?: Data | null,
-		flag?: 'remove' | 'patch' | null
 	]
-
 
 	export class $yuf_entity2<Data = unknown> extends $mol_object {
 		protected factory() {
@@ -68,45 +66,47 @@ namespace $ {
 			return Object.keys(ids).filter(id => ids[id]?.[0] === store_id)
 		}
 
-		protected static draft_data<Data>(id: string, next?: Draft_data<Data> | null) {
+		@ $mol_mem_key
+		protected static draft_data<Data>(id: string, next?: Draft_data<Data> | null, storage?: 'storage') {
 			const prev = this.drafts_patch()[id] as typeof next ?? null
 			if (next === undefined) return prev
 
-			return this.drafts_patch({ [id]: next === null ? next : [
+			let result = this.drafts_patch({ [id]: next === null ? next : [
 				prev?.[0], // store_id
 				next[1], // data
-				next[2] === undefined ? prev?.[2] : next[2] // flag
 			] })[id] as typeof next ?? null
+
+			// Delete only from ls, but keep in memory to prevent actual call
+			// after non-idempotent server creating, if server returns new id
+			if (storage && result === null) return prev
+
+			return result
 		}
 
-		static is_draft(id: string) { return !! this.draft_data(id)?.[0] }
-
-		protected draft_data(next?: Draft_data<Partial<Data>> | null) {
-			return this.$.$yuf_entity2.draft_data(this.id(), next)
+		protected draft_data(next?: Draft_data<Partial<Data>> | null, storage?: 'storage') {
+			return this.$.$yuf_entity2.draft_data(this.id(), next, storage)
 		}
 
 		@ $mol_mem
 		is_draft() {
-			// if store_id exists - data is creating
 			return !! this.draft_data()?.[0]
 		}
 
-		@ $mol_mem
-		draft( next?: Partial<Data> | null, flag?: 'remove' | 'patch'): Partial<Data> | null {
+		draft( next?: Partial<Data> | null, storage?: 'storage'): Partial<Data> | null {
 			const prev = this.draft_data()?.[1] ?? null
 
 			// merge with prev object, while debouncing
 			const draft = next ? this.merge(next, prev) : null
 
 			return this.draft_data(
-				next === undefined || (next === null && ! flag)
+				next === undefined || next === null
 					? next
-					: [null, draft, flag]
+					: [null, draft],
+				storage
 			)?.[1] ?? null
 		}
 
 		_id = ''
-		store = null as null | $yuf_entity2_store
 
 		id() { return this._id }
 
@@ -139,46 +139,19 @@ namespace $ {
 			return next ?? null
 		}
 
-		@ $mol_action
-		protected id_grab() { return this.id() }
-
 		@ $mol_mem
 		data(next?: Partial<Data> | null, cache?: 'cache'): Data | null {
 			let actual
-			const is_creating = this.is_draft()
 
 			if (next === undefined) {
-				actual = is_creating ? this.draft() : this.actual()
+				actual = this.is_draft() ? this.draft() : this.actual()
 			} else if (cache) {
 				actual = next
+			} else if ( next === null ) {
+				// null - remove without debounce
+				actual = this.is_draft() ? this.draft(next, 'storage') : this.actual(next)
 			} else {
-				actual = this.pushing_set(next)
-				// Call before draft(null) - is_draft result cached in fiber
-				const server_id = actual ? this.server_created_id(actual) : null
-				const id = this.id_grab()
-				const next_id = server_id ?? id
-
-				if ( is_creating && id) {
-					if (next_id === id) {
-						// If server accepts client id on creating - need to subscribe
-						// On creating we never pull actual data and not subscribed to server changes
-						// sending yuf_ws_statefull_channel.data 'refresh' causing subscription to socket data changes
-						this.actual(null, 'refresh')
-
-						// Pull data to subscribe to actual changes, if created - we never pull actual before
-						this.data()
-					} else {
-						// Server returns new id - update current id to allow saving after creating for this entity
-						this._id = next_id
-					}
-				}
-
-				if ( is_creating && next_id) {
-					// Try optimistically add id to ids list
-					// Needed on bad servers without ids list changes notification
-					this.store?.id_add(next_id)
-				}
-
+				actual = this.actual_push_debounced(next)
 			}
 
 			if (actual === null) return null
@@ -210,11 +183,9 @@ namespace $ {
 		patch_enabled() { return false }
 
 		@ $mol_mem
-		pushing() {
-			const [, draft, flag] = this.draft_data() ?? []
-			const removing = flag === 'remove'
-			const patching = flag === 'patch'
-			if (! patching && ! removing) return null
+		protected actual_push_task() {
+			const [store_id , draft] = this.draft_data() ?? []
+			if (! draft) return null
 
 			const debounce_timeout = this.debounce_timeout()
 			if (debounce_timeout) {
@@ -223,36 +194,71 @@ namespace $ {
 				this.$.$yuf_wait_timeout(debounce_timeout)
 			}
 
-			const data = removing || ! draft ? null :
-				this.patch_enabled() ? draft : this.defaults(this.merge(draft))
+			const data = this.patch_enabled() ? draft : this.defaults(this.merge(draft))
 
 			const actual = this.actual(data)
 			// broken backend returns undefined data on push,
 			// it converts to empty object in $yuf_ws_statefull.message_data
 			const result = actual ? this.merge(actual, data) : null
 
-			// Null draft before pulling data, without nulled draft data do not pull actual
-			// Warning - do not allow suspends after draft(null)
-			this.draft(null)
+			if (! store_id) {
+				// If store_id is empty - editing mode, clear draft and exit
+				this.draft(null)
+				return result
+			}
+
+			const server_id = actual ? this.server_created_id(actual) : null
+			const id = this.id()
+
+			if (server_id && server_id === id) {
+				// Server accepts client id on create - just resubscribe to server entity changes and then remove draft
+				this.resubscribe()
+				return result
+			}
+
+			this.$.$mol_log3_warn({
+				place: `${this.constructor}.pushing`,
+				message: 'server creates new id, entity is dead',
+				name: this.toString(),
+				hint: 'Avoid non-idempotent server API when creating entities',
+			})
+
+			// If server not returns id or server creates new id - current entity is dead
+			// do not use dead entity anywhere, remove it from list
+			// In app add to list created entity by id from dead_entity.server_created_id()
+
+			// draft cleared only in localStorage, not in memory to prevent actual call on dead entity
+			this.draft(null, 'storage')
 
 			return result
 		}
 
 		@ $mol_action
-		pushing_set(next: Partial<Data> | null) {
-			this.draft(next, next === null ? 'remove' : 'patch')
-			// trick with pushing mem needed for debounce and serial push
-			return this.pushing()
+		protected resubscribe() {
+			// if server accepts client id - after push to actual need resubscribe to track changes
+			// Without frame data returns null and breaks fibers, if this.data called before actual_push_task end
+			new $mol_after_frame($mol_wire_async(() => this.actual(null, 'refresh')))
+
+			// clear draft and pull data to subscribe to actual
+			this.draft(null)
+			this.data()
 		}
 
-		protected server_created_id(actual: Partial<Data>) {
+		@ $mol_action
+		actual_push_debounced(next: Partial<Data> | null) {
+			this.draft(next)
+			// trick with pushing mem needed for debounce and serial push
+			return this.actual_push_task()
+		}
+
+		@ $mol_action
+		server_created_id(actual: Partial<Data> | null = this.data()) {
 			return ! Array.isArray(actual) ? (actual as { id?: string }).id || null : null
 		}
 
+		@ $mol_action
 		remove() {
 			this.data(null)
-			const id = this.id()
-			id && this.store?.id_remove(id)
 		}
 
 	}

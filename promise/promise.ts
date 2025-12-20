@@ -9,6 +9,10 @@ namespace $ {
 			this._timer = new $mol_after_timeout(deadline, () => this.value(error))
 		}
 
+		resolved() {
+			return this._value !== undefined
+		}
+
 		value(next?: Result | Error) {
 			if (next === undefined) {
 				if (this._value === undefined) $mol_fail_hidden(this.catch(e => null))
@@ -19,7 +23,7 @@ namespace $ {
 			this._timer = null
 
 			this._value = next
-			if (next instanceof Error) return this.fail(next)
+			if (next instanceof Error) return this.fail(next) as never 
 			this.done(next)
 			return this._value
 		}

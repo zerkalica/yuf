@@ -11,8 +11,11 @@ namespace $ {
 			super()
 		}
 
-		ready() { return this.host.ready() }
+		ready() {
+			return this.host.ready()
+		}
 
+		@ $mol_action
 		send_data(data?: Val | null, req_id?: string, op?: 'unsubscribe') {
 			if (data === undefined && ! op) this.subscribed = true
 
@@ -44,6 +47,7 @@ namespace $ {
 			}
 		}
 
+
 		@ $mol_mem
 		data(next?: Val | null, cache?: 'cache' | 'refresh'): Val | null {
 			if (next !== undefined && cache === 'cache') {
@@ -64,7 +68,7 @@ namespace $ {
 			}
 
 			// Resend subscription on auth token or ws connection change
-			if (this.ready()) {
+			if (next !== undefined || this.ready()) {
 				this.send_data(cache === 'refresh' ? undefined : next, this.response?.id)
 			}
 
