@@ -2,36 +2,32 @@
 
 : "${SRC_PATH:=$(pwd)}"
 
-MAM_DIR="${SRC_PATH}/.ci/mam"
 GITHUB_BASE="https://github.com"
 
 # Do not link this dirs from .ci/* to mam root
 DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack\|links$'
 
 depser_pkg() {
-  local cur="${SRC_PATH}"
-  local root="${cur}"
+  local ci_dir="${SRC_PATH}/.ci"
 
-  echo "Updating ${cur}/.ci/package-lock.json"
-  while test ! -e "${root}/.meta.tree"; do
-    root=$(dirname "${root}")
-    test "$root" = "." -o "$root" = "/" -o -z "$root" && {
-      echo "Mam root not found"
-      exit 1
-    }
-  done
+  echo "Build project to update ${ci_dir}/package-lock.json"
 
-  echo "Updating $root/package.json"
+  cd "${ci_dir}/mam" || exit 1
 
-  pushd "$root" || exit 1
-  rm "$cur/.ci/package-lock.json" 2> /dev/null
+  git checkout -- "package.json"
+  rm -rf "node_modules" "package-lock.json"
+  rm "${ci_dir}/package-lock.json"
 
-  test -e ./package-lock.json || npm install || exit 1
+  depser_make
+
   npm install --ignore-scripts --package-lock-only || exit 1
-  cp package-lock.json "${cur}/.ci" || exit 1
 
-  echo "${cur}/.ci/package-lock.json updated"
-  cd "$cur"
+  cp package-lock.json "${ci_dir}"
+
+  depser_dirs_unlink
+
+  echo "${ci_dir}/package-lock.json updated"
+  cd "$ci_dir/.."
 }
 
 depser_add() {
@@ -94,6 +90,9 @@ depser_app_path() {
 
 
 depser_symlink_list() {
+  local APP_PATH="$(depser_app_path)"
+  local MAM_DIR="${SRC_PATH}/.ci/mam"
+
   for i in "${SRC_PATH}/.ci"/* ; do
     [ ! -d "${i}" ] && continue
     # replace mol-icon to mol/icon, etc
@@ -102,16 +101,17 @@ depser_symlink_list() {
 
     echo "${i}	${MAM_DIR}/${name}"
   done
-  
-  local APP_PATH="$(depser_app_path)"
 
   # node require cant find node_modules if script inside symlinked directory
   # echo "${MAM_DIR}/node_modules	${SRC_PATH}/.ci/node_modules"
   echo "${MAM_DIR}/node_modules	${SRC_PATH}/node_modules"
   echo "${SRC_PATH}	${MAM_DIR}/${APP_PATH}"
-  echo "${SRC_PATH}/.ci/package-lock.json"	"${MAM_DIR}/package-lock.json"
+
+  test -e "${SRC_PATH}/.ci/package-lock.json" | echo "${SRC_PATH}/.ci/package-lock.json"	"${MAM_DIR}/package-lock.json"
+
   test -e "${SRC_PATH}/.ci/links.txt" && cat "${SRC_PATH}/.ci/links.txt" | while read from to; do
-    echo "${SRC_PATH}/.ci/${from}	${SRC_PATH}/.ci/${to}"
+    test ! -e "${SRC_PATH}/.ci/${from}" && continue
+	echo "${SRC_PATH}/.ci/${from}	${SRC_PATH}/.ci/${to}"
   done
 }
 
@@ -142,27 +142,30 @@ depser_check_app() {
   fi
 }
 
-depser_build() {
+depser_make() {
   local APP_PATH="$(depser_app_path)"
 
   depser_dirs_link \
-&& cd "${MAM_DIR}" \
-&& echo "Step 1. install npm" \
-&& npm install --ignore-scripts || {
-    depser_dirs_unlink
-    echo "ERROR: Step 1"
-    exit 1
-  }
+	&& cd "${SRC_PATH}/.ci/mam" \
+	&& echo "Step 1. install npm" \
+	&& npm install --ignore-scripts || {
+		depser_dirs_unlink
+		echo "ERROR: Step 1"
+		exit 1
+	}
 
-  echo "Step 2. Build app ${MAM_DIR}/${APP_PATH}/app" \
+  echo "Step 2. Build app ${SRC_PATH}/.ci/mam/${APP_PATH}/app" \
     && MAM_PULL_DISABLED=1 npm exec mam "${APP_PATH}/app" || {
       depser_dirs_unlink
       echo "ERROR: Step 2"
       exit 1
     }
-
-  depser_dirs_unlink
   echo "SUCCESS. Build in ${SRC_PATH}/app/-"
+}
+
+debser_build() {
+  debser_make
+  depser_dirs_unlink
 }
 
 depser_help() {
