@@ -14,7 +14,7 @@ namespace $.$$ {
 
 
 		part(key: string, index: number) {
-			const data = this.value()
+			const data = this.value().normal
 			type time_parts = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
 			let value = key in data ? Math.round(data[key as time_parts]) : null
 			const text = value ? declOfNum(value, this[key as time_parts]().split('|')) : ''
