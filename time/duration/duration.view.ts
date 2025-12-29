@@ -11,10 +11,12 @@ namespace $.$$ {
 	}
 
 	export class $yuf_time_duration extends $.$yuf_time_duration {
-
+		override normalized() {
+			return this.value().normal
+		}
 
 		part(key: string, index: number) {
-			const data = this.value().normal
+			const data = this.normalized()
 			type time_parts = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second'
 			let value = key in data ? Math.round(data[key as time_parts]) : null
 			const text = value ? declOfNum(value, this[key as time_parts]().split('|')) : ''
