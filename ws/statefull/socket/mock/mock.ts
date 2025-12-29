@@ -16,11 +16,17 @@ namespace $ {
 
 				if (periodically && ! first.mock_periodically() ) return null
 
-				const data = first.mock(obj.data as {}) ?? null
+				const data = first.mock(obj.data as {})
 
 				if (data === null) return data
 
-				return { ... obj, data, error: undefined, message: undefined }
+				return JSON.parse(JSON.stringify({
+					... obj,
+					data,
+					error: undefined,
+					message: undefined,
+					req_id: data === undefined ? undefined : obj.req_id,
+				}))
 			} catch (e) {
 
 				if (e instanceof Error) {

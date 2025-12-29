@@ -1,12 +1,7 @@
 namespace $ {
-	type Draft_data<Data = unknown> = [
-		store_id?: string | null,
-		tmp_data?: Data | null,
-	]
-
 	export class $yuf_entity2<Data = unknown> extends $mol_object {
 		protected factory() {
-			return this.constructor as typeof $yuf_entity2
+			return this.$.$yuf_entity2
 		}
 
 		protected static active = {} as Record<string, $yuf_entity2>
@@ -27,83 +22,73 @@ namespace $ {
 			delete this.factory().active[this.toString()]
 		}
 
-		protected static drafts(next?: Record<string, Draft_data | null> | null) {
-			return this.$.$mol_state_local.value(`${this}.drafts()`, next) ?? {}
-		}
+		protected static draft_creator_ids(next?: Record<string, string | null> | null) {
+			const key = `${this}.draft_creator_ids()`
+			const storage = this.$.$mol_state_local
 
-		protected static drafts_patch(next?: Record<string, Draft_data | null> | null) {
-			const prev = this.drafts()
-			if (next === undefined) return prev
+			const prev = storage.value<Record<string, string | null>>(key)
+
+			if (next === undefined) return prev ?? {}
 
 			next = { ...prev, ...next }
 
-			let keys_count = 0
-
 			for (let k in next) {
 				if (! next[k]) delete next[k]
-				else keys_count++
 			}
 
-			if (! keys_count) next = null
-
-			return this.drafts(next)
+			return storage.value(key, next) ?? {}
 		}
 
 		static draft_id_create() { return $mol_guid() }
 
 		@ $mol_mem_key
-		static draft_ids(store_id: string, draft_ids?: readonly string[]) {
+		static draft_ids(creator_id: string, draft_ids?: readonly string[]) {
 
-			const ids = this.drafts_patch(
+			const draft_creator_dict = this.draft_creator_ids(
 				! draft_ids ? draft_ids : Object.fromEntries(draft_ids.map(
-					draft_id => [
-						draft_id || this.draft_id_create(),
-						[ store_id ]
-					]
+					draft_id => [ draft_id || this.draft_id_create(), creator_id ]
 				))
 			)
 
-			return Object.keys(ids).filter(id => ids[id]?.[0] === store_id)
+			return Object.keys(draft_creator_dict).filter(id => draft_creator_dict[id] === creator_id)
 		}
 
 		@ $mol_mem_key
-		protected static draft_data<Data>(id: string, next?: Draft_data<Data> | null, storage?: 'storage') {
-			const prev = this.drafts_patch()[id] as typeof next ?? null
-			if (next === undefined) return prev
-
-			let result = this.drafts_patch({ [id]: next === null ? next : [
-				prev?.[0], // store_id
-				next[1], // data
-			] })[id] as typeof next ?? null
-
-			// Delete only from ls, but keep in memory to prevent actual call
-			// after non-idempotent server creating, if server returns new id
-			if (storage && result === null) return prev
-
-			return result
+		static creator_id(draft_id: string, next?: null) {
+			return this.draft_creator_ids(next === null ? { [draft_id]: null } : undefined)[draft_id] ?? null
 		}
 
-		protected draft_data(next?: Draft_data<Partial<Data>> | null, storage?: 'storage') {
-			return this.$.$yuf_entity2.draft_data(this.id(), next, storage)
+		static draft<Data>(id: string, next?: Data | null) {
+			return this.$.$mol_state_local.value(`${this}.draft("${id}")`, next) ?? null
 		}
 
 		@ $mol_mem
-		is_draft() {
-			return !! this.draft_data()?.[0]
+		is_draft(next?: null, flag?: 'storage') {
+			const id = this.id()
+			const factory = this.factory()
+			const is_draft = Boolean(factory.creator_id(id))
+			if (next !== null) return is_draft
+			factory.creator_id(id, next)
+			return flag === 'storage' ? is_draft : false
 		}
 
-		draft( next?: Partial<Data> | null, storage?: 'storage'): Partial<Data> | null {
-			const prev = this.draft_data()?.[1] ?? null
+		draft( next?: Partial<Data> | null, flag?: 'storage' | 'fill'): Partial<Data> | null {
+			const id = this.id()
+			const factory = this.factory()
+			const prev = factory.draft<typeof next>(id)
+			if (next === undefined) return prev
 
-			// merge with prev object, while debouncing
-			const draft = next ? this.merge(next, prev) : null
+			if (next || flag === 'fill') {
+				// merge with prev object, while debouncing
+				const merged = this.merge(next ?? this.data() ?? this.defaults(), prev)
+				return factory.draft(id, merged)
+			}
 
-			return this.draft_data(
-				next === undefined || next === null
-					? next
-					: [null, draft],
-				storage
-			)?.[1] ?? null
+			// null - delete from storage
+			const result = factory.draft(id, next)
+			this.is_draft(next, flag)
+			if (flag === 'storage') return prev
+			return result
 		}
 
 		_id = ''
@@ -112,7 +97,11 @@ namespace $ {
 
 		defaults(raw?: {}) { return {} as Data }
 
-		mock(prev?: Data | null): Data | null {
+		/**
+		 * 
+		 * @returns undefined - response without body
+		 */
+		mock(prev?: Data | null): Data | null | undefined {
 			return null
 		}
 
@@ -184,7 +173,8 @@ namespace $ {
 
 		@ $mol_mem
 		protected actual_push_task() {
-			const [store_id , draft] = this.draft_data() ?? []
+			const draft = this.draft()
+			const is_creating = this.is_draft()
 			if (! draft) return null
 
 			const debounce_timeout = this.debounce_timeout()
@@ -201,8 +191,7 @@ namespace $ {
 			// it converts to empty object in $yuf_ws_statefull.message_data
 			const result = actual ? this.merge(actual, data) : null
 
-			if (! store_id) {
-				// If store_id is empty - editing mode, clear draft and exit
+			if (! is_creating) {
 				this.draft(null)
 				return result
 			}
