@@ -12,6 +12,7 @@
 	"$mol_chat_title": "Дискуссия",
 	"$mol_date_next_hint": "Следующий месяц",
 	"$mol_date_prev_hint": "Предыдущий месяц",
+	"$mol_form_draft_reset_title": "Сбросить",
 	"$mol_form_form_invalid": "В форме есть ошибки",
 	"$mol_form_message_done": "Сохранено",
 	"$mol_form_submit_title": "Сохранить",
@@ -30,6 +31,8 @@
 	"$yuf_camera_recorder_button_status_message_inactive": "Остановлено",
 	"$yuf_camera_recorder_button_status_message_paused": "На паузе",
 	"$yuf_camera_recorder_button_status_message_recording": "Записывается",
+	"$yuf_catalog_app_log_out_title": "Выход",
+	"$yuf_catalog_app_login_title": "Логин",
 	"$yuf_chess_board_active_value_black": "черные",
 	"$yuf_chess_board_active_value_white": "белые",
 	"$yuf_chess_board_draw_title": "Ничья",
@@ -70,5 +73,13 @@
 	"$yuf_login_form_login_label": "Имя",
 	"$yuf_login_form_password_label": "Пароль",
 	"$yuf_login_form_submit_title": "Войти",
-	"$yuf_login_form_unknown_error": "Ошибка сервера"
+	"$yuf_login_form_unknown_error": "Ошибка сервера",
+	"$yuf_video_full_hint_checked": "Выйти из полноэкранного режима",
+	"$yuf_video_full_hint_unchecked": "Полноэкранный режим",
+	"$yuf_video_play_hint_checked": "Пауза",
+	"$yuf_video_play_hint_unchecked": "Воспроизвести",
+	"$yuf_ws_status_status_message_connecting": "соединяется",
+	"$yuf_ws_status_status_message_error": "ошибка",
+	"$yuf_ws_status_status_message_open": "онлайн",
+	"$yuf_ws_status_title": "Сервер: {status}"
 }

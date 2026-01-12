@@ -2675,3 +2675,342 @@ $yuf_localizer_demo $mol_example_large
 		\catalog
 	aspects /
 		\Application
+
+$yuf_locale_switch $mol_select
+	Filter null
+	model $yuf_locale_model
+		langs_available => langs_available
+		lang? => lang?
+	dictionary <= langs_available
+	value? <=> lang?
+
+$yuf_catalog_app $yuf_catalog
+	logged? false
+	logout? null
+	enter? null
+	placeholders_page /$mol_view
+	placeholders_no_authorized /$mol_view
+		<= Placeholder_no_authorized $mol_view
+	Login $mol_page
+		Logo <= Menu_logo
+		title <= login_title @ \Login
+		body <= login_body /$mol_view
+		foot <= menu_foot_public
+	menu_foot /$mol_view
+		^ menu_foot_public /$mol_view
+			<= Foot_first $mol_view sub <= foot_first_content /$mol_view
+			<= Foot_second $mol_view sub <= foot_second_content /$mol_view
+				<= Lights $yuf_lights_toggle
+					hint <= version \
+				<= Locale_switch $yuf_locale_switch
+				^ foot_second_post /$mol_view
+	Menu_links $mol_list
+		Empty <= Menu_links_empty
+		rows /$mol_view
+			^ menu_links_no_authorized /$mol_view
+			^ menu_links_authorized /$mol_view
+				^ menu_links
+				<= Log_out $mol_button_minor
+					sub / <= log_out_title @ \Exit
+					click? <=> logout_click? null
+	menu_filter_enabled false
+	plugins /
+		<= Theme $yuf_theme_plugin
+
+$mol_icon_sync $mol_icon path \M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z
+
+$mol_icon_sync_off $mol_icon path \M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z
+
+$mol_icon_sync_alert $mol_icon path \M11,13H13V7H11M21,4H15V10L17.24,7.76C18.32,8.85 19,10.34 19,12C19,14.61 17.33,16.83 15,17.65V19.74C18.45,18.85 21,15.73 21,12C21,9.79 20.09,7.8 18.64,6.36M11,17H13V15H11M3,12C3,14.21 3.91,16.2 5.36,17.64L3,20H9V14L6.76,16.24C5.68,15.15 5,13.66 5,12C5,9.39 6.67,7.17 9,6.35V4.26C5.55,5.15 3,8.27 3,12Z
+
+$yuf_ws_icon $mol_icon_sync
+	status \
+	status_icon *$mol_icon
+		error <= Error_icon $mol_icon_sync_off
+		open <= Open_icon $mol_icon_sync
+		connecting <= Connecting_icon $mol_icon_sync_alert
+
+$yuf_ws_status $mol_view
+	attr *
+		^
+		title <= title_formatted <= title
+	ws $yuf_ws_host
+		error_message => error_message
+	title @ \Server: {status}
+	status_message *
+		error @ \error
+		open @ \online
+		connecting @ \connecting
+	sub /
+		^ ws_error_content /
+			<= Ws_error $mol_speck
+				event *
+					click? <=> reset_error? null
+				value <= error_message
+		<= Icon $yuf_ws_icon status <= status \error
+
+$mol_icon_edit $mol_icon path \M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z
+
+$mol_icon_restore $mol_icon path \M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z
+
+$mol_form_draft $mol_form
+	model $mol_object2
+	model_pick*? null
+	changed false
+	state? null $mol_form_draft_state
+	state_pick*? null
+	value*? null
+	value_str*? \
+	value_bool*? false
+	value_number*? 0
+	dictionary_bool*? *
+	list_string*? /string
+	value_changed* false
+	reset? null
+	done?event null
+	buttons /$mol_view
+		<= Submit
+		<= Reset $mol_button_minor
+			hint <= reset_title @ \Reset
+			sub / <= Reset_icon $mol_icon_restore
+			click? <=> reset?
+
+$yuf_karaoke_form $mol_form_draft
+	model $yuf_karaoke_model
+	body /
+		^ title_field_content /
+			<= Title_field $mol_form_field
+				name <= title_name @ \Title
+				control <= Title $mol_string
+					value? <=> value_str*title?
+		<= Audio_url_field $mol_form_field
+			name <= audio_url_name @ \Audio url
+			control <= Audio_url $mol_string
+				value? <=> value_str*audio_url?
+		<= Lyrics_field $mol_form_field
+			name <= lyrics_name @ \Lyrics
+			control <= Lyrics $yuf_textarea
+				syntax <= lyrics_syntax null
+				value? <=> value_str*lyrics?
+
+$yuf_karaoke_text $mol_view
+	uri \
+	time 0
+	sub /
+		^ group_content /$mol_view
+			<= Group*0 $yuf_karaoke_text_group
+				ids <= ids* /readonly[number,number]
+				hilited_length* <= hilited_length* 0
+				row_text* <= row_text* \
+
+$yuf_karaoke_text_group $mol_view
+	ids /readonly[number,number]
+	sub /
+		^ row_content /$mol_view
+			<= Row* $yuf_karaoke_text_row
+				hilited_length <= hilited_length* 0
+				text <= row_text* \
+
+$yuf_karaoke_text_row $mol_view
+	hilited_length 0
+	sub <= content /
+		<= Hilited $mol_view
+			dom_name \span
+			sub / <= hilited_prefix \
+		<= text \
+
+$mol_icon_play $mol_icon path \M8,5.14V19.14L19,12.14L8,5.14Z
+
+$yuf_video_play $yuf_check_icon2
+	hint_checked @ \Pause
+	hint_unchecked @ \Play
+	Icon_checked $mol_icon_pause
+	Icon_unchecked $mol_icon_play
+
+$mol_icon_arrow_collapse $mol_icon path \M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z
+
+$mol_icon_arrow_collapse_all $mol_icon path \M19.5,3.09L20.91,4.5L16.41,9H20V11H13V4H15V7.59L19.5,3.09M20.91,19.5L19.5,20.91L15,16.41V20H13V13H20V15H16.41L20.91,19.5M4.5,3.09L9,7.59V4H11V11H4V9H7.59L3.09,4.5L4.5,3.09M3.09,19.5L7.59,15H4V13H11V20H9V16.41L4.5,20.91L3.09,19.5Z
+
+$mol_icon_arrow_expand $mol_icon path \M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z
+
+$mol_icon_arrow_expand_all $mol_icon path \M9.5,13.09L10.91,14.5L6.41,19H10V21H3V14H5V17.59L9.5,13.09M10.91,9.5L9.5,10.91L5,6.41V10H3V3H10V5H6.41L10.91,9.5M14.5,13.09L19,17.59V14H21V21H14V19H17.59L13.09,14.5L14.5,13.09M13.09,9.5L17.59,5H14V3H21V10H19V6.41L14.5,10.91L13.09,9.5Z
+
+$yuf_video_full $yuf_check_icon2
+	hint_checked @ \Exit fullscreen
+	hint_unchecked @ \Fullscreen
+	Icon_checked $mol_icon_arrow_collapse_all
+	Icon_unchecked $mol_icon_arrow_expand_all
+
+$yuf_number $mol_number
+	String $yuf_number_string
+		blur_event? <=> blur_event? null
+		type <= type
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+
+$yuf_number_string $mol_string
+	event *
+		^
+		blur? <=> blur_event? null
+
+$mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
+
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
+$yuf_number_range_string $mol_string
+	type \range
+	keyboard \decimal
+	attr *
+		^
+		title <= hint
+	field *
+		^
+		step <= step 1
+		min <= min 0
+		max <= max 100
+
+$yuf_number_range $mol_number
+	dec_icon $mol_icon_minus
+	inc_icon $mol_icon_plus
+	String $yuf_number_range_string
+		type <= type \range
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+		min <= value_min
+		max <= value_max
+		step <= step 0
+
+$yuf_video_slider $yuf_number_range
+	precision 0.05
+	value_max 100
+	value_min 0
+	sub /
+		<= String
+
+$yuf_video_estimate $mol_view
+	time 0
+	duration 0
+	ms_enabled false
+	sub /
+		<= time_formatted \
+
+$yuf_video_bar $mol_view
+	sub /
+		<= Left $mol_view
+			sub <= left_content /$mol_view
+				<= Playing $yuf_video_play
+					checked? <=> playing? false
+				<= Fullscreen $yuf_video_full
+					checked? <=> fullscreen? false
+		<= Mid $mol_view
+			sub <= mid_content /$mol_view
+				<= Slider $yuf_video_slider
+					value? <=> time? 0
+					value_max <= duration 100
+		<= Right $mol_view
+			sub <= right_content /$mol_view
+				<= Time $yuf_video_estimate
+					time <= time
+					duration <= duration
+
+$yuf_karaoke_bar $yuf_video_bar
+	left_content /
+		<= Playing
+
+$yuf_karaoke_player $mol_view
+	model $yuf_karaoke_model
+		title => title
+		audio_url => uri
+		lyrics_url => lyrics_url
+	sub /
+		<= Track $yuf_karaoke_text
+			uri <= lyrics_url
+			time <= video_time
+		<= Player $mol_video_player
+			uri <= uri
+			controls false
+			autoplay false
+			loop false
+			uri <= uri
+			time? => video_time?
+			duration => video_duration
+			playing? => playing?
+		^ bar_content /$mol_view
+			<= Bar $yuf_karaoke_bar
+				playing? <=> playing?
+				fullscreen? <=> fullscreen? false
+				duration <= video_duration
+				time? <=> video_time?
+
+$yuf_karaoke_page $mol_page
+	model $yuf_karaoke_model
+		title => title
+		audio_url => audio_url
+	tools /
+		^ buttons_content <= buttons
+		<= Edit_check $mol_check_icon
+			Icon <= Edit_check_icon $mol_icon_edit
+			checked? <=> edit_enabled? false
+		<= Close null
+	body /
+		^ edit_form_content /$mol_view
+			<= Form $yuf_karaoke_form
+				model <= model
+				value_str*? => value_str*?
+				foot /
+				done? <=> done? null
+				buttons => buttons
+		^ sing_content /$mol_view
+			<= Player $yuf_karaoke_player
+				model <= model
+				bar_content /
+				Bar => Player_bar
+	foot /
+		<= Player_bar
+
+$yuf_karaoke_link $yuf_link
+	model $yuf_karaoke_model
+		title => title
+	content /$mol_view_content
+		<= Title $mol_dimmer
+			haystack <= title
+			needle <= needle \
+
+$yuf_karaoke_catalog $yuf_catalog
+	param_suffix \kar
+	menu_title @ \Songs
+	store $yuf_karaoke_store
+		ids => spread_ids
+		by_id* => by_id*
+	Spread* $yuf_karaoke_page
+		model <= by_id*
+		done? <=> done*? null
+		Close <= Spread_close
+	Menu_link* $yuf_karaoke_link
+		model <= by_id*
+		needle <= menu_filter
+		link_arg <= arg*
+
+$yuf_karaoke_app $yuf_catalog_app
+	logged? true
+	menu_links_authorized <= menu_links
+	foot_second_post /
+		<= Ws_status $yuf_ws_status ws <= ws $yuf_ws_statefull
+	param \yuf_kar
+	spreads *
+		catalog <= Catalog $yuf_karaoke_catalog
+			store <= store $yuf_karaoke_store
+
+$yuf_karaoke_demo $mol_example_large
+	title \Karaoke demo
+	sub /
+		<= Karaoke $yuf_karaoke_app
+	tags /
+		\game
+		\karaoke
+	aspects /
+		\Application

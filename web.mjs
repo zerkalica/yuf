@@ -24222,6 +24222,3377 @@ var $;
     $mol_style_attach("yuf/localizer/demo/demo.view.css", "[mol_page_head] {\n\tz-index: unset;\n\tposition: unset;\n}\n");
 })($ || ($ = {}));
 
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_locale_model extends $mol_object {
+        lang(next) { return this.$.$mol_locale.lang(next); }
+        langs_available() {
+            return {
+                ru: 'РУ',
+                en: 'EN'
+            };
+        }
+    }
+    $.$yuf_locale_model = $yuf_locale_model;
+})($ || ($ = {}));
+
+;
+	($.$yuf_locale_switch) = class $yuf_locale_switch extends ($.$mol_select) {
+		langs_available(){
+			return (this.model().langs_available());
+		}
+		lang(next){
+			return (this.model().lang(next));
+		}
+		Filter(){
+			return null;
+		}
+		model(){
+			const obj = new this.$.$yuf_locale_model();
+			return obj;
+		}
+		dictionary(){
+			return (this.langs_available());
+		}
+		value(next){
+			return (this.lang(next));
+		}
+	};
+	($mol_mem(($.$yuf_locale_switch.prototype), "model"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_locale_switch, {
+            Option: {
+                '[mol_check_checked]': {
+                    true: {
+                        font: {
+                            weight: 700,
+                        },
+                    },
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_catalog_app) = class $yuf_catalog_app extends ($.$yuf_catalog) {
+		Placeholder_no_authorized(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		login_title(){
+			return (this.$.$mol_locale.text("$yuf_catalog_app_login_title"));
+		}
+		login_body(){
+			return [];
+		}
+		foot_first_content(){
+			return [];
+		}
+		Foot_first(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.foot_first_content()));
+			return obj;
+		}
+		version(){
+			return "";
+		}
+		Lights(){
+			const obj = new this.$.$yuf_lights_toggle();
+			(obj.hint) = () => ((this.version()));
+			return obj;
+		}
+		Locale_switch(){
+			const obj = new this.$.$yuf_locale_switch();
+			return obj;
+		}
+		foot_second_post(){
+			return [];
+		}
+		foot_second_content(){
+			return [
+				(this.Lights()), 
+				(this.Locale_switch()), 
+				...(this.foot_second_post())
+			];
+		}
+		Foot_second(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.foot_second_content()));
+			return obj;
+		}
+		menu_foot_public(){
+			return [(this.Foot_first()), (this.Foot_second())];
+		}
+		menu_links_no_authorized(){
+			return [];
+		}
+		log_out_title(){
+			return (this.$.$mol_locale.text("$yuf_catalog_app_log_out_title"));
+		}
+		logout_click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Log_out(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.log_out_title())]);
+			(obj.click) = (next) => ((this.logout_click(next)));
+			return obj;
+		}
+		menu_links_authorized(){
+			return [...(this.menu_links()), (this.Log_out())];
+		}
+		Theme(){
+			const obj = new this.$.$yuf_theme_plugin();
+			return obj;
+		}
+		logged(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		logout(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		placeholders_page(){
+			return [];
+		}
+		placeholders_no_authorized(){
+			return [(this.Placeholder_no_authorized())];
+		}
+		Login(){
+			const obj = new this.$.$mol_page();
+			(obj.Logo) = () => ((this.Menu_logo()));
+			(obj.title) = () => ((this.login_title()));
+			(obj.body) = () => ((this.login_body()));
+			(obj.foot) = () => ((this.menu_foot_public()));
+			return obj;
+		}
+		menu_foot(){
+			return [...(this.menu_foot_public())];
+		}
+		Menu_links(){
+			const obj = new this.$.$mol_list();
+			(obj.Empty) = () => ((this.Menu_links_empty()));
+			(obj.rows) = () => ([...(this.menu_links_no_authorized()), ...(this.menu_links_authorized())]);
+			return obj;
+		}
+		menu_filter_enabled(){
+			return false;
+		}
+		plugins(){
+			return [(this.Theme())];
+		}
+	};
+	($mol_mem(($.$yuf_catalog_app.prototype), "Placeholder_no_authorized"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Foot_first"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Lights"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Locale_switch"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Foot_second"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "logout_click"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Log_out"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Theme"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "logged"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "logout"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "enter"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Login"));
+	($mol_mem(($.$yuf_catalog_app.prototype), "Menu_links"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_catalog_app extends $.$yuf_catalog_app {
+            pages() {
+                const logged = this.logged();
+                if (logged)
+                    return super.pages();
+                return [this.Login()];
+            }
+            menu_links_authorized() {
+                return this.logged() ? super.menu_links_authorized() : [];
+            }
+            menu_links_no_authorized() {
+                return this.logged() ? [] : super.menu_links_no_authorized();
+            }
+            logout_click(e) {
+                this.logout();
+                this.$.$mol_wait_timeout(100);
+                const arg = this.$.$mol_state_arg;
+                const link = arg.link(this.spread_close_arg());
+                arg.href(link);
+            }
+            placeholders() {
+                if (this.spread())
+                    return this.placeholders_page();
+                if (!this.logged())
+                    return this.placeholders_no_authorized();
+                return super.placeholders();
+            }
+            login_title() {
+                return [this.menu_title(), super.login_title()].filter(Boolean).join(' | ');
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_catalog_app.prototype, "pages", null);
+        $$.$yuf_catalog_app = $yuf_catalog_app;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_catalog_app, {
+            Menu: {
+                flex: {
+                    basis: '13rem',
+                    grow: 0,
+                    shrink: 0,
+                },
+                Foot: {
+                    padding: $mol_gap.space,
+                    flex: {
+                        direction: 'column',
+                    },
+                }
+            },
+            Login: {
+                flex: {
+                    grow: 0,
+                    basis: '16rem',
+                },
+                Foot: {
+                    padding: $mol_gap.space,
+                    flex: {
+                        direction: 'column',
+                    },
+                }
+            },
+            Foot_second: {
+                gap: $mol_gap.space,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_socket extends $mol_object {
+        id = $mol_guid();
+        _native = null;
+        url_debug() { return this.$.$mol_state_arg.value('ws_url'); }
+        url() { return '/ws'; }
+        protocols() { return []; }
+        native() {
+            if (this._native)
+                return this._native;
+            let url = this.url_debug() || this.url();
+            if (!url.match(/^wss?\:/)) {
+                url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url;
+            }
+            const ws = this._native = new WebSocket(url, this.protocols());
+            ws.onerror = e => this.onerror(e);
+            ws.onclose = e => this.onclose(e);
+            ws.onmessage = message => this.onmessage(message);
+            ws.onopen = () => this.onopen();
+            return ws;
+        }
+        send(data) { return this.native().send(data); }
+        get readyState() { return this.native()?.readyState ?? WebSocket.CLOSED; }
+        onerror(error) { }
+        onclose(error) { }
+        onmessage(e) { }
+        onopen() { }
+        destructor() {
+            const ws = this._native;
+            if (!ws)
+                return;
+            ws.onerror = null;
+            ws.onclose = null;
+            ws.onmessage = null;
+            ws.onopen = null;
+            const state = ws.readyState;
+            if (state === WebSocket.CLOSED || state === WebSocket.CLOSING)
+                return;
+            try {
+                ws.close();
+            }
+            catch (e) {
+                $mol_fail_log(e);
+            }
+        }
+    }
+    $.$yuf_ws_socket = $yuf_ws_socket;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_ws_code = {
+        1000: 'Normal closure',
+        1001: 'Going away',
+        1002: 'Protocol error',
+        1003: 'Unsupported data',
+        1005: 'No status rcvd',
+        1006: 'Abnormal closure',
+        1007: 'Unsupported invalid frame payload data',
+        1008: 'Policy violation',
+        1009: 'Message too big',
+        1010: 'Mandatory extension',
+        1011: 'Internal error',
+        1012: 'Service restart',
+        1013: 'Try again later',
+        1014: 'Bad gateway',
+        1015: 'TLS handshake',
+        3000: 'Unauthorized',
+        3003: 'Forbidden',
+        3008: 'Timeout',
+        4000: 'Application error',
+    };
+    function $yuf_ws_code_text(code) {
+        return $.$yuf_ws_code[code] || ($.$yuf_ws_code[4000] + ' ' + code);
+    }
+    $.$yuf_ws_code_text = $yuf_ws_code_text;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_host extends $mol_object {
+        watchdog_deadline() { return 30000; }
+        restart_delay() { return 3000; }
+        ping_interval() { return 5000; }
+        url() { return ''; }
+        enabled() { return true; }
+        id() { return $mol_wire_probe(() => this.ws())?.id ?? null; }
+        protocols() { return []; }
+        restarts() { }
+        ws(reset) {
+            this.restarts();
+            if (!this.enabled())
+                return null;
+            return this.$.$yuf_ws_socket.make({
+                url: () => this.url(),
+                protocols: () => this.protocols(),
+                onclose: e => this.on_close(e),
+                onerror: e => this.on_error(e),
+                onopen: () => this.on_open(),
+                onmessage: e => this.on_message(e),
+            });
+        }
+        restartable(event) {
+            return event.type === 'error' || (event.type === 'close' && event.code !== 1000);
+        }
+        on_error(event) {
+            const err = new Error($yuf_ws_code_text(event.code ?? 1006), { cause: { event, socket_id: this.id() } });
+            this.opened(null);
+            this.error(err);
+        }
+        on_close(event) {
+            const delay = this.restart_delay();
+            const restartable = delay && event && this.restartable(event);
+            this.$.$mol_log3_rise({
+                place: '$yuf_ws_host.on_close()',
+                socket_id: this.id(),
+                message: $yuf_ws_code_text(event.code),
+                clean: event.wasClean,
+                hint: restartable ? `reconnecting after ${delay} ms` : 'sleep',
+            });
+            this.opened(null);
+            if (restartable)
+                this.watchdog(null, delay);
+        }
+        on_open() {
+            this.opened(null);
+            this.error(null);
+        }
+        on_message(event) {
+            const task = event.data;
+            try {
+                this.on_data(task);
+            }
+            catch (err) {
+                if ($mol_promise_like(err))
+                    $mol_fail_hidden(err);
+                $mol_fail_log(err);
+                this.error(err);
+            }
+        }
+        send(data) {
+            const ws = this.ws();
+            if (ws?.readyState !== WebSocket.OPEN) {
+                throw new Error('Socket not opened', { cause: ws });
+            }
+            return ws.send(data);
+        }
+        send_object(data) {
+            return this.send(JSON.stringify(data));
+        }
+        is_ping(obj) { return false; }
+        send_ping() { }
+        send_pong() { }
+        token_sended() { return null; }
+        on_data(data) {
+            if (this.watchdog_enabled())
+                this.watchdog(null);
+            const object = typeof data === 'string' ? JSON.parse(data) : null;
+            if (!object)
+                return;
+            if (this.is_ping(object))
+                return this.send_pong();
+            this.message_add(object);
+            this.on_object(object);
+        }
+        on_object(e) { }
+        debug_messages = [];
+        message_last_at(reset) { return Date.now(); }
+        message_add(message) {
+            if (!$mol_wire_probe(() => this.messages_grab()))
+                return;
+            this.debug_messages.push(message);
+            this.message_last_at(null);
+        }
+        messages_grab() {
+            this.message_last_at();
+            const messages = this.debug_messages;
+            this.debug_messages = [];
+            return messages;
+        }
+        opened(reset) {
+            return this.ws()?.readyState === WebSocket.OPEN;
+        }
+        heatbeat_enabled() { return true; }
+        heartbeat() {
+            const timeout = this.ping_interval();
+            if (!timeout)
+                return null;
+            if (!this.opened())
+                return null;
+            this.send_ping();
+            this.$.$mol_state_time.now(timeout);
+            return null;
+        }
+        watchdog_enabled() { return true; }
+        watchdog(reason, timeout = this.watchdog_deadline()) {
+            if (!timeout)
+                return null;
+            if (!this.ws())
+                return null;
+            return new this.$.$mol_after_timeout(timeout, () => this.ws(null));
+        }
+        error_packed(error) {
+            this.ws();
+            return error ?? null;
+        }
+        error(error) {
+            return this.error_packed(error ? [error] : error)?.[0] ?? null;
+        }
+        ready() {
+            if (this.heatbeat_enabled())
+                this.heartbeat();
+            if (this.watchdog_enabled())
+                this.watchdog();
+            this.token_sended();
+            return this.opened();
+        }
+        error_message() {
+            try {
+                this.ready();
+                return this.error()?.message ?? '';
+            }
+            catch (e) {
+                if (!$mol_promise_like(e))
+                    return e.message ?? '';
+            }
+            return '';
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "ws", null);
+    __decorate([
+        $mol_action
+    ], $yuf_ws_host.prototype, "send", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "message_last_at", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "messages_grab", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "opened", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "heartbeat", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "watchdog", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "error_packed", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "ready", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_host.prototype, "error_message", null);
+    $.$yuf_ws_host = $yuf_ws_host;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_session extends $mol_object {
+        client_id() { return this.$.$mol_dom_context.location.hostname; }
+        token_key() { return `${this.client_id()}_token`; }
+        token(next, op) {
+            return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null;
+        }
+        token_grab(reset) {
+            return this.token(reset, reset === null ? 'refresh' : undefined);
+        }
+        user_id() { return null; }
+        user_id_ensure() {
+            const user_id = this.user_id();
+            if (!user_id)
+                throw new Error('Required user_id in session');
+            return user_id;
+        }
+        logged() { return Boolean(this.token()); }
+        logout() { return this.token(null, 'logout'); }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_session.prototype, "token_grab", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_session.prototype, "logged", null);
+    $.$yuf_session = $yuf_session;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_promise extends $mol_promise {
+        _value = undefined;
+        _timer = null;
+        id = $mol_guid();
+        deadline(deadline = 30_000, error = new Error('Request Timeout')) {
+            this._timer = new $mol_after_timeout(deadline, () => this.value(error));
+        }
+        resolved() {
+            return this._value !== undefined;
+        }
+        value(next) {
+            if (next === undefined) {
+                if (this._value === undefined)
+                    $mol_fail_hidden(this.catch(e => null));
+                return this._value;
+            }
+            this._timer?.destructor();
+            this._timer = null;
+            this._value = next;
+            if (next instanceof Error)
+                return this.fail(next);
+            this.done(next);
+            return this._value;
+        }
+    }
+    $.$yuf_promise = $yuf_promise;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_statefull_channel extends $mol_object {
+        host;
+        signature;
+        constructor(host, signature) {
+            super();
+            this.host = host;
+            this.signature = signature;
+        }
+        ready() {
+            return this.host.ready();
+        }
+        send_data(data, req_id, op) {
+            if (data === undefined && !op)
+                this.subscribed = true;
+            this.host.send_object({
+                ...this.signature,
+                data,
+                req_id,
+                error: op === 'unsubscribe' ? null : undefined,
+            });
+        }
+        deadline_timeout() { return this.host.deadline_timeout(); }
+        response = null;
+        subscribed = false;
+        receive(message) {
+            const data = message.data === undefined ? {} : message.data;
+            if (this.response && (!message.req_id || this.response.id === message.req_id)) {
+                return this.response.value(data);
+            }
+            try {
+                this.data(data, 'cache');
+            }
+            catch (err) {
+                if (err !== data)
+                    $mol_fail_hidden(err);
+            }
+        }
+        data(next, cache) {
+            if (next !== undefined && cache === 'cache') {
+                return next;
+            }
+            const prev = $mol_wire_probe(() => this.data());
+            if (!this.response && (next !== undefined || prev === undefined)) {
+                this.response = new $yuf_promise();
+                const deadline = this.deadline_timeout();
+                this.response.deadline(deadline, new Error($mol_rest_code[$mol_rest_code['Request Timeout']], { cause: { ...this.signature, deadline }
+                }));
+            }
+            if (next !== undefined || this.ready()) {
+                this.send_data(cache === 'refresh' ? undefined : next, this.response?.id);
+            }
+            const value = this.response ? this.response.value() : (prev ?? null);
+            this.response = null;
+            if (value instanceof Error)
+                $mol_fail_hidden(value);
+            return value;
+        }
+        destructor() {
+            if (!this.subscribed)
+                return;
+            try {
+                this.send_data(null, undefined, 'unsubscribe');
+            }
+            catch (e) {
+                $mol_fail_log(e);
+            }
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_ws_statefull_channel.prototype, "send_data", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_statefull_channel.prototype, "data", null);
+    $.$yuf_ws_statefull_channel = $yuf_ws_statefull_channel;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_statefull extends $yuf_ws_host {
+        session() { return this.$.$mol_one.$yuf_session; }
+        is_ping(msg) { return msg.type === 'ping'; }
+        send_pong() { this.send_object({ type: 'pong' }); }
+        send_ping() { this.send_object({ type: 'ping' }); }
+        send_auth(token) { this.send_object({ type: 'auth', data: { token } }); }
+        token_sended() {
+            if (!this.opened())
+                return null;
+            const token = this.session().token();
+            this.error(null);
+            if (!token)
+                return null;
+            this.send_auth(token);
+            return token;
+        }
+        message_signature({ type, query, device, id }) {
+            return { type, id, query, device };
+        }
+        code_normalize(code) {
+            return '' + code;
+        }
+        message(obj) {
+            if (Array.isArray(obj))
+                return null;
+            if (!('type' in obj) && !('error' in obj))
+                return null;
+            if (obj.error === null)
+                return null;
+            const code = obj.error ? (this.code_normalize(obj.error) || obj.error) : null;
+            if (!code)
+                return obj;
+            throw new Error(code, { cause: obj });
+        }
+        deadline_timeout() { return 10000; }
+        channel(signature) {
+            return new this.$.$yuf_ws_statefull_channel(this, signature);
+        }
+        data(signature, data, refresh) {
+            return this.channel(signature).data(data, refresh);
+        }
+        restart_count(next) {
+            return next ?? (($mol_wire_probe(() => this.restart_count()) ?? -1) + 1);
+        }
+        restarts_to_logout() { return 3; }
+        ws(reset) {
+            const count = this.restart_count(null);
+            if (count >= this.restarts_to_logout())
+                this.logout();
+            return super.ws(reset);
+        }
+        logout() {
+            new $mol_after_frame($mol_wire_async(() => {
+                try {
+                    this.session().logout();
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    $mol_fail_log(e);
+                }
+            }));
+        }
+        on_object(obj) {
+            const signature = this.message_signature(obj);
+            const channel = signature.type ? $mol_wire_probe(() => this.channel(signature)) : null;
+            try {
+                this.restart_count(0);
+                const message = this.message(obj);
+                if (message)
+                    channel?.receive(message);
+            }
+            catch (error) {
+                if (error instanceof Error && this.auth_need(error)) {
+                    this.logout();
+                }
+                if (!channel)
+                    $mol_fail_hidden(error);
+                const req_id = error instanceof Error && typeof error.cause === 'object'
+                    ? (error.cause?.req_id ?? null)
+                    : null;
+                channel.receive({ data: error, req_id });
+            }
+        }
+        auth_need(error) {
+            return error.message === 'Unauthorized'
+                || error.message === 'Forbidden'
+                || error.message === 'AUTH_FAILED';
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_statefull.prototype, "token_sended", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_ws_statefull.prototype, "channel", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_statefull.prototype, "restart_count", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_statefull.prototype, "ws", null);
+    $.$yuf_ws_statefull = $yuf_ws_statefull;
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_sync) = class $mol_icon_sync extends ($.$mol_icon) {
+		path(){
+			return "M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_sync_off) = class $mol_icon_sync_off extends ($.$mol_icon) {
+		path(){
+			return "M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_sync_alert) = class $mol_icon_sync_alert extends ($.$mol_icon) {
+		path(){
+			return "M11,13H13V7H11M21,4H15V10L17.24,7.76C18.32,8.85 19,10.34 19,12C19,14.61 17.33,16.83 15,17.65V19.74C18.45,18.85 21,15.73 21,12C21,9.79 20.09,7.8 18.64,6.36M11,17H13V15H11M3,12C3,14.21 3.91,16.2 5.36,17.64L3,20H9V14L6.76,16.24C5.68,15.15 5,13.66 5,12C5,9.39 6.67,7.17 9,6.35V4.26C5.55,5.15 3,8.27 3,12Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_ws_icon) = class $yuf_ws_icon extends ($.$mol_icon_sync) {
+		Error_icon(){
+			const obj = new this.$.$mol_icon_sync_off();
+			return obj;
+		}
+		Open_icon(){
+			const obj = new this.$.$mol_icon_sync();
+			return obj;
+		}
+		Connecting_icon(){
+			const obj = new this.$.$mol_icon_sync_alert();
+			return obj;
+		}
+		status(){
+			return "";
+		}
+		status_icon(){
+			return {
+				"error": (this.Error_icon()), 
+				"open": (this.Open_icon()), 
+				"connecting": (this.Connecting_icon())
+			};
+		}
+	};
+	($mol_mem(($.$yuf_ws_icon.prototype), "Error_icon"));
+	($mol_mem(($.$yuf_ws_icon.prototype), "Open_icon"));
+	($mol_mem(($.$yuf_ws_icon.prototype), "Connecting_icon"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_ws_icon extends $.$yuf_ws_icon {
+            path() {
+                return this.status_icon()[this.status()]?.path() ?? super.path();
+            }
+        }
+        $$.$yuf_ws_icon = $yuf_ws_icon;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_ws_status) = class $yuf_ws_status extends ($.$mol_view) {
+		title_formatted(){
+			return (this.title());
+		}
+		error_message(){
+			return (this.ws().error_message());
+		}
+		reset_error(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Ws_error(){
+			const obj = new this.$.$mol_speck();
+			(obj.event) = () => ({"click": (next) => (this.reset_error(next))});
+			(obj.value) = () => ((this.error_message()));
+			return obj;
+		}
+		ws_error_content(){
+			return [(this.Ws_error())];
+		}
+		status(){
+			return "error";
+		}
+		Icon(){
+			const obj = new this.$.$yuf_ws_icon();
+			(obj.status) = () => ((this.status()));
+			return obj;
+		}
+		attr(){
+			return {...(super.attr()), "title": (this.title_formatted())};
+		}
+		ws(){
+			const obj = new this.$.$yuf_ws_host();
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_ws_status_title"));
+		}
+		status_message(){
+			return {
+				"error": (this.$.$mol_locale.text("$yuf_ws_status_status_message_error")), 
+				"open": (this.$.$mol_locale.text("$yuf_ws_status_status_message_open")), 
+				"connecting": (this.$.$mol_locale.text("$yuf_ws_status_status_message_connecting"))
+			};
+		}
+		sub(){
+			return [...(this.ws_error_content()), (this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_ws_status.prototype), "reset_error"));
+	($mol_mem(($.$yuf_ws_status.prototype), "Ws_error"));
+	($mol_mem(($.$yuf_ws_status.prototype), "Icon"));
+	($mol_mem(($.$yuf_ws_status.prototype), "ws"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_ws_status extends $.$yuf_ws_status {
+            ws_error_content() {
+                return this.error_message() ? super.ws_error_content() : [];
+            }
+            status() {
+                const ws = this.ws();
+                if (ws.error_message())
+                    return 'error';
+                if (ws.ready())
+                    return 'open';
+                return 'connecting';
+            }
+            reset_error(e) {
+                e && $mol_dom_event.wrap(e)?.prevented(true);
+                this.ws().error(null);
+            }
+            title_formatted() {
+                const message = this.status_message()[this.status()] || this.status_message().error;
+                return super.title().replace('{status}', message);
+            }
+        }
+        $$.$yuf_ws_status = $yuf_ws_status;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class timeout_promise extends $mol_promise {
+        task;
+        succcess() {
+            this.task = null;
+            this.done();
+        }
+        destructor() {
+            this.task?.destructor();
+            this.task = null;
+        }
+    }
+    function $yuf_wait_timeout_async(timeout) {
+        const promise = new timeout_promise();
+        promise.task = new this.$mol_after_timeout(timeout, () => promise.succcess());
+        return promise;
+    }
+    $.$yuf_wait_timeout_async = $yuf_wait_timeout_async;
+    class $yuf_wait_timeout_wrap extends $mol_object {
+        timeout;
+        constructor(timeout) {
+            super();
+            this.timeout = timeout;
+        }
+        destructor() {
+            this.promise?.destructor();
+        }
+        promise = null;
+        wait() {
+            if (this.promise && !this.promise.task)
+                return;
+            this.promise?.destructor();
+            this.promise = this.$.$yuf_wait_timeout_async(this.timeout);
+            $mol_fail_hidden(this.promise);
+        }
+        static timeout(timeout) {
+            return new $yuf_wait_timeout_wrap(timeout);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_wait_timeout_wrap, "timeout", null);
+    $.$yuf_wait_timeout_wrap = $yuf_wait_timeout_wrap;
+    function $yuf_wait_timeout(timeout) {
+        return this.$yuf_wait_timeout_wrap.timeout(timeout).wait();
+    }
+    $.$yuf_wait_timeout = $yuf_wait_timeout;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_entity2 extends $mol_object {
+        factory() {
+            return this.$.$yuf_entity2;
+        }
+        static active = {};
+        static active_model(signature) {
+            return this.active[JSON.stringify(signature)] ?? null;
+        }
+        propagate() {
+            if (this.$.$yuf_entity2.prototype.mock === this.mock)
+                return;
+            this.factory().active[this.toString()] = this;
+        }
+        destructor() {
+            this.draft(null);
+            if (this.$.$yuf_entity2.prototype.mock === this.mock)
+                return;
+            delete this.factory().active[this.toString()];
+        }
+        static draft_creator_ids(next) {
+            const key = `${this}.draft_creator_ids()`;
+            const storage = this.$.$mol_state_local;
+            const prev = storage.value(key);
+            if (next === undefined)
+                return prev ?? {};
+            next = { ...prev, ...next };
+            for (let k in next) {
+                if (!next[k])
+                    delete next[k];
+            }
+            return storage.value(key, next) ?? {};
+        }
+        static draft_id_create() { return $mol_guid(); }
+        static draft_ids(creator_id, draft_ids) {
+            const draft_creator_dict = this.draft_creator_ids(!draft_ids ? draft_ids : Object.fromEntries(draft_ids.map(draft_id => [draft_id || this.draft_id_create(), creator_id])));
+            return Object.keys(draft_creator_dict).filter(id => draft_creator_dict[id] === creator_id);
+        }
+        static creator_id(draft_id, next) {
+            return this.draft_creator_ids(next === null ? { [draft_id]: null } : undefined)[draft_id] ?? null;
+        }
+        static draft(id, next) {
+            return this.$.$mol_state_local.value(`${this}.draft("${id}")`, next) ?? null;
+        }
+        is_draft(next, flag) {
+            const id = this.id();
+            const factory = this.factory();
+            const is_draft = Boolean(factory.creator_id(id));
+            if (next !== null)
+                return is_draft;
+            factory.creator_id(id, next);
+            return flag === 'storage' ? is_draft : false;
+        }
+        draft(next, flag) {
+            const id = this.id();
+            const factory = this.factory();
+            const prev = factory.draft(id);
+            if (next === undefined)
+                return prev;
+            if (next || flag === 'fill') {
+                const merged = this.merge(next ?? this.data() ?? this.defaults(), prev);
+                return factory.draft(id, merged);
+            }
+            const result = factory.draft(id, next);
+            this.is_draft(next, flag);
+            if (flag === 'storage')
+                return prev;
+            return result;
+        }
+        _id = '';
+        id() { return this._id; }
+        defaults(raw) { return {}; }
+        mock(prev) {
+            return null;
+        }
+        mock_periodically() { return false; }
+        draft_value(field, next) {
+            const draft = this.draft(next === undefined ? undefined : { [field]: next })?.[field] ?? null;
+            return draft === undefined ? this.value(field) : (draft ?? null);
+        }
+        value(field, next) {
+            return this.data(next === undefined ? undefined : { [field]: next })?.[field] ?? this.defaults()[field];
+        }
+        actual(next, refresh) {
+            return next ?? null;
+        }
+        data(next, cache) {
+            let actual;
+            if (next === undefined) {
+                actual = this.is_draft() ? this.draft() : this.actual();
+            }
+            else if (cache) {
+                actual = next;
+            }
+            else if (next === null) {
+                actual = this.is_draft() ? this.draft(next, 'storage') : this.actual(next);
+            }
+            else {
+                actual = this.actual_push_debounced(next);
+            }
+            if (actual === null)
+                return null;
+            if (actual instanceof Error)
+                return actual;
+            return this.defaults(this.merge(actual));
+        }
+        merge(actual, prev = $mol_wire_probe(() => this.data())) {
+            if (this.defaults() instanceof Array) {
+                if (actual instanceof Array)
+                    return actual;
+                return prev ?? [];
+            }
+            return { ...prev, ...actual };
+        }
+        debounce_timeout() { return 100; }
+        patch_enabled() { return false; }
+        actual_push_task() {
+            const draft = this.draft();
+            const is_creating = this.is_draft();
+            if (!draft)
+                return null;
+            const debounce_timeout = this.debounce_timeout();
+            if (debounce_timeout) {
+                this.$.$yuf_wait_timeout(debounce_timeout);
+            }
+            const data = this.patch_enabled() ? draft : this.defaults(this.merge(draft));
+            const actual = this.actual(data);
+            const result = actual ? this.merge(actual, data) : null;
+            if (!is_creating) {
+                this.draft(null);
+                return result;
+            }
+            const server_id = actual ? this.server_created_id(actual) : null;
+            const id = this.id();
+            if (server_id && server_id === id) {
+                this.resubscribe();
+                return result;
+            }
+            this.$.$mol_log3_warn({
+                place: `${this.constructor}.pushing`,
+                message: 'server creates new id, entity is dead',
+                name: this.toString(),
+                hint: 'Avoid non-idempotent server API when creating entities',
+            });
+            this.draft(null, 'storage');
+            return result;
+        }
+        resubscribe() {
+            new $mol_after_frame($mol_wire_async(() => this.actual(null, 'refresh')));
+            this.draft(null);
+            this.data();
+        }
+        actual_push_debounced(next) {
+            this.draft(next);
+            return this.actual_push_task();
+        }
+        server_created_id(actual = this.data()) {
+            return !Array.isArray(actual) ? actual.id || null : null;
+        }
+        remove() {
+            this.data(null);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_entity2.prototype, "is_draft", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2.prototype, "draft_value", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2.prototype, "value", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_entity2.prototype, "data", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_entity2.prototype, "actual_push_task", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2.prototype, "resubscribe", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2.prototype, "actual_push_debounced", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2.prototype, "server_created_id", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2.prototype, "remove", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2, "draft_ids", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2, "creator_id", null);
+    $.$yuf_entity2 = $yuf_entity2;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_entity extends $yuf_entity2 {
+        type() { return ''; }
+        query() { return {}; }
+        device() { return []; }
+        signature() {
+            const query = this.query();
+            const device = this.device();
+            let id = this.id() || undefined;
+            if (id && device.includes(id))
+                id = undefined;
+            return {
+                type: this.type(),
+                id,
+                query: Object.keys(query).length ? query : undefined,
+                device: device.length ? device : undefined,
+            };
+        }
+        ws() { return this.$.$mol_one.$yuf_ws_statefull; }
+        actual(next, refresh) {
+            this.propagate();
+            return this.ws().data(this.signature(), next, refresh);
+        }
+        toString() { return JSON.stringify(this.signature()); }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_entity.prototype, "signature", null);
+    $.$yuf_ws_entity = $yuf_ws_entity;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_entity2_store extends $yuf_entity2 {
+        defaults(raw) {
+            return [...raw ?? []];
+        }
+        ids(next, cache) {
+            return (this.data(next, cache) ?? []);
+        }
+        id_remove(id) {
+            const ids = $mol_wire_probe(() => this.ids());
+            if (ids?.length)
+                this.ids(ids.filter(cur => cur !== id), 'cache');
+        }
+        id_add(id) {
+            const ids = this.ids();
+            if (ids && !ids.includes(id))
+                this.ids([id, ...ids], 'cache');
+        }
+        store_id() { return this.toString(); }
+        draft_ids(next) {
+            return this.$.$yuf_entity2.draft_ids(this.store_id(), next);
+        }
+        draft_id(next = '') {
+            let id = this.draft_ids()?.[0];
+            if (!id) {
+                id = this.draft_ids([next])[0];
+            }
+            return id;
+        }
+        by_id(id) {
+            throw new Error(`Implement ${this}.by_id()`);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_entity2_store.prototype, "id_remove", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2_store.prototype, "id_add", null);
+    __decorate([
+        $mol_action
+    ], $yuf_entity2_store.prototype, "draft_id", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2_store.prototype, "by_id", null);
+    $.$yuf_entity2_store = $yuf_entity2_store;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_entity_store extends $yuf_entity2_store {
+        type() { return ''; }
+        query() { return {}; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        signature() {
+            const query = this.query();
+            const device = this.device();
+            return {
+                type: this.type(),
+                id: this.id() || undefined,
+                query: Object.keys(query).length ? query : undefined,
+                device: device.length ? device : undefined,
+            };
+        }
+        ws() { return this.$.$mol_one.$yuf_ws_statefull; }
+        actual(next, refresh) {
+            this.propagate();
+            return this.ws().data(this.signature(), next, refresh);
+        }
+        toString() { return JSON.stringify(this.signature()); }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_entity_store.prototype, "signature", null);
+    $.$yuf_ws_entity_store = $yuf_ws_entity_store;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_data_record(sub) {
+        return $mol_data_setup((val) => {
+            let res = {};
+            for (const field in sub) {
+                try {
+                    res[field] =
+                        sub[field](val[field]);
+                }
+                catch (error) {
+                    if (error instanceof Promise)
+                        return $mol_fail_hidden(error);
+                    error.message = `[${JSON.stringify(field)}] ${error.message}`;
+                    return $mol_fail(error);
+                }
+            }
+            return res;
+        }, sub);
+    }
+    $.$mol_data_record = $mol_data_record;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_karaoke_model_data = $mol_data_record({
+        title: $mol_data_string,
+        audio_url: $mol_data_string,
+        lyrics: $mol_data_string,
+    });
+    class $yuf_karaoke_model extends $yuf_ws_entity {
+        type() {
+            return 'karaoke';
+        }
+        defaults(raw) {
+            return $.$yuf_karaoke_model_data({
+                title: '',
+                audio_url: '',
+                lyrics: '',
+                ...raw,
+            });
+        }
+        title(next) {
+            const a = this.value('title', next);
+            return a;
+        }
+        audio_url(next) {
+            return this.value('audio_url', next);
+        }
+        lyrics(next) {
+            return this.value('lyrics', next);
+        }
+        lyrics_blob() {
+            return new Blob([this.lyrics()], { type: 'text/vtt' });
+        }
+        lyrics_url() {
+            return this.$.$yuf_url_object.from_blob(this.lyrics_blob()).url;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_karaoke_model.prototype, "lyrics_blob", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_karaoke_model.prototype, "lyrics_url", null);
+    $.$yuf_karaoke_model = $yuf_karaoke_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_karaoke_store extends $yuf_ws_entity_store {
+        type() { return 'karaokes'; }
+        by_id(id) {
+            return this.$.$yuf_karaoke_model.make({
+                _id: id,
+            });
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_karaoke_store.prototype, "by_id", null);
+    $.$yuf_karaoke_store = $yuf_karaoke_store;
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_edit) = class $mol_icon_edit extends ($.$mol_icon) {
+		path(){
+			return "M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_restore) = class $mol_icon_restore extends ($.$mol_icon) {
+		path(){
+			return "M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_form_draft) = class $mol_form_draft extends ($.$mol_form) {
+		reset_title(){
+			return (this.$.$mol_locale.text("$mol_form_draft_reset_title"));
+		}
+		Reset_icon(){
+			const obj = new this.$.$mol_icon_restore();
+			return obj;
+		}
+		Reset(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.reset_title()));
+			(obj.sub) = () => ([(this.Reset_icon())]);
+			(obj.click) = (next) => ((this.reset(next)));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$mol_object2();
+			return obj;
+		}
+		model_pick(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		changed(){
+			return false;
+		}
+		state(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		state_pick(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		value(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		value_str(id, next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		value_bool(id, next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		value_number(id, next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		dictionary_bool(id, next){
+			if(next !== undefined) return next;
+			return {};
+		}
+		list_string(id, next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		value_changed(id){
+			return false;
+		}
+		reset(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		done(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		buttons(){
+			return [(this.Submit()), (this.Reset())];
+		}
+	};
+	($mol_mem(($.$mol_form_draft.prototype), "Reset_icon"));
+	($mol_mem(($.$mol_form_draft.prototype), "Reset"));
+	($mol_mem(($.$mol_form_draft.prototype), "model"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "model_pick"));
+	($mol_mem(($.$mol_form_draft.prototype), "state"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "state_pick"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "value"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "value_str"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "value_bool"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "value_number"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "dictionary_bool"));
+	($mol_mem_key(($.$mol_form_draft.prototype), "list_string"));
+	($mol_mem(($.$mol_form_draft.prototype), "reset"));
+	($mol_mem(($.$mol_form_draft.prototype), "done"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_wire_race(...tasks) {
+        const results = tasks.map(task => {
+            try {
+                return task();
+            }
+            catch (error) {
+                return error;
+            }
+        });
+        const promises = results.filter(res => $mol_promise_like(res));
+        if (promises.length)
+            $mol_fail(Promise.race(promises));
+        const error = results.find(res => res instanceof Error);
+        if (error)
+            $mol_fail(error);
+        return results;
+    }
+    $.$mol_wire_race = $mol_wire_race;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        function norm_string(val) {
+            return String(val ?? '');
+        }
+        function norm_number(val) {
+            return Number(val ?? 0);
+        }
+        function norm_bool(val) {
+            return Boolean(val ?? false);
+        }
+        function normalize_val(prev, next) {
+            switch (typeof prev) {
+                case 'boolean': return String(next) === 'true';
+                case 'number': return Number(next);
+                case 'string': return String(next);
+            }
+            return next;
+        }
+        class $mol_form_draft extends $.$mol_form_draft {
+            list_string(field, next) {
+                return this.value(field, next)?.map(norm_string) ?? [];
+            }
+            dictionary_bool(field, next) {
+                if (next) {
+                    const prev = this.model_pick(field);
+                    const normalized = {};
+                    for (const key in next) {
+                        if (next[key] || key in prev)
+                            normalized[key] = next[key];
+                    }
+                    return this.value(field, normalized) ?? {};
+                }
+                return this.value(field) ?? {};
+            }
+            value_str(field, next) {
+                return norm_string(this.value(field, next));
+            }
+            value_number(field, next) {
+                return norm_number(this.value(field, next));
+            }
+            value_bool(field, next) {
+                return norm_bool(this.value(field, next));
+            }
+            model_pick(field, next) {
+                return this.model()[field](next);
+            }
+            state_pick(field, next) {
+                return this.state(next === undefined ? next : { ...this.state(), [field]: next })[field];
+            }
+            value(field, next) {
+                if (Array.isArray(next) && next.length === 0 && !this.model_pick(field))
+                    next = null;
+                return this.state_pick(field, next) ?? this.model_pick(field);
+            }
+            value_changed(field) {
+                const prev = $mol_wire_probe(() => this.value_changed(field));
+                try {
+                    const next = this.state_pick(field);
+                    const prev = this.model_pick(field);
+                    const next_norm = normalize_val(prev, next);
+                    return !$mol_compare_deep(next_norm, prev);
+                }
+                catch (e) {
+                    $mol_fail_log(e);
+                    return prev ?? false;
+                }
+            }
+            state(next) {
+                return this.$.$mol_state_local.value(`${this}.state()`, next) ?? {};
+            }
+            changed() {
+                return Object.keys(this.state()).some(field => this.value_changed(field));
+            }
+            reset(next) {
+                this.state(null);
+            }
+            result(next) {
+                this.state();
+                if (next instanceof Error)
+                    next = this.errors()[next.message] || next.message || this.form_invalid();
+                return next ?? '';
+            }
+            buttons() {
+                return [
+                    this.Submit(),
+                    ...this.changed() ? [this.Reset()] : [],
+                    ...this.result() ? [this.Result()] : [],
+                ];
+            }
+            save(next) {
+                const tasks = Object.entries(this.state()).map(([field, next]) => () => {
+                    const prev = this.model_pick(field);
+                    return {
+                        field,
+                        next: normalize_val(prev, next)
+                    };
+                });
+                const normalized = $mol_wire_race(...tasks);
+                $mol_wire_race(...normalized.map(({ field, next }) => () => this.model_pick(field, next)));
+                this.reset();
+                this.done(next);
+                return null;
+            }
+        }
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "list_string", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "dictionary_bool", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "value_str", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "value_number", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "value_bool", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "value", null);
+        __decorate([
+            $mol_mem_key
+        ], $mol_form_draft.prototype, "value_changed", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form_draft.prototype, "state", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form_draft.prototype, "changed", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form_draft.prototype, "result", null);
+        __decorate([
+            $mol_mem
+        ], $mol_form_draft.prototype, "buttons", null);
+        __decorate([
+            $mol_action
+        ], $mol_form_draft.prototype, "save", null);
+        $$.$mol_form_draft = $mol_form_draft;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($mol_form_draft, {
+            width: '100%',
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_form) = class $yuf_karaoke_form extends ($.$mol_form_draft) {
+		title_name(){
+			return (this.$.$mol_locale.text("$yuf_karaoke_form_title_name"));
+		}
+		Title(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.value_str("title", next)));
+			return obj;
+		}
+		Title_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.title_name()));
+			(obj.control) = () => ((this.Title()));
+			return obj;
+		}
+		title_field_content(){
+			return [(this.Title_field())];
+		}
+		audio_url_name(){
+			return (this.$.$mol_locale.text("$yuf_karaoke_form_audio_url_name"));
+		}
+		Audio_url(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.value_str("audio_url", next)));
+			return obj;
+		}
+		Audio_url_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.audio_url_name()));
+			(obj.control) = () => ((this.Audio_url()));
+			return obj;
+		}
+		lyrics_name(){
+			return (this.$.$mol_locale.text("$yuf_karaoke_form_lyrics_name"));
+		}
+		lyrics_syntax(){
+			return null;
+		}
+		Lyrics(){
+			const obj = new this.$.$yuf_textarea();
+			(obj.syntax) = () => ((this.lyrics_syntax()));
+			(obj.value) = (next) => ((this.value_str("lyrics", next)));
+			return obj;
+		}
+		Lyrics_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.lyrics_name()));
+			(obj.control) = () => ((this.Lyrics()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_karaoke_model();
+			return obj;
+		}
+		body(){
+			return [
+				...(this.title_field_content()), 
+				(this.Audio_url_field()), 
+				(this.Lyrics_field())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Title"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Title_field"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Audio_url"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Audio_url_field"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Lyrics"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "Lyrics_field"));
+	($mol_mem(($.$yuf_karaoke_form.prototype), "model"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_karaoke_syntax_flow = new $mol_syntax2({
+        'code-global': /^\s*WEBVTT\s*$/,
+        'code-field': /^(?:STYLE[-\s]*)([^]*?)^([\r\n])?$([\r\n]*)/,
+        'code-comment-block': /^NOTE[\r\n]+([\s\S]*?)^(?:[\r\n])?$(?:[\r\n]*)/,
+        'code-comment-inline': /^NOTE[-\s]*(.*)$/,
+        'code-tag': /^(\d+)(?:\s+-\s*([\w\d\s]+))?$/,
+        'code-keyword': /^([\d\.:]+)\s*-->\s*([\d\.:]+)(?:\s+([\w\d\s]+))?$/,
+        'brace-open': /<{2}/,
+        'brace-close': />{2}/,
+        'code-number': /<(\d+[\d\.:]+)>/,
+        'block-splitter': /[\r\n]{2,}/,
+        'row-slitter': /[\r\n]/,
+    });
+    function $yuf_karaoke_syntax_parse(str) {
+        let need_new_block = true;
+        let need_new_row = true;
+        let time_min = 0;
+        let time_max = 0;
+        let groups = [];
+        this.$yuf_karaoke_syntax_flow.tokenize(str, (name, found, chunks) => {
+            if (name === 'code-keyword') {
+                const [min, max] = chunks;
+                time_min = str_to_ms(min);
+                time_max = str_to_ms(max);
+            }
+            if (name === 'block-splitter') {
+                need_new_row = need_new_block = true;
+                const rows = groups.at(-1);
+                if (time_max && rows?.length) {
+                    rows[rows.length - 1].push(time_max, ' ');
+                }
+                time_max = 0;
+            }
+            if (name === 'row-slitter') {
+                need_new_row = true;
+            }
+            if (name === 'code-number') {
+                const [min,] = chunks;
+                time_min = str_to_ms(min);
+            }
+            if (name === '') {
+                if (need_new_block)
+                    groups.push([]);
+                const rows = groups[groups.length - 1];
+                if (need_new_row)
+                    rows.push([]);
+                need_new_block = need_new_row = false;
+                rows[rows.length - 1].push(time_min, chunks[0]);
+            }
+        });
+        return groups;
+    }
+    $.$yuf_karaoke_syntax_parse = $yuf_karaoke_syntax_parse;
+    function str_to_ms(str) {
+        const [, h, m, s, msec] = str.match(/(?:(\d+):)?(\d+):(\d+)(?:\.(\d+))?/) ?? [];
+        let ms = 0;
+        if (h)
+            ms += Number(h) * 60 * 60 * 1000;
+        if (m)
+            ms += Number(m) * 60 * 1000;
+        if (s)
+            ms += Number(s) * 1000;
+        if (msec)
+            ms += Number(msec);
+        return ms;
+    }
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_form extends $.$yuf_karaoke_form {
+            lyrics_syntax() {
+                return this.$.$yuf_karaoke_syntax_flow;
+            }
+        }
+        $$.$yuf_karaoke_form = $yuf_karaoke_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_text) = class $yuf_karaoke_text extends ($.$mol_view) {
+		ids(id){
+			return [];
+		}
+		hilited_length(id){
+			return 0;
+		}
+		row_text(id){
+			return "";
+		}
+		Group(id){
+			const obj = new this.$.$yuf_karaoke_text_group();
+			(obj.ids) = () => ((this.ids(id)));
+			(obj.hilited_length) = (id) => ((this.hilited_length(id)));
+			(obj.row_text) = (id) => ((this.row_text(id)));
+			return obj;
+		}
+		group_content(){
+			return [(this.Group("0"))];
+		}
+		uri(){
+			return "";
+		}
+		time(){
+			return 0;
+		}
+		sub(){
+			return [...(this.group_content())];
+		}
+	};
+	($mol_mem_key(($.$yuf_karaoke_text.prototype), "Group"));
+	($.$yuf_karaoke_text_group) = class $yuf_karaoke_text_group extends ($.$mol_view) {
+		hilited_length(id){
+			return 0;
+		}
+		row_text(id){
+			return "";
+		}
+		Row(id){
+			const obj = new this.$.$yuf_karaoke_text_row();
+			(obj.hilited_length) = () => ((this.hilited_length(id)));
+			(obj.text) = () => ((this.row_text(id)));
+			return obj;
+		}
+		row_content(){
+			return [(this.Row(id))];
+		}
+		ids(){
+			return [];
+		}
+		sub(){
+			return [...(this.row_content())];
+		}
+	};
+	($mol_mem_key(($.$yuf_karaoke_text_group.prototype), "Row"));
+	($.$yuf_karaoke_text_row) = class $yuf_karaoke_text_row extends ($.$mol_view) {
+		hilited_prefix(){
+			return "";
+		}
+		Hilited(){
+			const obj = new this.$.$mol_view();
+			(obj.dom_name) = () => ("span");
+			(obj.sub) = () => ([(this.hilited_prefix())]);
+			return obj;
+		}
+		text(){
+			return "";
+		}
+		content(){
+			return [(this.Hilited()), (this.text())];
+		}
+		hilited_length(){
+			return 0;
+		}
+		sub(){
+			return (this.content());
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_text_row.prototype), "Hilited"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_text extends $.$yuf_karaoke_text {
+            data_raw() {
+                return this.$.$mol_fetch.success(this.uri()).text();
+            }
+            data() {
+                return this.$.$yuf_karaoke_syntax_parse(this.data_raw());
+            }
+            groups() { return this.data(); }
+            group_content() {
+                return this.groups().map((_, index) => this.Group(index));
+            }
+            ids(group_index) {
+                return this.groups()[group_index].map((_, row_index) => [group_index, row_index]);
+            }
+            row_text([group_index, row_index]) {
+                const row = this.groups()[group_index][row_index];
+                return row.filter(token => typeof token === 'string').join('');
+            }
+            hilited_group_index_last() {
+                return this.groups().findLastIndex((_, group) => this.hilited_length([group, 0]) > 0);
+            }
+            scroll_task() {
+                const index = this.hilited_group_index_last();
+                const group = index >= 0 ? this.Group(index) : null;
+                group && this.ensure_visible(group);
+                return null;
+            }
+            auto() {
+                this.scroll_task();
+                return super.auto();
+            }
+            hilited_length([group_index, row_index]) {
+                const time_current = this.time() * 1000;
+                const row = this.groups()[group_index][row_index];
+                let pos = 0;
+                let prev_time = 0;
+                for (let i = 0; i < row.length; i++) {
+                    const val = row[i];
+                    let next_time = row[i + 1];
+                    if (typeof val === 'string') {
+                        const range_full = (typeof next_time === 'number' ? next_time : 0) - prev_time;
+                        const range_part = time_current - prev_time;
+                        const part = range_full > 0 ? range_part / range_full : 1;
+                        pos += Math.min(val.length, Math.floor(val.length * part));
+                        continue;
+                    }
+                    if (val >= time_current) {
+                        break;
+                    }
+                    prev_time = val;
+                }
+                return pos;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_karaoke_text.prototype, "data_raw", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_karaoke_text.prototype, "data", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_karaoke_text.prototype, "row_text", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_karaoke_text.prototype, "hilited_group_index_last", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_karaoke_text.prototype, "scroll_task", null);
+        $$.$yuf_karaoke_text = $yuf_karaoke_text;
+        class $yuf_karaoke_text_group extends $.$yuf_karaoke_text_group {
+            row_content() {
+                return this.ids().map(id => this.Row(id));
+            }
+        }
+        $$.$yuf_karaoke_text_group = $yuf_karaoke_text_group;
+        class $yuf_karaoke_text_row extends $.$yuf_karaoke_text_row {
+            content() {
+                const hilited_length = this.hilited_length();
+                const text = this.text();
+                return [this.Hilited(), text.slice(hilited_length)];
+            }
+            hilited_prefix() {
+                const hilited_length = this.hilited_length();
+                return this.text().slice(0, hilited_length);
+            }
+        }
+        $$.$yuf_karaoke_text_row = $yuf_karaoke_text_row;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_text, {
+            flex: {
+                direction: 'column',
+            },
+            font: {
+                size: '2rem'
+            },
+            gap: '2rem',
+            lineHeight: '2.25rem'
+        });
+        $mol_style_define($yuf_karaoke_text_group, {
+            flex: {
+                direction: 'column',
+            },
+        });
+        $mol_style_define($yuf_karaoke_text_row, {
+            padding: 0,
+            justifyContent: 'center',
+            whiteSpace: 'pre',
+            Hilited: {
+                whiteSpace: 'pre',
+                color: $mol_theme.focus
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_play) = class $mol_icon_play extends ($.$mol_icon) {
+		path(){
+			return "M8,5.14V19.14L19,12.14L8,5.14Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_video_play) = class $yuf_video_play extends ($.$yuf_check_icon2) {
+		hint_checked(){
+			return (this.$.$mol_locale.text("$yuf_video_play_hint_checked"));
+		}
+		hint_unchecked(){
+			return (this.$.$mol_locale.text("$yuf_video_play_hint_unchecked"));
+		}
+		Icon_checked(){
+			const obj = new this.$.$mol_icon_pause();
+			return obj;
+		}
+		Icon_unchecked(){
+			const obj = new this.$.$mol_icon_play();
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_video_play.prototype), "Icon_checked"));
+	($mol_mem(($.$yuf_video_play.prototype), "Icon_unchecked"));
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_arrow_collapse) = class $mol_icon_arrow_collapse extends ($.$mol_icon) {
+		path(){
+			return "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_arrow_collapse_all) = class $mol_icon_arrow_collapse_all extends ($.$mol_icon) {
+		path(){
+			return "M19.5,3.09L20.91,4.5L16.41,9H20V11H13V4H15V7.59L19.5,3.09M20.91,19.5L19.5,20.91L15,16.41V20H13V13H20V15H16.41L20.91,19.5M4.5,3.09L9,7.59V4H11V11H4V9H7.59L3.09,4.5L4.5,3.09M3.09,19.5L7.59,15H4V13H11V20H9V16.41L4.5,20.91L3.09,19.5Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_arrow_expand) = class $mol_icon_arrow_expand extends ($.$mol_icon) {
+		path(){
+			return "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_arrow_expand_all) = class $mol_icon_arrow_expand_all extends ($.$mol_icon) {
+		path(){
+			return "M9.5,13.09L10.91,14.5L6.41,19H10V21H3V14H5V17.59L9.5,13.09M10.91,9.5L9.5,10.91L5,6.41V10H3V3H10V5H6.41L10.91,9.5M14.5,13.09L19,17.59V14H21V21H14V19H17.59L13.09,14.5L14.5,13.09M13.09,9.5L17.59,5H14V3H21V10H19V6.41L14.5,10.91L13.09,9.5Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_video_full) = class $yuf_video_full extends ($.$yuf_check_icon2) {
+		hint_checked(){
+			return (this.$.$mol_locale.text("$yuf_video_full_hint_checked"));
+		}
+		hint_unchecked(){
+			return (this.$.$mol_locale.text("$yuf_video_full_hint_unchecked"));
+		}
+		Icon_checked(){
+			const obj = new this.$.$mol_icon_arrow_collapse_all();
+			return obj;
+		}
+		Icon_unchecked(){
+			const obj = new this.$.$mol_icon_arrow_expand_all();
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_video_full.prototype), "Icon_checked"));
+	($mol_mem(($.$yuf_video_full.prototype), "Icon_unchecked"));
+
+
+;
+"use strict";
+
+;
+	($.$yuf_number) = class $yuf_number extends ($.$mol_number) {
+		blur_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		String(){
+			const obj = new this.$.$yuf_number_string();
+			(obj.blur_event) = (next) => ((this.blur_event(next)));
+			(obj.type) = () => ((this.type()));
+			(obj.value) = (next) => ((this.value_string(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.string_enabled()));
+			(obj.submit) = (next) => ((this.submit(next)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_number.prototype), "blur_event"));
+	($mol_mem(($.$yuf_number.prototype), "String"));
+	($.$yuf_number_string) = class $yuf_number_string extends ($.$mol_string) {
+		blur_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event(){
+			return {...(super.event()), "blur": (next) => (this.blur_event(next))};
+		}
+	};
+	($mol_mem(($.$yuf_number_string.prototype), "blur_event"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_number extends $.$yuf_number {
+            blur_event() {
+                const next = this.value(this.value_string() ? undefined : this.value_min());
+                this.value_string(String(next || '0'));
+            }
+        }
+        $$.$yuf_number = $yuf_number;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_minus) = class $mol_icon_minus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H5V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_plus) = class $mol_icon_plus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$yuf_number_range_string) = class $yuf_number_range_string extends ($.$mol_string) {
+		step(){
+			return 1;
+		}
+		min(){
+			return 0;
+		}
+		max(){
+			return 100;
+		}
+		type(){
+			return "range";
+		}
+		keyboard(){
+			return "decimal";
+		}
+		attr(){
+			return {...(super.attr()), "title": (this.hint())};
+		}
+		field(){
+			return {
+				...(super.field()), 
+				"step": (this.step()), 
+				"min": (this.min()), 
+				"max": (this.max())
+			};
+		}
+	};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/number/range/string/string.view.css", "[yuf_number_range_string] {\n\t-webkit-appearance: none;\n\twidth: auto;\n\theight: .5rem;\n\tborder-radius: var(--mol_gap_round);\n\tmargin-bottom: 0.2rem;\n\tbackground-color: var(--mol_theme_shade);\n\tcursor: pointer;\n\n\toverflow: visible;\n\tpadding: 0;\n}\n\n[yuf_number_range_string]::-webkit-slider-thumb {\n\t-webkit-appearance: none;\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[yuf_number_range_string]::-moz-range-thumb {\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$yuf_number_range) = class $yuf_number_range extends ($.$mol_number) {
+		type(){
+			return "range";
+		}
+		step(){
+			return 0;
+		}
+		dec_icon(){
+			const obj = new this.$.$mol_icon_minus();
+			return obj;
+		}
+		inc_icon(){
+			const obj = new this.$.$mol_icon_plus();
+			return obj;
+		}
+		String(){
+			const obj = new this.$.$yuf_number_range_string();
+			(obj.type) = () => ((this.type()));
+			(obj.value) = (next) => ((this.value_string(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.string_enabled()));
+			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.min) = () => ((this.value_min()));
+			(obj.max) = () => ((this.value_max()));
+			(obj.step) = () => ((this.step()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_number_range.prototype), "dec_icon"));
+	($mol_mem(($.$yuf_number_range.prototype), "inc_icon"));
+	($mol_mem(($.$yuf_number_range.prototype), "String"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_number_range extends $.$yuf_number_range {
+            step() {
+                return this.precision_change() * this.boost();
+            }
+        }
+        $$.$yuf_number_range = $yuf_number_range;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_number_range, {
+            Dec: {
+                minHeight: '1.25rem',
+                width: '1rem',
+                justifyContent: 'center',
+            },
+            Inc: {
+                minHeight: '1.25rem',
+                width: '1rem',
+                justifyContent: 'center',
+            },
+            flex: {
+                grow: 11,
+                shrink: 1,
+            },
+            minWidth: '8rem',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_video_slider) = class $yuf_video_slider extends ($.$yuf_number_range) {
+		precision(){
+			return 0.05;
+		}
+		value_max(){
+			return 100;
+		}
+		value_min(){
+			return 0;
+		}
+		sub(){
+			return [(this.String())];
+		}
+	};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/video/slider/slider.view.css", "[yuf_video_slider] > [yuf_number_slider_string] {\n\t-webkit-appearance: none;\n\twidth: 100%;\n\theight: .5rem;\n\tborder-radius: var(--mol_gap_round);\n\tmargin-bottom: 0.2rem;\n\tbackground-color: var(--mol_theme_card);\n\tcursor: pointer;\n}\n\n[yuf_video_slider] > [yuf_number_slider_string]::-webkit-slider-thumb {\n\t-webkit-appearance: none;\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[yuf_video_slider] > [yuf_number_slider_string]::-moz-range-thumb {\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$yuf_video_estimate) = class $yuf_video_estimate extends ($.$mol_view) {
+		time_formatted(){
+			return "";
+		}
+		time(){
+			return 0;
+		}
+		duration(){
+			return 0;
+		}
+		ms_enabled(){
+			return false;
+		}
+		sub(){
+			return [(this.time_formatted())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_video_estimate extends $.$yuf_video_estimate {
+            time_formatted() {
+                const duration_ms = this.duration() * 1000;
+                const time_ms = this.time() * 1000;
+                const duration = Number.isNaN(duration_ms) || duration_ms === Infinity
+                    ? null
+                    : new $mol_time_duration(duration_ms).normal;
+                const time = Number.isNaN(time_ms) ? null : new $mol_time_duration(time_ms).normal;
+                const ms_enabled = this.ms_enabled();
+                const sec_fmt = `ss${ms_enabled ? '.sss' : ''}`;
+                const template = `${duration?.hour ? 'hh:' : ''}mm:${sec_fmt}`;
+                let duration_str = duration?.toString(template) ?? '-';
+                let time_str = time?.toString(template) ?? '-';
+                if (ms_enabled && duration_str.length > 3) {
+                    duration_str = duration_str.slice(0, -1);
+                }
+                if (ms_enabled && time_str.length > 3) {
+                    time_str = time_str.slice(0, -1);
+                }
+                return `${time_str} / ${duration_str}`;
+            }
+        }
+        $$.$yuf_video_estimate = $yuf_video_estimate;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_video_bar) = class $yuf_video_bar extends ($.$mol_view) {
+		playing(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Playing(){
+			const obj = new this.$.$yuf_video_play();
+			(obj.checked) = (next) => ((this.playing(next)));
+			return obj;
+		}
+		fullscreen(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Fullscreen(){
+			const obj = new this.$.$yuf_video_full();
+			(obj.checked) = (next) => ((this.fullscreen(next)));
+			return obj;
+		}
+		left_content(){
+			return [(this.Playing()), (this.Fullscreen())];
+		}
+		Left(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.left_content()));
+			return obj;
+		}
+		time(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		duration(){
+			return 100;
+		}
+		Slider(){
+			const obj = new this.$.$yuf_video_slider();
+			(obj.value) = (next) => ((this.time(next)));
+			(obj.value_max) = () => ((this.duration()));
+			return obj;
+		}
+		mid_content(){
+			return [(this.Slider())];
+		}
+		Mid(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.mid_content()));
+			return obj;
+		}
+		Time(){
+			const obj = new this.$.$yuf_video_estimate();
+			(obj.time) = () => ((this.time()));
+			(obj.duration) = () => ((this.duration()));
+			return obj;
+		}
+		right_content(){
+			return [(this.Time())];
+		}
+		Right(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.right_content()));
+			return obj;
+		}
+		sub(){
+			return [
+				(this.Left()), 
+				(this.Mid()), 
+				(this.Right())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_video_bar.prototype), "playing"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Playing"));
+	($mol_mem(($.$yuf_video_bar.prototype), "fullscreen"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Fullscreen"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Left"));
+	($mol_mem(($.$yuf_video_bar.prototype), "time"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Slider"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Mid"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Time"));
+	($mol_mem(($.$yuf_video_bar.prototype), "Right"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_video_bar, {
+            gap: $mol_gap.block,
+            background: {
+                color: $mol_theme.card,
+            },
+            flex: {
+                grow: 1,
+            },
+            Left: {
+                flex: {
+                    shrink: 1,
+                    basis: '4rem',
+                    grow: 0,
+                }
+            },
+            Mid: {
+                alignItems: 'center',
+                flex: {
+                    grow: 10,
+                    basis: '10rem',
+                }
+            },
+            Right: {
+                alignItems: 'center',
+                padding: {
+                    right: $mol_gap.block,
+                },
+            },
+            Time: {
+                display: 'block',
+                whiteSpace: 'nowrap',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_bar) = class $yuf_karaoke_bar extends ($.$yuf_video_bar) {
+		left_content(){
+			return [(this.Playing())];
+		}
+	};
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_bar extends $.$yuf_karaoke_bar {
+        }
+        $$.$yuf_karaoke_bar = $yuf_karaoke_bar;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_bar, {});
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_player) = class $yuf_karaoke_player extends ($.$mol_view) {
+		title(){
+			return (this.model().title());
+		}
+		uri(){
+			return (this.model().audio_url());
+		}
+		lyrics_url(){
+			return (this.model().lyrics_url());
+		}
+		Track(){
+			const obj = new this.$.$yuf_karaoke_text();
+			(obj.uri) = () => ((this.lyrics_url()));
+			(obj.time) = () => ((this.video_time()));
+			return obj;
+		}
+		video_time(next){
+			return (this.Player().time(next));
+		}
+		video_duration(){
+			return (this.Player().duration());
+		}
+		playing(next){
+			return (this.Player().playing(next));
+		}
+		Player(){
+			const obj = new this.$.$mol_video_player();
+			(obj.uri) = () => ((this.uri()));
+			(obj.controls) = () => (false);
+			(obj.autoplay) = () => (false);
+			(obj.loop) = () => (false);
+			(obj.uri) = () => ((this.uri()));
+			return obj;
+		}
+		fullscreen(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Bar(){
+			const obj = new this.$.$yuf_karaoke_bar();
+			(obj.playing) = (next) => ((this.playing(next)));
+			(obj.fullscreen) = (next) => ((this.fullscreen(next)));
+			(obj.duration) = () => ((this.video_duration()));
+			(obj.time) = (next) => ((this.video_time(next)));
+			return obj;
+		}
+		bar_content(){
+			return [(this.Bar())];
+		}
+		model(){
+			const obj = new this.$.$yuf_karaoke_model();
+			return obj;
+		}
+		sub(){
+			return [
+				(this.Track()), 
+				(this.Player()), 
+				...(this.bar_content())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_player.prototype), "Track"));
+	($mol_mem(($.$yuf_karaoke_player.prototype), "Player"));
+	($mol_mem(($.$yuf_karaoke_player.prototype), "fullscreen"));
+	($mol_mem(($.$yuf_karaoke_player.prototype), "Bar"));
+	($mol_mem(($.$yuf_karaoke_player.prototype), "model"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_player, {
+            flex: {
+                direction: 'column'
+            },
+            Player: {
+                height: '1rem',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_page) = class $yuf_karaoke_page extends ($.$mol_page) {
+		title(){
+			return (this.model().title());
+		}
+		audio_url(){
+			return (this.model().audio_url());
+		}
+		buttons_content(){
+			return (this.buttons());
+		}
+		Edit_check_icon(){
+			const obj = new this.$.$mol_icon_edit();
+			return obj;
+		}
+		edit_enabled(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Edit_check(){
+			const obj = new this.$.$mol_check_icon();
+			(obj.Icon) = () => ((this.Edit_check_icon()));
+			(obj.checked) = (next) => ((this.edit_enabled(next)));
+			return obj;
+		}
+		Close(){
+			return null;
+		}
+		value_str(id, next){
+			return (this.Form().value_str(id, next));
+		}
+		done(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		buttons(){
+			return (this.Form().buttons());
+		}
+		Form(){
+			const obj = new this.$.$yuf_karaoke_form();
+			(obj.model) = () => ((this.model()));
+			(obj.foot) = () => ([]);
+			(obj.done) = (next) => ((this.done(next)));
+			return obj;
+		}
+		edit_form_content(){
+			return [(this.Form())];
+		}
+		Player_bar(){
+			return (this.Player().Bar());
+		}
+		Player(){
+			const obj = new this.$.$yuf_karaoke_player();
+			(obj.model) = () => ((this.model()));
+			(obj.bar_content) = () => ([]);
+			return obj;
+		}
+		sing_content(){
+			return [(this.Player())];
+		}
+		model(){
+			const obj = new this.$.$yuf_karaoke_model();
+			return obj;
+		}
+		tools(){
+			return [
+				...(this.buttons_content()), 
+				(this.Edit_check()), 
+				(this.Close())
+			];
+		}
+		body(){
+			return [...(this.edit_form_content()), ...(this.sing_content())];
+		}
+		foot(){
+			return [(this.Player_bar())];
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_page.prototype), "Edit_check_icon"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "edit_enabled"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "Edit_check"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "done"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "Form"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "Player"));
+	($mol_mem(($.$yuf_karaoke_page.prototype), "model"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_page extends $.$yuf_karaoke_page {
+            buttons_content() {
+                return this.edit_enabled() ? super.buttons_content() : [];
+            }
+            edit_form_content() {
+                return this.edit_enabled() ? super.edit_form_content() : [];
+            }
+            sing_content() {
+                return this.edit_enabled() ? [] : super.sing_content();
+            }
+        }
+        $$.$yuf_karaoke_page = $yuf_karaoke_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_page, {
+            flex: {
+                basis: $yuf_theme_gap.page_xl
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_link) = class $yuf_karaoke_link extends ($.$yuf_link) {
+		title(){
+			return (this.model().title());
+		}
+		needle(){
+			return "";
+		}
+		Title(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.haystack) = () => ((this.title()));
+			(obj.needle) = () => ((this.needle()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_karaoke_model();
+			return obj;
+		}
+		content(){
+			return [(this.Title())];
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_link.prototype), "Title"));
+	($mol_mem(($.$yuf_karaoke_link.prototype), "model"));
+
+
+;
+"use strict";
+
+;
+	($.$yuf_karaoke_catalog) = class $yuf_karaoke_catalog extends ($.$yuf_catalog) {
+		spread_ids(){
+			return (this.store().ids());
+		}
+		by_id(id){
+			return (this.store().by_id(id));
+		}
+		done(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		param_suffix(){
+			return "kar";
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_karaoke_catalog_menu_title"));
+		}
+		store(){
+			const obj = new this.$.$yuf_karaoke_store();
+			return obj;
+		}
+		Spread(id){
+			const obj = new this.$.$yuf_karaoke_page();
+			(obj.model) = () => ((this.by_id(id)));
+			(obj.done) = (next) => ((this.done(id, next)));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Menu_link(id){
+			const obj = new this.$.$yuf_karaoke_link();
+			(obj.model) = () => ((this.by_id(id)));
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.link_arg) = () => ((this.arg(id)));
+			return obj;
+		}
+	};
+	($mol_mem_key(($.$yuf_karaoke_catalog.prototype), "done"));
+	($mol_mem(($.$yuf_karaoke_catalog.prototype), "store"));
+	($mol_mem_key(($.$yuf_karaoke_catalog.prototype), "Spread"));
+	($mol_mem_key(($.$yuf_karaoke_catalog.prototype), "Menu_link"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_catalog extends $.$yuf_karaoke_catalog {
+            done(id, e) {
+                this.spread('');
+            }
+        }
+        $$.$yuf_karaoke_catalog = $yuf_karaoke_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_catalog, {
+            Menu: {
+                flex: {
+                    basis: $yuf_theme_gap.page_l
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_app) = class $yuf_karaoke_app extends ($.$yuf_catalog_app) {
+		ws(){
+			const obj = new this.$.$yuf_ws_statefull();
+			return obj;
+		}
+		Ws_status(){
+			const obj = new this.$.$yuf_ws_status();
+			(obj.ws) = () => ((this.ws()));
+			return obj;
+		}
+		store(){
+			const obj = new this.$.$yuf_karaoke_store();
+			return obj;
+		}
+		Catalog(){
+			const obj = new this.$.$yuf_karaoke_catalog();
+			(obj.store) = () => ((this.store()));
+			return obj;
+		}
+		logged(next){
+			if(next !== undefined) return next;
+			return true;
+		}
+		menu_links_authorized(){
+			return (this.menu_links());
+		}
+		foot_second_post(){
+			return [(this.Ws_status())];
+		}
+		param(){
+			return "yuf_kar";
+		}
+		spreads(){
+			return {"catalog": (this.Catalog())};
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_app.prototype), "ws"));
+	($mol_mem(($.$yuf_karaoke_app.prototype), "Ws_status"));
+	($mol_mem(($.$yuf_karaoke_app.prototype), "store"));
+	($mol_mem(($.$yuf_karaoke_app.prototype), "Catalog"));
+	($mol_mem(($.$yuf_karaoke_app.prototype), "logged"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_karaoke_app, {
+            Ws_status: {
+                padding: $mol_gap.text,
+            },
+            Menu: {
+                Foot: {
+                    padding: $mol_gap.block,
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_karaoke_demo) = class $yuf_karaoke_demo extends ($.$mol_example_large) {
+		Karaoke(){
+			const obj = new this.$.$yuf_karaoke_app();
+			return obj;
+		}
+		title(){
+			return "Karaoke demo";
+		}
+		sub(){
+			return [(this.Karaoke())];
+		}
+		tags(){
+			return ["game", "karaoke"];
+		}
+		aspects(){
+			return ["Application"];
+		}
+	};
+	($mol_mem(($.$yuf_karaoke_demo.prototype), "Karaoke"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_socket_mock extends $yuf_ws_socket {
+        open_timeout() { return 1000; }
+        answer_timeout() { return 500; }
+        periodically_timeout() { return 5000; }
+        close_on_every_tick() { return 100_000; }
+        native() {
+            if (this._native)
+                return this._native;
+            const native = {
+                readyState: WebSocket.CONNECTING,
+                close: (code = 1000) => {
+                    native.readyState = WebSocket.CLOSING;
+                    this.periodically_timer?.destructor();
+                    new this.$.$mol_after_timeout(this.open_timeout(), () => {
+                        native.readyState = WebSocket.CLOSED;
+                        this.onclose({ type: code > 1000 ? 'error' : 'close' });
+                    });
+                }
+            };
+            this._native = native;
+            new this.$.$mol_after_timeout(this.open_timeout(), () => {
+                native.readyState = WebSocket.OPEN;
+                this.$.$mol_log3_rise({
+                    place: `${this.factory()}.native()`,
+                    message: 'opened'
+                });
+                this.onopen();
+                this.periodically_schedule();
+            });
+            return this._native;
+        }
+        periodically_timer = null;
+        periodically_schedule() {
+            this.periodically_timer = new this.$.$mol_after_timeout(this.periodically_timeout(), () => this.periodically());
+        }
+        periodically_tick = 0;
+        periodically() {
+            const tick = this.close_on_every_tick();
+            if (((++this.periodically_tick) % tick) === 0) {
+                this.native().close(1006);
+                return;
+            }
+            if (this.native().readyState !== WebSocket.OPEN)
+                return;
+            for (const sub of this.subs) {
+                const answer = this.answer(sub, true);
+                if (!answer)
+                    continue;
+                if (!sub)
+                    continue;
+                Object.assign(sub, answer);
+                this.onmessage({
+                    data: JSON.stringify(answer),
+                });
+            }
+            this.periodically_schedule();
+        }
+        destructor() {
+            this.subs = [];
+            this.periodically_timer?.destructor();
+            super.destructor();
+        }
+        answer(obj, periodically = false) {
+            return null;
+        }
+        subs = [];
+        message_equal(a, b) {
+            return $mol_compare_deep(this.message_normalize(a), this.message_normalize(b));
+        }
+        message_normalize(msg) {
+            return msg;
+        }
+        send(raw) {
+            const obj = JSON.parse(raw.toString());
+            this.$.$mol_log3_come({
+                place: `${this.factory()}.send()`,
+                message: 'req',
+                data: obj
+            });
+            const prev = this.subs.find(sub => this.message_equal(obj, sub));
+            const message = this.answer({ ...prev, ...obj });
+            if (prev) {
+                this.subs = this.subs.filter(sub => sub !== prev);
+            }
+            if (!message)
+                return;
+            this.subs.push(message);
+            new this.$.$mol_after_timeout(this.answer_timeout(), () => this.receive(message));
+        }
+        factory() { return this.constructor; }
+        receive(message) {
+            if (message === undefined)
+                return;
+            if (this.native().readyState !== WebSocket.OPEN)
+                return;
+            this.$.$mol_log3_done({
+                place: `${this.factory()}.answer_receive()`,
+                message: 'answer',
+                data: message,
+            });
+            this.onmessage({
+                data: JSON.stringify(message),
+            });
+        }
+    }
+    $.$yuf_ws_socket_mock = $yuf_ws_socket_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_statefull_socket_mock extends $yuf_ws_socket_mock {
+        message_sub(obj) {
+            return this.$.$yuf_entity2.active_model(this.message_normalize(obj));
+        }
+        answer(obj, periodically = false) {
+            if (obj.type === 'ping')
+                return { type: 'pong' };
+            if (obj.error === null)
+                return null;
+            try {
+                const first = this.message_sub(obj);
+                if (!first)
+                    return null;
+                if (periodically && !first.mock_periodically())
+                    return null;
+                const data = first.mock(obj.data);
+                if (data === null)
+                    return data;
+                return JSON.parse(JSON.stringify({
+                    ...obj,
+                    data,
+                    error: undefined,
+                    message: undefined,
+                    req_id: data === undefined ? undefined : obj.req_id,
+                }));
+            }
+            catch (e) {
+                if (e instanceof Error) {
+                    const error = e.message || 'INTERNAL_ERROR';
+                    const message = e.cause
+                        && typeof e.cause === 'object'
+                        && 'message' in e.cause
+                        && typeof e.cause.message === 'string'
+                        ? e.cause.message
+                        : '';
+                    return { ...obj, error, message, data: undefined };
+                }
+                $mol_fail_hidden(e);
+            }
+        }
+        message_normalize({ type, query, device, id }) {
+            return { type, id, query, device };
+        }
+    }
+    $.$yuf_ws_statefull_socket_mock = $yuf_ws_statefull_socket_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_karaoke_store_mock extends $yuf_karaoke_store {
+        mock(next) {
+            if (next)
+                return next;
+            const result = [];
+            for (let i = 1; i <= 100; i++) {
+                result.push(String(i));
+            }
+            return result;
+        }
+    }
+    $.$yuf_karaoke_store_mock = $yuf_karaoke_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_karaoke_model_mock extends $yuf_karaoke_model {
+        mock(next) {
+            if (next)
+                return next;
+            return {
+                title: $mol_stub_message(100).trim() + this._id,
+                lyrics: `WEBVTT
+
+00:16.500 --> 00:23.290
+Oh<00:16.770> <00:17.020>yeah, <00:17.360>I'll<00:18.020> <00:18.570>tell<00:18.790>
+<00:19.040>you <00:19.190>something,<00:19.910> <00:21.120>I <00:21.320>think
+<00:21.500>you'll <00:21.670>understand
+
+00:24.150 --> 00:31.670
+When <00:24.500>I<00:25.180> <00:25.710>say<00:25.920> <00:26.170>that
+<00:26.330>something,<00:27.350> <00:28.250>I <00:28.390>wanna<00:28.800>
+<00:29.050>hold <00:29.450>your <00:29.590>hand
+
+00:32.060 --> 00:37.770
+I <00:32.180>wanna <00:32.510>hold<00:32.860> <00:33.110>your <00:33.410>hand<00:34.980>
+<00:35.450>I <00:35.580>wanna<00:35.920> <00:36.170>hold <00:36.560>your<00:36.830> <00:37.080>hand
+
+00:38.350 --> 00:44.930
+Oh, <00:38.680>please,<00:39.340> <00:40.190>say <00:40.370>to
+<00:40.530>me<00:41.260> <00:42.500>you'll <00:42.710>let<00:42.880> <00:43.130>me <00:43.300>be
+<00:43.640>your<00:43.960> <00:44.210>man
+
+00:45.470 --> 00:52.950
+And<00:45.830> <00:46.080>please,<00:46.720> <00:47.320>say <00:47.520>to
+<00:47.690>me,<00:48.370> <00:49.660>you'll<00:49.840> <00:50.090>let <00:50.240>me <00:50.420>hold<00:50.800>
+<00:51.050>your <00:51.220>hand
+
+00:53.380 --> 00:59.150
+Now <00:53.560>let <00:53.710>me<00:53.910> <00:54.160>hold
+<00:54.500>your<00:54.830> <00:55.080>hand.<00:56.610>
+<00:57.070>I <00:57.210>wanna <00:57.550>hold<00:57.900> <00:58.150>your <00:58.460>hand
+
+01:00.660 --> 01:06.740
+And<01:00.980> <01:01.230>when <01:01.560>I<01:01.910> <01:02.160>touch <01:02.500>you<01:02.840>
+<01:03.090>I <01:03.410>feel<01:03.750> <01:04.000>happy,<01:04.540> <01:05.240>inside
+
+01:07.740 --> 01:13.620
+It's<01:08.080> <01:08.330>such <01:08.670>a<01:09.000> <01:09.250>feeling<01:09.920>
+<01:10.170>that <01:10.530>my<01:10.890> <01:11.140>love,<01:11.570> <01:12.270>I <01:12.410>can't <01:12.570>hide
+
+01:14.110 --> 01:18.730
+I <01:14.260>can't <01:14.420>hide<01:15.530>
+<01:15.710>I<01:15.860> <01:16.110>can't <01:16.260>hide
+
+01:19.490 --> 01:26.020
+Yeah<01:19.840> <01:20.090>you,<01:20.680> <01:21.340>got <01:21.520>that
+<01:21.680>something,<01:22.370> <01:23.650>I<01:23.810> <01:24.060>think
+<01:24.250>you'll <01:24.440>understand
+
+01:26.630 --> 01:34.050
+When<01:26.940> <01:27.190>I<01:27.800> <01:28.470>say <01:28.650>that<01:28.800>
+<01:29.050>something,<01:29.720> <01:31.070>I <01:31.240>wanna
+<01:31.610>hold<01:31.980> <01:32.230>your <01:32.370>hand
+
+01:34.560 --> 01:40.280
+I <01:34.690>wanna<01:35.040> <01:35.290>hold <01:35.650>your<01:36.010> <01:36.260>hand<01:37.710>
+<01:38.210>I <01:38.360>wanna <01:38.660>hold<01:39.090> <01:39.340>your <01:39.560>hand
+
+01:42.060 --> 01:47.850
+And <01:42.380>when <01:42.740>I<01:43.060> <01:43.310>touch <01:43.650>you<01:43.990>
+<01:44.240>I <01:44.550>feel<01:44.930> <01:45.180>happy,<01:45.630> <01:46.370>inside
+
+01:49.180 --> 01:55.020
+It's <01:49.500>such<01:49.810> <01:50.060>a <01:50.360>feeling<01:51.010>
+<01:51.260>that <01:51.700>my<01:52.040> <01:52.290>love,<01:52.670> <01:53.460>I <01:53.600>can't<01:53.750> <01:54.000>hide
+
+01:55.250 --> 02:00.460
+I <01:55.420>can't <01:55.550>hide<01:56.670>
+<01:57.110>I <01:57.270>can't <01:57.420>hide
+
+02:00.730 --> 02:07.190
+Yeah<02:01.040> <02:01.290>you,<02:01.810> <02:02.490>got <02:02.660>that<02:02.810>
+<02:03.060>something,<02:03.680> <02:05.070>I <02:05.250>think
+<02:05.440>you'll <02:05.620>understand
+
+02:08.040 --> 02:15.270
+When <02:08.380>I<02:08.930> <02:09.580>feel<02:09.760> <02:10.010>that
+<02:10.180>something,<02:10.840> <02:12.200>I <02:12.360>wanna<02:12.760>
+<02:13.010>hold <02:13.400>your <02:13.550>hand
+
+02:15.700 --> 02:22.380
+I<02:15.840> <02:16.090>wanna <02:16.400>hold<02:16.800> <02:17.050>your <02:17.360>hand<02:18.880>
+<02:19.340>I <02:19.470>wanna<02:19.800> <02:20.050>hold <02:20.440>your <02:20.740>hand`.trim(),
+                audio_url: 'yuf/karaoke/model/mock/2.mp3',
+            };
+        }
+    }
+    $.$yuf_karaoke_model_mock = $yuf_karaoke_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_karaoke_demo extends $.$yuf_karaoke_demo {
+            get $() {
+                return super.$.$mol_ambient({
+                    $yuf_ws_socket: super.$.$yuf_ws_statefull_socket_mock,
+                    $yuf_karaoke_store: super.$.$yuf_karaoke_store_mock,
+                    $yuf_karaoke_model: super.$.$yuf_karaoke_model_mock,
+                });
+            }
+        }
+        __decorate([
+            $mol_memo.field
+        ], $yuf_karaoke_demo.prototype, "$", null);
+        $$.$yuf_karaoke_demo = $yuf_karaoke_demo;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
 
 export default $
 //# sourceMappingURL=web.js.map

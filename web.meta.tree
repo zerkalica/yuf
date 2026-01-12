@@ -26,6 +26,9 @@
 \/yuf/chess/model/stockfish
 	deploy \/yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.wasm
 	deploy \/yuf/chess/model/stockfish/engine/stockfish-nnue-16-single.js
+\/yuf/karaoke/model/mock
+	deploy \/yuf/karaoke/model/mock/2.mp3
+	deploy \/yuf/karaoke/model/mock/2.mkv
 \/yuf/docs
 	deploy \/mol/logo/logo.svg
 	deploy \/mol/app/docs/manifest.json
@@ -40,3 +43,4 @@
 	include \/yuf/bug/log/prepend
 	include \/yuf/bug/catalog/flash
 	include \/yuf/localizer/demo
+	include \/yuf/karaoke/demo

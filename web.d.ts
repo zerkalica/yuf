@@ -11375,5 +11375,1596 @@ declare namespace $.$$ {
 declare namespace $ {
 }
 
+declare namespace $ {
+    class $yuf_locale_model extends $mol_object {
+        lang(next?: string): string;
+        langs_available(): {
+            ru: string;
+            en: string;
+        };
+    }
+}
+
+declare namespace $ {
+
+	type __yuf_locale_switch_1 = $mol_type_enforce<
+		Parameters< $yuf_locale_switch['lang'] >[0]
+		,
+		Parameters< ReturnType< $yuf_locale_switch['model'] >['lang'] >[0]
+	>
+	export class $yuf_locale_switch extends $mol_select {
+		langs_available( ): ReturnType< ReturnType< $yuf_locale_switch['model'] >['langs_available'] >
+		lang( next?: ReturnType< ReturnType< $yuf_locale_switch['model'] >['lang'] > ): ReturnType< ReturnType< $yuf_locale_switch['model'] >['lang'] >
+		Filter( ): any
+		model( ): $yuf_locale_model
+		dictionary( ): ReturnType< $yuf_locale_switch['langs_available'] >
+		value( next?: ReturnType< $yuf_locale_switch['lang'] > ): ReturnType< $yuf_locale_switch['lang'] >
+	}
+	
+}
+
+//# sourceMappingURL=switch.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_view__sub_yuf_catalog_app_1 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['foot_first_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_lights_toggle__hint_yuf_catalog_app_2 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['version'] >
+		,
+		ReturnType< $yuf_lights_toggle['hint'] >
+	>
+	type $yuf_catalog_app_foot_second_content__3 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['foot_second_post'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_view__sub_yuf_catalog_app_4 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['foot_second_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_button_minor__sub_yuf_catalog_app_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_yuf_catalog_app_6 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['logout_click'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $yuf_catalog_app_menu_links_authorized__7 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['menu_links'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_page__Logo_yuf_catalog_app_8 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['Menu_logo'] >
+		,
+		ReturnType< $mol_page['Logo'] >
+	>
+	type $mol_page__title_yuf_catalog_app_9 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['login_title'] >
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__body_yuf_catalog_app_10 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['login_body'] >
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $mol_page__foot_yuf_catalog_app_11 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['menu_foot_public'] >
+		,
+		ReturnType< $mol_page['foot'] >
+	>
+	type $yuf_catalog_app_menu_foot__12 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['menu_foot_public'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_list__Empty_yuf_catalog_app_13 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['Menu_links_empty'] >
+		,
+		ReturnType< $mol_list['Empty'] >
+	>
+	type $yuf_catalog_app_Menu_links__15 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['menu_links_no_authorized'] >[number]
+		,
+		$mol_view
+	>
+	type $yuf_catalog_app_Menu_links__16 = $mol_type_enforce<
+		ReturnType< $yuf_catalog_app['menu_links_authorized'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_list__rows_yuf_catalog_app_14 = $mol_type_enforce<
+		readonly($mol_view)[]
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	export class $yuf_catalog_app extends $yuf_catalog {
+		Placeholder_no_authorized( ): $mol_view
+		login_title( ): string
+		login_body( ): readonly($mol_view)[]
+		foot_first_content( ): readonly($mol_view)[]
+		Foot_first( ): $mol_view
+		version( ): string
+		Lights( ): $yuf_lights_toggle
+		Locale_switch( ): $yuf_locale_switch
+		foot_second_post( ): readonly($mol_view)[]
+		foot_second_content( ): readonly($mol_view)[]
+		Foot_second( ): $mol_view
+		menu_foot_public( ): readonly($mol_view)[]
+		menu_links_no_authorized( ): readonly($mol_view)[]
+		log_out_title( ): string
+		logout_click( next?: any ): any
+		Log_out( ): $mol_button_minor
+		menu_links_authorized( ): readonly($mol_view)[]
+		Theme( ): $yuf_theme_plugin
+		logged( next?: boolean ): boolean
+		logout( next?: any ): any
+		enter( next?: any ): any
+		placeholders_page( ): readonly($mol_view)[]
+		placeholders_no_authorized( ): readonly($mol_view)[]
+		Login( ): $mol_page
+		menu_foot( ): readonly($mol_view)[]
+		Menu_links( ): $mol_list
+		menu_filter_enabled( ): boolean
+		plugins( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=app.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_catalog_app extends $.$yuf_catalog_app {
+        pages(): readonly any[];
+        menu_links_authorized(): readonly $mol_view[];
+        menu_links_no_authorized(): readonly $mol_view[];
+        logout_click(e?: Event): void;
+        placeholders(): readonly $mol_view[];
+        login_title(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $yuf_ws_socket extends $mol_object {
+        readonly id: string;
+        protected _native: WebSocket | null;
+        url_debug(): string | null;
+        url(): string;
+        protocols(): string[];
+        native(): WebSocket;
+        send(data: Parameters<WebSocket['send']>[0]): void;
+        get readyState(): number;
+        onerror(error: Event): void;
+        onclose(error: CloseEvent): void;
+        onmessage(e: MessageEvent): void;
+        onopen(): void;
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    const $yuf_ws_code: {
+        readonly 1000: "Normal closure";
+        readonly 1001: "Going away";
+        readonly 1002: "Protocol error";
+        readonly 1003: "Unsupported data";
+        readonly 1005: "No status rcvd";
+        readonly 1006: "Abnormal closure";
+        readonly 1007: "Unsupported invalid frame payload data";
+        readonly 1008: "Policy violation";
+        readonly 1009: "Message too big";
+        readonly 1010: "Mandatory extension";
+        readonly 1011: "Internal error";
+        readonly 1012: "Service restart";
+        readonly 1013: "Try again later";
+        readonly 1014: "Bad gateway";
+        readonly 1015: "TLS handshake";
+        readonly 3000: "Unauthorized";
+        readonly 3003: "Forbidden";
+        readonly 3008: "Timeout";
+        readonly 4000: "Application error";
+    };
+    function $yuf_ws_code_text(code: number): "Normal closure" | "Going away" | "Protocol error" | "Unsupported data" | "No status rcvd" | "Abnormal closure" | "Unsupported invalid frame payload data" | "Policy violation" | "Message too big" | "Mandatory extension" | "Internal error" | "Service restart" | "Try again later" | "Bad gateway" | "TLS handshake" | "Unauthorized" | "Forbidden" | "Timeout" | "Application error";
+}
+
+declare namespace $ {
+    class $yuf_ws_host extends $mol_object {
+        watchdog_deadline(): number;
+        restart_delay(): number;
+        ping_interval(): number;
+        url(): string;
+        enabled(): boolean;
+        id(): string | null;
+        protocols(): string[];
+        restarts(): void;
+        protected ws(reset?: null): $yuf_ws_socket | null;
+        restartable(event: Event & {
+            code?: number;
+        }): boolean;
+        protected on_error(event: Event & {
+            code?: number;
+        }): void;
+        protected on_close(event: CloseEvent): void;
+        protected on_open(): void;
+        protected on_message(event: MessageEvent): void;
+        send(data: Parameters<WebSocket['send']>[0]): void;
+        send_object(data: {}): void;
+        is_ping(obj: {}): boolean;
+        send_ping(): void;
+        send_pong(): void;
+        token_sended(): null | string;
+        protected on_data(data: unknown): void;
+        protected on_object(e: {}): void;
+        protected debug_messages: {}[];
+        protected message_last_at(reset?: null): number;
+        protected message_add(message: {}): void;
+        messages_grab(): {}[];
+        protected opened(reset?: null): boolean;
+        heatbeat_enabled(): boolean;
+        protected heartbeat(): null;
+        watchdog_enabled(): boolean;
+        protected watchdog(reason?: null, timeout?: number): $mol_after_timeout | null;
+        error_packed(error?: null | [Error]): [Error] | null;
+        error(error?: null | Error): Error | null;
+        ready(): boolean;
+        error_message(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_session extends $mol_object {
+        client_id(): string;
+        token_key(): string;
+        token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
+        token_grab(reset?: null): string | null;
+        user_id(): null | string;
+        user_id_ensure(): string;
+        logged(): boolean;
+        logout(): string | null;
+    }
+}
+
+declare namespace $ {
+    class $yuf_promise<Result> extends $mol_promise<Result> {
+        protected _value: undefined | Result | Error;
+        protected _timer: null | $mol_after_timeout;
+        readonly id: string;
+        deadline(deadline?: number, error?: Error): void;
+        resolved(): boolean;
+        value(next?: Result | Error): Error | Result;
+    }
+}
+
+declare namespace $ {
+    class $yuf_ws_statefull_channel<Val = unknown> extends $mol_object {
+        protected host: {
+            ready(): boolean;
+            send_object(message: {}): void;
+            deadline_timeout(): number;
+        };
+        readonly signature: {};
+        constructor(host: {
+            ready(): boolean;
+            send_object(message: {}): void;
+            deadline_timeout(): number;
+        }, signature: {});
+        ready(): boolean;
+        send_data(data?: Val | null, req_id?: string, op?: 'unsubscribe'): void;
+        deadline_timeout(): number;
+        protected response: null | $yuf_promise<Val | null>;
+        protected subscribed: boolean;
+        receive(message: {
+            data?: unknown;
+            req_id?: string | null;
+        }): Error | Val | null | undefined;
+        data(next?: Val | null, cache?: 'cache' | 'refresh'): Val | null;
+        destructor(): void;
+    }
+}
+
+declare namespace $ {
+    type Value = string | number | boolean | null;
+    export type $yuf_ws_statefull_message = {
+        type: string;
+        id?: string | number;
+        query?: Record<string, Value | readonly Value[]> | null;
+        device?: readonly string[] | null;
+        data?: unknown;
+        error?: string | null;
+        message?: string | null;
+        req_id?: string | null;
+    };
+    export class $yuf_ws_statefull extends $yuf_ws_host {
+        session(): $yuf_session;
+        is_ping(msg: {
+            type?: string;
+        }): boolean;
+        send_pong(): void;
+        send_ping(): void;
+        send_auth(token: string): void;
+        token_sended(): string | null;
+        protected message_signature({ type, query, device, id }: Partial<$yuf_ws_statefull_message>): {
+            type: string | undefined;
+            id: string | number | undefined;
+            query: Record<string, Value | readonly Value[]> | null | undefined;
+            device: readonly string[] | null | undefined;
+        };
+        code_normalize(code: string | number): string;
+        protected message(obj: Partial<$yuf_ws_statefull_message>): Partial<$yuf_ws_statefull_message> | null;
+        deadline_timeout(): number;
+        protected channel<Val>(signature: {}): $yuf_ws_statefull_channel<Val>;
+        data<Val>(signature: {}, data?: null | Val, refresh?: 'refresh'): Val | null;
+        restart_count(next?: number | null): number;
+        restarts_to_logout(): number;
+        protected ws(reset?: null): $yuf_ws_socket | null;
+        logout(): void;
+        protected on_object(obj: {}): void;
+        auth_need(error: Error): boolean;
+    }
+    export {};
+}
+
+declare namespace $ {
+
+	export class $mol_icon_sync extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=sync.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_sync_off extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=off.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_sync_alert extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=alert.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_ws_icon extends $mol_icon_sync {
+		Error_icon( ): $mol_icon_sync_off
+		Open_icon( ): $mol_icon_sync
+		Connecting_icon( ): $mol_icon_sync_alert
+		status( ): string
+		status_icon( ): Record<string, $mol_icon>
+	}
+	
+}
+
+//# sourceMappingURL=icon.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_ws_icon extends $.$yuf_ws_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_speck__event_yuf_ws_status_1 = $mol_type_enforce<
+		({ 
+			click( next?: ReturnType< $yuf_ws_status['reset_error'] > ): ReturnType< $yuf_ws_status['reset_error'] >,
+		}) 
+		,
+		ReturnType< $mol_speck['event'] >
+	>
+	type $mol_speck__value_yuf_ws_status_2 = $mol_type_enforce<
+		ReturnType< $yuf_ws_status['error_message'] >
+		,
+		ReturnType< $mol_speck['value'] >
+	>
+	type $yuf_ws_icon__status_yuf_ws_status_3 = $mol_type_enforce<
+		ReturnType< $yuf_ws_status['status'] >
+		,
+		ReturnType< $yuf_ws_icon['status'] >
+	>
+	export class $yuf_ws_status extends $mol_view {
+		title_formatted( ): ReturnType< $yuf_ws_status['title'] >
+		error_message( ): ReturnType< ReturnType< $yuf_ws_status['ws'] >['error_message'] >
+		reset_error( next?: any ): any
+		Ws_error( ): $mol_speck
+		ws_error_content( ): readonly(any)[]
+		status( ): string
+		Icon( ): $yuf_ws_icon
+		attr( ): ({ 
+			'title': ReturnType< $yuf_ws_status['title_formatted'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		ws( ): $yuf_ws_host
+		title( ): string
+		status_message( ): ({ 
+			'error': string,
+			'open': string,
+			'connecting': string,
+		}) 
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=status.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_ws_status extends $.$yuf_ws_status {
+        ws_error_content(): readonly any[];
+        status(): "error" | "open" | "connecting";
+        reset_error(e?: Event): void;
+        title_formatted(): string;
+    }
+}
+
+declare namespace $ {
+    class timeout_promise extends $mol_promise<void> {
+        task: $mol_after_timeout | undefined | null;
+        succcess(): void;
+        destructor(): void;
+    }
+    export function $yuf_wait_timeout_async(this: $, timeout: number): Promise<void>;
+    export class $yuf_wait_timeout_wrap extends $mol_object {
+        readonly timeout: number;
+        constructor(timeout: number);
+        destructor(): void;
+        protected promise: timeout_promise | null;
+        wait(): void;
+        static timeout(timeout: number): $yuf_wait_timeout_wrap;
+    }
+    export function $yuf_wait_timeout(this: $, timeout: number): void;
+    export {};
+}
+
+declare namespace $ {
+    class $yuf_entity2<Data = unknown> extends $mol_object {
+        protected factory(): typeof $yuf_entity2;
+        protected static active: Record<string, $yuf_entity2>;
+        static active_model(signature: {}): $yuf_entity2<unknown>;
+        protected propagate(): void;
+        destructor(): void;
+        protected static draft_creator_ids(next?: Record<string, string | null> | null): Record<string, string | null>;
+        static draft_id_create(): string;
+        static draft_ids(creator_id: string, draft_ids?: readonly string[]): string[];
+        static creator_id(draft_id: string, next?: null): string | null;
+        static draft<Data>(id: string, next?: Data | null): NonNullable<Data> | null;
+        is_draft(next?: null, flag?: 'storage'): boolean;
+        draft(next?: Partial<Data> | null, flag?: 'storage' | 'fill'): Partial<Data> | null;
+        _id: string;
+        id(): string;
+        defaults(raw?: {}): Data;
+        mock(prev?: Data | null): Data | null | undefined;
+        mock_periodically(): boolean;
+        draft_value<Field extends keyof Data>(field: Field, next?: Data[Field] | null): Data[Field] | null;
+        value<Field extends keyof Data>(field: Field, next?: Data[Field] | null): Data[Field];
+        actual(next?: Partial<Data> | null, refresh?: 'refresh'): Partial<Data> | null;
+        data(next?: Partial<Data> | null, cache?: 'cache'): Data | null;
+        merge(actual: Partial<Data>, prev?: typeof actual | undefined | null): Partial<Data>;
+        debounce_timeout(): number;
+        patch_enabled(): boolean;
+        protected actual_push_task(): Partial<Data> | null;
+        protected resubscribe(): void;
+        actual_push_debounced(next: Partial<Data> | null): Partial<Data> | null;
+        server_created_id(actual?: Partial<Data> | null): string | null;
+        remove(): void;
+    }
+}
+
+declare namespace $ {
+    class $yuf_ws_entity<Data = unknown> extends $yuf_entity2<Data> {
+        type(): string;
+        query(): Record<string, string | null>;
+        device(): readonly string[];
+        signature(): Record<string, unknown>;
+        ws(): $yuf_ws_statefull;
+        actual(next?: Partial<ReturnType<this['defaults']>> | null, refresh?: 'refresh'): Partial<ReturnType<this["defaults"]>> | null;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_entity2_store<Item = string> extends $yuf_entity2<readonly Item[]> {
+        defaults(raw?: []): readonly Item[];
+        ids(next?: readonly string[], cache?: 'cache'): readonly string[];
+        id_remove(id: string): void;
+        id_add(id: string): void;
+        store_id(): string;
+        draft_ids(next?: readonly string[]): string[];
+        draft_id(next?: string): string;
+        by_id(id: string): $yuf_entity2<{}>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_ws_entity_store<Item = string> extends $yuf_entity2_store<Item> {
+        type(): string;
+        query(): Record<string, string | null>;
+        device(): string[];
+        signature(): {
+            type: string;
+            id: string | undefined;
+            query: Record<string, string | null> | undefined;
+            device: string[] | undefined;
+        };
+        ws(): $yuf_ws_statefull;
+        actual(next?: Partial<ReturnType<this['defaults']>> | null, refresh?: 'refresh'): Partial<ReturnType<this["defaults"]>> | null;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    type $mol_type_partial_undefined<Val> = $mol_type_merge<$mol_type_override<Partial<Val>, Pick<Val, {
+        [Field in keyof Val]: undefined extends Val[Field] ? never : Field;
+    }[keyof Val]>>>;
+}
+
+declare namespace $ {
+    function $mol_data_record<Sub extends Record<string, $mol_data_value>>(sub: Sub): ((val: $mol_type_merge<$mol_type_override<Partial<{ [key in keyof Sub]: Parameters<Sub[key]>[0]; }>, Pick<{ [key in keyof Sub]: Parameters<Sub[key]>[0]; }, { [Field in keyof { [key in keyof Sub]: Parameters<Sub[key]>[0]; }]: undefined extends { [key in keyof Sub]: Parameters<Sub[key]>[0]; }[Field] ? never : Field; }[keyof Sub]>>>) => Readonly<$mol_type_merge<$mol_type_override<Partial<{ [key_1 in keyof Sub]: ReturnType<Sub[key_1]>; }>, Pick<{ [key_1 in keyof Sub]: ReturnType<Sub[key_1]>; }, { [Field_1 in keyof { [key_1 in keyof Sub]: ReturnType<Sub[key_1]>; }]: undefined extends { [key_1 in keyof Sub]: ReturnType<Sub[key_1]>; }[Field_1] ? never : Field_1; }[keyof Sub]>>>>) & {
+        config: Sub;
+        Value: Readonly<$mol_type_merge<$mol_type_override<Partial<{ [key in keyof Sub]: ReturnType<Sub[key]>; }>, Pick<{ [key in keyof Sub]: ReturnType<Sub[key]>; }, { [Field in keyof { [key in keyof Sub]: ReturnType<Sub[key]>; }]: undefined extends { [key in keyof Sub]: ReturnType<Sub[key]>; }[Field] ? never : Field; }[keyof Sub]>>>>;
+    };
+}
+
+declare namespace $ {
+    const $yuf_karaoke_model_data: ((val: {
+        title: string;
+        audio_url: string;
+        lyrics: string;
+    }) => Readonly<{
+        title: string;
+        audio_url: string;
+        lyrics: string;
+    }>) & {
+        config: {
+            title: (val: string) => string;
+            audio_url: (val: string) => string;
+            lyrics: (val: string) => string;
+        };
+        Value: Readonly<{
+            title: string;
+            audio_url: string;
+            lyrics: string;
+        }>;
+    };
+    class $yuf_karaoke_model extends $yuf_ws_entity<typeof $yuf_karaoke_model_data.Value> {
+        type(): string;
+        defaults(raw?: {}): Readonly<{
+            title: string;
+            audio_url: string;
+            lyrics: string;
+        }>;
+        title(next?: string): string;
+        audio_url(next?: string): string;
+        lyrics(next?: string): string;
+        protected lyrics_blob(): Blob;
+        lyrics_url(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_karaoke_store extends $yuf_ws_entity_store {
+        type(): string;
+        by_id(id: string): $yuf_karaoke_model;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_edit extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=edit.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_restore extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=restore.view.tree.d.ts.map
+declare namespace $ {
+    type Primitive = string | number | boolean;
+    export type $mol_form_draft_state_value = readonly Primitive[] | Primitive | Record<string, boolean>;
+    export type $mol_form_draft_state = Record<string, $mol_form_draft_state_value | null> | null;
+    export {};
+}
+
+declare namespace $ {
+    function $mol_wire_race<Tasks extends ((...args: any) => any)[]>(...tasks: Tasks): {
+        [index in keyof Tasks]: ReturnType<Tasks[index]>;
+    };
+}
+
+declare namespace $ {
+
+	type $mol_button_minor__hint_mol_form_draft_1 = $mol_type_enforce<
+		ReturnType< $mol_form_draft['reset_title'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__sub_mol_form_draft_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_mol_form_draft_3 = $mol_type_enforce<
+		ReturnType< $mol_form_draft['reset'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	export class $mol_form_draft extends $mol_form {
+		reset_title( ): string
+		Reset_icon( ): $mol_icon_restore
+		Reset( ): $mol_button_minor
+		model( ): $mol_object2
+		model_pick( id: any, next?: any ): any
+		changed( ): boolean
+		state( next?: $mol_form_draft_state | null ): $mol_form_draft_state | null
+		state_pick( id: any, next?: any ): any
+		value( id: any, next?: any ): any
+		value_str( id: any, next?: string ): string
+		value_bool( id: any, next?: boolean ): boolean
+		value_number( id: any, next?: number ): number
+		dictionary_bool( id: any, next?: Record<string, any> ): Record<string, any>
+		list_string( id: any, next?: readonly(string)[] ): readonly(string)[]
+		value_changed( id: any): boolean
+		reset( next?: any ): any
+		done( next?: any ): any
+		buttons( ): readonly($mol_view)[]
+	}
+	
+}
+
+//# sourceMappingURL=draft.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_form_draft extends $.$mol_form_draft {
+        list_string(field: string, next?: readonly string[] | null): string[];
+        dictionary_bool(field: string, next?: Record<string, boolean> | null): Record<string, boolean>;
+        value_str(field: string, next?: string | null): string;
+        value_number(field: string, next?: number | null): number;
+        value_bool(field: string, next?: boolean | null): boolean;
+        model_pick(field: string, next?: $mol_form_draft_state_value | null): $mol_form_draft_state_value;
+        state_pick(field: string, next?: $mol_form_draft_state_value | null): $mol_form_draft_state_value | null;
+        value<T extends $mol_form_draft_state_value>(field: string, next?: T | null): T;
+        value_changed(field: string): boolean;
+        state(next?: $mol_form_draft_state): Record<string, $mol_form_draft_state_value | null>;
+        changed(): boolean;
+        reset(next?: unknown): void;
+        result(next?: string | Error): string;
+        buttons(): ($mol_button_minor | $.$mol_status)[];
+        save(next?: Event): null;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    const $yuf_karaoke_syntax_flow: $mol_syntax2<{
+        'code-global': RegExp;
+        'code-field': RegExp;
+        'code-comment-block': RegExp;
+        'code-comment-inline': RegExp;
+        'code-tag': RegExp;
+        'code-keyword': RegExp;
+        'brace-open': RegExp;
+        'brace-close': RegExp;
+        'code-number': RegExp;
+        'block-splitter': RegExp;
+        'row-slitter': RegExp;
+    }>;
+    function $yuf_karaoke_syntax_parse(this: $, str: string): (string | number)[][][];
+}
+
+declare namespace $ {
+
+	type $mol_string__value_yuf_karaoke_form_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_karaoke_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['title_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_karaoke_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['Title'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_string__value_yuf_karaoke_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_karaoke_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['audio_url_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_karaoke_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['Audio_url'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_textarea__syntax_yuf_karaoke_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['lyrics_syntax'] >
+		,
+		ReturnType< $yuf_textarea['syntax'] >
+	>
+	type $yuf_textarea__value_yuf_karaoke_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['value_str'] >
+		,
+		ReturnType< $yuf_textarea['value'] >
+	>
+	type $mol_form_field__name_yuf_karaoke_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['lyrics_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_karaoke_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_form['Lyrics'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	export class $yuf_karaoke_form extends $mol_form_draft {
+		title_name( ): string
+		Title( ): $mol_string
+		Title_field( ): $mol_form_field
+		title_field_content( ): readonly(any)[]
+		audio_url_name( ): string
+		Audio_url( ): $mol_string
+		Audio_url_field( ): $mol_form_field
+		lyrics_name( ): string
+		lyrics_syntax( ): any
+		Lyrics( ): $yuf_textarea
+		Lyrics_field( ): $mol_form_field
+		model( ): $yuf_karaoke_model
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_form extends $.$yuf_karaoke_form {
+        lyrics_syntax(): $mol_syntax2<{
+            'code-global': RegExp;
+            'code-field': RegExp;
+            'code-comment-block': RegExp;
+            'code-comment-inline': RegExp;
+            'code-tag': RegExp;
+            'code-keyword': RegExp;
+            'brace-open': RegExp;
+            'brace-close': RegExp;
+            'code-number': RegExp;
+            'block-splitter': RegExp;
+            'row-slitter': RegExp;
+        }>;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_karaoke_text_group__ids_yuf_karaoke_text_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_text['ids'] >
+		,
+		ReturnType< $yuf_karaoke_text_group['ids'] >
+	>
+	type $yuf_karaoke_text_group__hilited_length_yuf_karaoke_text_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_text['hilited_length'] >
+		,
+		ReturnType< $yuf_karaoke_text_group['hilited_length'] >
+	>
+	type $yuf_karaoke_text_group__row_text_yuf_karaoke_text_3 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_text['row_text'] >
+		,
+		ReturnType< $yuf_karaoke_text_group['row_text'] >
+	>
+	export class $yuf_karaoke_text extends $mol_view {
+		ids( id: any): readonly(readonly[number,number])[]
+		hilited_length( id: any): number
+		row_text( id: any): string
+		Group( id: any): $yuf_karaoke_text_group
+		group_content( ): readonly($mol_view)[]
+		uri( ): string
+		time( ): number
+		sub( ): readonly(any)[]
+	}
+	
+	type $yuf_karaoke_text_row__hilited_length_yuf_karaoke_text_group_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_text_group['hilited_length'] >
+		,
+		ReturnType< $yuf_karaoke_text_row['hilited_length'] >
+	>
+	type $yuf_karaoke_text_row__text_yuf_karaoke_text_group_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_text_group['row_text'] >
+		,
+		ReturnType< $yuf_karaoke_text_row['text'] >
+	>
+	export class $yuf_karaoke_text_group extends $mol_view {
+		hilited_length( id: any): number
+		row_text( id: any): string
+		Row( id: any): $yuf_karaoke_text_row
+		row_content( ): readonly($mol_view)[]
+		ids( ): readonly(readonly[number,number])[]
+		sub( ): readonly(any)[]
+	}
+	
+	type $mol_view__dom_name_yuf_karaoke_text_row_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_view['dom_name'] >
+	>
+	type $mol_view__sub_yuf_karaoke_text_row_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_karaoke_text_row extends $mol_view {
+		hilited_prefix( ): string
+		Hilited( ): $mol_view
+		text( ): string
+		content( ): readonly(any)[]
+		hilited_length( ): number
+		sub( ): ReturnType< $yuf_karaoke_text_row['content'] >
+	}
+	
+}
+
+//# sourceMappingURL=text.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_text extends $.$yuf_karaoke_text {
+        protected data_raw(): string;
+        protected data(): (string | number)[][][];
+        protected groups(): (string | number)[][][];
+        group_content(): $.$yuf_karaoke_text_group[];
+        ids(group_index: number): (readonly [number, number])[];
+        row_text([group_index, row_index]: [number, number]): string;
+        hilited_group_index_last(): number;
+        scroll_task(): null;
+        auto(): any;
+        hilited_length([group_index, row_index]: [number, number]): number;
+    }
+    class $yuf_karaoke_text_group extends $.$yuf_karaoke_text_group {
+        row_content(): $.$yuf_karaoke_text_row[];
+    }
+    class $yuf_karaoke_text_row extends $.$yuf_karaoke_text_row {
+        content(): (string | $mol_view)[];
+        hilited_prefix(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_play extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=play.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_video_play extends $yuf_check_icon2 {
+		hint_checked( ): string
+		hint_unchecked( ): string
+		Icon_checked( ): $mol_icon_pause
+		Icon_unchecked( ): $mol_icon_play
+	}
+	
+}
+
+//# sourceMappingURL=play.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_arrow_collapse extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=collapse.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_arrow_collapse_all extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=all.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_arrow_expand extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=expand.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_arrow_expand_all extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=all.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_video_full extends $yuf_check_icon2 {
+		hint_checked( ): string
+		hint_unchecked( ): string
+		Icon_checked( ): $mol_icon_arrow_collapse_all
+		Icon_unchecked( ): $mol_icon_arrow_expand_all
+	}
+	
+}
+
+//# sourceMappingURL=full.view.tree.d.ts.map
+declare namespace $ {
+
+	type $yuf_number_string__blur_event_yuf_number_1 = $mol_type_enforce<
+		ReturnType< $yuf_number['blur_event'] >
+		,
+		ReturnType< $yuf_number_string['blur_event'] >
+	>
+	type $yuf_number_string__type_yuf_number_2 = $mol_type_enforce<
+		ReturnType< $yuf_number['type'] >
+		,
+		ReturnType< $yuf_number_string['type'] >
+	>
+	type $yuf_number_string__value_yuf_number_3 = $mol_type_enforce<
+		ReturnType< $yuf_number['value_string'] >
+		,
+		ReturnType< $yuf_number_string['value'] >
+	>
+	type $yuf_number_string__hint_yuf_number_4 = $mol_type_enforce<
+		ReturnType< $yuf_number['hint'] >
+		,
+		ReturnType< $yuf_number_string['hint'] >
+	>
+	type $yuf_number_string__enabled_yuf_number_5 = $mol_type_enforce<
+		ReturnType< $yuf_number['string_enabled'] >
+		,
+		ReturnType< $yuf_number_string['enabled'] >
+	>
+	type $yuf_number_string__submit_yuf_number_6 = $mol_type_enforce<
+		ReturnType< $yuf_number['submit'] >
+		,
+		ReturnType< $yuf_number_string['submit'] >
+	>
+	export class $yuf_number extends $mol_number {
+		blur_event( next?: any ): any
+		String( ): $yuf_number_string
+	}
+	
+	export class $yuf_number_string extends $mol_string {
+		blur_event( next?: any ): any
+		event( ): ({ 
+			blur( next?: ReturnType< $yuf_number_string['blur_event'] > ): ReturnType< $yuf_number_string['blur_event'] >,
+		})  & ReturnType< $mol_string['event'] >
+	}
+	
+}
+
+//# sourceMappingURL=number.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_number extends $.$yuf_number {
+        blur_event(): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_minus extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=minus.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_plus extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=plus.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $yuf_number_range_string extends $mol_string {
+		step( ): number
+		min( ): number
+		max( ): number
+		type( ): string
+		keyboard( ): string
+		attr( ): ({ 
+			'title': ReturnType< $yuf_number_range_string['hint'] >,
+		})  & ReturnType< $mol_string['attr'] >
+		field( ): ({ 
+			'step': ReturnType< $yuf_number_range_string['step'] >,
+			'min': ReturnType< $yuf_number_range_string['min'] >,
+			'max': ReturnType< $yuf_number_range_string['max'] >,
+		})  & ReturnType< $mol_string['field'] >
+	}
+	
+}
+
+//# sourceMappingURL=string.view.tree.d.ts.map
+declare namespace $ {
+
+	type $yuf_number_range_string__type_yuf_number_range_1 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['type'] >
+		,
+		ReturnType< $yuf_number_range_string['type'] >
+	>
+	type $yuf_number_range_string__value_yuf_number_range_2 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['value_string'] >
+		,
+		ReturnType< $yuf_number_range_string['value'] >
+	>
+	type $yuf_number_range_string__hint_yuf_number_range_3 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['hint'] >
+		,
+		ReturnType< $yuf_number_range_string['hint'] >
+	>
+	type $yuf_number_range_string__enabled_yuf_number_range_4 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['string_enabled'] >
+		,
+		ReturnType< $yuf_number_range_string['enabled'] >
+	>
+	type $yuf_number_range_string__submit_yuf_number_range_5 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['submit'] >
+		,
+		ReturnType< $yuf_number_range_string['submit'] >
+	>
+	type $yuf_number_range_string__min_yuf_number_range_6 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['value_min'] >
+		,
+		ReturnType< $yuf_number_range_string['min'] >
+	>
+	type $yuf_number_range_string__max_yuf_number_range_7 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['value_max'] >
+		,
+		ReturnType< $yuf_number_range_string['max'] >
+	>
+	type $yuf_number_range_string__step_yuf_number_range_8 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['step'] >
+		,
+		ReturnType< $yuf_number_range_string['step'] >
+	>
+	export class $yuf_number_range extends $mol_number {
+		type( ): string
+		step( ): number
+		dec_icon( ): $mol_icon_minus
+		inc_icon( ): $mol_icon_plus
+		String( ): $yuf_number_range_string
+	}
+	
+}
+
+//# sourceMappingURL=range.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_number_range extends $.$yuf_number_range {
+        step(): number;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $yuf_video_slider extends $yuf_number_range {
+		precision( ): number
+		value_max( ): number
+		value_min( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=slider.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_video_estimate extends $mol_view {
+		time_formatted( ): string
+		time( ): number
+		duration( ): number
+		ms_enabled( ): boolean
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=estimate.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_video_estimate extends $.$yuf_video_estimate {
+        time_formatted(): string;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_video_play__checked_yuf_video_bar_1 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['playing'] >
+		,
+		ReturnType< $yuf_video_play['checked'] >
+	>
+	type $yuf_video_full__checked_yuf_video_bar_2 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['fullscreen'] >
+		,
+		ReturnType< $yuf_video_full['checked'] >
+	>
+	type $mol_view__sub_yuf_video_bar_3 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['left_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_video_slider__value_yuf_video_bar_4 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['time'] >
+		,
+		ReturnType< $yuf_video_slider['value'] >
+	>
+	type $yuf_video_slider__value_max_yuf_video_bar_5 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['duration'] >
+		,
+		ReturnType< $yuf_video_slider['value_max'] >
+	>
+	type $mol_view__sub_yuf_video_bar_6 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['mid_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_video_estimate__time_yuf_video_bar_7 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['time'] >
+		,
+		ReturnType< $yuf_video_estimate['time'] >
+	>
+	type $yuf_video_estimate__duration_yuf_video_bar_8 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['duration'] >
+		,
+		ReturnType< $yuf_video_estimate['duration'] >
+	>
+	type $mol_view__sub_yuf_video_bar_9 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['right_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_video_bar extends $mol_view {
+		playing( next?: boolean ): boolean
+		Playing( ): $yuf_video_play
+		fullscreen( next?: boolean ): boolean
+		Fullscreen( ): $yuf_video_full
+		left_content( ): readonly($mol_view)[]
+		Left( ): $mol_view
+		time( next?: number ): number
+		duration( ): number
+		Slider( ): $yuf_video_slider
+		mid_content( ): readonly($mol_view)[]
+		Mid( ): $mol_view
+		Time( ): $yuf_video_estimate
+		right_content( ): readonly($mol_view)[]
+		Right( ): $mol_view
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=bar.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_karaoke_bar extends $yuf_video_bar {
+		left_content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=bar.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_bar extends $.$yuf_karaoke_bar {
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_karaoke_text__uri_yuf_karaoke_player_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['lyrics_url'] >
+		,
+		ReturnType< $yuf_karaoke_text['uri'] >
+	>
+	type $yuf_karaoke_text__time_yuf_karaoke_player_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['video_time'] >
+		,
+		ReturnType< $yuf_karaoke_text['time'] >
+	>
+	type __yuf_karaoke_player_3 = $mol_type_enforce<
+		Parameters< $yuf_karaoke_player['video_time'] >[0]
+		,
+		Parameters< ReturnType< $yuf_karaoke_player['Player'] >['time'] >[0]
+	>
+	type __yuf_karaoke_player_4 = $mol_type_enforce<
+		Parameters< $yuf_karaoke_player['playing'] >[0]
+		,
+		Parameters< ReturnType< $yuf_karaoke_player['Player'] >['playing'] >[0]
+	>
+	type $mol_video_player__uri_yuf_karaoke_player_5 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['uri'] >
+		,
+		ReturnType< $mol_video_player['uri'] >
+	>
+	type $mol_video_player__controls_yuf_karaoke_player_6 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_video_player['controls'] >
+	>
+	type $mol_video_player__autoplay_yuf_karaoke_player_7 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_video_player['autoplay'] >
+	>
+	type $mol_video_player__loop_yuf_karaoke_player_8 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_video_player['loop'] >
+	>
+	type $mol_video_player__uri_yuf_karaoke_player_9 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['uri'] >
+		,
+		ReturnType< $mol_video_player['uri'] >
+	>
+	type $yuf_karaoke_bar__playing_yuf_karaoke_player_10 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['playing'] >
+		,
+		ReturnType< $yuf_karaoke_bar['playing'] >
+	>
+	type $yuf_karaoke_bar__fullscreen_yuf_karaoke_player_11 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['fullscreen'] >
+		,
+		ReturnType< $yuf_karaoke_bar['fullscreen'] >
+	>
+	type $yuf_karaoke_bar__duration_yuf_karaoke_player_12 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['video_duration'] >
+		,
+		ReturnType< $yuf_karaoke_bar['duration'] >
+	>
+	type $yuf_karaoke_bar__time_yuf_karaoke_player_13 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_player['video_time'] >
+		,
+		ReturnType< $yuf_karaoke_bar['time'] >
+	>
+	export class $yuf_karaoke_player extends $mol_view {
+		title( ): ReturnType< ReturnType< $yuf_karaoke_player['model'] >['title'] >
+		uri( ): ReturnType< ReturnType< $yuf_karaoke_player['model'] >['audio_url'] >
+		lyrics_url( ): ReturnType< ReturnType< $yuf_karaoke_player['model'] >['lyrics_url'] >
+		Track( ): $yuf_karaoke_text
+		video_time( next?: ReturnType< ReturnType< $yuf_karaoke_player['Player'] >['time'] > ): ReturnType< ReturnType< $yuf_karaoke_player['Player'] >['time'] >
+		video_duration( ): ReturnType< ReturnType< $yuf_karaoke_player['Player'] >['duration'] >
+		playing( next?: ReturnType< ReturnType< $yuf_karaoke_player['Player'] >['playing'] > ): ReturnType< ReturnType< $yuf_karaoke_player['Player'] >['playing'] >
+		Player( ): $mol_video_player
+		fullscreen( next?: boolean ): boolean
+		Bar( ): $yuf_karaoke_bar
+		bar_content( ): readonly($mol_view)[]
+		model( ): $yuf_karaoke_model
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=player.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_check_icon__Icon_yuf_karaoke_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_page['Edit_check_icon'] >
+		,
+		ReturnType< $mol_check_icon['Icon'] >
+	>
+	type $mol_check_icon__checked_yuf_karaoke_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_page['edit_enabled'] >
+		,
+		ReturnType< $mol_check_icon['checked'] >
+	>
+	type __yuf_karaoke_page_3 = $mol_type_enforce<
+		Parameters< $yuf_karaoke_page['value_str'] >[0]
+		,
+		Parameters< ReturnType< $yuf_karaoke_page['Form'] >['value_str'] >[0]
+	>
+	type __yuf_karaoke_page_4 = $mol_type_enforce<
+		Parameters< $yuf_karaoke_page['value_str'] >[1]
+		,
+		Parameters< ReturnType< $yuf_karaoke_page['Form'] >['value_str'] >[1]
+	>
+	type $yuf_karaoke_form__model_yuf_karaoke_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_page['model'] >
+		,
+		ReturnType< $yuf_karaoke_form['model'] >
+	>
+	type $yuf_karaoke_form__foot_yuf_karaoke_page_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_karaoke_form['foot'] >
+	>
+	type $yuf_karaoke_form__done_yuf_karaoke_page_7 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_page['done'] >
+		,
+		ReturnType< $yuf_karaoke_form['done'] >
+	>
+	type $yuf_karaoke_player__model_yuf_karaoke_page_8 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_page['model'] >
+		,
+		ReturnType< $yuf_karaoke_player['model'] >
+	>
+	type $yuf_karaoke_player__bar_content_yuf_karaoke_page_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_karaoke_player['bar_content'] >
+	>
+	export class $yuf_karaoke_page extends $mol_page {
+		title( ): ReturnType< ReturnType< $yuf_karaoke_page['model'] >['title'] >
+		audio_url( ): ReturnType< ReturnType< $yuf_karaoke_page['model'] >['audio_url'] >
+		buttons_content( ): ReturnType< $yuf_karaoke_page['buttons'] >
+		Edit_check_icon( ): $mol_icon_edit
+		edit_enabled( next?: boolean ): boolean
+		Edit_check( ): $mol_check_icon
+		Close( ): any
+		value_str( id: any, next?: ReturnType< ReturnType< $yuf_karaoke_page['Form'] >['value_str'] > ): ReturnType< ReturnType< $yuf_karaoke_page['Form'] >['value_str'] >
+		done( next?: any ): any
+		buttons( ): ReturnType< ReturnType< $yuf_karaoke_page['Form'] >['buttons'] >
+		Form( ): $yuf_karaoke_form
+		edit_form_content( ): readonly($mol_view)[]
+		Player_bar( ): ReturnType< ReturnType< $yuf_karaoke_page['Player'] >['Bar'] >
+		Player( ): $yuf_karaoke_player
+		sing_content( ): readonly($mol_view)[]
+		model( ): $yuf_karaoke_model
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+		foot( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_page extends $.$yuf_karaoke_page {
+        buttons_content(): readonly $mol_view[];
+        edit_form_content(): readonly $mol_view[];
+        sing_content(): readonly $mol_view[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_dimmer__haystack_yuf_karaoke_link_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_link['title'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	type $mol_dimmer__needle_yuf_karaoke_link_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_link['needle'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	export class $yuf_karaoke_link extends $yuf_link {
+		title( ): ReturnType< ReturnType< $yuf_karaoke_link['model'] >['title'] >
+		needle( ): string
+		Title( ): $mol_dimmer
+		model( ): $yuf_karaoke_model
+		content( ): readonly($mol_view_content)[]
+	}
+	
+}
+
+//# sourceMappingURL=link.view.tree.d.ts.map
+declare namespace $ {
+
+	type __yuf_karaoke_catalog_1 = $mol_type_enforce<
+		Parameters< $yuf_karaoke_catalog['by_id'] >[0]
+		,
+		Parameters< ReturnType< $yuf_karaoke_catalog['store'] >['by_id'] >[0]
+	>
+	type $yuf_karaoke_page__model_yuf_karaoke_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['by_id'] >
+		,
+		ReturnType< $yuf_karaoke_page['model'] >
+	>
+	type $yuf_karaoke_page__done_yuf_karaoke_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['done'] >
+		,
+		ReturnType< $yuf_karaoke_page['done'] >
+	>
+	type $yuf_karaoke_page__Close_yuf_karaoke_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['Spread_close'] >
+		,
+		ReturnType< $yuf_karaoke_page['Close'] >
+	>
+	type $yuf_karaoke_link__model_yuf_karaoke_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['by_id'] >
+		,
+		ReturnType< $yuf_karaoke_link['model'] >
+	>
+	type $yuf_karaoke_link__needle_yuf_karaoke_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['menu_filter'] >
+		,
+		ReturnType< $yuf_karaoke_link['needle'] >
+	>
+	type $yuf_karaoke_link__link_arg_yuf_karaoke_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_catalog['arg'] >
+		,
+		ReturnType< $yuf_karaoke_link['link_arg'] >
+	>
+	export class $yuf_karaoke_catalog extends $yuf_catalog {
+		spread_ids( ): ReturnType< ReturnType< $yuf_karaoke_catalog['store'] >['ids'] >
+		by_id( id: any): ReturnType< ReturnType< $yuf_karaoke_catalog['store'] >['by_id'] >
+		done( id: any, next?: any ): any
+		param_suffix( ): string
+		menu_title( ): string
+		store( ): $yuf_karaoke_store
+		Spread( id: any): $yuf_karaoke_page
+		Menu_link( id: any): $yuf_karaoke_link
+	}
+	
+}
+
+//# sourceMappingURL=catalog.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_catalog extends $.$yuf_karaoke_catalog {
+        done(id: string, e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_ws_status__ws_yuf_karaoke_app_1 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_app['ws'] >
+		,
+		ReturnType< $yuf_ws_status['ws'] >
+	>
+	type $yuf_karaoke_catalog__store_yuf_karaoke_app_2 = $mol_type_enforce<
+		ReturnType< $yuf_karaoke_app['store'] >
+		,
+		ReturnType< $yuf_karaoke_catalog['store'] >
+	>
+	export class $yuf_karaoke_app extends $yuf_catalog_app {
+		ws( ): $yuf_ws_statefull
+		Ws_status( ): $yuf_ws_status
+		store( ): $yuf_karaoke_store
+		Catalog( ): $yuf_karaoke_catalog
+		logged( next?: boolean ): boolean
+		menu_links_authorized( ): ReturnType< $yuf_karaoke_app['menu_links'] >
+		foot_second_post( ): readonly(any)[]
+		param( ): string
+		spreads( ): ({ 
+			'catalog': ReturnType< $yuf_karaoke_app['Catalog'] >,
+		}) 
+	}
+	
+}
+
+//# sourceMappingURL=app.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $yuf_ws_socket_mock<Message = unknown> extends $yuf_ws_socket {
+        open_timeout(): number;
+        answer_timeout(): number;
+        periodically_timeout(): number;
+        close_on_every_tick(): number;
+        native(): WebSocket;
+        protected periodically_timer: null | $mol_after_timeout;
+        protected periodically_schedule(): void;
+        protected periodically_tick: number;
+        protected periodically(): void;
+        destructor(): void;
+        answer(obj: Message, periodically?: boolean): null | Message;
+        protected subs: Message[];
+        message_equal(a: Message, b: Message): boolean;
+        message_normalize(msg: Partial<Message>): Partial<Message>;
+        send(raw: Parameters<WebSocket['send']>[0]): void;
+        factory(): typeof $yuf_ws_socket_mock;
+        receive(message: unknown): void;
+    }
+}
+
+declare namespace $ {
+    class $yuf_ws_statefull_socket_mock extends $yuf_ws_socket_mock<$yuf_ws_statefull_message> {
+        message_sub(obj: $yuf_ws_statefull_message): $yuf_entity2<unknown>;
+        answer(obj: $yuf_ws_statefull_message, periodically?: boolean): any;
+        message_normalize({ type, query, device, id }: $yuf_ws_statefull_message): {
+            type: string;
+            id: string | number | undefined;
+            query: Record<string, (string | number | boolean | null) | readonly (string | number | boolean | null)[]> | null | undefined;
+            device: readonly string[] | null | undefined;
+        };
+    }
+}
+
+declare namespace $ {
+    class $yuf_karaoke_store_mock extends $yuf_karaoke_store {
+        mock(next?: readonly string[] | null): readonly string[];
+    }
+}
+
+declare namespace $ {
+    class $yuf_karaoke_model_mock extends $yuf_karaoke_model {
+        mock(next?: typeof $yuf_karaoke_model_data.Value | null): Readonly<{
+            title: string;
+            audio_url: string;
+            lyrics: string;
+        }>;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_karaoke_demo extends $mol_example_large {
+		Karaoke( ): $yuf_karaoke_app
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_karaoke_demo extends $.$yuf_karaoke_demo {
+        get $(): typeof $$;
+    }
+}
+
 export = $;
 //# sourceMappingURL=web.d.ts.map
