@@ -1,0 +1,25 @@
+$yuf_karaoke_page $mol_page
+	model $yuf_karaoke_model
+		title => title
+		audio_url => audio_url
+	tools /
+		^ buttons_content <= buttons
+		<= Edit_check $mol_check_icon
+			Icon <= Edit_check_icon $mol_icon_edit
+			checked? <=> edit_enabled? false
+		<= Close null
+	body /
+		^ edit_form_content /$mol_view
+			<= Form $yuf_karaoke_form
+				model <= model
+				value_str*? => value_str*?
+				foot /
+				done? <=> done? null
+				buttons => buttons
+		^ sing_content /$mol_view
+			<= Player $yuf_karaoke_player
+				model <= model
+				bar_content /
+				Bar => Player_bar
+	foot /
+		<= Player_bar

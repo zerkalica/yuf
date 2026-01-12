@@ -1,0 +1,9 @@
+$yuf_karaoke_demo $mol_example_large
+	title \Karaoke demo
+	sub /
+		<= Karaoke $yuf_karaoke_app
+	tags /
+		\game
+		\karaoke
+	aspects /
+		\Application

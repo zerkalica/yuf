@@ -1,0 +1,5 @@
+$yuf_video_play $yuf_check_icon2
+	hint_checked @ \Pause
+	hint_unchecked @ \Play
+	Icon_checked $mol_icon_pause
+	Icon_unchecked $mol_icon_play

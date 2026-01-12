@@ -1,0 +1,6 @@
+$yuf_video_estimate $mol_view
+	time 0
+	duration 0
+	ms_enabled false
+	sub /
+		<= time_formatted \

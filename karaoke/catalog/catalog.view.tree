@@ -1,0 +1,14 @@
+$yuf_karaoke_catalog $yuf_catalog
+	param_suffix \kar
+	menu_title @ \Songs
+	store $yuf_karaoke_store
+		ids => spread_ids
+		by_id* => by_id*
+	Spread* $yuf_karaoke_page
+		model <= by_id*
+		done? <=> done*? null
+		Close <= Spread_close
+	Menu_link* $yuf_karaoke_link
+		model <= by_id*
+		needle <= menu_filter
+		link_arg <= arg*

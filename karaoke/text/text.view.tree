@@ -1,0 +1,25 @@
+$yuf_karaoke_text $mol_view
+	uri \
+	time 0
+	sub /
+		^ group_content /$mol_view
+			<= Group*0 $yuf_karaoke_text_group
+				ids <= ids* /readonly[number,number]
+				hilited_length* <= hilited_length* 0
+				row_text* <= row_text* \
+
+$yuf_karaoke_text_group $mol_view
+	ids /readonly[number,number]
+	sub /
+		^ row_content /$mol_view
+			<= Row* $yuf_karaoke_text_row
+				hilited_length <= hilited_length* 0
+				text <= row_text* \
+
+$yuf_karaoke_text_row $mol_view
+	hilited_length 0
+	sub <= content /
+		<= Hilited $mol_view
+			dom_name \span
+			sub / <= hilited_prefix \
+		<= text \

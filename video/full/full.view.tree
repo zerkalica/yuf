@@ -1,0 +1,5 @@
+$yuf_video_full $yuf_check_icon2
+	hint_checked @ \Exit fullscreen
+	hint_unchecked @ \Fullscreen
+	Icon_checked $mol_icon_arrow_collapse_all
+	Icon_unchecked $mol_icon_arrow_expand_all

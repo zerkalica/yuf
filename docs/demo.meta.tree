@@ -14,3 +14,4 @@ include \/yuf/date/range/demo
 include \/yuf/bug/log/prepend
 include \/yuf/bug/catalog/flash
 include \/yuf/localizer/demo
+include \/yuf/karaoke/demo

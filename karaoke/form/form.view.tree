@@ -1,0 +1,17 @@
+$yuf_karaoke_form $mol_form_draft
+	model $yuf_karaoke_model
+	body /
+		^ title_field_content /
+			<= Title_field $mol_form_field
+				name <= title_name @ \Title
+				control <= Title $mol_string
+					value? <=> value_str*title?
+		<= Audio_url_field $mol_form_field
+			name <= audio_url_name @ \Audio url
+			control <= Audio_url $mol_string
+				value? <=> value_str*audio_url?
+		<= Lyrics_field $mol_form_field
+			name <= lyrics_name @ \Lyrics
+			control <= Lyrics $yuf_textarea
+				syntax <= lyrics_syntax null
+				value? <=> value_str*lyrics?

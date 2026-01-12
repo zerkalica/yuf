@@ -1,0 +1,9 @@
+$yuf_karaoke_app $yuf_catalog_app
+	logged? true
+	menu_links_authorized <= menu_links
+	foot_second_post /
+		<= Ws_status $yuf_ws_status ws <= ws $yuf_ws_statefull
+	param \yuf_kar
+	spreads *
+		catalog <= Catalog $yuf_karaoke_catalog
+			store <= store $yuf_karaoke_store

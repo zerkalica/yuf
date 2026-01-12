@@ -1,0 +1,7 @@
+$yuf_karaoke_link $yuf_link
+	model $yuf_karaoke_model
+		title => title
+	content /$mol_view_content
+		<= Title $mol_dimmer
+			haystack <= title
+			needle <= needle \

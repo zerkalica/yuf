@@ -1,0 +1,6 @@
+$yuf_video_slider $yuf_number_range
+	precision 0.05
+	value_max 100
+	value_min 0
+	sub /
+		<= String

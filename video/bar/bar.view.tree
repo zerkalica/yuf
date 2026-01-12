@@ -1,0 +1,18 @@
+$yuf_video_bar $mol_view
+	sub /
+		<= Left $mol_view
+			sub <= left_content /$mol_view
+				<= Playing $yuf_video_play
+					checked? <=> playing? false
+				<= Fullscreen $yuf_video_full
+					checked? <=> fullscreen? false
+		<= Mid $mol_view
+			sub <= mid_content /$mol_view
+				<= Slider $yuf_video_slider
+					value? <=> time? 0
+					value_max <= duration 100
+		<= Right $mol_view
+			sub <= right_content /$mol_view
+				<= Time $yuf_video_estimate
+					time <= time
+					duration <= duration

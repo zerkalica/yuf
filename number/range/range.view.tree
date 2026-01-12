@@ -1,0 +1,12 @@
+$yuf_number_range $mol_number
+	dec_icon $mol_icon_minus
+	inc_icon $mol_icon_plus
+	String $yuf_number_range_string
+		type <= type \range
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+		min <= value_min
+		max <= value_max
+		step <= step 0

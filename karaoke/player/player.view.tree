@@ -1,0 +1,24 @@
+$yuf_karaoke_player $mol_view
+	model $yuf_karaoke_model
+		title => title
+		audio_url => uri
+		lyrics_url => lyrics_url
+	sub /
+		<= Track $yuf_karaoke_text
+			uri <= lyrics_url
+			time <= video_time
+		<= Player $mol_video_player
+			uri <= uri
+			controls false
+			autoplay false
+			loop false
+			uri <= uri
+			time? => video_time?
+			duration => video_duration
+			playing? => playing?
+		^ bar_content /$mol_view
+			<= Bar $yuf_karaoke_bar
+				playing? <=> playing?
+				fullscreen? <=> fullscreen? false
+				duration <= video_duration
+				time? <=> video_time?
