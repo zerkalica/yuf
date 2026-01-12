@@ -6,5 +6,12 @@ namespace $.$$ {
 			this.showed( false )
 		}
 
+		override cam_files(next?: readonly File[]) {
+			const file = this.files(next)
+			if (next) this.showed(false)
+
+			return file ?? null
+		}
+
 	}
 }

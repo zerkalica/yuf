@@ -57,7 +57,7 @@ namespace $.$$ {
 
 			try {
 				const file = this.canvas_file()
-				this.file(file)
+				this.files(file ? [file] : [])
 				this.status([ null ])
 			} catch (error) {
 				Promise.resolve().then( ()=> this.status([ error ]) )
@@ -67,6 +67,14 @@ namespace $.$$ {
 			return null
 		}
 
+		status_text() {
+			const error = this.status()?.[0]
+			if( ! error ) return super.status_text()
+			if ($mol_promise_like(error)) {
+				return this.saving_text()
+			}
+			$mol_fail_hidden(error)
+		}
 	}
 
 	export class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {

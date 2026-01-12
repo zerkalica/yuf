@@ -1,0 +1,13 @@
+$yuf_attach2 $mol_view
+	sub /
+		<= Add $mol_button_open
+			hint <= hint @ \Upload files
+			files? <=> files? null
+			multiple <= multiple false
+			accept <= accept \
+			enabled <= enabled true
+			Icon <= Add_icon $mol_icon_attachment
+		<= Camera_pick $yuf_camera_pick
+			files? <=> files?
+			align <= align \center
+			hint <= camera_hint @ \Attach image or video from camera

@@ -10,7 +10,9 @@ $yuf_camera_pane $mol_view
 		image_type <= image_type \image/jpeg
 		node <= camera_node
 	canvas_file null File
-	file? null File
+	files? /File
+	status? /
+	saving_text @ \Saving...
 	sub /
 		<= Camera $yuf_camera_pane_video
 			dom_safe => camera_node
@@ -21,6 +23,8 @@ $yuf_camera_pane $mol_view
 			click? <=> camera_click? null
 		<= Controls $mol_view
 			sub <= controls /$mol_view_content
+				<= Status $mol_view
+					sub / <= status_text \
 				^ controls_main /$mol_view_content
 				^ video_controls /$mol_view_content
 					<= Video_status_button $yuf_camera_recorder_button
@@ -28,7 +32,6 @@ $yuf_camera_pane $mol_view
 				^ controls_close /$mol_view_content
 					<= Close $mol_button_minor
 						hint <= close_hint @ \Close
-						status? => status?
 						sub / <= Close_icon $mol_icon_close
 						click? <=> close_click? null
 

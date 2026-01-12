@@ -37,11 +37,6 @@ namespace $.$$ {
 
 		Camera_pick: {
 
-			Bubble: {
-				width: '700px',
-				aspectRatio: 16/9,
-			},
-
 			Trigger_icon: {
 				width: '100%',
 				height: '100%',

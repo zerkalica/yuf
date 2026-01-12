@@ -4,6 +4,10 @@ namespace $.$$ {
 		Camera: {
 			maxWidth: '100%',
 		},
+		Status: {
+			color: $mol_theme.text,
+			padding: $mol_gap.text,
+		},
 		Controls: {
 			position: 'absolute',
 			top: 0,
@@ -11,7 +15,8 @@ namespace $.$$ {
 			zIndex: $mol_layer.popup,
 			background: {
 				color: $mol_theme.card
-			}
+			},
+			opacity: .7,
 		}
 		
 		
