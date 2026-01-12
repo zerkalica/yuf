@@ -1443,30 +1443,6 @@ $mol_button_open_native $mol_view
 	event *
 		change?next <=> picked?next null
 
-$yuf_pick $mol_pick
-	portal null
-
-$yuf_blend $mol_view
-	attr *
-		^
-		yuf_blend_direction <= direction \left-right
-	sub /$mol_view
-		<= Back $mol_view
-			event *
-				click? <=> click? null
-		<= Content $mol_view
-			sub <= content /$mol_view_content
-
-$yuf_portal $yuf_blend
-	showed? false
-	style *
-		^
-		display <= display null
-	content <= bubbles /$mol_view
-	popup_add? $yuf_portal_popup
-	popup_remove? $yuf_portal_popup
-	popups? /$yuf_portal_popup
-
 $mol_icon_camera $mol_icon path \M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z
 
 $mol_icon_stop $mol_icon path \M18,18H6V6H18V18Z
@@ -1552,7 +1528,9 @@ $yuf_camera_pane $mol_view
 		image_type <= image_type \image/jpeg
 		node <= camera_node
 	canvas_file null File
-	file? null File
+	files? /File
+	status? /
+	saving_text @ \Saving...
 	sub /
 		<= Camera $yuf_camera_pane_video
 			dom_safe => camera_node
@@ -1563,6 +1541,8 @@ $yuf_camera_pane $mol_view
 			click? <=> camera_click? null
 		<= Controls $mol_view
 			sub <= controls /$mol_view_content
+				<= Status $mol_view
+					sub / <= status_text \
 				^ controls_main /$mol_view_content
 				^ video_controls /$mol_view_content
 					<= Video_status_button $yuf_camera_recorder_button
@@ -1570,7 +1550,6 @@ $yuf_camera_pane $mol_view
 				^ controls_close /$mol_view_content
 					<= Close $mol_button_minor
 						hint <= close_hint @ \Close
-						status? => status?
 						sub / <= Close_icon $mol_icon_close
 						click? <=> close_click? null
 
@@ -1580,12 +1559,12 @@ $yuf_camera_pane_video $mol_video_camera
 		^
 		click? <=> click? null
 
-$yuf_camera_pick $yuf_pick
+$yuf_camera_pick $mol_pick
 	trigger_content /
 		<= Trigger_icon $mol_icon_camera
 	bubble_content /
 		<= Camera $yuf_camera_pane
-			file? <=> file? null
+			files? <=> cam_files? <=> files? /File
 			close_click? <=> close_click? null
 
 $mol_icon_camera_off $mol_icon path \M1.2,4.47L2.5,3.2L20,20.72L18.73,22L16.73,20H4A2,2 0 0,1 2,18V6C2,5.78 2.04,5.57 2.1,5.37L1.2,4.47M7,4L9,2H15L17,4H20A2,2 0 0,1 22,6V18C22,18.6 21.74,19.13 21.32,19.5L16.33,14.5C16.76,13.77 17,12.91 17,12A5,5 0 0,0 12,7C11.09,7 10.23,7.24 9.5,7.67L5.82,4H7M7,12A5,5 0 0,0 12,17C12.5,17 13.03,16.92 13.5,16.77L11.72,15C10.29,14.85 9.15,13.71 9,12.28L7.23,10.5C7.08,10.97 7,11.5 7,12M12,9A3,3 0 0,1 15,12C15,12.35 14.94,12.69 14.83,13L11,9.17C11.31,9.06 11.65,9 12,9Z
@@ -1612,8 +1591,7 @@ $yuf_attach $mol_view
 			Icon <= Add_icon $mol_icon_attachment
 		^ camera_content <= camera_content_inner /$mol_view_content
 			<= Camera_pick $yuf_camera_pick
-				showed? => camera_showed?
-				file? <=> camera_file? null
+				files? <=> attach_new?
 				align <= camera_pick_align \center
 
 $yuf_attach_item $mol_button_minor
@@ -1640,6 +1618,27 @@ $yuf_attach_unknown $mol_view
 		<= Icon $mol_view
 		<= Text $mol_view sub /
 			<= ext <= file_name \
+
+$yuf_blend $mol_view
+	attr *
+		^
+		yuf_blend_direction <= direction \left-right
+	sub /$mol_view
+		<= Back $mol_view
+			event *
+				click? <=> click? null
+		<= Content $mol_view
+			sub <= content /$mol_view_content
+
+$yuf_portal $yuf_blend
+	showed? false
+	style *
+		^
+		display <= display null
+	content <= bubbles /$mol_view
+	popup_add? $yuf_portal_popup
+	popup_remove? $yuf_portal_popup
+	popups? /$yuf_portal_popup
 
 $yuf_attach_demo $mol_example_small
 	title \Attach with status track

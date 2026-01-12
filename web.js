@@ -15842,292 +15842,6 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_pick) = class $yuf_pick extends ($.$mol_pick) {
-		portal(){
-			return null;
-		}
-	};
-
-
-;
-	($.$yuf_blend) = class $yuf_blend extends ($.$mol_view) {
-		direction(){
-			return "left-right";
-		}
-		click(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Back(){
-			const obj = new this.$.$mol_view();
-			(obj.event) = () => ({"click": (next) => (this.click(next))});
-			return obj;
-		}
-		content(){
-			return [];
-		}
-		Content(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ((this.content()));
-			return obj;
-		}
-		attr(){
-			return {...(super.attr()), "yuf_blend_direction": (this.direction())};
-		}
-		sub(){
-			return [(this.Back()), (this.Content())];
-		}
-	};
-	($mol_mem(($.$yuf_blend.prototype), "click"));
-	($mol_mem(($.$yuf_blend.prototype), "Back"));
-	($mol_mem(($.$yuf_blend.prototype), "Content"));
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    $mol_style_attach("yuf/blend/blend.view.css", "@keyframes yuf_blend_anim {\n  100% {\n    opacity: 1;\n\tleft: 0;\n  }\n}\n\n@keyframes yuf_blend_anim_reverse {\n  100% {\n    opacity: 1;\n\tright: 0;\n  }\n}\n");
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        $mol_style_define($yuf_blend, {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            zIndex: $mol_layer.speck,
-            background: {
-                color: 'transparent',
-            },
-            '@media': {
-                print: {
-                    display: 'none'
-                }
-            },
-            Back: {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: $mol_layer.float,
-                background: {
-                    color: '#00000030',
-                },
-            },
-            Content: {
-                position: 'relative',
-                zIndex: $mol_layer.popup,
-                top: 0,
-                left: '-200px',
-                opacity: 0,
-                animation: 'yuf_blend_anim .3s forwards',
-                height: '100%',
-                pointerEvents: 'none',
-                flex: {
-                    shrink: 1,
-                    grow: 1,
-                },
-                '>': {
-                    $mol_view: {
-                        pointerEvents: 'auto',
-                        background: {
-                            color: $mol_theme.back,
-                        },
-                    }
-                }
-            },
-            '@': {
-                yuf_blend_direction: {
-                    'right-left': {
-                        Content: {
-                            left: 'auto',
-                            right: '-200px',
-                            justifyContent: 'end',
-                            animation: 'yuf_blend_anim_reverse .3s forwards',
-                        }
-                    }
-                }
-            }
-        });
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-	($.$yuf_portal) = class $yuf_portal extends ($.$yuf_blend) {
-		display(){
-			return null;
-		}
-		bubbles(){
-			return [];
-		}
-		showed(next){
-			if(next !== undefined) return next;
-			return false;
-		}
-		style(){
-			return {...(super.style()), "display": (this.display())};
-		}
-		content(){
-			return (this.bubbles());
-		}
-		popup_add(next){
-			if(next !== undefined) return next;
-			const obj = new this.$.$yuf_portal_popup();
-			return obj;
-		}
-		popup_remove(next){
-			if(next !== undefined) return next;
-			const obj = new this.$.$yuf_portal_popup();
-			return obj;
-		}
-		popups(next){
-			if(next !== undefined) return next;
-			return [];
-		}
-	};
-	($mol_mem(($.$yuf_portal.prototype), "showed"));
-	($mol_mem(($.$yuf_portal.prototype), "popup_add"));
-	($mol_mem(($.$yuf_portal.prototype), "popup_remove"));
-	($mol_mem(($.$yuf_portal.prototype), "popups"));
-
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $mol_dom_event extends $mol_object {
-        native;
-        constructor(native) {
-            super();
-            this.native = native;
-        }
-        prevented(next) {
-            if (next)
-                this.native.preventDefault();
-            return this.native.defaultPrevented;
-        }
-        static wrap(event) {
-            return new this.$.$mol_dom_event(event);
-        }
-    }
-    __decorate([
-        $mol_action
-    ], $mol_dom_event.prototype, "prevented", null);
-    __decorate([
-        $mol_action
-    ], $mol_dom_event, "wrap", null);
-    $.$mol_dom_event = $mol_dom_event;
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $yuf_portal extends $.$yuf_portal {
-            static current = null;
-            destructor() {
-                this.$.$yuf_portal.current = null;
-            }
-            showed(next) {
-                return this.popups().some(popup => popup.showed(next));
-            }
-            display() {
-                return !this.showed() ? 'none' : null;
-            }
-            click(e) {
-                e && $mol_dom_event.wrap(e).prevented(true);
-                this.showed(false);
-            }
-            popup_add(next) {
-                this.popups([...this.popups(), next]);
-                return next;
-            }
-            popup_remove(next) {
-                this.popups(this.popups().filter(popup => popup !== next));
-                return next;
-            }
-            bubbles() {
-                this.$.$yuf_portal.current = this;
-                return this.popups().filter(popup => popup.showed()).map(pop => pop.Bubble());
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $yuf_portal.prototype, "showed", null);
-        __decorate([
-            $mol_action
-        ], $yuf_portal.prototype, "popup_add", null);
-        __decorate([
-            $mol_action
-        ], $yuf_portal.prototype, "popup_remove", null);
-        __decorate([
-            $mol_mem
-        ], $yuf_portal.prototype, "bubbles", null);
-        $$.$yuf_portal = $yuf_portal;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-
-;
-"use strict";
-
-;
-"use strict";
-var $;
-(function ($) {
-    var $$;
-    (function ($$) {
-        class $yuf_pick extends $.$yuf_pick {
-            portal() { return this.$.$yuf_portal.current; }
-            showed(next) {
-                return this.portal() ? (next ?? false) : super.showed(next);
-            }
-            height_max() {
-                const viewport = this.$.$mol_window.size();
-                return this.portal() ? viewport.height : super.height_max();
-            }
-            sub_visible() {
-                const portal = this.portal();
-                if (!portal)
-                    return super.sub_visible();
-                portal.popup_add(this);
-                return [this.Anchor()];
-            }
-            destructor() {
-                this.portal()?.popup_remove(this);
-                super.destructor();
-            }
-        }
-        __decorate([
-            $mol_mem
-        ], $yuf_pick.prototype, "showed", null);
-        __decorate([
-            $mol_mem
-        ], $yuf_pick.prototype, "sub_visible", null);
-        $$.$yuf_pick = $yuf_pick;
-    })($$ = $.$$ || ($.$$ = {}));
-})($ || ($ = {}));
-
-;
 	($.$mol_icon_camera) = class $mol_icon_camera extends ($.$mol_icon) {
 		path(){
 			return "M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z";
@@ -17021,6 +16735,14 @@ var $;
 			(obj.click) = (next) => ((this.camera_click(next)));
 			return obj;
 		}
+		status_text(){
+			return "";
+		}
+		Status(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.status_text())]);
+			return obj;
+		}
 		controls_main(){
 			return [];
 		}
@@ -17034,9 +16756,6 @@ var $;
 		}
 		close_hint(){
 			return (this.$.$mol_locale.text("$yuf_camera_pane_close_hint"));
-		}
-		status(next){
-			return (this.Close().status(next));
 		}
 		Close_icon(){
 			const obj = new this.$.$mol_icon_close();
@@ -17058,6 +16777,7 @@ var $;
 		}
 		controls(){
 			return [
+				(this.Status()), 
 				...(this.controls_main()), 
 				...(this.video_controls()), 
 				...(this.controls_close())
@@ -17092,9 +16812,16 @@ var $;
 		canvas_file(){
 			return null;
 		}
-		file(next){
+		files(next){
 			if(next !== undefined) return next;
-			return null;
+			return [];
+		}
+		status(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		saving_text(){
+			return (this.$.$mol_locale.text("$yuf_camera_pane_saving_text"));
 		}
 		sub(){
 			return [(this.Camera()), (this.Controls())];
@@ -17102,6 +16829,7 @@ var $;
 	};
 	($mol_mem(($.$yuf_camera_pane.prototype), "camera_click"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Camera"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "Status"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Video_status_button"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "Close_icon"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "close_click"));
@@ -17110,7 +16838,8 @@ var $;
 	($mol_mem(($.$yuf_camera_pane.prototype), "video_enabled"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "recorder"));
 	($mol_mem(($.$yuf_camera_pane.prototype), "canvas"));
-	($mol_mem(($.$yuf_camera_pane.prototype), "file"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "files"));
+	($mol_mem(($.$yuf_camera_pane.prototype), "status"));
 	($.$yuf_camera_pane_video) = class $yuf_camera_pane_video extends ($.$mol_video_camera) {
 		click(next){
 			if(next !== undefined) return next;
@@ -17771,6 +17500,34 @@ var $;
 
 ;
 "use strict";
+var $;
+(function ($) {
+    class $mol_dom_event extends $mol_object {
+        native;
+        constructor(native) {
+            super();
+            this.native = native;
+        }
+        prevented(next) {
+            if (next)
+                this.native.preventDefault();
+            return this.native.defaultPrevented;
+        }
+        static wrap(event) {
+            return new this.$.$mol_dom_event(event);
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $mol_dom_event.prototype, "prevented", null);
+    __decorate([
+        $mol_action
+    ], $mol_dom_event, "wrap", null);
+    $.$mol_dom_event = $mol_dom_event;
+})($ || ($ = {}));
+
+;
+"use strict";
 
 ;
 "use strict";
@@ -17825,7 +17582,7 @@ var $;
                 event && $mol_dom_event.wrap(event).prevented(true);
                 try {
                     const file = this.canvas_file();
-                    this.file(file);
+                    this.files(file ? [file] : []);
                     this.status([null]);
                 }
                 catch (error) {
@@ -17833,6 +17590,15 @@ var $;
                     $mol_fail_hidden(error);
                 }
                 return null;
+            }
+            status_text() {
+                const error = this.status()?.[0];
+                if (!error)
+                    return super.status_text();
+                if ($mol_promise_like(error)) {
+                    return this.saving_text();
+                }
+                $mol_fail_hidden(error);
             }
         }
         __decorate([
@@ -17861,6 +17627,10 @@ var $;
             Camera: {
                 maxWidth: '100%',
             },
+            Status: {
+                color: $mol_theme.text,
+                padding: $mol_gap.text,
+            },
             Controls: {
                 position: 'absolute',
                 top: 0,
@@ -17868,21 +17638,25 @@ var $;
                 zIndex: $mol_layer.popup,
                 background: {
                     color: $mol_theme.card
-                }
+                },
+                opacity: .7,
             }
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
 ;
-	($.$yuf_camera_pick) = class $yuf_camera_pick extends ($.$yuf_pick) {
+	($.$yuf_camera_pick) = class $yuf_camera_pick extends ($.$mol_pick) {
 		Trigger_icon(){
 			const obj = new this.$.$mol_icon_camera();
 			return obj;
 		}
-		file(next){
+		files(next){
 			if(next !== undefined) return next;
-			return null;
+			return [];
+		}
+		cam_files(next){
+			return (this.files(next));
 		}
 		close_click(next){
 			if(next !== undefined) return next;
@@ -17890,7 +17664,7 @@ var $;
 		}
 		Camera(){
 			const obj = new this.$.$yuf_camera_pane();
-			(obj.file) = (next) => ((this.file(next)));
+			(obj.files) = (next) => ((this.cam_files(next)));
 			(obj.close_click) = (next) => ((this.close_click(next)));
 			return obj;
 		}
@@ -17902,7 +17676,7 @@ var $;
 		}
 	};
 	($mol_mem(($.$yuf_camera_pick.prototype), "Trigger_icon"));
-	($mol_mem(($.$yuf_camera_pick.prototype), "file"));
+	($mol_mem(($.$yuf_camera_pick.prototype), "files"));
 	($mol_mem(($.$yuf_camera_pick.prototype), "close_click"));
 	($mol_mem(($.$yuf_camera_pick.prototype), "Camera"));
 
@@ -17921,6 +17695,12 @@ var $;
                 event && $mol_dom_event.wrap(event).prevented(true);
                 this.showed(false);
             }
+            cam_files(next) {
+                const file = this.files(next);
+                if (next)
+                    this.showed(false);
+                return file ?? null;
+            }
         }
         $$.$yuf_camera_pick = $yuf_camera_pick;
     })($$ = $.$$ || ($.$$ = {}));
@@ -17932,7 +17712,12 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_camera_pick, {});
+        $mol_style_define($yuf_camera_pick, {
+            Bubble: {
+                width: '44rem',
+                aspectRatio: 16 / 9,
+            },
+        });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -18016,19 +17801,12 @@ var $;
 			(obj.Icon) = () => ((this.Add_icon()));
 			return obj;
 		}
-		camera_showed(next){
-			return (this.Camera_pick().showed(next));
-		}
-		camera_file(next){
-			if(next !== undefined) return next;
-			return null;
-		}
 		camera_pick_align(){
 			return "center";
 		}
 		Camera_pick(){
 			const obj = new this.$.$yuf_camera_pick();
-			(obj.file) = (next) => ((this.camera_file(next)));
+			(obj.files) = (next) => ((this.attach_new(next)));
 			(obj.align) = () => ((this.camera_pick_align()));
 			return obj;
 		}
@@ -18067,7 +17845,6 @@ var $;
 	($mol_mem(($.$yuf_attach.prototype), "attach_new"));
 	($mol_mem(($.$yuf_attach.prototype), "Add_icon"));
 	($mol_mem(($.$yuf_attach.prototype), "Add"));
-	($mol_mem(($.$yuf_attach.prototype), "camera_file"));
 	($mol_mem(($.$yuf_attach.prototype), "Camera_pick"));
 	($mol_mem(($.$yuf_attach.prototype), "files"));
 	($mol_mem_key(($.$yuf_attach.prototype), "removing"));
@@ -18228,10 +18005,6 @@ var $;
                 padding: $mol_gap.space,
             },
             Camera_pick: {
-                Bubble: {
-                    width: '700px',
-                    aspectRatio: 16 / 9,
-                },
                 Trigger_icon: {
                     width: '100%',
                     height: '100%',
@@ -18348,12 +18121,6 @@ var $;
                     ...next
                 });
             }
-            camera_file(next) {
-                if (!next)
-                    return null;
-                this.attach_new([next]);
-                this.camera_showed(false);
-            }
             file(id) { return this.files()[id]; }
             ids() {
                 const files = this.files();
@@ -18425,6 +18192,216 @@ var $;
             ext() { return this.file_name().match('\.([^.]+)$')?.[1] ?? ''; }
         }
         $$.$yuf_attach_unknown = $yuf_attach_unknown;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_blend) = class $yuf_blend extends ($.$mol_view) {
+		direction(){
+			return "left-right";
+		}
+		click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Back(){
+			const obj = new this.$.$mol_view();
+			(obj.event) = () => ({"click": (next) => (this.click(next))});
+			return obj;
+		}
+		content(){
+			return [];
+		}
+		Content(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.content()));
+			return obj;
+		}
+		attr(){
+			return {...(super.attr()), "yuf_blend_direction": (this.direction())};
+		}
+		sub(){
+			return [(this.Back()), (this.Content())];
+		}
+	};
+	($mol_mem(($.$yuf_blend.prototype), "click"));
+	($mol_mem(($.$yuf_blend.prototype), "Back"));
+	($mol_mem(($.$yuf_blend.prototype), "Content"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/blend/blend.view.css", "@keyframes yuf_blend_anim {\n  100% {\n    opacity: 1;\n\tleft: 0;\n  }\n}\n\n@keyframes yuf_blend_anim_reverse {\n  100% {\n    opacity: 1;\n\tright: 0;\n  }\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_blend, {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            zIndex: $mol_layer.speck,
+            background: {
+                color: 'transparent',
+            },
+            '@media': {
+                print: {
+                    display: 'none'
+                }
+            },
+            Back: {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                zIndex: $mol_layer.float,
+                background: {
+                    color: '#00000030',
+                },
+            },
+            Content: {
+                position: 'relative',
+                zIndex: $mol_layer.popup,
+                top: 0,
+                left: '-200px',
+                opacity: 0,
+                animation: 'yuf_blend_anim .3s forwards',
+                height: '100%',
+                pointerEvents: 'none',
+                flex: {
+                    shrink: 1,
+                    grow: 1,
+                },
+                '>': {
+                    $mol_view: {
+                        pointerEvents: 'auto',
+                        background: {
+                            color: $mol_theme.back,
+                        },
+                    }
+                }
+            },
+            '@': {
+                yuf_blend_direction: {
+                    'right-left': {
+                        Content: {
+                            left: 'auto',
+                            right: '-200px',
+                            justifyContent: 'end',
+                            animation: 'yuf_blend_anim_reverse .3s forwards',
+                        }
+                    }
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+	($.$yuf_portal) = class $yuf_portal extends ($.$yuf_blend) {
+		display(){
+			return null;
+		}
+		bubbles(){
+			return [];
+		}
+		showed(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		style(){
+			return {...(super.style()), "display": (this.display())};
+		}
+		content(){
+			return (this.bubbles());
+		}
+		popup_add(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$yuf_portal_popup();
+			return obj;
+		}
+		popup_remove(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$yuf_portal_popup();
+			return obj;
+		}
+		popups(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+	};
+	($mol_mem(($.$yuf_portal.prototype), "showed"));
+	($mol_mem(($.$yuf_portal.prototype), "popup_add"));
+	($mol_mem(($.$yuf_portal.prototype), "popup_remove"));
+	($mol_mem(($.$yuf_portal.prototype), "popups"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_portal extends $.$yuf_portal {
+            static current = null;
+            destructor() {
+                this.$.$yuf_portal.current = null;
+            }
+            showed(next) {
+                return this.popups().some(popup => popup.showed(next));
+            }
+            display() {
+                return !this.showed() ? 'none' : null;
+            }
+            click(e) {
+                e && $mol_dom_event.wrap(e).prevented(true);
+                this.showed(false);
+            }
+            popup_add(next) {
+                this.popups([...this.popups(), next]);
+                return next;
+            }
+            popup_remove(next) {
+                this.popups(this.popups().filter(popup => popup !== next));
+                return next;
+            }
+            bubbles() {
+                this.$.$yuf_portal.current = this;
+                return this.popups().filter(popup => popup.showed()).map(pop => pop.Bubble());
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_portal.prototype, "showed", null);
+        __decorate([
+            $mol_action
+        ], $yuf_portal.prototype, "popup_add", null);
+        __decorate([
+            $mol_action
+        ], $yuf_portal.prototype, "popup_remove", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_portal.prototype, "bubbles", null);
+        $$.$yuf_portal = $yuf_portal;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

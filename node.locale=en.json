@@ -31,6 +31,7 @@
 	"$yuf_attach_attach_hint": "Upload files",
 	"$yuf_button_close_hint": "Close",
 	"$yuf_camera_pane_close_hint": "Close",
+	"$yuf_camera_pane_saving_text": "Saving...",
 	"$yuf_camera_recorder_button_status_message_inactive": "Inactive",
 	"$yuf_camera_recorder_button_status_message_paused": "Paused",
 	"$yuf_camera_recorder_button_status_message_recording": "Recording",
