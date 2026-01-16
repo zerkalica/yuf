@@ -25467,7 +25467,7 @@ var $;
             }
             const server_id = actual ? this.server_created_id(actual) : null;
             const id = this.id();
-            if (server_id && server_id === id) {
+            if (!server_id || server_id === id) {
                 this.resubscribe();
                 return result;
             }
