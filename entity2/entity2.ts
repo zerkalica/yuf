@@ -199,7 +199,7 @@ namespace $ {
 			const server_id = actual ? this.server_created_id(actual) : null
 			const id = this.id()
 
-			if (server_id && server_id === id) {
+			if (! server_id || server_id === id) {
 				// Server accepts client id on create - just resubscribe to server entity changes and then remove draft
 				this.resubscribe()
 				return result
