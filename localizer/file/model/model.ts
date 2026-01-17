@@ -120,7 +120,11 @@ namespace $ {
 
 			}
 
-			return keys.sort()
+			if (params.mode !== 'dupes') return keys.sort()
+
+			const duped_values = Object.keys(map)
+
+			return keys.sort((a, b) => duped_values.indexOf(this.key_text(a)))
 		}
 
 		@ $mol_mem
