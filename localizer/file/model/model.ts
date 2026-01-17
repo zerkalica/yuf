@@ -89,19 +89,38 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		keys_filtered(params: { keys_filter?: $yuf_localizer_file_model_filter_type }) {
+		keys_filtered(params: {
+			keys_filter?: $yuf_localizer_file_model_filter_type
+			mode?: null | 'dupes'
+		}) {
 			const kf = params.keys_filter
-			const result = [] as string[]
+			const keys = [] as string[]
+			const map = {} as Record<string, string | null>
+
 			for (const key of this.keys()) {
 				const row = this.item(key)
 				if (kf === 'is_new' && ! row.is_new()) continue
 				if (kf === 'is_not_used' && ! row.is_not_used()) continue
 				if (kf === 'empty' && row.text()) continue
 				if (kf === 'changed' && ! row.is_changed()) continue
-				result.push(key)
+				if (params.mode !== 'dupes') {
+					keys.push(key)
+					continue
+				}
+
+				const val = this.key_text(key)
+				if (map[val] === undefined) {
+					map[val] = key
+					continue
+				}
+
+				if (map[val] !== null) keys.push(map[val])
+				map[val] = null
+				keys.push(key)
+
 			}
 
-			return result
+			return keys.sort()
 		}
 
 		@ $mol_mem

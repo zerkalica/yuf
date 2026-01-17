@@ -6,7 +6,7 @@ namespace $.$$ {
 			return this.$.$mol_state_arg.value(
 				`${this.param_base()}_${key}`,
 				next === undefined || next ? next : null
-			) ?? ''
+			) as Val | '' ?? ''
 		}
 
 		override param() {
@@ -23,6 +23,14 @@ namespace $.$$ {
 			if (! urls.includes(prev)) next = null
 
 			return this.val_str('project', next) || urls?.[0] || ''
+		}
+
+		mode(next?: 'dupes' | null) {
+			return this.val_str('mode', next) || null
+		}
+
+		override dupes_only(next?: boolean) {
+			return this.mode(next ? 'dupes' : next === false ? null : undefined) === 'dupes'
 		}
 
 		override keys_filter(next?: $yuf_localizer_file_model_filter_type) {
@@ -85,7 +93,8 @@ namespace $.$$ {
 		@ $mol_mem
 		override spread_ids() {
 			const keys_filter = this.keys_filter()
-			return this.lang()?.keys_filtered({ keys_filter }) ?? []
+			const mode = this.mode()
+			return this.lang()?.keys_filtered({ keys_filter, mode }) ?? []
 		}
 
 		@ $mol_action

@@ -31,6 +31,10 @@ $yuf_localizer_catalog $yuf_catalog
 				changed <= changed_msg @ \☑️ Changed
 				is_not_used <= is_not_used_msg @ \⚠️ Obsolete
 			value? <=> keys_filter? \
+		<= Dupes $mol_check_icon
+			Icon <= Dupes_icon $mol_icon_content_duplicate
+			hint <= dupes_hint @ \Dupes only
+			checked? <=> dupes_only? false
 		<= Save $mol_pick
 			hint @ save_hint \Click to show save menu
 			trigger_content /
@@ -59,10 +63,10 @@ $yuf_localizer_catalog $yuf_catalog
 			body /
 				<= Description_list $mol_text text <= description @ \## Setup
 					\
-					\Click settings button at the bottom of the menu and copy paste project urls and lang codes into form
+					\Click settings button at the bottom of the menu, copy paste project urls and lang codes into form
 					\## Navigate
 					\Use keyboard arrows to navigate between keys in list
-					\## Key marks
+					\## Filter marks
 					\❓ Keys to translate, exists only in the sources as en locale
 					\☑️ Changed, but not committed keys, exists only in the browser local storage
 					\⚠️ Obsolete keys that exist only in localStorage but not in the selected project sources (may be deleted or renamed in the project)
