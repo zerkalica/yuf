@@ -22353,6 +22353,17 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_content_duplicate) = class $mol_icon_content_duplicate extends ($.$mol_icon) {
+		path(){
+			return "M11,17H4A2,2 0 0,1 2,15V3A2,2 0 0,1 4,1H16V3H4V15H11V13L15,16L11,19V17M19,21V7H8V13H6V7A2,2 0 0,1 8,5H19A2,2 0 0,1 21,7V21A2,2 0 0,1 19,23H8A2,2 0 0,1 6,21V19H8V21H19Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
 	($.$mol_icon_content_save) = class $mol_icon_content_save extends ($.$mol_icon) {
 		path(){
 			return "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z";
@@ -23197,7 +23208,8 @@ var $;
         }
         keys_filtered(params) {
             const kf = params.keys_filter;
-            const result = [];
+            const keys = [];
+            const map = {};
             for (const key of this.keys()) {
                 const row = this.item(key);
                 if (kf === 'is_new' && !row.is_new())
@@ -23208,9 +23220,21 @@ var $;
                     continue;
                 if (kf === 'changed' && !row.is_changed())
                     continue;
-                result.push(key);
+                if (params.mode !== 'dupes') {
+                    keys.push(key);
+                    continue;
+                }
+                const val = this.key_text(key);
+                if (map[val] === undefined) {
+                    map[val] = key;
+                    continue;
+                }
+                if (map[val] !== null)
+                    keys.push(map[val]);
+                map[val] = null;
+                keys.push(key);
             }
-            return result;
+            return keys.sort();
         }
         keys_changed() {
             const local = this.data();
@@ -23752,6 +23776,24 @@ var $;
 			(obj.value) = (next) => ((this.keys_filter(next)));
 			return obj;
 		}
+		Dupes_icon(){
+			const obj = new this.$.$mol_icon_content_duplicate();
+			return obj;
+		}
+		dupes_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_dupes_hint"));
+		}
+		dupes_only(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Dupes(){
+			const obj = new this.$.$mol_check_icon();
+			(obj.Icon) = () => ((this.Dupes_icon()));
+			(obj.hint) = () => ((this.dupes_hint()));
+			(obj.checked) = (next) => ((this.dupes_only(next)));
+			return obj;
+		}
 		Save_trigger_icon(){
 			const obj = new this.$.$mol_icon_content_save_all();
 			return obj;
@@ -23922,6 +23964,7 @@ var $;
 			return [
 				(this.Selected_lang()), 
 				(this.Keys_filter()), 
+				(this.Dupes()), 
 				(this.Save())
 			];
 		}
@@ -23998,6 +24041,9 @@ var $;
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Selected_lang"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "keys_filter"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Keys_filter"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Dupes_icon"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "dupes_only"));
+	($mol_mem(($.$yuf_localizer_catalog.prototype), "Dupes"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Save_trigger_icon"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_file_all_download"));
 	($mol_mem(($.$yuf_localizer_catalog.prototype), "Locale_copypaste_all"));
@@ -24052,6 +24098,12 @@ var $;
                     next = null;
                 return this.val_str('project', next) || urls?.[0] || '';
             }
+            mode(next) {
+                return this.val_str('mode', next) || null;
+            }
+            dupes_only(next) {
+                return this.mode(next ? 'dupes' : next === false ? null : undefined) === 'dupes';
+            }
             keys_filter(next) {
                 return this.val_str('keys', next);
             }
@@ -24092,7 +24144,8 @@ var $;
             locale_key(key) { return key; }
             spread_ids() {
                 const keys_filter = this.keys_filter();
-                return this.lang()?.keys_filtered({ keys_filter }) ?? [];
+                const mode = this.mode();
+                return this.lang()?.keys_filtered({ keys_filter, mode }) ?? [];
             }
             select_key(key) {
                 if (this.settings_checked())
