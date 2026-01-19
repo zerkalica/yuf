@@ -71,7 +71,7 @@ namespace $ {
 			throw new Error(code, { cause: obj } )
 		}
 
-		deadline_timeout() { return 10000 }
+		deadline_timeout() { return 120_000 }
 
 		@ $mol_mem_key
 		protected channel<Val>(signature: {}) {
