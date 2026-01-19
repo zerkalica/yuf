@@ -58,7 +58,9 @@ namespace $ {
 			return this.draft_creator_ids(next === null ? { [draft_id]: null } : undefined)[draft_id] ?? null
 		}
 
-		static draft<Data>(id: string, next?: Data | null) {
+		@ $mol_mem_key
+		static draft<Data>(id: string, next?: Data | null, flag?: 'mem-only') {
+			if (flag === 'mem-only') return next ?? null
 			return this.$.$mol_state_local.value(`${this}.draft("${id}")`, next) ?? null
 		}
 
@@ -72,6 +74,12 @@ namespace $ {
 			return flag === 'storage' ? is_draft : false
 		}
 
+		// Big values cant store in localStorage due browser quota - only in memory
+		draft_mem_only() {
+			return false
+		}
+
+		@ $mol_mem
 		draft( next?: Partial<Data> | null, flag?: 'storage' | 'fill'): Partial<Data> | null {
 			const id = this.id()
 			const factory = this.factory()
@@ -81,7 +89,7 @@ namespace $ {
 			if (next || flag === 'fill') {
 				// merge with prev object, while debouncing
 				const merged = this.merge(next ?? this.data() ?? this.defaults(), prev)
-				return factory.draft(id, merged)
+				return factory.draft(id, merged, this.draft_mem_only() ? 'mem-only': undefined)
 			}
 
 			// null - delete from storage

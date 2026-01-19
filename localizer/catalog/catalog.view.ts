@@ -98,7 +98,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		override select_key(key?: 'prev' | 'next') {
+		select_key(key?: 'prev' | 'next') {
 			if (this.settings_checked()) return null
 			const ids = this.spread_ids_filtered()
 			const id = this.spread()
@@ -110,7 +110,7 @@ namespace $.$$ {
 			const id_next = this.spread(ids[next])
 
 			const item = this.Menu_item(id_next)
-			this.Menu_links().ensure_visible(item)
+			this.Menu_links().ensure_visible(item, 'nearest')
 		}
 
 		override settings_close() {

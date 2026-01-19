@@ -56,5 +56,21 @@ namespace $.$$ {
 		spread_title( id: string ) {
 			return $mol_stub_message(300)
 		}
+
+		@ $mol_action
+		select_key(key?: 'prev' | 'next') {
+			const ids = this.spread_ids_filtered()
+			const id = this.spread()
+			const index = ids.indexOf(id)
+			const direction = key === 'prev' ? -1 : 1
+
+			const next = Math.min(ids.length - 1, Math.max(0, index + direction))
+
+			const id_next = this.spread(ids[next])
+
+			const item = this.Menu_item(id_next)
+			this.Menu_links().ensure_visible(item, 'nearest')
+		}
+
 	}
 }

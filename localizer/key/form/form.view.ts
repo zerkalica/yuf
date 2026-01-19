@@ -29,8 +29,7 @@ namespace $.$$ {
 		@ $mol_mem
 		focus_first() {
 			if (! this.autofocus()) return null
-			this.Text().bring()
-			return null
+			// return new $mol_after_timeout(1300, () => this.Text().bring())
 		}
 
 		override auto() {

@@ -2,10 +2,10 @@
 
 : "${SRC_PATH:=$(pwd)}"
 
-GITHUB_BASE="https://github.com"
+: "${GITHUB_BASE='https://github.com'}"
 
 # Do not link this dirs from .ci/* to mam root
-DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack\|links$'
+: "${DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack\|links$'}"
 
 depser_pkg() {
   local ci_dir="${SRC_PATH}/.ci"
@@ -95,8 +95,15 @@ depser_symlink_list() {
 
   for i in "${SRC_PATH}/.ci"/* ; do
     [ ! -d "${i}" ] && continue
+	local name_raw="$(basename "${i}")"
     # replace mol-icon to mol/icon, etc
-    local name="$(basename "${i}" | sed 's/-/\//g')"
+    local name="$(echo "$name_raw" | sed 's/-/\//g')"
+
+	if test "$name_raw" = "node_modules"; then
+	    echo "${i}	${MAM_DIR}/${name_raw}"
+		continue
+	fi
+
     echo "$name" | grep -q -e "$DEPSER_EXCLUDE_MASK" && continue
 
     echo "${i}	${MAM_DIR}/${name}"

@@ -26,3 +26,22 @@ $yuf_bug_catalog_flash_catalog $mol_book2_catalog
 		item_height_min* 232
 		Empty <= Menu_links_empty
 		rows <= menu_links
+	Menu $mol_page
+		Title => Menu_title
+		title <= menu_title
+		Tools => Menu_tools
+		Logo <= Menu_logo
+		tools /
+			^ menu_tools
+			^ addon_tools
+		head <= menu_head
+		body <= menu_body
+		foot <= menu_foot
+		plugins /
+			^
+			<= Hotkey $mol_hotkey
+				key *
+					up? <=> select_key*prev? null
+					down? <=> select_key*next? null
+					left? <=> select_key*prev?
+					right? <=> select_key*next?

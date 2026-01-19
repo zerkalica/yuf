@@ -42,6 +42,7 @@ namespace $.$$ {
 		},
 
 		Menu_item: {
+			minHeight: '2.5rem',
 			padding: 0
 		},
 
