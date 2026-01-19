@@ -10292,29 +10292,79 @@ declare namespace $ {
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_5 = $mol_type_enforce<
+	type $mol_hotkey__key_yuf_bug_catalog_flash_catalog_5 = $mol_type_enforce<
+		({ 
+			up( next?: ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] > ): ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] >,
+			down( next?: ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] > ): ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] >,
+			left( next?: ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] > ): ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] >,
+			right( next?: ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] > ): ReturnType< $yuf_bug_catalog_flash_catalog['select_key'] >,
+		}) 
+		,
+		ReturnType< $mol_hotkey['key'] >
+	>
+	type $mol_list__item_height_min_yuf_bug_catalog_flash_catalog_6 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_list['item_height_min'] >
 	>
-	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_6 = $mol_type_enforce<
+	type $mol_list__Empty_yuf_bug_catalog_flash_catalog_7 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['Menu_links_empty'] >
 		,
 		ReturnType< $mol_list['Empty'] >
 	>
-	type $mol_list__rows_yuf_bug_catalog_flash_catalog_7 = $mol_type_enforce<
+	type $mol_list__rows_yuf_bug_catalog_flash_catalog_8 = $mol_type_enforce<
 		ReturnType< $yuf_bug_catalog_flash_catalog['menu_links'] >
 		,
 		ReturnType< $mol_list['rows'] >
+	>
+	type $mol_page__title_yuf_bug_catalog_flash_catalog_9 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['menu_title'] >
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__Logo_yuf_bug_catalog_flash_catalog_10 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['Menu_logo'] >
+		,
+		ReturnType< $mol_page['Logo'] >
+	>
+	type $mol_page__tools_yuf_bug_catalog_flash_catalog_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__head_yuf_bug_catalog_flash_catalog_12 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['menu_head'] >
+		,
+		ReturnType< $mol_page['head'] >
+	>
+	type $mol_page__body_yuf_bug_catalog_flash_catalog_13 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['menu_body'] >
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $mol_page__foot_yuf_bug_catalog_flash_catalog_14 = $mol_type_enforce<
+		ReturnType< $yuf_bug_catalog_flash_catalog['menu_foot'] >
+		,
+		ReturnType< $mol_page['foot'] >
+	>
+	type $mol_page__plugins_yuf_bug_catalog_flash_catalog_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['plugins'] >
 	>
 	export class $yuf_bug_catalog_flash_catalog extends $mol_book2_catalog {
 		last_event( next?: any ): any
 		Shuffle( ): $mol_button_major
 		last_event2( next?: any ): any
 		Shuffle2( ): $mol_button_minor
+		Menu_title( ): ReturnType< ReturnType< $yuf_bug_catalog_flash_catalog['Menu'] >['Title'] >
+		Menu_tools( ): ReturnType< ReturnType< $yuf_bug_catalog_flash_catalog['Menu'] >['Tools'] >
+		select_key( id: any, next?: any ): any
+		Hotkey( ): $mol_hotkey
 		title( ): string
 		addon_tools( ): readonly(any)[]
 		Menu_links( ): $mol_list
+		Menu( ): $mol_page
 	}
 	
 }
@@ -10328,6 +10378,7 @@ declare namespace $.$$ {
         body_scroll_top: (() => Promise<number>) & {};
         spread_ids(): string[];
         spread_title(id: string): string;
+        select_key(key?: 'prev' | 'next'): void;
     }
 }
 
@@ -10926,7 +10977,7 @@ declare namespace $.$$ {
         reset(): void;
         reset_hint(): string;
         reset_content(): readonly $mol_view[];
-        focus_first(): null;
+        focus_first(): null | undefined;
         auto(): void;
     }
 }
@@ -11926,8 +11977,9 @@ declare namespace $ {
         static draft_id_create(): string;
         static draft_ids(creator_id: string, draft_ids?: readonly string[]): string[];
         static creator_id(draft_id: string, next?: null): string | null;
-        static draft<Data>(id: string, next?: Data | null): NonNullable<Data> | null;
+        static draft<Data>(id: string, next?: Data | null, flag?: 'mem-only'): NonNullable<Data> | null;
         is_draft(next?: null, flag?: 'storage'): boolean;
+        draft_mem_only(): boolean;
         draft(next?: Partial<Data> | null, flag?: 'storage' | 'fill'): Partial<Data> | null;
         _id: string;
         id(): string;

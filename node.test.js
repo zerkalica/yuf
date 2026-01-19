@@ -22196,6 +22196,26 @@ var $;
 			(obj.click) = (next) => ((this.last_event2(next)));
 			return obj;
 		}
+		Menu_title(){
+			return (this.Menu().Title());
+		}
+		Menu_tools(){
+			return (this.Menu().Tools());
+		}
+		select_key(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Hotkey(){
+			const obj = new this.$.$mol_hotkey();
+			(obj.key) = () => ({
+				"up": (next) => (this.select_key("prev", next)), 
+				"down": (next) => (this.select_key("next", next)), 
+				"left": (next) => (this.select_key("prev", next)), 
+				"right": (next) => (this.select_key("next", next))
+			});
+			return obj;
+		}
 		title(){
 			return "Main";
 		}
@@ -22209,12 +22229,26 @@ var $;
 			(obj.rows) = () => ((this.menu_links()));
 			return obj;
 		}
+		Menu(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ((this.menu_title()));
+			(obj.Logo) = () => ((this.Menu_logo()));
+			(obj.tools) = () => ([...(this.menu_tools()), ...(this.addon_tools())]);
+			(obj.head) = () => ((this.menu_head()));
+			(obj.body) = () => ((this.menu_body()));
+			(obj.foot) = () => ((this.menu_foot()));
+			(obj.plugins) = () => ([...(this.$.$mol_page.prototype.plugins.call(obj)), (this.Hotkey())]);
+			return obj;
+		}
 	};
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "last_event"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Shuffle"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "last_event2"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Shuffle2"));
+	($mol_mem_key(($.$yuf_bug_catalog_flash_catalog.prototype), "select_key"));
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Hotkey"));
 	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Menu_links"));
+	($mol_mem(($.$yuf_bug_catalog_flash_catalog.prototype), "Menu"));
 
 
 ;
@@ -22267,6 +22301,16 @@ var $;
             spread_title(id) {
                 return $mol_stub_message(300);
             }
+            select_key(key) {
+                const ids = this.spread_ids_filtered();
+                const id = this.spread();
+                const index = ids.indexOf(id);
+                const direction = key === 'prev' ? -1 : 1;
+                const next = Math.min(ids.length - 1, Math.max(0, index + direction));
+                const id_next = this.spread(ids[next]);
+                const item = this.Menu_item(id_next);
+                this.Menu_links().ensure_visible(item, 'nearest');
+            }
         }
         __decorate([
             $mol_memo.method
@@ -22283,6 +22327,9 @@ var $;
         __decorate([
             $mol_memo.method
         ], $yuf_bug_catalog_flash_catalog.prototype, "spread_title", null);
+        __decorate([
+            $mol_action
+        ], $yuf_bug_catalog_flash_catalog.prototype, "select_key", null);
         $$.$yuf_bug_catalog_flash_catalog = $yuf_bug_catalog_flash_catalog;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -23525,8 +23572,6 @@ var $;
             focus_first() {
                 if (!this.autofocus())
                     return null;
-                this.Text().bring();
-                return null;
             }
             auto() {
                 this.focus_first();
@@ -24152,7 +24197,7 @@ var $;
                 const next = Math.min(ids.length - 1, Math.max(0, index + direction));
                 const id_next = this.spread(ids[next]);
                 const item = this.Menu_item(id_next);
-                this.Menu_links().ensure_visible(item);
+                this.Menu_links().ensure_visible(item, 'nearest');
             }
             settings_close() {
                 return this.settings_checked(false);
@@ -24277,6 +24322,7 @@ var $;
                 }
             },
             Menu_item: {
+                minHeight: '2.5rem',
                 padding: 0
             },
             Selected_project: {
@@ -25431,7 +25477,9 @@ var $;
         static creator_id(draft_id, next) {
             return this.draft_creator_ids(next === null ? { [draft_id]: null } : undefined)[draft_id] ?? null;
         }
-        static draft(id, next) {
+        static draft(id, next, flag) {
+            if (flag === 'mem-only')
+                return next ?? null;
             return this.$.$mol_state_local.value(`${this}.draft("${id}")`, next) ?? null;
         }
         is_draft(next, flag) {
@@ -25443,6 +25491,9 @@ var $;
             factory.creator_id(id, next);
             return flag === 'storage' ? is_draft : false;
         }
+        draft_mem_only() {
+            return false;
+        }
         draft(next, flag) {
             const id = this.id();
             const factory = this.factory();
@@ -25451,7 +25502,7 @@ var $;
                 return prev;
             if (next || flag === 'fill') {
                 const merged = this.merge(next ?? this.data() ?? this.defaults(), prev);
-                return factory.draft(id, merged);
+                return factory.draft(id, merged, this.draft_mem_only() ? 'mem-only' : undefined);
             }
             const result = factory.draft(id, next);
             this.is_draft(next, flag);
@@ -25557,6 +25608,9 @@ var $;
         $mol_mem
     ], $yuf_entity2.prototype, "is_draft", null);
     __decorate([
+        $mol_mem
+    ], $yuf_entity2.prototype, "draft", null);
+    __decorate([
         $mol_mem_key
     ], $yuf_entity2.prototype, "draft_value", null);
     __decorate([
@@ -25586,6 +25640,9 @@ var $;
     __decorate([
         $mol_mem_key
     ], $yuf_entity2, "creator_id", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2, "draft", null);
     $.$yuf_entity2 = $yuf_entity2;
 })($ || ($ = {}));
 
