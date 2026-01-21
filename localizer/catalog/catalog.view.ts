@@ -116,6 +116,7 @@ namespace $.$$ {
 
 		auto() {
 			this.subscroll()
+			return super.auto()
 		}
 
 		@ $mol_mem
