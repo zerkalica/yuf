@@ -98,8 +98,9 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		select_key(key?: 'prev' | 'next') {
+		select_key(key?: 'prev' | 'next', e?: Event) {
 			if (this.settings_checked()) return null
+			e && $mol_dom_event.wrap(e).prevented(true)
 			const ids = this.spread_ids_filtered()
 			const id = this.spread()
 			const index = ids.indexOf(id)
@@ -110,8 +111,10 @@ namespace $.$$ {
 			const id_next = this.spread(ids[next])
 
 			const item = this.Menu_item(id_next)
-			this.Menu_links().ensure_visible(item, 'nearest')
+			new $mol_after_frame(() => this.ensure_item(item))
 		}
+
+		protected ensure_item = $mol_wire_async((item: $mol_view) => this.Menu_links().ensure_visible(item, 'nearest'))
 
 		override settings_close() {
 			return this.settings_checked(false)
