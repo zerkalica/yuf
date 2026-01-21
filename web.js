@@ -24103,7 +24103,7 @@ var $;
             subscroll() {
                 return new $mol_after_frame(() => this.spread() && this.ensure_item(this.Menu_item(this.spread())));
             }
-            ensure_item = $mol_wire_async((item) => this.Menu().Body().ensure_visible(item));
+            ensure_item = $mol_wire_async((item) => this.Menu().Body().ensure_visible(item, 'nearest'));
             settings_close() {
                 return this.settings_checked(false);
             }
