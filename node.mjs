@@ -23607,7 +23607,9 @@ var $;
             focus_first() {
                 if (!this.autofocus())
                     return null;
+                return new $mol_after_frame(() => this.text_bring());
             }
+            text_bring = $mol_wire_async(() => this.Text().bring());
             auto() {
                 this.focus_first();
             }
@@ -24222,9 +24224,10 @@ var $;
                 const mode = this.mode();
                 return this.lang()?.keys_filtered({ keys_filter, mode }) ?? [];
             }
-            select_key(key) {
+            select_key(key, e) {
                 if (this.settings_checked())
                     return null;
+                e && $mol_dom_event.wrap(e).prevented(true);
                 const ids = this.spread_ids_filtered();
                 const id = this.spread();
                 const index = ids.indexOf(id);
@@ -24232,8 +24235,9 @@ var $;
                 const next = Math.min(ids.length - 1, Math.max(0, index + direction));
                 const id_next = this.spread(ids[next]);
                 const item = this.Menu_item(id_next);
-                this.Menu_links().ensure_visible(item, 'nearest');
+                new $mol_after_frame(() => this.ensure_item(item));
             }
+            ensure_item = $mol_wire_async((item) => this.Menu_links().ensure_visible(item, 'nearest'));
             settings_close() {
                 return this.settings_checked(false);
             }

@@ -10981,7 +10981,8 @@ declare namespace $.$$ {
         reset(): void;
         reset_hint(): string;
         reset_content(): readonly $mol_view[];
-        focus_first(): null | undefined;
+        focus_first(): $mol_after_frame | null;
+        protected text_bring: (() => Promise<void>) & {};
         auto(): void;
     }
 }
@@ -11474,7 +11475,8 @@ declare namespace $.$$ {
         pages(): readonly any[];
         locale_key(key: string): string;
         spread_ids(): string[];
-        select_key(key?: 'prev' | 'next'): null | undefined;
+        select_key(key?: 'prev' | 'next', e?: Event): null | undefined;
+        protected ensure_item: ((item: $mol_view) => Promise<void>) & {};
         settings_close(): boolean;
         diff_to_clipboard_enabled(): boolean;
         placeholders(): readonly any[];
