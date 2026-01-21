@@ -24099,6 +24099,7 @@ var $;
             }
             auto() {
                 this.subscroll();
+                return super.auto();
             }
             subscroll() {
                 return new $mol_after_frame(() => this.spread() && this.ensure_item(this.Menu_item(this.spread())));
