@@ -24228,7 +24228,13 @@ var $;
                 const item = this.Menu_item(id_next);
                 new $mol_after_frame(() => this.ensure_item(item));
             }
-            ensure_item = $mol_wire_async((item) => this.Menu_links().ensure_visible(item, 'nearest'));
+            auto() {
+                this.subscroll();
+            }
+            subscroll() {
+                return new $mol_after_frame(() => this.spread() && this.ensure_item(this.Menu_item(this.spread())));
+            }
+            ensure_item = $mol_wire_async((item) => this.Menu().Body().ensure_visible(item));
             settings_close() {
                 return this.settings_checked(false);
             }
@@ -24301,6 +24307,9 @@ var $;
         __decorate([
             $mol_action
         ], $yuf_localizer_catalog.prototype, "select_key", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_localizer_catalog.prototype, "subscroll", null);
         __decorate([
             $mol_mem_key
         ], $yuf_localizer_catalog.prototype, "locale_file_json", null);

@@ -11401,6 +11401,8 @@ declare namespace $.$$ {
         locale_key(key: string): string;
         spread_ids(): string[];
         select_key(key?: 'prev' | 'next', e?: Event): null | undefined;
+        auto(): void;
+        subscroll(): $mol_after_frame;
         protected ensure_item: ((item: $mol_view) => Promise<void>) & {};
         settings_close(): boolean;
         diff_to_clipboard_enabled(): boolean;
