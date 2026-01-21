@@ -123,7 +123,7 @@ namespace $.$$ {
 			return new $mol_after_frame(() => this.spread() && this.ensure_item(this.Menu_item(this.spread())))
 		}
 
-		protected ensure_item = $mol_wire_async((item: $mol_view) => this.Menu().Body().ensure_visible(item))
+		protected ensure_item = $mol_wire_async((item: $mol_view) => this.Menu().Body().ensure_visible(item, 'nearest'))
 
 		override settings_close() {
 			return this.settings_checked(false)
