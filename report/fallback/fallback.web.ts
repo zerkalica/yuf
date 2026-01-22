@@ -118,6 +118,6 @@ namespace $ {
 		text.innerText = str
 	}
 
-	globalThis.addEventListener('error', (...args) => report(...args))
+	$mol_report_handler_all.add(report)
 
 }
