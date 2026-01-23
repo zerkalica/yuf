@@ -9,19 +9,21 @@ namespace $ {
 			return this.$.$mol_state_arg.value(this.prefix(), str === '' ? null : str) || null
 		}
 
-		defaults() { return {} as Record<string, string | number | boolean | null> }
+		defaults() { return {} as Record<string, readonly string[] | string | number | boolean | null> }
 
 		protected serialize<Val>(val: Val, def: Val, name: string) {
 			if (val === def) return ''
 			if (val === true) return name
 			if (val === false) return `!${name}`
-			return `${name}${this.value_separator()}${val}`
+
+			return `${name}${this.value_separator()}${Array.isArray(val) ? val.join('^') : val}`
 		}
 
 		protected deserialize(str: string, def: unknown) {
 			if (str === '') return def
 			if (typeof def === 'boolean') return str !== '0'
 			if (typeof def === 'number') return Number.isNaN(Number(str)) ? def : Number(str)
+			if (Array.isArray(def)) return str.split('^')
 
 			return str ?? def
 		}
