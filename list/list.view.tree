@@ -1,4 +1,0 @@
-$yuf_list $mol_list
-	subscroll_target? null
-	auto /
-		<= subscroll null
