@@ -28080,7 +28080,7 @@ var $;
                 if (!item_width || !list_width)
                     return null;
                 const items_per_row = Math.max(1, Math.floor(list_width / item_width));
-                this.items_per_row(items_per_row);
+                new $mol_after_frame(() => this.items_per_row(items_per_row));
                 return null;
             }
             auto() {
@@ -28129,6 +28129,14 @@ var $;
 
 ;
 	($.$yuf_list_slicer_demo) = class $yuf_list_slicer_demo extends ($.$mol_example_large) {
+		count(){
+			return "Total: ";
+		}
+		Items_text(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.count())]);
+			return obj;
+		}
 		items_count(next){
 			if(next !== undefined) return next;
 			return 50;
@@ -28138,12 +28146,6 @@ var $;
 			(obj.value) = (next) => ((this.items_count(next)));
 			(obj.value_min) = () => (0);
 			(obj.value_max) = () => (100000);
-			return obj;
-		}
-		Items_count_label(){
-			const obj = new this.$.$mol_labeler();
-			(obj.title) = () => ("Items count");
-			(obj.content) = () => ([(this.Items_count())]);
 			return obj;
 		}
 		item_title(id){
@@ -28162,8 +28164,14 @@ var $;
 			(obj.items) = () => ((this.list_items()));
 			return obj;
 		}
+		Page(){
+			const obj = new this.$.$mol_page();
+			(obj.tools) = () => ([(this.Items_text()), (this.Items_count())]);
+			(obj.body) = () => ([(this.Items())]);
+			return obj;
+		}
 		sub(){
-			return [(this.Items_count_label()), (this.Items())];
+			return [(this.Page())];
 		}
 		tags(){
 			return [
@@ -28177,11 +28185,12 @@ var $;
 			return ["Widget/Layout"];
 		}
 	};
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items_text"));
 	($mol_mem(($.$yuf_list_slicer_demo.prototype), "items_count"));
 	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items_count"));
-	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items_count_label"));
 	($mol_mem_key(($.$yuf_list_slicer_demo.prototype), "Item"));
 	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items"));
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Page"));
 	($.$yuf_list_slicer_demo_item) = class $yuf_list_slicer_demo_item extends ($.$mol_view) {
 		Link(){
 			const obj = new this.$.$mol_link();
@@ -28235,6 +28244,10 @@ var $;
         $mol_style_define($yuf_list_slicer_demo, {
             flex: {
                 direction: 'column',
+            },
+            Items_text: {
+                padding: [$mol_gap.blur, 0],
+                lineHeight: '1.25rem',
             },
             Item: {
                 padding: $mol_gap.space,

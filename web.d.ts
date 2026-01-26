@@ -13108,49 +13108,56 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_number__value_yuf_list_slicer_demo_1 = $mol_type_enforce<
+	type $mol_view__sub_yuf_list_slicer_demo_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_number__value_yuf_list_slicer_demo_2 = $mol_type_enforce<
 		ReturnType< $yuf_list_slicer_demo['items_count'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
-	type $mol_number__value_min_yuf_list_slicer_demo_2 = $mol_type_enforce<
+	type $mol_number__value_min_yuf_list_slicer_demo_3 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_number['value_min'] >
 	>
-	type $mol_number__value_max_yuf_list_slicer_demo_3 = $mol_type_enforce<
+	type $mol_number__value_max_yuf_list_slicer_demo_4 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_number['value_max'] >
 	>
-	type $mol_labeler__title_yuf_list_slicer_demo_4 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $mol_labeler['title'] >
-	>
-	type $mol_labeler__content_yuf_list_slicer_demo_5 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_labeler['content'] >
-	>
-	type $yuf_list_slicer_demo_item__title_yuf_list_slicer_demo_6 = $mol_type_enforce<
+	type $yuf_list_slicer_demo_item__title_yuf_list_slicer_demo_5 = $mol_type_enforce<
 		ReturnType< $yuf_list_slicer_demo['item_title'] >
 		,
 		ReturnType< $yuf_list_slicer_demo_item['title'] >
 	>
-	type $yuf_list_slicer__items_yuf_list_slicer_demo_7 = $mol_type_enforce<
+	type $yuf_list_slicer__items_yuf_list_slicer_demo_6 = $mol_type_enforce<
 		ReturnType< $yuf_list_slicer_demo['list_items'] >
 		,
 		ReturnType< $yuf_list_slicer['items'] >
 	>
+	type $mol_page__tools_yuf_list_slicer_demo_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['tools'] >
+	>
+	type $mol_page__body_yuf_list_slicer_demo_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
 	export class $yuf_list_slicer_demo extends $mol_example_large {
+		count( ): string
+		Items_text( ): $mol_view
 		items_count( next?: number ): number
 		Items_count( ): $mol_number
-		Items_count_label( ): $mol_labeler
 		item_title( id: any): string
 		Item( id: any): $yuf_list_slicer_demo_item
 		list_items( ): readonly(any)[]
 		Items( ): $yuf_list_slicer
+		Page( ): $mol_page
 		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
