@@ -44,3 +44,4 @@
 	include \/yuf/bug/catalog/flash
 	include \/yuf/localizer/demo
 	include \/yuf/karaoke/demo
+	include \/yuf/list/slicer/demo

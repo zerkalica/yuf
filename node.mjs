@@ -27876,6 +27876,397 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
+;
+	($.$yuf_list_slicer) = class $yuf_list_slicer extends ($.$mol_list) {
+		placeholder_width(id){
+			return "";
+		}
+		row_items(id){
+			return [];
+		}
+		items(){
+			return [];
+		}
+		items_per_row(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		card_minimal_width(){
+			return 1;
+		}
+		Placeholder(id){
+			const obj = new this.$.$mol_view();
+			(obj.style) = () => ({"flex-basis": (this.placeholder_width(id))});
+			return obj;
+		}
+		Row(id){
+			const obj = new this.$.$yuf_list_slicer_row();
+			(obj.sub) = () => ((this.row_items(id)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_list_slicer.prototype), "items_per_row"));
+	($mol_mem_key(($.$yuf_list_slicer.prototype), "Placeholder"));
+	($mol_mem_key(($.$yuf_list_slicer.prototype), "Row"));
+	($.$yuf_list_slicer_row) = class $yuf_list_slicer_row extends ($.$mol_view) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_range2(item = index => index, size = () => Number.POSITIVE_INFINITY) {
+        const source = typeof item === 'function' ? new $mol_range2_array() : item;
+        if (typeof item !== 'function') {
+            item = index => source[index];
+            size = () => source.length;
+        }
+        return new Proxy(source, {
+            get(target, field) {
+                if (typeof field === 'string') {
+                    if (field === 'length')
+                        return size();
+                    const index = Number(field);
+                    if (index < 0)
+                        return undefined;
+                    if (index >= size())
+                        return undefined;
+                    if (index === Math.trunc(index))
+                        return item(index);
+                }
+                return $mol_range2_array.prototype[field];
+            },
+            set(target, field) {
+                return $mol_fail(new TypeError(`Lazy range is read only (trying to set field ${JSON.stringify(field)})`));
+            },
+            ownKeys(target) {
+                return [...Array(size())].map((v, i) => String(i)).concat('length');
+            },
+            getOwnPropertyDescriptor(target, field) {
+                if (field === "length")
+                    return {
+                        value: size(),
+                        writable: true,
+                        enumerable: false,
+                        configurable: false,
+                    };
+                const index = Number(field);
+                if (index === Math.trunc(index))
+                    return {
+                        get: () => this.get(target, field, this),
+                        enumerable: true,
+                        configurable: true,
+                    };
+                return Object.getOwnPropertyDescriptor(target, field);
+            }
+        });
+    }
+    $.$mol_range2 = $mol_range2;
+    class $mol_range2_array extends Array {
+        concat(...tail) {
+            if (tail.length === 0)
+                return this;
+            if (tail.length > 1) {
+                let list = this;
+                for (let item of tail)
+                    list = list.concat(item);
+                return list;
+            }
+            return $mol_range2(index => index < this.length ? this[index] : tail[0][index - this.length], () => this.length + tail[0].length);
+        }
+        filter(check, context) {
+            const filtered = [];
+            let cursor = -1;
+            return $mol_range2(index => {
+                while (cursor < this.length && index >= filtered.length - 1) {
+                    const val = this[++cursor];
+                    if (check(val, cursor, this))
+                        filtered.push(val);
+                }
+                return filtered[index];
+            }, () => cursor < this.length ? Number.POSITIVE_INFINITY : filtered.length);
+        }
+        forEach(proceed, context) {
+            for (let [key, value] of this.entries())
+                proceed.call(context, value, key, this);
+        }
+        map(proceed, context) {
+            return $mol_range2(index => proceed.call(context, this[index], index, this), () => this.length);
+        }
+        reduce(merge, result) {
+            let index = 0;
+            if (arguments.length === 1) {
+                result = this[index++];
+            }
+            for (; index < this.length; ++index) {
+                result = merge(result, this[index], index, this);
+            }
+            return result;
+        }
+        toReversed() {
+            return $mol_range2(index => this[this.length - 1 - index], () => this.length);
+        }
+        slice(from = 0, to = this.length) {
+            return $mol_range2(index => this[from + index], () => Math.min(to, this.length) - from);
+        }
+        some(check, context) {
+            for (let index = 0; index < this.length; ++index) {
+                if (check.call(context, this[index], index, this))
+                    return true;
+            }
+            return false;
+        }
+        every(check, context) {
+            for (let index = 0; index < this.length; ++index) {
+                if (!check.call(context, this[index], index, this))
+                    return false;
+            }
+            return true;
+        }
+        reverse() {
+            return $mol_fail(new TypeError(`Mutable reverse is forbidden. Use toReversed instead.`));
+        }
+        sort() {
+            return $mol_fail(new TypeError(`Mutable sort is forbidden. Use toSorted instead.`));
+        }
+        indexOf(needle) {
+            return this.findIndex(item => item === needle);
+        }
+        [Symbol.toPrimitive]() {
+            return $mol_guid();
+        }
+    }
+    $.$mol_range2_array = $mol_range2_array;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_list_slicer extends $.$yuf_list_slicer {
+            rows() {
+                return this.$.$mol_range2(index => this.Row(index), () => this.rows_size());
+            }
+            rows_size() {
+                return Math.ceil(this.items().length / this.items_per_row());
+            }
+            row_items(row_index) {
+                const items_per_row = this.items_per_row();
+                const from = row_index * items_per_row;
+                const chunk = this.items().slice(from, from + items_per_row);
+                const empty_count = items_per_row - chunk.length;
+                if (empty_count > 0) {
+                    chunk.push(this.Placeholder(empty_count));
+                }
+                return chunk;
+            }
+            placeholder_width(empty_count) {
+                const item_width = this.first_visible_card()?.view_rect()?.width || 1;
+                return `${(empty_count * item_width).toFixed(2)}px`;
+            }
+            width() {
+                const rect = this.view_rect();
+                return rect?.width ?? 0;
+            }
+            first_visible_card() {
+                const [from, to] = this.view_window();
+                return this.row_items(from).at(0) ?? null;
+            }
+            card_minimal_width() {
+                const item = this.first_visible_card();
+                if (!item)
+                    return 0;
+                return item?.minimal_width() || 1;
+            }
+            items_per_row_sync() {
+                const list_width = this.width();
+                const item_width = this.card_minimal_width();
+                if (!item_width || !list_width)
+                    return null;
+                const items_per_row = Math.max(1, Math.floor(list_width / item_width));
+                this.items_per_row(items_per_row);
+                return null;
+            }
+            auto() {
+                super.auto();
+                this.items_per_row_sync();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "rows", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "rows_size", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "width", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "first_visible_card", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "card_minimal_width", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "items_per_row_sync", null);
+        $$.$yuf_list_slicer = $yuf_list_slicer;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_list_slicer, {
+            Placeholder: {
+                flex: {
+                    grow: 0,
+                    shrink: 0,
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_list_slicer_demo) = class $yuf_list_slicer_demo extends ($.$mol_example_large) {
+		items_count(next){
+			if(next !== undefined) return next;
+			return 50;
+		}
+		Items_count(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.items_count(next)));
+			(obj.value_min) = () => (0);
+			(obj.value_max) = () => (100000);
+			return obj;
+		}
+		Items_count_label(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ("Items count");
+			(obj.content) = () => ([(this.Items_count())]);
+			return obj;
+		}
+		item_title(id){
+			return "";
+		}
+		Item(id){
+			const obj = new this.$.$yuf_list_slicer_demo_item();
+			(obj.title) = () => ((this.item_title(id)));
+			return obj;
+		}
+		list_items(){
+			return [(this.Item("0"))];
+		}
+		Items(){
+			const obj = new this.$.$yuf_list_slicer();
+			(obj.items) = () => ((this.list_items()));
+			return obj;
+		}
+		sub(){
+			return [(this.Items_count_label()), (this.Items())];
+		}
+		tags(){
+			return [
+				"adaptive", 
+				"grid", 
+				"gallery", 
+				"rows"
+			];
+		}
+		aspects(){
+			return ["Widget/Layout"];
+		}
+	};
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "items_count"));
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items_count"));
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items_count_label"));
+	($mol_mem_key(($.$yuf_list_slicer_demo.prototype), "Item"));
+	($mol_mem(($.$yuf_list_slicer_demo.prototype), "Items"));
+	($.$yuf_list_slicer_demo_item) = class $yuf_list_slicer_demo_item extends ($.$mol_view) {
+		Link(){
+			const obj = new this.$.$mol_link();
+			(obj.title) = () => ((this.title()));
+			return obj;
+		}
+		minimal_width(){
+			return 300;
+		}
+		minimal_height(){
+			return 200;
+		}
+		sub(){
+			return [(this.Link())];
+		}
+	};
+	($mol_mem(($.$yuf_list_slicer_demo_item.prototype), "Link"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_list_slicer_demo extends $.$yuf_list_slicer_demo {
+            item_title(id) {
+                return `Item #${id + 1}`;
+            }
+            list_items() {
+                const rows = [];
+                for (let key = 0; key < this.items_count(); key++) {
+                    rows.push(this.Item(key));
+                }
+                return rows;
+            }
+        }
+        $$.$yuf_list_slicer_demo = $yuf_list_slicer_demo;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_list_slicer_demo, {
+            flex: {
+                direction: 'column',
+            },
+            Item: {
+                padding: $mol_gap.space,
+                minWidth: '19.5rem',
+                maxWidth: '25rem',
+                flex: {
+                    basis: '19.5rem',
+                    grow: 1,
+                },
+                height: '12.5rem',
+                Link: {
+                    flex: {
+                        grow: 1,
+                    },
+                    background: {
+                        color: $mol_theme.card,
+                    }
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
 
 export default $
 //# sourceMappingURL=node.js.map

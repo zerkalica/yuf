@@ -488,7 +488,11 @@
     "$yuf_ws_statefull_socket",
     "$yuf_ws_socket_mock",
     "$yuf_karaoke_store_mock",
-    "$yuf_karaoke_model_mock"
+    "$yuf_karaoke_model_mock",
+    "$yuf_list_slicer_demo",
+    "$yuf_list_slicer",
+    "$yuf_list",
+    "$mol_range2"
   ],
   "dependencies": {
     "autoinstall": "*",

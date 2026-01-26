@@ -13115,5 +13115,146 @@ declare namespace $.$$ {
     }
 }
 
+declare namespace $ {
+    function $mol_range2<Item = number>(item?: Item[] | ((index: number) => Item), size?: () => number): Item[];
+    class $mol_range2_array<Item> extends Array<Item> {
+        concat(...tail: Item[][]): Item[];
+        filter<Context>(check: (val: Item, index: number, list: Item[]) => boolean, context?: Context): Item[];
+        forEach<Context>(proceed: (this: Context, val: Item, index: number, list: Item[]) => void, context?: Context): void;
+        map<Item_out, Context>(proceed: (this: Context, val: Item, index: number, list: Item[]) => Item_out, context?: Context): Item_out[];
+        reduce<Result>(merge: (result: Result, val: Item, index: number, list: Item[]) => Result, result?: Result): Result | undefined;
+        toReversed(): Item[];
+        slice(from?: number, to?: number): Item[];
+        some<Context>(check: (this: Context, val: Item, index: number, list: Item[]) => boolean, context?: Context): boolean;
+        every<Narrow extends Item, Context = null>(check: (value: Item, index: number, array: Item[]) => value is Narrow, context?: Context): this is Narrow[];
+        reverse(): never;
+        sort(): never;
+        indexOf(needle: Item): number;
+        [Symbol.toPrimitive](): string;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_view__style_yuf_list_slicer_1 = $mol_type_enforce<
+		({ 
+			'flex-basis': ReturnType< $yuf_list_slicer['placeholder_width'] >,
+		}) 
+		,
+		ReturnType< $mol_view['style'] >
+	>
+	type $yuf_list_slicer_row__sub_yuf_list_slicer_2 = $mol_type_enforce<
+		ReturnType< $yuf_list_slicer['row_items'] >
+		,
+		ReturnType< $yuf_list_slicer_row['sub'] >
+	>
+	export class $yuf_list_slicer extends $mol_list {
+		placeholder_width( id: any): string
+		row_items( id: any): readonly($mol_view)[]
+		items( ): readonly($mol_view)[]
+		items_per_row( next?: number ): number
+		card_minimal_width( ): number
+		Placeholder( id: any): $mol_view
+		Row( id: any): $yuf_list_slicer_row
+	}
+	
+	export class $yuf_list_slicer_row extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=slicer.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_list_slicer extends $.$yuf_list_slicer {
+        rows(): $yuf_list_slicer_row[];
+        rows_size(): number;
+        row_items(row_index: number): $mol_view[];
+        placeholder_width(empty_count: number): string;
+        width(): number;
+        first_visible_card(): $mol_view | null;
+        card_minimal_width(): number;
+        items_per_row_sync(): null;
+        auto(): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_number__value_yuf_list_slicer_demo_1 = $mol_type_enforce<
+		ReturnType< $yuf_list_slicer_demo['items_count'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_number__value_min_yuf_list_slicer_demo_2 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_number['value_min'] >
+	>
+	type $mol_number__value_max_yuf_list_slicer_demo_3 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_number['value_max'] >
+	>
+	type $mol_labeler__title_yuf_list_slicer_demo_4 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_list_slicer_demo_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $yuf_list_slicer_demo_item__title_yuf_list_slicer_demo_6 = $mol_type_enforce<
+		ReturnType< $yuf_list_slicer_demo['item_title'] >
+		,
+		ReturnType< $yuf_list_slicer_demo_item['title'] >
+	>
+	type $yuf_list_slicer__items_yuf_list_slicer_demo_7 = $mol_type_enforce<
+		ReturnType< $yuf_list_slicer_demo['list_items'] >
+		,
+		ReturnType< $yuf_list_slicer['items'] >
+	>
+	export class $yuf_list_slicer_demo extends $mol_example_large {
+		items_count( next?: number ): number
+		Items_count( ): $mol_number
+		Items_count_label( ): $mol_labeler
+		item_title( id: any): string
+		Item( id: any): $yuf_list_slicer_demo_item
+		list_items( ): readonly(any)[]
+		Items( ): $yuf_list_slicer
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $mol_link__title_yuf_list_slicer_demo_item_1 = $mol_type_enforce<
+		ReturnType< $yuf_list_slicer_demo_item['title'] >
+		,
+		ReturnType< $mol_link['title'] >
+	>
+	export class $yuf_list_slicer_demo_item extends $mol_view {
+		Link( ): $mol_link
+		minimal_width( ): number
+		minimal_height( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_list_slicer_demo extends $.$yuf_list_slicer_demo {
+        item_title(id: number): string;
+        list_items(): $yuf_list_slicer_demo_item[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
 export = $;
 //# sourceMappingURL=node.d.ts.map
