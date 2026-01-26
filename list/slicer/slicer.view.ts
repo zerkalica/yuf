@@ -56,7 +56,7 @@ namespace $.$$ {
 
 			const items_per_row = Math.max(1, Math.floor(list_width / item_width))
 
-			this.items_per_row(items_per_row)
+			new $mol_after_frame(() => this.items_per_row(items_per_row))
 
 			return null
 		}

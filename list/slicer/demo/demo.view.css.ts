@@ -4,6 +4,10 @@ namespace $.$$ {
 		flex: {
 			direction: 'column',
 		},
+		Items_text: {
+			padding: [$mol_gap.blur, 0],
+			lineHeight: '1.25rem',
+		},
 		Item: {
 			padding: $mol_gap.space,
 			minWidth: '19.5rem',

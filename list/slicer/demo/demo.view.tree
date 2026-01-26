@@ -1,16 +1,17 @@
 $yuf_list_slicer_demo $mol_example_large
 	sub /
-		<= Items_count_label $mol_labeler
-			title \Items count
-			content /
+		<= Page $mol_page
+			tools /
+				<= Items_text $mol_view sub / <= count \Total: 
 				<= Items_count $mol_number
 					value? <=> items_count? 50
 					value_min 0
 					value_max 100000
-		<= Items $yuf_list_slicer
-			items <= list_items /
-				<= Item*0 $yuf_list_slicer_demo_item
-					title <= item_title* \
+			body /
+				<= Items $yuf_list_slicer
+					items <= list_items /
+						<= Item*0 $yuf_list_slicer_demo_item
+							title <= item_title* \
 	tags /
 		\adaptive
 		\grid
