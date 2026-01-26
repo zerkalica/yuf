@@ -5,6 +5,7 @@ namespace $.$$ {
 			return `Item #${ id + 1 }`
 		}
 
+		@ $mol_mem
 		override list_items() {
 			const rows = []
 
