@@ -27894,6 +27894,9 @@ var $;
 		card_minimal_width(){
 			return 1;
 		}
+		card_minimal_height(){
+			return 1;
+		}
 		Placeholder(id){
 			const obj = new this.$.$mol_view();
 			(obj.style) = () => ({"flex-basis": (this.placeholder_width(id))});
@@ -28058,9 +28061,10 @@ var $;
             row_items(row_index) {
                 const items_per_row = this.items_per_row();
                 const from = row_index * items_per_row;
-                const chunk = this.items().slice(from, from + items_per_row);
+                const items = this.items();
+                const chunk = items.slice(from, from + items_per_row);
                 const empty_count = items_per_row - chunk.length;
-                if (empty_count > 0) {
+                if (empty_count > 0 && from > 0) {
                     chunk.push(this.Placeholder(empty_count));
                 }
                 return chunk;
@@ -28077,11 +28081,17 @@ var $;
                 const [from, to] = this.view_window();
                 return this.row_items(from).at(0) ?? null;
             }
+            item_height_min(id) {
+                return this.card_minimal_height();
+            }
+            item_width_min(id) {
+                return this.card_minimal_width();
+            }
             card_minimal_width() {
-                const item = this.first_visible_card();
-                if (!item)
-                    return 0;
-                return item?.minimal_width() || 1;
+                return this.items().at(0)?.minimal_width() || super.card_minimal_width();
+            }
+            card_minimal_height() {
+                return this.items().at(0)?.minimal_height() || super.card_minimal_height();
             }
             items_per_row_sync() {
                 const list_width = this.width();
@@ -28112,6 +28122,9 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_list_slicer.prototype, "card_minimal_width", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "card_minimal_height", null);
         __decorate([
             $mol_mem
         ], $yuf_list_slicer.prototype, "items_per_row_sync", null);
@@ -28207,7 +28220,7 @@ var $;
 			return obj;
 		}
 		minimal_width(){
-			return 300;
+			return 312;
 		}
 		minimal_height(){
 			return 200;
