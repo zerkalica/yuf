@@ -27736,6 +27736,12 @@ var $;
 
 ;
 	($.$yuf_list_slicer) = class $yuf_list_slicer extends ($.$mol_list) {
+		card_minimal_width(){
+			return 1;
+		}
+		card_minimal_height(){
+			return 1;
+		}
 		placeholder_width(id){
 			return "";
 		}
@@ -27749,11 +27755,11 @@ var $;
 			if(next !== undefined) return next;
 			return 1;
 		}
-		card_minimal_width(){
-			return 1;
+		item_width_min(id){
+			return (this.card_minimal_width());
 		}
-		card_minimal_height(){
-			return 1;
+		item_height_min(id){
+			return (this.card_minimal_height());
 		}
 		Placeholder(id){
 			const obj = new this.$.$mol_view();
@@ -27931,25 +27937,19 @@ var $;
                 const item_width = this.first_visible_card()?.view_rect()?.width || 1;
                 return `${(empty_count * item_width).toFixed(2)}px`;
             }
-            width() {
-                const rect = this.view_rect();
-                return rect?.width ?? 0;
-            }
             first_visible_card() {
                 const [from, to] = this.view_window();
                 return this.row_items(from).at(0) ?? null;
-            }
-            item_height_min(id) {
-                return this.card_minimal_height();
-            }
-            item_width_min(id) {
-                return this.card_minimal_width();
             }
             card_minimal_width() {
                 return this.items().at(0)?.minimal_width() || super.card_minimal_width();
             }
             card_minimal_height() {
                 return this.items().at(0)?.minimal_height() || super.card_minimal_height();
+            }
+            width() {
+                const rect = this.view_rect();
+                return rect?.width ?? 0;
             }
             items_per_row_sync() {
                 const list_width = this.width();
@@ -27973,9 +27973,6 @@ var $;
         ], $yuf_list_slicer.prototype, "rows_size", null);
         __decorate([
             $mol_mem
-        ], $yuf_list_slicer.prototype, "width", null);
-        __decorate([
-            $mol_mem
         ], $yuf_list_slicer.prototype, "first_visible_card", null);
         __decorate([
             $mol_mem
@@ -27983,6 +27980,9 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_list_slicer.prototype, "card_minimal_height", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer.prototype, "width", null);
         __decorate([
             $mol_mem
         ], $yuf_list_slicer.prototype, "items_per_row_sync", null);

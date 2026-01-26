@@ -13074,12 +13074,14 @@ declare namespace $ {
 		ReturnType< $yuf_list_slicer_row['sub'] >
 	>
 	export class $yuf_list_slicer extends $mol_list {
+		card_minimal_width( ): number
+		card_minimal_height( ): number
 		placeholder_width( id: any): string
 		row_items( id: any): readonly($mol_view)[]
 		items( ): readonly($mol_view)[]
 		items_per_row( next?: number ): number
-		card_minimal_width( ): number
-		card_minimal_height( ): number
+		item_width_min( id: any): ReturnType< $yuf_list_slicer['card_minimal_width'] >
+		item_height_min( id: any): ReturnType< $yuf_list_slicer['card_minimal_height'] >
 		Placeholder( id: any): $mol_view
 		Row( id: any): $yuf_list_slicer_row
 	}
@@ -13096,12 +13098,10 @@ declare namespace $.$$ {
         rows_size(): number;
         row_items(row_index: number): $mol_view[];
         placeholder_width(empty_count: number): string;
-        width(): number;
         first_visible_card(): $mol_view | null;
-        item_height_min(id: string): number;
-        item_width_min(id: string): number;
         card_minimal_width(): number;
         card_minimal_height(): number;
+        width(): number;
         items_per_row_sync(): null;
         auto(): void;
     }
