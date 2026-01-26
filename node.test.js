@@ -28244,6 +28244,9 @@ var $;
                 return rows;
             }
         }
+        __decorate([
+            $mol_mem
+        ], $yuf_list_slicer_demo.prototype, "list_items", null);
         $$.$yuf_list_slicer_demo = $yuf_list_slicer_demo;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
