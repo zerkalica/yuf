@@ -2,6 +2,7 @@ $yuf_list_slicer $mol_list
 	items /$mol_view
 	items_per_row? 1
 	card_minimal_width 1
+	card_minimal_height 1
 	Placeholder* $mol_view
 		style *
 			flex-basis <= placeholder_width* \

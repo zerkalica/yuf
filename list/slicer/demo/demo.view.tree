@@ -21,7 +21,7 @@ $yuf_list_slicer_demo $mol_example_large
 		\Widget/Layout
 
 $yuf_list_slicer_demo_item $mol_view
-	minimal_width 300
+	minimal_width 312
 	minimal_height 200
 	sub / <= Link $mol_link
 		title <= title

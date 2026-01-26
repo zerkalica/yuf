@@ -14,10 +14,11 @@ namespace $.$$ {
 		override row_items(row_index: number) {
 			const items_per_row = this.items_per_row()
 			const from = row_index * items_per_row
-			const chunk = this.items().slice(from, from + items_per_row)
+			const items = this.items()
+			const chunk = items.slice(from, from + items_per_row)
 
 			const empty_count = items_per_row - chunk.length
-			if (empty_count > 0) {
+			if (empty_count > 0 && from > 0) {
 				chunk.push(this.Placeholder(empty_count))
 			}
 
@@ -41,11 +42,22 @@ namespace $.$$ {
 			return this.row_items(from).at(0) ?? null
 		}
 
+		override item_height_min(id: string) {
+			return this.card_minimal_height()
+		}
+
+		override item_width_min(id: string) {
+			return this.card_minimal_width()
+		}
+
 		@ $mol_mem
 		override card_minimal_width() {
-			const item = this.first_visible_card()
-			if (! item ) return 0
-			return item?.minimal_width() || 1
+			return this.items().at(0)?.minimal_width() || super.card_minimal_width()
+		}
+
+		@ $mol_mem
+		override card_minimal_height() {
+			return this.items().at(0)?.minimal_height() || super.card_minimal_height()
 		}
 
 		@ $mol_mem
