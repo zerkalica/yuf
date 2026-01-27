@@ -28105,7 +28105,8 @@ var $;
             }
             list_items() {
                 const rows = [];
-                for (let key = 0; key < this.items_count(); key++) {
+                const max = this.items_count();
+                for (let key = 0; key < max; key++) {
                     rows.push(this.Item(key));
                 }
                 return rows;
