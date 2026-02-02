@@ -55,12 +55,22 @@ namespace $ {
 		z-index: 1000;
 		width: 2rem;
 		height: 2rem;
+		align-items: end;
+		justify-content: end;
+		display: flex;
+	}
+
+	#${id} button {
+		cursor: pointer;
 	}
 
 	#${id} > button {
 		background: darkred;
 		color: white;
 		border: none;
+		width: 1.5rem;
+		height: 1rem;
+		border-top-left-radius: 8px;
 	}
 
 	#${id} > dialog {
