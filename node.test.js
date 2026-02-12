@@ -7416,6 +7416,12 @@ var $;
         get native() {
             return new RegExp(this.source, this.flags);
         }
+        static separated(chunk, sep) {
+            return $mol_regexp.from([
+                $mol_regexp.repeat_greedy([[chunk], sep], 0),
+                chunk,
+            ]);
+        }
         static repeat(source, min = 0, max = Number.POSITIVE_INFINITY) {
             const regexp = $mol_regexp.from(source);
             const upper = Number.isFinite(max) ? max : '';
@@ -25545,6 +25551,9 @@ var $;
         static active_model(signature) {
             return this.active[JSON.stringify(signature)] ?? null;
         }
+        toString() {
+            return this[Symbol.toStringTag] || this.constructor.name + this._id ? `<'${this._id}'>` : '<>';
+        }
         propagate() {
             if (this.$.$yuf_entity2.prototype.mock === this.mock)
                 return;
@@ -25597,9 +25606,13 @@ var $;
         draft(next, flag) {
             const id = this.id();
             const factory = this.factory();
-            const prev = factory.draft(id);
+            let prev = factory.draft(id);
             if (next === undefined)
                 return prev;
+            if (flag === 'storage' && next !== null) {
+                prev = { ...prev, ...next ?? {} };
+                next = null;
+            }
             if (next || flag === 'fill') {
                 const merged = this.merge(next ?? this.data() ?? this.defaults(), prev);
                 return factory.draft(id, merged, this.draft_mem_only() ? 'mem-only' : undefined);
@@ -25685,7 +25698,7 @@ var $;
                 name: this.toString(),
                 hint: 'Avoid non-idempotent server API when creating entities',
             });
-            this.draft(null, 'storage');
+            this.draft(result, 'storage');
             return result;
         }
         resubscribe() {
