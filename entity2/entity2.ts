@@ -10,6 +10,10 @@ namespace $ {
 			return this.active[JSON.stringify(signature)] ?? null
 		}
 
+		override toString() {
+			return this[ Symbol.toStringTag ] || this.constructor.name + this._id ? `<'${this._id}'>` : '<>'
+		}
+
 		protected propagate() {
 			if (this.$.$yuf_entity2.prototype.mock === this.mock) return
 			this.factory().active[this.toString()] = this
@@ -83,10 +87,15 @@ namespace $ {
 		draft( next?: Partial<Data> | null, flag?: 'storage' | 'fill'): Partial<Data> | null {
 			const id = this.id()
 			const factory = this.factory()
-			const prev = factory.draft<typeof next>(id)
+			let prev = factory.draft<typeof next>(id)
 			if (next === undefined) return prev
 
-			if (next || flag === 'fill') {
+			if (flag === 'storage' && next !== null) {
+				prev = { ... prev, ... next ?? {} }
+				next = null
+			}
+
+			if ( next || flag === 'fill' ) {
 				// merge with prev object, while debouncing
 				const merged = this.merge(next ?? this.data() ?? this.defaults(), prev)
 				return factory.draft(id, merged, this.draft_mem_only() ? 'mem-only': undefined)
@@ -225,7 +234,7 @@ namespace $ {
 			// In app add to list created entity by id from dead_entity.server_created_id()
 
 			// draft cleared only in localStorage, not in memory to prevent actual call on dead entity
-			this.draft(null, 'storage')
+			this.draft(result, 'storage')
 
 			return result
 		}
