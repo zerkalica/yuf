@@ -18,9 +18,7 @@ namespace $ {
 
 		@ $mol_mem_key
 		size(key: Key): $mol_vector_2d<number> {
-			const prev = $mol_wire_probe(() => this.size(key))
-
-			return $mol_error_fence(() => this.media_size(key), e => e, p => prev ?? p)
+			return this.media_size(key)
 		}
 	}
 }
