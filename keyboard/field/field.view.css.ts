@@ -4,6 +4,7 @@ namespace $.$$ {
 		
 		flex: {
 			direction: 'column',
+			grow: 1,
 		}
 		
 	} )
