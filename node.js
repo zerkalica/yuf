@@ -15315,7 +15315,15 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_keyboard_card, {
             '--yuf_keyboard_button_width': '2.5rem',
+            '@media': {
+                '(max-width: 400px)': {
+                    '--yuf_keyboard_button_width': '2.35rem',
+                }
+            },
             '--yuf_keyboard_button_height': 'var(--yuf_keyboard_button_width)',
+            font: {
+                size: '1.25rem'
+            },
             flex: {
                 direction: 'column',
                 wrap: 'wrap',
