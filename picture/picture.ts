@@ -4,12 +4,19 @@ namespace $ {
 			const image = new this.$.$mol_dom.Image
 			image.src = src
 			image.onload = () => { done(image) }
-			image.onerror = event => {
+			image.onerror = (event, source, lineno, colno, error) => {
 				let err = typeof event === 'string'
 					? new Error(event)
 					: ( event as ErrorEvent ).error as (Error | undefined)
 
-				if ( ! ( err instanceof Error ) ) err = new Error('Image load error', { cause: { event, src }})
+				if ( ! ( err instanceof Error ) ) err = new Error(error?.message ?? 'Load error', { cause: {
+					src,
+					event,
+					source,
+					lineno,
+					colno,
+					error,
+				}})
 
 				fail(err)
 			}
