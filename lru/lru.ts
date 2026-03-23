@@ -10,7 +10,9 @@ namespace $ {
 
 		max() { return 1_000 }
 
-		raw<Value>(id: string, next?: Value | null) {}
+		raw<Value>(id: string, next?: Value | null) {
+			return next ?? null
+		}
 
 		size(id: string) { return JSON.stringify(this.raw(id)).length }
 
