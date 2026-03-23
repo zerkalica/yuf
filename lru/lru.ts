@@ -1,45 +1,58 @@
 namespace $ {
-	export class $yuf_lru_class extends $mol_object {
-		@ $mol_mem
-		ids(next?: readonly string[]): readonly string[] {
-			if (next) this.clean_schedule()
-			return this.$.$mol_store_local.value(this.namespace(), next) ?? []
+	/**
+	 * const lru = $yuf_lru.make({
+	 *   // keep last 3 days
+	 *   limit: $mol_const(3 * 24 * 60 * 60 * 1000)
+	 * })
+	 * 
+	 * function my_val(id: string, next?: string) {
+	 *   lru.track(id)
+	 *   return this.$.$mol_state_arg.value(id, next)
+	 * }
+	*/
+	export class $yuf_lru extends $mol_object {
+		protected id_time(next?: Record<string, number | undefined>): Record<string, number | undefined> {
+			return this.$.$mol_store_local.value(`$yuf_lru.id_time(${this.limit()})`, next) ?? {}
 		}
 
-		namespace() {
-			return '$yuf_lru.ids()'
-		}
+		limit() { return 2 * 24 * 60 * 60 * 1000 }
 
-		limit() { return 100 }
+		protected clean_old() {
+			// debounce
+			this.$.$mol_wait_timeout(200)
 
-		protected clean() {
-			this.$.$mol_wait_timeout(500)
-
-			let prev = this.ids()
+			const prev = this.id_time()
+			let next = prev
 			const limit = this.limit()
-			if (prev.length < limit) return null
-			const half = Math.floor(limit / 2)
+			const current = Date.now()
 
-			for (let i = 0 ; i < half; i++) {
-				this.$.$mol_store_local.value(prev[i], null)
+			for (let key in prev) {
+				const diff = current - (prev[key] ?? 0)
+				if (diff < limit) continue
+
+				this.value_remove(key)
+				if (next === prev) next = { ... prev }
+				delete next[key]
 			}
 
-			this.ids(prev.slice(half))
+			this.id_time({ ...this.tmp, ...next })
+			this.tmp = {}
 
 			return null
 		}
 
-		protected clean_task = $mol_wire_async(() => this.clean())
-
-		protected clean_schedule() {
-			return new $mol_after_frame(this.clean_task)
+		value_remove(key: string) {
+			this.$.$mol_store_local.value(key, null)
 		}
+
+		protected clean_task = $mol_wire_async(() => this.clean_old())
+
+		protected tmp = {} as Record<string, number>
 
 		@ $mol_mem_key
 		track(id: string) {
-			let prev = this.ids().filter(src => src !== id)
-			this.ids([...prev, id])
-
+			this.tmp[id] = Date.now()
+			new $mol_after_frame(this.clean_task)
 			return null
 		}
 	}
