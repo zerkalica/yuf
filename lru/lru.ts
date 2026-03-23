@@ -12,7 +12,7 @@ namespace $ {
 	 * }
 	*/
 	export class $yuf_lru extends $mol_object {
-		protected id_time(next?: readonly string[]): readonly string[] {
+		protected ids(next?: readonly string[]): readonly string[] {
 			return this.$.$mol_store_local.value(`$yuf_lru.id_time(${this.size_max()})`, next) ?? []
 		}
 
@@ -22,7 +22,7 @@ namespace $ {
 
 		@ $mol_action
 		add(id: string) {
-			let prev = this.id_time()
+			let prev = this.ids()
 			const size_max = this.size_max()
 
 			let actual_start = 0
@@ -39,13 +39,18 @@ namespace $ {
 				}
 			}
 
+			for (let i = 0; i < actual_start; i++) {
+				if (i !== id_index) this.remove(prev[i])
+			}
+
 			const next = prev.slice(actual_start)
 			if (id_index >= 0 && id_index - actual_start >= 0) {
 				next.splice(id_index - actual_start, 1)
 			}
+
 			next.push(id)
 
-			this.id_time(next)
+			this.ids(next)
 		}
 
 		@ $mol_mem_key
