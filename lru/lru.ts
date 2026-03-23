@@ -1,7 +1,8 @@
 namespace $ {
 	/**
 	 * const lru = $yuf_lru.make({
-	 *   limit: $mol_const(3 * 24 * 60 * 60 * 1000)
+	 *   size_max: () => 10_000,
+	 *   size: key => JSON.stringify(this.$.$mol_state_local.value(key)).length,
 	 *   remove: key => this.$.$mol_state_local.value(key, null),
 	 * })
 	 * 
@@ -11,43 +12,45 @@ namespace $ {
 	 * }
 	*/
 	export class $yuf_lru extends $mol_object {
-		protected id_time(next?: Record<string, number | undefined>): Record<string, number | undefined> {
-			return this.$.$mol_store_local.value(`$yuf_lru.id_time(${this.limit()})`, next) ?? {}
+		protected id_time(next?: readonly string[]): readonly string[] {
+			return this.$.$mol_store_local.value(`$yuf_lru.id_time(${this.size_max()})`, next) ?? []
 		}
 
-		limit() { return 2 * 24 * 60 * 60 * 1000 }
+		remove(id: string) {}
+		size(id: string) { return 10 }
+		size_max() { return 100_000 }
 
-		protected clean_old() {
-			// debounce
-			const prev = this.id_time()
-			const next = { ...prev, ...this.tmp }
-			const limit = this.limit()
-			const current = Date.now()
+		@ $mol_action
+		add(id: string) {
+			let prev = this.id_time()
+			const size_max = this.size_max()
 
-			for (let key in prev) {
-				const diff = current - (prev[key] ?? 0)
-				if (diff < limit) continue
+			let actual_start = 0
+			let id_index = -1
 
-				this.remove(key)
-				delete next[key]
+			for (let size = 0, index = 0; index < prev.length; index++) {
+				const current_id = prev[index]
+				if (current_id === id) id_index = index
+
+				size += this.size(current_id)
+
+				while (size > size_max) {
+					size -= this.size(prev[actual_start++])
+				}
 			}
 
+			const next = prev.slice(actual_start)
+			if (id_index >= 0 && id_index - actual_start >= 0) {
+				next.splice(id_index - actual_start, 1)
+			}
+			next.push(id)
+
 			this.id_time(next)
-			this.tmp = {}
-
-			return null
 		}
-
-		remove(key: string) {}
-
-		protected clean_task = $mol_wire_async(() => this.clean_old())
-
-		protected tmp = {} as Record<string, number>
 
 		@ $mol_mem_key
 		track(id: string) {
-			this.tmp[id] = Date.now()
-			new $mol_after_work(30_000, this.clean_task)
+			this.add(id)
 			return null
 		}
 	}
