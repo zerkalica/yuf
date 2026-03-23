@@ -1,13 +1,28 @@
 namespace $ {
 	export class $yuf_lru extends $mol_object {
+		key() {
+			return `$yuf_lru.ids(${this.max()})`
+		}
+
 		ids(next?: readonly string[]): readonly string[] {
-			return this.$.$mol_store_local.value(`$yuf_lru.id_time(${this.max()})`, next) ?? []
+			return this.$.$mol_store_local.value(this.key(), next) ?? []
 		}
 
 		max() { return 1_000 }
 
-		size(id: string) { return 1 }
-		remove(id: string) {}
+		raw<Value>(id: string, next?: Value | null) {}
+
+		size(id: string) { return JSON.stringify(this.raw(id)).length }
+
+		remove(id: string) { this.raw(id, null) }
+
+		value<Value>(id: string, next?: Value | null) {
+			const val = this.raw(id, next)
+
+			if (next !== undefined) this.add(id)
+
+			return val
+		}
 
 		@ $mol_action
 		add(id: string) {
