@@ -7,7 +7,7 @@ namespace $ {
 	 * 
 	 * function my_val(id: string, next?: string) {
 	 *   lru.track(id)
-	 *   return this.$.$mol_state_arg.value(id, next)
+	 *   return this.$.$mol_state_local.value(id, next)
 	 * }
 	*/
 	export class $yuf_lru extends $mol_object {
