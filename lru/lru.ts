@@ -10,7 +10,7 @@ namespace $ {
 
 		max() { return 1_000 }
 
-		raw<Value>(id: string, next?: Value | null) {
+		raw<Value>(id: string, next?: Value | null): Value | null {
 			return next ?? null
 		}
 
