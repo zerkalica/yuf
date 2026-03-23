@@ -1,8 +1,8 @@
 namespace $ {
 	/**
 	 * const lru = $yuf_lru.make({
-	 *   // keep last 3 days
 	 *   limit: $mol_const(3 * 24 * 60 * 60 * 1000)
+	 *   remove: key => this.$.$mol_state_local.value(key, null),
 	 * })
 	 * 
 	 * function my_val(id: string, next?: string) {
@@ -19,10 +19,8 @@ namespace $ {
 
 		protected clean_old() {
 			// debounce
-			this.$.$mol_wait_timeout(200)
-
 			const prev = this.id_time()
-			let next = prev
+			const next = { ...prev, ...this.tmp }
 			const limit = this.limit()
 			const current = Date.now()
 
@@ -30,20 +28,17 @@ namespace $ {
 				const diff = current - (prev[key] ?? 0)
 				if (diff < limit) continue
 
-				this.value_remove(key)
-				if (next === prev) next = { ... prev }
+				this.remove(key)
 				delete next[key]
 			}
 
-			this.id_time({ ...this.tmp, ...next })
+			this.id_time(next)
 			this.tmp = {}
 
 			return null
 		}
 
-		value_remove(key: string) {
-			this.$.$mol_store_local.value(key, null)
-		}
+		remove(key: string) {}
 
 		protected clean_task = $mol_wire_async(() => this.clean_old())
 
@@ -52,7 +47,7 @@ namespace $ {
 		@ $mol_mem_key
 		track(id: string) {
 			this.tmp[id] = Date.now()
-			new $mol_after_frame(this.clean_task)
+			new $mol_after_work(30_000, this.clean_task)
 			return null
 		}
 	}
