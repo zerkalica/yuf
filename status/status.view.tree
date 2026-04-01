@@ -1,0 +1,20 @@
+$yuf_status $mol_view
+	attr *
+		^
+		mol_view_error <= mol_view_error null
+		title <= title_formatted <= status_formatted <= title
+	error? null
+	title \{status}
+	status \
+	status_message *string
+		loading @ \Loading
+	sub /$mol_view
+		^ error_content /$mol_view
+			<= Error $mol_speck
+				event *
+					click? <=> reset_error? null
+				value <= error_message \
+		^ icon_content /$mol_view
+			<= Icon_ok $mol_icon_check
+			<= Icon_loading $mol_icon_content_save_alert
+			<= Icon_error $mol_icon_sync_alert
