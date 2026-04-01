@@ -106,6 +106,7 @@
 	"$yuf_login_form_password_label": "Password",
 	"$yuf_login_form_submit_title": "Log In",
 	"$yuf_login_form_unknown_error": "Server error",
+	"$yuf_status_status_message_loading": "Loading",
 	"$yuf_video_full_hint_checked": "Exit fullscreen",
 	"$yuf_video_full_hint_unchecked": "Fullscreen",
 	"$yuf_video_play_hint_checked": "Pause",

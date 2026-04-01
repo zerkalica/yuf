@@ -25203,6 +25203,28 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_check) = class $mol_icon_check extends ($.$mol_icon) {
+		path(){
+			return "M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
+	($.$mol_icon_content_save_alert) = class $mol_icon_content_save_alert extends ($.$mol_icon) {
+		path(){
+			return "M13 9H3V5H13M10 19C8.3 19 7 17.7 7 16S8.3 13 10 13 13 14.3 13 16 11.7 19 10 19M15 3H3C1.9 3 1 3.9 1 5V19C1 20.1 1.9 21 3 21H17C18.1 21 19 20.1 19 19V7L15 3M23 13H21V7H23V13M23 17H21V15H23V17Z";
+		}
+	};
+
+
+;
+"use strict";
+
+;
 	($.$mol_icon_sync) = class $mol_icon_sync extends ($.$mol_icon) {
 		path(){
 			return "M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z";
@@ -25214,9 +25236,9 @@ var $;
 "use strict";
 
 ;
-	($.$mol_icon_sync_off) = class $mol_icon_sync_off extends ($.$mol_icon) {
+	($.$mol_icon_sync_alert) = class $mol_icon_sync_alert extends ($.$mol_icon) {
 		path(){
-			return "M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z";
+			return "M11,13H13V7H11M21,4H15V10L17.24,7.76C18.32,8.85 19,10.34 19,12C19,14.61 17.33,16.83 15,17.65V19.74C18.45,18.85 21,15.73 21,12C21,9.79 20.09,7.8 18.64,6.36M11,17H13V15H11M3,12C3,14.21 3.91,16.2 5.36,17.64L3,20H9V14L6.76,16.24C5.68,15.15 5,13.66 5,12C5,9.39 6.67,7.17 9,6.35V4.26C5.55,5.15 3,8.27 3,12Z";
 		}
 	};
 
@@ -25225,9 +25247,162 @@ var $;
 "use strict";
 
 ;
-	($.$mol_icon_sync_alert) = class $mol_icon_sync_alert extends ($.$mol_icon) {
+	($.$yuf_status) = class $yuf_status extends ($.$mol_view) {
+		mol_view_error(){
+			return null;
+		}
+		status_formatted(){
+			return (this.title());
+		}
+		title_formatted(){
+			return (this.status_formatted());
+		}
+		reset_error(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		error_message(){
+			return "";
+		}
+		Error(){
+			const obj = new this.$.$mol_speck();
+			(obj.event) = () => ({"click": (next) => (this.reset_error(next))});
+			(obj.value) = () => ((this.error_message()));
+			return obj;
+		}
+		error_content(){
+			return [(this.Error())];
+		}
+		Icon_ok(){
+			const obj = new this.$.$mol_icon_check();
+			return obj;
+		}
+		Icon_loading(){
+			const obj = new this.$.$mol_icon_content_save_alert();
+			return obj;
+		}
+		Icon_error(){
+			const obj = new this.$.$mol_icon_sync_alert();
+			return obj;
+		}
+		icon_content(){
+			return [
+				(this.Icon_ok()), 
+				(this.Icon_loading()), 
+				(this.Icon_error())
+			];
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"mol_view_error": (this.mol_view_error()), 
+				"title": (this.title_formatted())
+			};
+		}
+		error(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		title(){
+			return "{status}";
+		}
+		status(){
+			return "";
+		}
+		status_message(){
+			return {"loading": (this.$.$mol_locale.text("$yuf_status_status_message_loading"))};
+		}
+		sub(){
+			return [...(this.error_content()), ...(this.icon_content())];
+		}
+	};
+	($mol_mem(($.$yuf_status.prototype), "reset_error"));
+	($mol_mem(($.$yuf_status.prototype), "Error"));
+	($mol_mem(($.$yuf_status.prototype), "Icon_ok"));
+	($mol_mem(($.$yuf_status.prototype), "Icon_loading"));
+	($mol_mem(($.$yuf_status.prototype), "Icon_error"));
+	($mol_mem(($.$yuf_status.prototype), "error"));
+
+
+;
+"use strict";
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_status, {});
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_status extends $.$yuf_status {
+            icon_content() {
+                const status = this.status();
+                if (status === '')
+                    return [this.Icon_ok()];
+                if (status === 'error')
+                    return [this.Icon_error()];
+                return [this.Icon_loading()];
+            }
+            mol_view_error() {
+                return this.status() === 'loading' ? 'Promise' : null;
+            }
+            error_content() {
+                return this.error_message() ? super.error_content() : [];
+            }
+            reset_error(e) {
+                e && $mol_dom_event.wrap(e)?.prevented(true);
+                this.error(null);
+            }
+            status_formatted() {
+                return this.status_message()?.[this.status()] ?? '';
+            }
+            title_formatted() {
+                const message = this.status_formatted() || this.status_message().error || '';
+                return this.title().replace('{status}', message);
+            }
+            status() {
+                try {
+                    this.error();
+                    return '';
+                }
+                catch (e) {
+                    if (!$mol_promise_like(e))
+                        return 'error';
+                    return 'loading';
+                }
+            }
+            error_message() {
+                try {
+                    this.error();
+                    return '';
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        return '';
+                    return this.$.$mol_error_message(e);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_status.prototype, "icon_content", null);
+        $$.$yuf_status = $yuf_status;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_sync_off) = class $mol_icon_sync_off extends ($.$mol_icon) {
 		path(){
-			return "M11,13H13V7H11M21,4H15V10L17.24,7.76C18.32,8.85 19,10.34 19,12C19,14.61 17.33,16.83 15,17.65V19.74C18.45,18.85 21,15.73 21,12C21,9.79 20.09,7.8 18.64,6.36M11,17H13V15H11M3,12C3,14.21 3.91,16.2 5.36,17.64L3,20H9V14L6.76,16.24C5.68,15.15 5,13.66 5,12C5,9.39 6.67,7.17 9,6.35V4.26C5.55,5.15 3,8.27 3,12Z";
+			return "M20,4H14V10L16.24,7.76C17.32,8.85 18,10.34 18,12C18,13 17.75,13.94 17.32,14.77L18.78,16.23C19.55,15 20,13.56 20,12C20,9.79 19.09,7.8 17.64,6.36L20,4M2.86,5.41L5.22,7.77C4.45,9 4,10.44 4,12C4,14.21 4.91,16.2 6.36,17.64L4,20H10V14L7.76,16.24C6.68,15.15 6,13.66 6,12C6,11 6.25,10.06 6.68,9.23L14.76,17.31C14.5,17.44 14.26,17.56 14,17.65V19.74C14.79,19.53 15.54,19.2 16.22,18.78L18.58,21.14L19.85,19.87L4.14,4.14L2.86,5.41M10,6.35V4.26C9.2,4.47 8.45,4.8 7.77,5.22L9.23,6.68C9.5,6.56 9.73,6.44 10,6.35Z";
 		}
 	};
 
@@ -25284,36 +25459,17 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_ws_status) = class $yuf_ws_status extends ($.$mol_view) {
-		title_formatted(){
-			return (this.title());
+	($.$yuf_ws_status) = class $yuf_ws_status extends ($.$yuf_status) {
+		error(){
+			return (this.ws().error());
 		}
 		error_message(){
 			return (this.ws().error_message());
 		}
-		reset_error(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Ws_error(){
-			const obj = new this.$.$mol_speck();
-			(obj.event) = () => ({"click": (next) => (this.reset_error(next))});
-			(obj.value) = () => ((this.error_message()));
-			return obj;
-		}
-		ws_error_content(){
-			return [(this.Ws_error())];
-		}
-		status(){
-			return "error";
-		}
-		Icon(){
+		Icon_ws(){
 			const obj = new this.$.$yuf_ws_icon();
 			(obj.status) = () => ((this.status()));
 			return obj;
-		}
-		attr(){
-			return {...(super.attr()), "title": (this.title_formatted())};
 		}
 		ws(){
 			const obj = new this.$.$yuf_ws_host();
@@ -25329,13 +25485,11 @@ var $;
 				"connecting": (this.$.$mol_locale.text("$yuf_ws_status_status_message_connecting"))
 			};
 		}
-		sub(){
-			return [...(this.ws_error_content()), (this.Icon())];
+		icon_content(){
+			return [(this.Icon_ws())];
 		}
 	};
-	($mol_mem(($.$yuf_ws_status.prototype), "reset_error"));
-	($mol_mem(($.$yuf_ws_status.prototype), "Ws_error"));
-	($mol_mem(($.$yuf_ws_status.prototype), "Icon"));
+	($mol_mem(($.$yuf_ws_status.prototype), "Icon_ws"));
 	($mol_mem(($.$yuf_ws_status.prototype), "ws"));
 
 
@@ -25349,9 +25503,6 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_ws_status extends $.$yuf_ws_status {
-            ws_error_content() {
-                return this.error_message() ? super.ws_error_content() : [];
-            }
             status() {
                 const ws = this.ws();
                 if (ws.error_message())
@@ -25363,10 +25514,6 @@ var $;
             reset_error(e) {
                 e && $mol_dom_event.wrap(e)?.prevented(true);
                 this.ws().error(null);
-            }
-            title_formatted() {
-                const message = this.status_message()[this.status()] || this.status_message().error;
-                return super.title().replace('{status}', message);
             }
         }
         $$.$yuf_ws_status = $yuf_ws_status;

@@ -11880,6 +11880,24 @@ declare namespace $ {
 
 declare namespace $ {
 
+	export class $mol_icon_check extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=check.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_content_save_alert extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=alert.view.tree.d.ts.map
+declare namespace $ {
+
 	export class $mol_icon_sync extends $mol_icon {
 		path( ): string
 	}
@@ -11889,15 +11907,6 @@ declare namespace $ {
 //# sourceMappingURL=sync.view.tree.d.ts.map
 declare namespace $ {
 
-	export class $mol_icon_sync_off extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=off.view.tree.d.ts.map
-declare namespace $ {
-
 	export class $mol_icon_sync_alert extends $mol_icon {
 		path( ): string
 	}
@@ -11905,6 +11914,81 @@ declare namespace $ {
 }
 
 //# sourceMappingURL=alert.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_speck__event_yuf_status_1 = $mol_type_enforce<
+		({ 
+			click( next?: ReturnType< $yuf_status['reset_error'] > ): ReturnType< $yuf_status['reset_error'] >,
+		}) 
+		,
+		ReturnType< $mol_speck['event'] >
+	>
+	type $mol_speck__value_yuf_status_2 = $mol_type_enforce<
+		ReturnType< $yuf_status['error_message'] >
+		,
+		ReturnType< $mol_speck['value'] >
+	>
+	type $yuf_status_sub__3 = $mol_type_enforce<
+		ReturnType< $yuf_status['error_content'] >[number]
+		,
+		$mol_view
+	>
+	type $yuf_status_sub__4 = $mol_type_enforce<
+		ReturnType< $yuf_status['icon_content'] >[number]
+		,
+		$mol_view
+	>
+	export class $yuf_status extends $mol_view {
+		mol_view_error( ): any
+		status_formatted( ): ReturnType< $yuf_status['title'] >
+		title_formatted( ): ReturnType< $yuf_status['status_formatted'] >
+		reset_error( next?: any ): any
+		error_message( ): string
+		Error( ): $mol_speck
+		error_content( ): readonly($mol_view)[]
+		Icon_ok( ): $mol_icon_check
+		Icon_loading( ): $mol_icon_content_save_alert
+		Icon_error( ): $mol_icon_sync_alert
+		icon_content( ): readonly($mol_view)[]
+		attr( ): ({ 
+			'mol_view_error': ReturnType< $yuf_status['mol_view_error'] >,
+			'title': ReturnType< $yuf_status['title_formatted'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		error( next?: any ): any
+		title( ): string
+		status( ): string
+		status_message( ): Record<string, string>
+		sub( ): readonly($mol_view)[]
+	}
+	
+}
+
+//# sourceMappingURL=status.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $yuf_status extends $.$yuf_status {
+        icon_content(): $mol_icon_check[];
+        mol_view_error(): "Promise" | null;
+        error_content(): readonly $mol_view[];
+        reset_error(e?: Event): void;
+        status_formatted(): string;
+        title_formatted(): string;
+        status(): "" | "error" | "loading";
+        error_message(): string;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_sync_off extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=off.view.tree.d.ts.map
 declare namespace $ {
 
 	export class $yuf_ws_icon extends $mol_icon_sync {
@@ -11926,34 +12010,15 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_speck__event_yuf_ws_status_1 = $mol_type_enforce<
-		({ 
-			click( next?: ReturnType< $yuf_ws_status['reset_error'] > ): ReturnType< $yuf_ws_status['reset_error'] >,
-		}) 
-		,
-		ReturnType< $mol_speck['event'] >
-	>
-	type $mol_speck__value_yuf_ws_status_2 = $mol_type_enforce<
-		ReturnType< $yuf_ws_status['error_message'] >
-		,
-		ReturnType< $mol_speck['value'] >
-	>
-	type $yuf_ws_icon__status_yuf_ws_status_3 = $mol_type_enforce<
+	type $yuf_ws_icon__status_yuf_ws_status_1 = $mol_type_enforce<
 		ReturnType< $yuf_ws_status['status'] >
 		,
 		ReturnType< $yuf_ws_icon['status'] >
 	>
-	export class $yuf_ws_status extends $mol_view {
-		title_formatted( ): ReturnType< $yuf_ws_status['title'] >
+	export class $yuf_ws_status extends $yuf_status {
+		error( ): ReturnType< ReturnType< $yuf_ws_status['ws'] >['error'] >
 		error_message( ): ReturnType< ReturnType< $yuf_ws_status['ws'] >['error_message'] >
-		reset_error( next?: any ): any
-		Ws_error( ): $mol_speck
-		ws_error_content( ): readonly(any)[]
-		status( ): string
-		Icon( ): $yuf_ws_icon
-		attr( ): ({ 
-			'title': ReturnType< $yuf_ws_status['title_formatted'] >,
-		})  & ReturnType< $mol_view['attr'] >
+		Icon_ws( ): $yuf_ws_icon
 		ws( ): $yuf_ws_host
 		title( ): string
 		status_message( ): ({ 
@@ -11961,7 +12026,7 @@ declare namespace $ {
 			'open': string,
 			'connecting': string,
 		}) 
-		sub( ): readonly(any)[]
+		icon_content( ): readonly($mol_view)[]
 	}
 	
 }
@@ -11969,10 +12034,8 @@ declare namespace $ {
 //# sourceMappingURL=status.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_ws_status extends $.$yuf_ws_status {
-        ws_error_content(): readonly any[];
         status(): "error" | "open" | "connecting";
         reset_error(e?: Event): void;
-        title_formatted(): string;
     }
 }
 
