@@ -25452,7 +25452,7 @@ var $;
 			return "";
 		}
 		status_message(){
-			return {"loading": (this.$.$mol_locale.text("$yuf_status_status_message_loading"))};
+			return {"loading": (this.$.$mol_locale.text("$yuf_status_status_message_loading")), "error": (this.$.$mol_locale.text("$yuf_status_status_message_error"))};
 		}
 		sub(){
 			return [...(this.error_content()), ...(this.icon_content())];
@@ -25508,7 +25508,7 @@ var $;
                 return this.status_message()?.[this.status()] ?? '';
             }
             title_formatted() {
-                const message = this.status_formatted() || this.status_message().error || '';
+                const message = this.status_formatted() || '';
                 return this.title().replace('{status}', message);
             }
             status() {
@@ -25945,11 +25945,12 @@ var $;
         signature() {
             const query = this.query();
             const device = this.device();
+            const kind = this.type();
             let id = this.id() || undefined;
             if (id && device.includes(id))
                 id = undefined;
             return {
-                type: this.type(),
+                type: kind,
                 id,
                 query: Object.keys(query).length ? query : undefined,
                 device: device.length ? device : undefined,
