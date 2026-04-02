@@ -8,12 +8,12 @@ namespace $ {
 		signature(): Record<string, unknown> {
 			const query = this.query()
 			const device = this.device()
-
+			const kind = this.type()
 			let id = this.id() || undefined
 			if (id && device.includes(id)) id = undefined
 
 			return {
-				type: this.type(),
+				type: kind,
 				id,
 				query: Object.keys(query).length ? query : undefined,
 				device: device.length ? device : undefined,

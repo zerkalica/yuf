@@ -27,7 +27,7 @@ namespace $.$$ {
 		}
 
 		override title_formatted() {
-			const message = this.status_formatted() || this.status_message().error || ''
+			const message = this.status_formatted() || ''
 			return this.title().replace('{status}', message)
 		}
 

@@ -8,6 +8,7 @@ $yuf_status $mol_view
 	status \
 	status_message *string
 		loading @ \Loading
+		error @ \Error
 	sub /$mol_view
 		^ error_content /$mol_view
 			<= Error $mol_speck

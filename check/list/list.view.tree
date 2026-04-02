@@ -1,0 +1,12 @@
+$yuf_check_list $mol_view
+	value? /string
+	options /string
+	dictionary *string
+	sub /
+		<= All $mol_check_group
+			title @ \All
+			checks <= checks
+		^ checks /$mol_check
+			<= Item*0 $mol_check_box
+				checked? <=> item_checked*? false
+				title <= item_title* \
