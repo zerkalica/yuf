@@ -8,7 +8,7 @@ namespace $ {
 		}
 
 		static unzip(...args: Parameters<ReturnType<typeof this.module>['unzipSync']>) {
-			return this.module().unzipSync(...args)
+			return this.module().unzipSync(...args) as Record<string, Uint8Array<ArrayBuffer>>
 		}
 
 		static zip(...args: Parameters<ReturnType<typeof this.module>['zipSync']>) {
