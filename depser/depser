@@ -6,6 +6,7 @@
 
 # Do not link this dirs from .ci/* to mam root
 : "${DEPSER_EXCLUDE_MASK='^mam\|ci\|cmake\|pack\|links$'}"
+  echo "$from" | grep -q '://' && continue
 
 depser_pkg() {
   local ci_dir="${SRC_PATH}/.ci"
@@ -117,9 +118,27 @@ depser_symlink_list() {
   test -e "${SRC_PATH}/.ci/package-lock.json" | echo "${SRC_PATH}/.ci/package-lock.json"	"${MAM_DIR}/package-lock.json"
 
   test -e "${SRC_PATH}/.ci/links.txt" && cat "${SRC_PATH}/.ci/links.txt" | while read from to; do
+    echo "$from" | grep -q '://' && continue
     test ! -e "${SRC_PATH}/.ci/${from}" && continue
 	echo "${SRC_PATH}/.ci/${from}	${SRC_PATH}/.ci/${to}"
   done
+}
+
+depser_fix_urls() {
+	test -e "$SRC_PATH/.ci/url-map.txt" || return
+	local revert="$1"
+	local CUT_ARG_POS=2
+	test -n "$revert" && CUT_ARG_POS=1
+
+	SRC_PATH="$SRC_PATH" CUT_ARG_POS=$CUT_ARG_POS git submodule foreach '
+		src_url="$(git remote get-url origin)"
+		dst_url="$(grep "$src_url" "$SRC_PATH/.ci/url-map.txt" | cut -f $CUT_ARG_POS)"
+		test -z "$dst_url" && exit 0
+		pwd
+		echo "$src_url -> $dst_url"
+		git remote set-url origin $dst_url
+		exit 0
+	'
 }
 
 depser_dirs_link() {
@@ -155,7 +174,7 @@ depser_make() {
   depser_dirs_link \
 	&& cd "${SRC_PATH}/.ci/mam" \
 	&& echo "Step 1. install npm" \
-	&& npm install --ignore-scripts || {
+	&& npm clean-install --ignore-scripts || {
 		depser_dirs_unlink
 		echo "ERROR: Step 1"
 		exit 1
@@ -186,7 +205,8 @@ depser_help() {
   echo "add <url> <dir name> - add submodule from git url to .ci/<dir name>"
   echo "build - build, using only submodules in .ci as deps"
   echo "pkg - updates package.json in mam root and copies into .ci/package-lock.json"
-  echo "sm [mask] - updates git submodules in .ci, where optional mask used to filter uptable projects"
+  echo "sm [mask] - updates git submodules in .ci, where optional mask used to filter upstream projects"
+  echo "fix_urls - map submodule origin urls to alias in .ci/url-map.txt"
   echo "update - updates all submodules and package.json"
 }
 

@@ -1,0 +1,11 @@
+$yuf_confirm_pick $mol_pick
+	bubble_content /$mol_view <= Content $mol_view sub <= inner_content /$mol_view
+		<= Title $mol_view sub <= title_content /$mol_view_content
+			<= bubble_title \
+		<= Buttons $mol_view sub <= buttons_content /$mol_view
+			<= No $mol_button_minor
+				title <= no_text @ \No
+				click? <=> no_click? null
+			<= Yes $mol_button_major
+				title <= yes_text @ \Yes
+				click? <=> click_yes? null
