@@ -5,6 +5,10 @@ namespace $.$$ {
 			const next = this.value(this.value_string() ? undefined : this.value_min())
 			this.value_string(String(next || '0'))
 		}
+
+		// override allow_enriched() {
+		// 	return `${this.allow()}${this.value_min() < 0 ? '-' : ''}${this.precision() >= 1 ? '' : '.'}`
+		// }
 		
 	}
 }

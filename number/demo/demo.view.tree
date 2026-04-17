@@ -1,0 +1,10 @@
+$yuf_number_demo $mol_example_small
+	title \Number demo
+	sub /
+		<= Input $yuf_number
+			value_min 0
+	tags /
+		\input
+		\number
+	aspects /
+		\Form

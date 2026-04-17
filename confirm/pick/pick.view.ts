@@ -4,6 +4,11 @@ namespace $.$$ {
 		override no_click() {
 			this.showed(false)
 		}
+
+		override click_yes(e?: Event) {
+			this.confirm(e)
+			this.showed(false)
+		}
 		
 	}
 }

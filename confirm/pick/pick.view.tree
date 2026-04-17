@@ -8,4 +8,4 @@ $yuf_confirm_pick $mol_pick
 				click? <=> no_click? null
 			<= Yes $mol_button_major
 				title <= yes_text @ \Yes
-				click? <=> click_yes? null
+				click? <=> click_yes? <=> confirm? null
