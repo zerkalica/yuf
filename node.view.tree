@@ -2891,6 +2891,7 @@ $yuf_number $mol_number
 		type <= type
 		value? <=> value_string?
 		hint <= hint
+		- allow <= allow_enriched <= allow \0123456789
 		enabled <= string_enabled
 		submit? <=> submit?
 
