@@ -1,11 +1,14 @@
 $yuf_date_range $mol_view
 	sub /
 		<= From $yuf_date_range_date
+			input_mask* => from_input_mask*
 			align <= from_align \bottom_right
-			value_moment? <=> from? $mol_time_moment
+			moment? <=> from? null $mol_time_moment
 		<= Separator $mol_view sub / <= separator \-
 		<= To $yuf_date_range_date
+			input_mask* <= to_input_mask* <= from_input_mask*
 			align <= to_align \bottom_left
-			value_moment? <=> to? $mol_time_moment
+			moment? <=> to? null $mol_time_moment
 
 $yuf_date_range_date $mol_date
+	moment? null $mol_time_moment
