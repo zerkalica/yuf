@@ -3,15 +3,15 @@ $yuf_svg_video $mol_svg_image
 	attr *
 		^
 		href null
-	sub /
+	sub /$mol_view
 		<= Player $yuf_svg_video_player
 			autoplay <= autoplay true
-			controls <=> controls false
-			loop <=> loop true
-			muted <=> muted false
+			controls <= controls false
+			loop <= loop true
+			muted <= muted false
 			poster <= poster \
 			inline <= inline true
-			uri <=> uri \
+			uri <= uri \
 			stream <= stream null
 			duration => duration
 			playing? => playing?
