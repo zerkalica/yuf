@@ -282,7 +282,7 @@ namespace $.$$ {
 				if (val >= min && val <= max) return ''
 			}
 
-			return super.value_in_range(field).replace('{range}', range?.join(' - ') ?? '-')
+			return this.value_in_range_msg().replace('{range}', range?.join(' - ') ?? '-')
 		}
 	}
 }
