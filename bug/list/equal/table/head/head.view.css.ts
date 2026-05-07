@@ -1,0 +1,8 @@
+namespace $.$$ {
+	
+	$mol_style_define( $yuf_bug_list_equal_table_head, {
+		minWidth: '1000px',
+		minHeight: '2.5rem',
+	} )
+	
+}

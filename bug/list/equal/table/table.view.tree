@@ -1,0 +1,5 @@
+$yuf_bug_list_equal_table $mol_view
+	sub /$mol_view
+		<= Head $mol_view sub /
+			\Header
+		<= Rows $mol_list rows <= rows /$mol_view

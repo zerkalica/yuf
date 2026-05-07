@@ -1,0 +1,18 @@
+$yuf_bug_list_equal $mol_example_small
+	title \Test app
+	sub /
+		<= Reverse $mol_check_box
+			title \Reversed
+			checked? <=> reversed? false
+		<= Table $yuf_bug_list_equal_table
+			rows <= rows /$mol_view
+				<= Item*0 $yuf_bug_list_equal_table_head
+					sub / <= log_row* \
+	tags /
+		\app
+		\list
+		\demo
+		\bug
+		\reverse
+	aspects /
+		\Bug

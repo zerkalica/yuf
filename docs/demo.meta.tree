@@ -12,6 +12,7 @@ include \/yuf/catalog/demo
 include \/yuf/login/form/demo
 include \/yuf/date/range/demo
 include \/yuf/bug/log/prepend
+include \/yuf/bug/list/equal
 include \/yuf/bug/catalog/flash
 include \/yuf/localizer/demo
 include \/yuf/karaoke/demo
