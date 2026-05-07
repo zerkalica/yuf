@@ -23203,7 +23203,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_bug_list_equal_table_head) = class $yuf_bug_list_equal_table_head extends ($.$mol_view) {
+	($.$yuf_bug_list_equal_table_row) = class $yuf_bug_list_equal_table_row extends ($.$mol_view) {
 		minimal_height(){
 			return 40;
 		}
@@ -23223,7 +23223,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_bug_list_equal_table_head, {
+        $mol_style_define($yuf_bug_list_equal_table_row, {
             minWidth: '1000px',
             minHeight: '2.5rem',
         });
@@ -23246,7 +23246,7 @@ var $;
 			return "";
 		}
 		Item(id){
-			const obj = new this.$.$yuf_bug_list_equal_table_head();
+			const obj = new this.$.$yuf_bug_list_equal_table_row();
 			(obj.sub) = () => ([(this.log_row(id))]);
 			return obj;
 		}

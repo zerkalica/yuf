@@ -2336,7 +2336,7 @@ $yuf_bug_list_equal_table $mol_view
 			\Header
 		<= Rows $mol_list rows <= rows /$mol_view
 
-$yuf_bug_list_equal_table_head $mol_view
+$yuf_bug_list_equal_table_row $mol_view
 	minimal_height 40
 	minimal_width 500
 
@@ -2348,7 +2348,7 @@ $yuf_bug_list_equal $mol_example_small
 			checked? <=> reversed? false
 		<= Table $yuf_bug_list_equal_table
 			rows <= rows /$mol_view
-				<= Item*0 $yuf_bug_list_equal_table_head
+				<= Item*0 $yuf_bug_list_equal_table_row
 					sub / <= log_row* \
 	tags /
 		\app

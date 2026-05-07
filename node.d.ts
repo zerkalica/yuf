@@ -11218,14 +11218,14 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $yuf_bug_list_equal_table_head extends $mol_view {
+	export class $yuf_bug_list_equal_table_row extends $mol_view {
 		minimal_height( ): number
 		minimal_width( ): number
 	}
 	
 }
 
-//# sourceMappingURL=head.view.tree.d.ts.map
+//# sourceMappingURL=row.view.tree.d.ts.map
 declare namespace $.$$ {
 }
 
@@ -11241,10 +11241,10 @@ declare namespace $ {
 		,
 		ReturnType< $mol_check_box['checked'] >
 	>
-	type $yuf_bug_list_equal_table_head__sub_yuf_bug_list_equal_3 = $mol_type_enforce<
+	type $yuf_bug_list_equal_table_row__sub_yuf_bug_list_equal_3 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $yuf_bug_list_equal_table_head['sub'] >
+		ReturnType< $yuf_bug_list_equal_table_row['sub'] >
 	>
 	type $yuf_bug_list_equal_table__rows_yuf_bug_list_equal_4 = $mol_type_enforce<
 		ReturnType< $yuf_bug_list_equal['rows'] >
@@ -11255,7 +11255,7 @@ declare namespace $ {
 		reversed( next?: boolean ): boolean
 		Reverse( ): $mol_check_box
 		log_row( id: any): string
-		Item( id: any): $yuf_bug_list_equal_table_head
+		Item( id: any): $yuf_bug_list_equal_table_row
 		rows( ): readonly($mol_view)[]
 		Table( ): $yuf_bug_list_equal_table
 		title( ): string
@@ -11273,7 +11273,7 @@ declare namespace $.$$ {
         logs_sorted(): string[];
         make_rows(count?: number): string[];
         indices(): number[];
-        rows(): $yuf_bug_list_equal_table_head[];
+        rows(): $yuf_bug_list_equal_table_row[];
         log_row(index: number): string;
     }
 }
