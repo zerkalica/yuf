@@ -6,7 +6,7 @@ $yuf_bug_list_equal $mol_example_small
 			checked? <=> reversed? false
 		<= Table $yuf_bug_list_equal_table
 			rows <= rows /$mol_view
-				<= Item*0 $yuf_bug_list_equal_table_head
+				<= Item*0 $yuf_bug_list_equal_table_row
 					sub / <= log_row* \
 	tags /
 		\app
