@@ -2325,6 +2325,40 @@ $yuf_bug_log_prepend $mol_example_small
 	aspects /
 		\Bug
 
+$mol_icon_tick $mol_icon path \M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z
+
+$mol_check_box $mol_check
+	Icon $mol_icon_tick
+
+$yuf_bug_list_equal_table $mol_view
+	sub /$mol_view
+		<= Head $mol_view sub /
+			\Header
+		<= Rows $mol_list rows <= rows /$mol_view
+
+$yuf_bug_list_equal_table_head $mol_view
+	minimal_height 40
+	minimal_width 500
+
+$yuf_bug_list_equal $mol_example_small
+	title \Test app
+	sub /
+		<= Reverse $mol_check_box
+			title \Reversed
+			checked? <=> reversed? false
+		<= Table $yuf_bug_list_equal_table
+			rows <= rows /$mol_view
+				<= Item*0 $yuf_bug_list_equal_table_head
+					sub / <= log_row* \
+	tags /
+		\app
+		\list
+		\demo
+		\bug
+		\reverse
+	aspects /
+		\Bug
+
 $yuf_bug_catalog_flash $mol_example_small
 	title \Test app
 	sub /

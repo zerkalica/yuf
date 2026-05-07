@@ -11097,6 +11097,117 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	export class $mol_icon_tick extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=tick.view.tree.d.ts.map
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_check_box extends $mol_check {
+		Icon( ): $mol_icon_tick
+	}
+	
+}
+
+//# sourceMappingURL=box.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_view__sub_yuf_bug_list_equal_table_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_list__rows_yuf_bug_list_equal_table_2 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_equal_table['rows'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	export class $yuf_bug_list_equal_table extends $mol_view {
+		Head( ): $mol_view
+		rows( ): readonly($mol_view)[]
+		Rows( ): $mol_list
+		sub( ): readonly($mol_view)[]
+	}
+	
+}
+
+//# sourceMappingURL=table.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_bug_list_equal_table_head extends $mol_view {
+		minimal_height( ): number
+		minimal_width( ): number
+	}
+	
+}
+
+//# sourceMappingURL=head.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_check_box__title_yuf_bug_list_equal_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_bug_list_equal_2 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_equal['reversed'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $yuf_bug_list_equal_table_head__sub_yuf_bug_list_equal_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_bug_list_equal_table_head['sub'] >
+	>
+	type $yuf_bug_list_equal_table__rows_yuf_bug_list_equal_4 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_equal['rows'] >
+		,
+		ReturnType< $yuf_bug_list_equal_table['rows'] >
+	>
+	export class $yuf_bug_list_equal extends $mol_example_small {
+		reversed( next?: boolean ): boolean
+		Reverse( ): $mol_check_box
+		log_row( id: any): string
+		Item( id: any): $yuf_bug_list_equal_table_head
+		rows( ): readonly($mol_view)[]
+		Table( ): $yuf_bug_list_equal_table
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=equal.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_bug_list_equal extends $.$yuf_bug_list_equal {
+        logs(): string[];
+        logs_sorted(): string[];
+        make_rows(count?: number): string[];
+        indices(): number[];
+        rows(): $yuf_bug_list_equal_table_head[];
+        log_row(index: number): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
 	export class $yuf_bug_catalog_flash extends $mol_example_small {
 		Main( ): $yuf_bug_catalog_flash_catalog
 		title( ): string

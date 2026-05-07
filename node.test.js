@@ -23129,6 +23129,229 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_tick) = class $mol_icon_tick extends ($.$mol_icon) {
+		path(){
+			return "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_check_box) = class $mol_check_box extends ($.$mol_check) {
+		Icon(){
+			const obj = new this.$.$mol_icon_tick();
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_check_box.prototype), "Icon"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/check/box/box.view.css", "[mol_check_box_icon] {\n\tborder-radius: var(--mol_gap_round);\n\tbox-shadow: inset 0 0 0 1px var(--mol_theme_line);\n\tcolor: var(--mol_theme_shade);\n\theight: 1rem;\n\talign-self: center;\n}\n\n[mol_check]:not([mol_check_checked]) > [mol_check_box_icon] {\n\tfill: transparent;\n}\n\n[mol_check]:not([disabled]) > [mol_check_box_icon] {\n\tbackground: var(--mol_theme_field);\n\tcolor: var(--mol_theme_text);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+	($.$yuf_bug_list_equal_table) = class $yuf_bug_list_equal_table extends ($.$mol_view) {
+		Head(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => (["Header"]);
+			return obj;
+		}
+		rows(){
+			return [];
+		}
+		Rows(){
+			const obj = new this.$.$mol_list();
+			(obj.rows) = () => ((this.rows()));
+			return obj;
+		}
+		sub(){
+			return [(this.Head()), (this.Rows())];
+		}
+	};
+	($mol_mem(($.$yuf_bug_list_equal_table.prototype), "Head"));
+	($mol_mem(($.$yuf_bug_list_equal_table.prototype), "Rows"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_bug_list_equal_table, {
+            flex: {
+                direction: 'column',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_bug_list_equal_table_head) = class $yuf_bug_list_equal_table_head extends ($.$mol_view) {
+		minimal_height(){
+			return 40;
+		}
+		minimal_width(){
+			return 500;
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_bug_list_equal_table_head, {
+            minWidth: '1000px',
+            minHeight: '2.5rem',
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_bug_list_equal) = class $yuf_bug_list_equal extends ($.$mol_example_small) {
+		reversed(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Reverse(){
+			const obj = new this.$.$mol_check_box();
+			(obj.title) = () => ("Reversed");
+			(obj.checked) = (next) => ((this.reversed(next)));
+			return obj;
+		}
+		log_row(id){
+			return "";
+		}
+		Item(id){
+			const obj = new this.$.$yuf_bug_list_equal_table_head();
+			(obj.sub) = () => ([(this.log_row(id))]);
+			return obj;
+		}
+		rows(){
+			return [(this.Item("0"))];
+		}
+		Table(){
+			const obj = new this.$.$yuf_bug_list_equal_table();
+			(obj.rows) = () => ((this.rows()));
+			return obj;
+		}
+		title(){
+			return "Test app";
+		}
+		sub(){
+			return [(this.Reverse()), (this.Table())];
+		}
+		tags(){
+			return [
+				"app", 
+				"list", 
+				"demo", 
+				"bug", 
+				"reverse"
+			];
+		}
+		aspects(){
+			return ["Bug"];
+		}
+	};
+	($mol_mem(($.$yuf_bug_list_equal.prototype), "reversed"));
+	($mol_mem(($.$yuf_bug_list_equal.prototype), "Reverse"));
+	($mol_mem_key(($.$yuf_bug_list_equal.prototype), "Item"));
+	($mol_mem(($.$yuf_bug_list_equal.prototype), "Table"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_bug_list_equal extends $.$yuf_bug_list_equal {
+            logs() {
+                return this.make_rows(30);
+            }
+            logs_sorted() {
+                this.$.$mol_wait_timeout(50);
+                return this.reversed() ? this.logs().toReversed() : this.logs();
+            }
+            make_rows(count = 1) {
+                const result = [];
+                let str_len = Number(this.$.$mol_state_arg.value('str_len') || 0) || 100;
+                if (Number.isNaN(str_len))
+                    str_len = 100;
+                for (let i = 0; i < count; i++) {
+                    result.push(new Date().toISOString() + ': ' + $mol_stub_message(str_len) + i);
+                }
+                return result;
+            }
+            indices() {
+                return this.logs_sorted().map((_, index) => index);
+            }
+            rows() {
+                return this.indices().map((index) => this.Item(index));
+            }
+            log_row(index) {
+                return this.logs_sorted()[index];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_list_equal.prototype, "logs", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_list_equal.prototype, "logs_sorted", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_list_equal.prototype, "indices", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_list_equal.prototype, "rows", null);
+        $$.$yuf_bug_list_equal = $yuf_bug_list_equal;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_bug_list_equal, {
+            flex: {
+                direction: 'column',
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_bug_catalog_flash) = class $yuf_bug_catalog_flash extends ($.$mol_example_small) {
 		Main(){
 			const obj = new this.$.$yuf_bug_catalog_flash_catalog();
