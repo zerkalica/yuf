@@ -1650,7 +1650,7 @@ $yuf_attach_demo $mol_example_small
 				multiple true
 				item_drop* => item_drop*
 				file* => file*
-				uploading* <=> uploading* false
+				uploading* <= uploading* false
 			<= Uploads $mol_list
 				rows <= uploads /
 					<= Uploaded* $mol_view sub /
@@ -2118,7 +2118,8 @@ $yuf_form_bid $mol_view
 	ip4_mask_required* <= ip4_mask_msg @ \Not valid ip4/mask
 	latin_digits* <= latin_digits_msg @ \Only latin and digits
 	latin_digits_alpha* <= latin_digits_msg
-	value_in_range*? <= value_in_range_msg @ \{range}
+	value_in_range*? \
+	value_in_range_msg @ \{range}
 	value_limits* /readonly(number)[]
 
 $yuf_login_form $mol_form
@@ -2280,14 +2281,17 @@ $mol_date_calendar $mol_calendar
 $yuf_date_range $mol_view
 	sub /
 		<= From $yuf_date_range_date
+			input_mask* => from_input_mask*
 			align <= from_align \bottom_right
-			value_moment? <=> from? $mol_time_moment
+			moment? <=> from? null $mol_time_moment
 		<= Separator $mol_view sub / <= separator \-
 		<= To $yuf_date_range_date
+			input_mask* <= to_input_mask* <= from_input_mask*
 			align <= to_align \bottom_left
-			value_moment? <=> to? $mol_time_moment
+			moment? <=> to? null $mol_time_moment
 
 $yuf_date_range_date $mol_date
+	moment? null $mol_time_moment
 
 $yuf_date_range_demo $mol_example_small
 	title \Date range
