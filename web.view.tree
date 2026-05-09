@@ -6,7 +6,7 @@ $mol_scroll $mol_view
 		tabindex <= tabindex -1
 	event *
 		^
-		scroll?event <=> event_scroll?event null
+		scroll? <=> event_scroll? null
 
 $mol_book2 $mol_scroll
 	menu_title \
@@ -24,7 +24,7 @@ $mol_theme_auto $mol_plugin
 $mol_hotkey $mol_plugin
 	event *
 		^
-		keydown?event <=> keydown?event null
+		keydown? <=> keydown? null
 	key *
 	mod_ctrl false
 	mod_alt false
@@ -118,13 +118,13 @@ $mol_nav $mol_plugin
 	current_x? null
 	current_y? null
 	-
-	event_up?event null
-	event_down?event null
-	event_left?event null
-	event_right?event null
+	event_up? null
+	event_down? null
+	event_left? null
+	event_right? null
 	event *
 		^
-		keydown?event <=> event_key?event null
+		keydown? <=> event_key? null
 
 $mol_string $mol_view
 	dom_name \input
@@ -154,11 +154,11 @@ $mol_string $mol_view
 		type <= type? \text
 	event *
 		^
-		input?event <=> event_change?event null
+		input? <=> event_change? null
 	plugins /
 		<= Submit $mol_hotkey
 			mod_ctrl <= submit_with_ctrl false
-			key * enter?event <=> submit?event null
+			key * enter? <=> submit? null
 
 $mol_svg $mol_view
 	dom_name \svg
@@ -198,14 +198,14 @@ $mol_speck $mol_view
 
 $mol_button $mol_view
 	enabled true
-	click?event null
-	event_click?event null
+	click? null
+	event_click? null
 	status? /
 	event *
 		^
-		click?event <=> activate?event <=> event_activate?event null
-		dblclick?event <=> clicks?event null
-		keydown?event <=> key_press?event <=> event_key_press?event null
+		click? <=> activate? <=> event_activate? null
+		dblclick? <=> clicks? null
+		keydown? <=> key_press? <=> event_key_press? null
 	attr *
 		^
 		disabled <= disabled false
@@ -264,7 +264,7 @@ $mol_search $mol_pop
 			key * escape? <=> clear? null
 		<= Nav $mol_nav
 			keys_y <= nav_components /$mol_view
-			current_y?component <=> nav_focused?component null
+			current_y? <=> nav_focused? null
 	showed? <=> suggests_showed? false
 	align_hor \right
 	Anchor $mol_view
@@ -272,7 +272,7 @@ $mol_search $mol_pop
 			<= Query $mol_string
 				value? <=> query? \
 				hint <= hint @ \Search...
-				submit?event <=> submit?event null
+				submit? <=> submit? null
 				enabled <= enabled true
 				keyboard <= keyboard \search
 				enter <= enter \search
@@ -280,7 +280,7 @@ $mol_search $mol_pop
 			<= Clear $mol_button_minor
 				hint @ \Clear
 				enabled <= enabled true
-				click?event <=> clear?event null
+				click? <=> clear? null
 				sub /
 					<= Clear_icon $mol_icon_close
 	bubble_content /$mol_view_content
@@ -289,7 +289,7 @@ $mol_search $mol_pop
 				<= Menu $mol_list
 					rows <= menu_items /$mol_view
 	Suggest* $mol_button_minor
-		click?event <=> suggest_select*?event null
+		click? <=> suggest_select*? null
 		sub <= suggest_content* /$mol_view_content
 			<= Suggest_label* $mol_dimmer
 				haystack <= suggest_label* \
@@ -378,7 +378,7 @@ $mol_link $mol_view
 	arg *
 	event *
 		^
-		click?event <=> click?event <=> event_click?event null
+		click? <=> click? <=> event_click? null
 
 $mol_app_demo_menu $mol_page
 	names /string
@@ -951,7 +951,7 @@ $mol_icon_lightbulb_question $mol_icon path \M8 2C4.1 2 1 5.1 1 9C1 11.4 2.2 13.
 $mol_pick $mol_pop
 	event *
 		^
-		keydown?event <=> keydown?event null
+		keydown? <=> keydown? null
 	Anchor <= Trigger $mol_check
 		minimal_width 40
 		minimal_height 40
@@ -971,7 +971,7 @@ $mol_select $mol_pick
 	option_label_default \
 	Option_row* $mol_button_minor
 		enabled <= enabled true
-		event_click?event <=> event_select*?event null
+		event_click? <=> event_select*? null
 		sub <= option_content* /
 			<= Option_label* $mol_dimmer
 				haystack <= option_label* \
@@ -983,7 +983,7 @@ $mol_select $mol_pick
 		^
 		<= Nav $mol_nav
 			keys_y <= nav_components /$mol_view
-			current_y?component <=> option_focused?component null
+			current_y? <=> option_focused? null
 			cycle? <=> nav_cycle? true
 	hint @ \Pick..
 	bubble_content /
@@ -995,7 +995,7 @@ $mol_select $mol_pick
 	Filter $mol_search
 		query? <=> filter_pattern? \
 		hint <= filter_hint @ \Filter..
-		submit?event <=> submit?event null
+		submit? <=> submit? null
 		enabled <= enabled true
 	Trigger_icon $mol_icon_dots_vertical
 	trigger_enabled <= enabled
@@ -1362,7 +1362,7 @@ $mol_password $mol_view
 			type <= type
 			hint <= hint \
 			value? <=> value? \
-			submit?event <=> submit?event null
+			submit? <=> submit? null
 			enabled <= enabled true
 		<= Show $mol_check_icon
 			checked? <=> checked? true
@@ -1378,8 +1378,8 @@ $mol_form $mol_list
 	submit_blocked false
 	event *
 		^
-		keydown?event <=> keydown?event null
-	save?event null
+		keydown? <=> keydown? null
+	save? null
 	message_done @ \Saved
 	errors *string
 		\Form invalid
@@ -1441,7 +1441,7 @@ $mol_button_open_native $mol_view
 		accept <= accept \
 		multiple <= multiple true
 	event *
-		change?next <=> picked?next null
+		change? <=> picked? null
 
 $mol_icon_camera $mol_icon path \M4,4H7L9,2H15L17,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9Z
 
@@ -2232,7 +2232,7 @@ $mol_date $mol_pick
 			<= Today $mol_button_minor
 				hint @ \Today
 				enabled <= enabled true
-				click?event <=> today_click?event null
+				click? <=> today_click? null
 				sub /
 					<= Today_icon $mol_icon_calendar_today
 			<= Input $mol_format
@@ -2243,27 +2243,27 @@ $mol_date $mol_pick
 			<= Clear $mol_button_minor
 				hint @ \Clear
 				enabled <= enabled true
-				click?event <=> clear?event null
+				click? <=> clear? null
 				sub /
 					<= Clear_icon $mol_icon_trash_can_outline
 		<= Calendar $mol_date_calendar
 			enabled <= enabled true
 			month_moment <= month_moment <= value_moment
 			day_selected* <= day_selected* false
-			day_click*?event <=> day_click*?event null
+			day_click*? <=> day_click*? null
 			Title => Calendar_title
 			head /
 				<= Calendar_tools $mol_view
 					sub /
 						<= Prev $mol_button_minor
 							hint <= prev_hint @ \Previous month
-							click?event <=> prev?event null
+							click? <=> prev? null
 							sub /
 								<= Prev_icon $mol_icon_chevron_left
 						<= Calendar_title
 						<= Next $mol_button_minor
 							hint <= next_hint @ \Next month
-							click?event <=> next?event null
+							click? <=> next? null
 							sub /
 								<= Next_icon $mol_icon_chevron_right
 	-
@@ -2274,7 +2274,7 @@ $mol_date_calendar $mol_calendar
 	day_content* /
 		<= Day_button* $mol_button_minor
 			title <= day_text*
-			event_click?event <=> day_click*?event null
+			event_click? <=> day_click*? null
 			minimal_height 24
 			enabled <= enabled true
 
@@ -2442,8 +2442,8 @@ $mol_textarea $mol_stack
 		mol_textarea_clickable <= clickable? false
 		mol_textarea_sidebar_showed <= sidebar_showed false
 	event *
-		keydown?event <=> press?event null
-		pointermove?event <=> hover?event null
+		keydown? <=> press? null
+		pointermove? <=> hover? null
 	sub /
 		<= Edit $mol_textarea_edit
 			value? <=> value? \
@@ -2849,7 +2849,7 @@ $mol_form_draft $mol_form
 	list_string*? /string
 	value_changed* false
 	reset? null
-	done?event null
+	done? null
 	buttons /$mol_view
 		<= Submit
 		<= Reset $mol_button_minor
