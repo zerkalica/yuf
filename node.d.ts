@@ -6149,7 +6149,9 @@ declare namespace $ {
 declare namespace $ {
     class $yuf_chess_model_stockfish extends $yuf_chess_model {
         url(): string;
-        protected worker(): Worker;
+        protected worker(): Worker & {
+            destructor: () => void;
+        };
         protected data(next?: readonly string[]): readonly string[];
         protected promise: null | $mol_promise<readonly string[]>;
         protected send_raw(cmd: string): Promise<readonly string[]>;

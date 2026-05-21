@@ -13783,7 +13783,7 @@ var $;
             const worker = new Worker(this.url());
             worker.onmessage = (e) => this.on_message(e.data);
             worker.onerror = (e) => this.promise?.fail(new $mol_error_mix(e.message || e.error, e));
-            return worker;
+            return Object.assign(worker, { destructor: () => worker.terminate() });
         }
         data(next) {
             return next ?? [];
