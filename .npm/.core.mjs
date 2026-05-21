@@ -11,8 +11,10 @@ export class YufNpmCore {
     static cwd = typeof Deno !== 'undefined' ? Deno.cwd.bind(Deno) : process.cwd.bind(process)
     // @ts-ignore
     static isWin = typeof Deno !== 'undefined' ? Deno.build.os === 'windows' : process.platform === 'win32'
+   // @ts-ignore
+    static env = typeof Deno !== 'undefined' ? Deno.env : process.env
 
-    /**
+	/**
      * @param {string[]} argsRaw
      * @param {Partial<Parameters<typeof spawn>[2] & { stderr: string }>} optsRaw
      */

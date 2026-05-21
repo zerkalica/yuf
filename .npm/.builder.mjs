@@ -326,6 +326,8 @@ export class YufNpmBuilder {
     }
 
 	async install() {
+		if (YufNpmCore.env['MAM_PULL_DISABLED']) return null
+
 		const factory = this.factory()
 		for (const cwd of [factory.selfPath, this.absWorkingDir() ] ) {
 			await YufNpmCore.spawn(['npm', 'install'], { cwd })
