@@ -62,86 +62,30 @@ namespace $.$$ {
 			return val === null || val === undefined
 		}
 
-		min_date(field: string) {
-			const val = this.value_date(field)
-			const limit = this.min_date_val(field)
-			if (! limit ) return ''
-
-			if (val.toString() >= limit.toString()) return ''
-
-			return this.format(field, this.date_min_msg() )
-		}
-
-		max_date(field: string) {
-			const val = this.value_date(field)
-			const limit = this.max_date_val(field)
-			if (! limit ) return ''
-
-			if (val.toString() <= limit.toString()) return ''
-
-			return this.format(field, this.date_max_msg() )
-		}
-
-		min_str(field: string) {
-			const val = this.value_str(field)
-			const limit = this.min_val(field)
-			if (! limit ) return ''
-
-			if (val.length >= limit) return ''
-
-			return this.format(field, this.str_min_msg() )
-		}
-
-		max_str(field: string) {
-			const val = this.value_str(field)
-			const limit = this.max_val(field)
-			if (! limit ) return ''
-
-			if (val.length <= limit) return ''
-
-			return this.format(field, this.str_max_msg() )
-		}
-
-		min_number(field: string) {
-			const val = this.value_number(field)
-			const limit = this.min_val(field)
-			if (limit === null || limit === undefined) return ''
-
-			if (val >= limit) return ''
-
-			return this.format(field, this.min_msg() )
-		}
-
-		max_number(field: string) {
-			const val = this.value_number(field)
-			const limit = this.max_val(field)
-			if (limit === null || limit === undefined) return ''
-
-			if (val <= limit) return ''
-
-			return this.format(field, this.max_msg() )
-		}
-
 		@ $mol_mem_key
 		override min( field: string ) {
 			if (this.value_empty(field)) return ''
 			const val = this.value(field)
+			const limit = this.min_val(field)
 
-			if (val instanceof $mol_time_moment) return this.min_date(field)
-			if (typeof val === 'number') return this.min_number(field)
+			if (val instanceof $mol_time_moment) return ! limit || val.toString() >= limit.toString() ? '' : this.format(field, this.date_min_msg() )
+			if (typeof val === 'number') return limit === null || limit === undefined || val >= limit ? '' : this.format(field, this.min_msg() )
+			if (Array.isArray(val)) return ! limit || val.length >= limit ? '' : this.format(field, this.list_min_msg() )
 
-			return this.min_str(field)
+			return ! limit || val.length >= limit ? '' : this.format(field, this.str_min_msg() )
 		}
 
 		@ $mol_mem_key
 		override max( field: string ) {
 			if (this.value_empty(field)) return ''
 			const val = this.value(field)
+			const limit = this.max_val(field)
 
-			if (val instanceof $mol_time_moment) return this.max_date(field)
-			if (typeof val === 'number') return this.max_number(field)
+			if (val instanceof $mol_time_moment) return ! limit || val.toString() <= limit.toString() ? '' : this.format(field, this.date_max_msg() )
+			if (typeof val === 'number') return limit === null || limit === undefined || val <= limit ? '' : this.format(field, this.max_msg() )
+			if (Array.isArray(val)) return ! limit || val.length <= limit ? '' : this.format(field, this.list_max_msg() )
 
-			return this.max_str(field)
+			return ! limit || val.length <= limit ? '' : this.format(field, this.str_max_msg() )
 		}
 
 		@ $mol_mem_key

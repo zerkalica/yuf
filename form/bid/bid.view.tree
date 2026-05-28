@@ -27,7 +27,9 @@ $yuf_form_bid $mol_view
 	-
 	min* <= min_msg @ \From {min_val}
 	max* <= max_msg @ \To {max_val}
-	rows_max* <= rows_max_msg @ \To {max_vol} rows
+	list_min_msg @ \From {min_val} elements
+	list_max_msg @ \To {max_val} elements
+	rows_max* <= rows_max_msg @ \To {max_val} rows
 	-
 	json_invalid* <= json_invalid_msg @ \{json_error}
 	ip4* <= ip4_msg @ \Not valid ip4
