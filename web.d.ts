@@ -10339,6 +10339,8 @@ declare namespace $ {
 		date_max_msg( ): string
 		min( id: any): ReturnType< $yuf_form_bid['min_msg'] >
 		max( id: any): ReturnType< $yuf_form_bid['max_msg'] >
+		list_min_msg( ): string
+		list_max_msg( ): string
 		rows_max( id: any): ReturnType< $yuf_form_bid['rows_max_msg'] >
 		json_invalid( id: any): ReturnType< $yuf_form_bid['json_invalid_msg'] >
 		ip4( id: any): ReturnType< $yuf_form_bid['ip4_msg'] >
@@ -10366,12 +10368,6 @@ declare namespace $.$$ {
         protected min_msg_formatted(field: string): string;
         protected max_msg_formatted(field: string): string;
         value_empty(field: string): boolean;
-        min_date(field: string): string;
-        max_date(field: string): string;
-        min_str(field: string): string;
-        max_str(field: string): string;
-        min_number(field: string): string;
-        max_number(field: string): string;
         min(field: string): string;
         max(field: string): string;
         required(field: string): string;
