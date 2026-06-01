@@ -1,14 +1,17 @@
 $yuf_date_range $mol_view
 	sub /
 		<= From $yuf_date_range_date
+			enabled <= enabled true
 			input_mask* => from_input_mask*
 			align <= from_align \bottom_right
 			moment? <=> from? null $mol_time_moment
 		<= Separator $mol_view sub / <= separator \-
 		<= To $yuf_date_range_date
+			enabled <= enabled
 			input_mask* <= to_input_mask* <= from_input_mask*
 			align <= to_align \bottom_left
 			moment? <=> to? null $mol_time_moment
 
 $yuf_date_range_date $mol_date
 	moment? null $mol_time_moment
+	trigger_enabled <= enabled

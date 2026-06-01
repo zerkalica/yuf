@@ -326,16 +326,26 @@ export class YufNpmBuilder {
     }
 
 	async install() {
-		// if (YufNpmCore.env['MAM_PULL_DISABLED']) return null
 
 		const factory = this.factory()
 		for (const cwd of [factory.selfPath, this.absWorkingDir() ] ) {
+
+			if (YufNpmCore.env['MAM_PULL_DISABLED']) {
+				let stat_data
+				try {
+					stat_data = await stat(cwd)
+				} catch (error) {
+				}
+
+				if ( stat_data?.isDirectory() ) continue
+			}
+
 			await YufNpmCore.spawn(['npm', 'install'], { cwd })
 		}
 	}
 
     async build() {
-		await this.install()
+	await this.install()
         await this.rebuild()
         await this.done()
     }
