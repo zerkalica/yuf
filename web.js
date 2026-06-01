@@ -22674,6 +22674,9 @@ var $;
 
 ;
 	($.$yuf_date_range) = class $yuf_date_range extends ($.$mol_view) {
+		enabled(){
+			return true;
+		}
 		from_input_mask(id){
 			return (this.From().input_mask(id));
 		}
@@ -22686,6 +22689,7 @@ var $;
 		}
 		From(){
 			const obj = new this.$.$yuf_date_range_date();
+			(obj.enabled) = () => ((this.enabled()));
 			(obj.align) = () => ((this.from_align()));
 			(obj.moment) = (next) => ((this.from(next)));
 			return obj;
@@ -22710,6 +22714,7 @@ var $;
 		}
 		To(){
 			const obj = new this.$.$yuf_date_range_date();
+			(obj.enabled) = () => ((this.enabled()));
 			(obj.input_mask) = (id) => ((this.to_input_mask(id)));
 			(obj.align) = () => ((this.to_align()));
 			(obj.moment) = (next) => ((this.to(next)));
@@ -22732,6 +22737,9 @@ var $;
 		moment(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		trigger_enabled(){
+			return (this.enabled());
 		}
 	};
 	($mol_mem(($.$yuf_date_range_date.prototype), "moment"));

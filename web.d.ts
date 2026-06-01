@@ -10975,37 +10975,48 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_date_range['From'] >['input_mask'] >[0]
 	>
-	type $yuf_date_range_date__align_yuf_date_range_2 = $mol_type_enforce<
+	type $yuf_date_range_date__enabled_yuf_date_range_2 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['enabled'] >
+		,
+		ReturnType< $yuf_date_range_date['enabled'] >
+	>
+	type $yuf_date_range_date__align_yuf_date_range_3 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['from_align'] >
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_3 = $mol_type_enforce<
+	type $yuf_date_range_date__moment_yuf_date_range_4 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['from'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
 	>
-	type $mol_view__sub_yuf_date_range_4 = $mol_type_enforce<
+	type $mol_view__sub_yuf_date_range_5 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_date_range_date__input_mask_yuf_date_range_5 = $mol_type_enforce<
+	type $yuf_date_range_date__enabled_yuf_date_range_6 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['enabled'] >
+		,
+		ReturnType< $yuf_date_range_date['enabled'] >
+	>
+	type $yuf_date_range_date__input_mask_yuf_date_range_7 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_input_mask'] >
 		,
 		ReturnType< $yuf_date_range_date['input_mask'] >
 	>
-	type $yuf_date_range_date__align_yuf_date_range_6 = $mol_type_enforce<
+	type $yuf_date_range_date__align_yuf_date_range_8 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_align'] >
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_7 = $mol_type_enforce<
+	type $yuf_date_range_date__moment_yuf_date_range_9 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
 	>
 	export class $yuf_date_range extends $mol_view {
+		enabled( ): boolean
 		from_input_mask( id: any): ReturnType< ReturnType< $yuf_date_range['From'] >['input_mask'] >
 		from_align( ): string
 		from( next?: $mol_time_moment | null ): $mol_time_moment | null
@@ -11021,6 +11032,7 @@ declare namespace $ {
 	
 	export class $yuf_date_range_date extends $mol_date {
 		moment( next?: $mol_time_moment | null ): $mol_time_moment | null
+		trigger_enabled( ): ReturnType< $yuf_date_range_date['enabled'] >
 	}
 	
 }
