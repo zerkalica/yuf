@@ -333,7 +333,7 @@ export class YufNpmBuilder {
 			if (YufNpmCore.env['MAM_PULL_DISABLED']) {
 				let stat_data
 				try {
-					stat_data = await stat(cwd)
+					stat_data = await stat(join(cwd, 'node_modules'))
 				} catch (error) {
 				}
 
