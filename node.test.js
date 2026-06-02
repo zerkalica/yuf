@@ -22021,6 +22021,30 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_backspace) = class $mol_icon_backspace extends ($.$mol_icon) {
+		path(){
+			return "M22,3H7C6.31,3 5.77,3.35 5.41,3.88L0,12L5.41,20.11C5.77,20.64 6.31,21 7,21H22A2,2 0 0,0 24,19V5A2,2 0 0,0 22,3M19,15.59L17.59,17L14,13.41L10.41,17L9,15.59L12.59,12L9,8.41L10.41,7L14,10.59L17.59,7L19,8.41L15.41,12";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_backspace_outline) = class $mol_icon_backspace_outline extends ($.$mol_icon) {
+		path(){
+			return "M19,15.59L17.59,17L14,13.41L10.41,17L9,15.59L12.59,12L9,8.41L10.41,7L14,10.59L17.59,7L19,8.41L15.41,12L19,15.59M22,3A2,2 0 0,1 24,5V19A2,2 0 0,1 22,21H7C6.31,21 5.77,20.64 5.41,20.11L0,12L5.41,3.88C5.77,3.35 6.31,3 7,3H22M22,5H7L2.28,12L7,19H22V5Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
 	($.$mol_icon_calendar) = class $mol_icon_calendar extends ($.$mol_icon) {
 		path(){
 			return "M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z";
@@ -22819,6 +22843,9 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		from_clear(next){
+			return (this.From().clear(next));
+		}
 		From(){
 			const obj = new this.$.$yuf_date_range_date();
 			(obj.enabled) = () => ((this.enabled()));
@@ -22844,6 +22871,9 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		to_clear(next){
+			return (this.To().clear(next));
+		}
 		To(){
 			const obj = new this.$.$yuf_date_range_date();
 			(obj.enabled) = () => ((this.enabled()));
@@ -22852,11 +22882,37 @@ var $;
 			(obj.moment) = (next) => ((this.to(next)));
 			return obj;
 		}
+		clear_all_click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		clear_all_enabled(){
+			return false;
+		}
+		clear_all_hint(){
+			return (this.$.$mol_locale.text("$yuf_date_range_clear_all_hint"));
+		}
+		Clear_all_icon(){
+			const obj = new this.$.$mol_icon_backspace_outline();
+			return obj;
+		}
+		Clear_all(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.click) = (next) => ((this.clear_all_click(next)));
+			(obj.enabled) = () => ((this.clear_all_enabled()));
+			(obj.hint) = () => ((this.clear_all_hint()));
+			(obj.sub) = () => ([(this.Clear_all_icon())]);
+			return obj;
+		}
+		clear_all_content(){
+			return [(this.Clear_all())];
+		}
 		sub(){
 			return [
 				(this.From()), 
 				(this.Separator()), 
-				(this.To())
+				(this.To()), 
+				...(this.clear_all_content())
 			];
 		}
 	};
@@ -22865,6 +22921,9 @@ var $;
 	($mol_mem(($.$yuf_date_range.prototype), "Separator"));
 	($mol_mem(($.$yuf_date_range.prototype), "to"));
 	($mol_mem(($.$yuf_date_range.prototype), "To"));
+	($mol_mem(($.$yuf_date_range.prototype), "clear_all_click"));
+	($mol_mem(($.$yuf_date_range.prototype), "Clear_all_icon"));
+	($mol_mem(($.$yuf_date_range.prototype), "Clear_all"));
 	($.$yuf_date_range_date) = class $yuf_date_range_date extends ($.$mol_date) {
 		moment(next){
 			if(next !== undefined) return next;
@@ -22887,6 +22946,19 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        class $yuf_date_range extends $.$yuf_date_range {
+            clear_all_click(e) {
+                this.from_clear(e);
+                this.to_clear(e);
+            }
+            clear_all_content() {
+                return this.clear_all_enabled() ? super.clear_all_content() : [];
+            }
+            clear_all_enabled() {
+                return Boolean(this.from() || this.to());
+            }
+        }
+        $$.$yuf_date_range = $yuf_date_range;
         class $yuf_date_range_date extends $.$yuf_date_range_date {
             value_moment(next) {
                 return this.moment(next);

@@ -10605,6 +10605,24 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	export class $mol_icon_backspace extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=backspace.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_backspace_outline extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=outline.view.tree.d.ts.map
+declare namespace $ {
+
 	export class $mol_icon_calendar extends $mol_icon {
 		path( ): string
 	}
@@ -11050,58 +11068,96 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_date_range['From'] >['input_mask'] >[0]
 	>
-	type $yuf_date_range_date__enabled_yuf_date_range_2 = $mol_type_enforce<
+	type __yuf_date_range_2 = $mol_type_enforce<
+		Parameters< $yuf_date_range['from_clear'] >[0]
+		,
+		Parameters< ReturnType< $yuf_date_range['From'] >['clear'] >[0]
+	>
+	type $yuf_date_range_date__enabled_yuf_date_range_3 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['enabled'] >
 		,
 		ReturnType< $yuf_date_range_date['enabled'] >
 	>
-	type $yuf_date_range_date__align_yuf_date_range_3 = $mol_type_enforce<
+	type $yuf_date_range_date__align_yuf_date_range_4 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['from_align'] >
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_4 = $mol_type_enforce<
+	type $yuf_date_range_date__moment_yuf_date_range_5 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['from'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
 	>
-	type $mol_view__sub_yuf_date_range_5 = $mol_type_enforce<
+	type $mol_view__sub_yuf_date_range_6 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_date_range_date__enabled_yuf_date_range_6 = $mol_type_enforce<
+	type __yuf_date_range_7 = $mol_type_enforce<
+		Parameters< $yuf_date_range['to_clear'] >[0]
+		,
+		Parameters< ReturnType< $yuf_date_range['To'] >['clear'] >[0]
+	>
+	type $yuf_date_range_date__enabled_yuf_date_range_8 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['enabled'] >
 		,
 		ReturnType< $yuf_date_range_date['enabled'] >
 	>
-	type $yuf_date_range_date__input_mask_yuf_date_range_7 = $mol_type_enforce<
+	type $yuf_date_range_date__input_mask_yuf_date_range_9 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_input_mask'] >
 		,
 		ReturnType< $yuf_date_range_date['input_mask'] >
 	>
-	type $yuf_date_range_date__align_yuf_date_range_8 = $mol_type_enforce<
+	type $yuf_date_range_date__align_yuf_date_range_10 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_align'] >
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_9 = $mol_type_enforce<
+	type $yuf_date_range_date__moment_yuf_date_range_11 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
+	>
+	type $mol_button_minor__click_yuf_date_range_12 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['clear_all_click'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_button_minor__enabled_yuf_date_range_13 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['clear_all_enabled'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__hint_yuf_date_range_14 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['clear_all_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__sub_yuf_date_range_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
 	>
 	export class $yuf_date_range extends $mol_view {
 		enabled( ): boolean
 		from_input_mask( id: any): ReturnType< ReturnType< $yuf_date_range['From'] >['input_mask'] >
 		from_align( ): string
 		from( next?: $mol_time_moment | null ): $mol_time_moment | null
+		from_clear( next?: ReturnType< ReturnType< $yuf_date_range['From'] >['clear'] > ): ReturnType< ReturnType< $yuf_date_range['From'] >['clear'] >
 		From( ): $yuf_date_range_date
 		separator( ): string
 		Separator( ): $mol_view
 		to_input_mask( id: any): ReturnType< $yuf_date_range['from_input_mask'] >
 		to_align( ): string
 		to( next?: $mol_time_moment | null ): $mol_time_moment | null
+		to_clear( next?: ReturnType< ReturnType< $yuf_date_range['To'] >['clear'] > ): ReturnType< ReturnType< $yuf_date_range['To'] >['clear'] >
 		To( ): $yuf_date_range_date
+		clear_all_click( next?: any ): any
+		clear_all_enabled( ): boolean
+		clear_all_hint( ): string
+		Clear_all_icon( ): $mol_icon_backspace_outline
+		Clear_all( ): $mol_button_minor
+		clear_all_content( ): readonly($mol_view)[]
 		sub( ): readonly(any)[]
 	}
 	
@@ -11114,6 +11170,11 @@ declare namespace $ {
 
 //# sourceMappingURL=range.view.tree.d.ts.map
 declare namespace $.$$ {
+    class $yuf_date_range extends $.$yuf_date_range {
+        clear_all_click(e?: Event): void;
+        clear_all_content(): readonly $mol_view[];
+        clear_all_enabled(): boolean;
+    }
     class $yuf_date_range_date extends $.$yuf_date_range_date {
         value_moment(next?: $mol_time_moment | null): $mol_time_moment;
     }
