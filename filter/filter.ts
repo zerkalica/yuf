@@ -12,6 +12,17 @@ namespace $ {
 			return this.$.$mol_state_arg.value(this.prefix(), str === '' ? null : str) || null
 		}
 
+		is_touched_keys(keys: readonly string[]) {
+			const defaults = this.defaults()
+			const data = this.data()
+
+			for (const key of keys) {
+				if (! $mol_compare_deep(data[key], defaults[key]) ) return true
+			}
+
+			return false
+		}
+
 		defaults() { return {} as Record<string, readonly string[] | string | number | boolean | null> }
 
 		protected serialize<Val>(val: Val, def: Val, name: string) {
