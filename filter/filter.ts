@@ -16,11 +16,12 @@ namespace $ {
 			const defaults = this.defaults()
 			const data = this.data()
 
+			const changed = []
 			for (const key of keys) {
-				if (! $mol_compare_deep(data[key], defaults[key]) ) return true
+				if (! $mol_compare_deep(data[key], defaults[key]) ) changed.push(key)
 			}
 
-			return false
+			return changed
 		}
 
 		defaults() { return {} as Record<string, readonly string[] | string | number | boolean | null> }
