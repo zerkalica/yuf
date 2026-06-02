@@ -4,6 +4,9 @@ namespace $ {
 		separator() { return '~' }
 		value_separator() { return '.' }
 
+		@ $mol_action
+		reset() { this.data_str(null) }
+
 		@ $mol_mem
 		data_str(str?: string | null) {
 			return this.$.$mol_state_arg.value(this.prefix(), str === '' ? null : str) || null
