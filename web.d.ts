@@ -10314,6 +10314,7 @@ declare namespace $.$$ {
 declare namespace $ {
 
 	export class $yuf_form_bid extends $mol_view {
+		url_msg( ): string
 		required_msg( ): string
 		pattern_not_match_msg( ): string
 		min_msg( ): string
@@ -10333,12 +10334,15 @@ declare namespace $ {
 		params_max_rows( ): Record<string, number>
 		params_limits( ): Record<string, readonly(readonly(number)[])[]>
 		params_pattern( ): Record<string, string>
+		field_name( id: any): string
+		field_name_msg( ): string
 		pattern_val( id: any): string
 		rows_max_val( id: any): number | null
 		min_val( id: any): number | null
 		max_val( id: any): number | null
 		min_date_val( id: any): $mol_time_moment|null
 		max_date_val( id: any): $mol_time_moment|null
+		url( id: any): ReturnType< $yuf_form_bid['url_msg'] >
 		required( id: any): ReturnType< $yuf_form_bid['required_msg'] >
 		pattern( id: any): ReturnType< $yuf_form_bid['pattern_not_match_msg'] >
 		str_min_msg( ): string
@@ -10371,7 +10375,8 @@ declare namespace $.$$ {
         value_number(field: string): number;
         list_string(field: string): readonly string[];
         dictionary_bool(field: string): any;
-        format(key: string, str: string): string;
+        format(key: string, template: string): string;
+        url(key: string): string;
         value_date(field: string): string | $mol_time_moment;
         protected min_msg_formatted(field: string): string;
         protected max_msg_formatted(field: string): string;

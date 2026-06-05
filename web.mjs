@@ -21262,6 +21262,9 @@ var $;
 
 ;
 	($.$yuf_form_bid) = class $yuf_form_bid extends ($.$mol_view) {
+		url_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_url_msg"));
+		}
 		required_msg(){
 			return (this.$.$mol_locale.text("$yuf_form_bid_required_msg"));
 		}
@@ -21320,6 +21323,12 @@ var $;
 		params_pattern(){
 			return {};
 		}
+		field_name(id){
+			return "";
+		}
+		field_name_msg(){
+			return (this.$.$mol_locale.text("$yuf_form_bid_field_name_msg"));
+		}
 		pattern_val(id){
 			return "";
 		}
@@ -21339,6 +21348,9 @@ var $;
 		max_date_val(id){
 			const obj = new this.$["$mol_time_moment|null"]();
 			return obj;
+		}
+		url(id){
+			return (this.url_msg());
 		}
 		required(id){
 			return (this.required_msg());
@@ -21449,8 +21461,16 @@ var $;
                     throw new Error('Not an object', { cause: { field } });
                 return val;
             }
-            format(key, str) {
-                return str.replace(/{([\d\w_]+)}/g, (_, val) => this[val]?.(key) || '0');
+            format(key, template) {
+                const name = this.field_name(key);
+                const message = template.replace(/{([\d\w_]+)}/g, (_, val) => this[val]?.(key) || '0');
+                if (!name)
+                    return message;
+                return this.field_name_msg().replace('{field_name}', name).replace('{message}', message.toLocaleLowerCase());
+            }
+            url(key) {
+                const url = this.value_str(key);
+                return $mol_error_fence(() => (new URL(url), ''), () => this.format(key, this.url_msg()));
             }
             value_date(field) {
                 const value = this.value(field);
