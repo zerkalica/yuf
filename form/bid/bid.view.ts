@@ -31,11 +31,20 @@ namespace $.$$ {
 			return val
 		}
 
-		format(key: string, str: string) {
-			return str.replace(
+		format(key: string, template: string) {
+			const name = this.field_name(key)
+			const message = template.replace(
 				/{([\d\w_]+)}/g,
 				(_, val) => (this as any as Record<string, null | ((k: string) => string)>)[val]?.(key) || '0'
 			)
+			if (! name) return message
+
+			return this.field_name_msg().replace('{field_name}', name).replace('{message}', message.toLocaleLowerCase())
+		}
+
+		override url(key: string) {
+			const url = this.value_str(key)
+			return $mol_error_fence(() => (new URL(url), ''), () => this.format(key, this.url_msg()))
 		}
 
 		@ $mol_mem_key

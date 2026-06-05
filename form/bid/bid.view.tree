@@ -10,6 +10,8 @@ $yuf_form_bid $mol_view
 	params_max_rows *number
 	params_limits *readonly(readonly(number)[])[]
 	params_pattern *string
+	field_name* \
+	field_name_msg @ \{field_name}: {message}
 	-
 	pattern_val* \
 	rows_max_val* null number
@@ -18,6 +20,7 @@ $yuf_form_bid $mol_view
 	min_date_val* $mol_time_moment|null
 	max_date_val* $mol_time_moment|null
 	-
+	url* <= url_msg @ \Not valid url
 	required* <= required_msg @ \*
 	pattern* <= pattern_not_match_msg @ \Mask {mask}
 	str_min_msg @ \From {min_val} chars
