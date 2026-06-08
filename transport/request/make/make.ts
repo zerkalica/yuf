@@ -1,9 +1,9 @@
 namespace $ {
 	export type $yuf_transport_request_make_params =  Omit<RequestInit, 'headers'> & {
-		deadline?: number
+		deadline?: number | null
 		client_id?: string
 		headers?: [string, string][] | Headers | $yuf_header_rec
-		auth_token?: string | null // null - auth disabled
+		auth_token?: string | null | undefined // null - auth disabled
 	}
 
 	export function $yuf_transport_request_make(this: $, path: RequestInfo, init?: $yuf_transport_request_make_params) {
@@ -19,9 +19,9 @@ namespace $ {
 		const id = $mol_guid()
 
 		const headers = $yuf_header_merge(headers_base, {
-			'Authorization': init?.auth_token ? `Bearer ${init?.auth_token}` : null,
+			'Authorization': init?.auth_token ? `Bearer ${init?.auth_token}` : init?.auth_token,
 			'X-Request-ID': id,
-			'X-Request-Deadline': init?.deadline ? `${init?.deadline.toFixed(0)}ms` : null,
+			'X-Request-Deadline': typeof init?.deadline === 'number' ? `${init?.deadline.toFixed(0)}ms` : init?.deadline,
 			'X-Client-ID': init?.client_id,
 			'Content-Type': [content_type],
 		})

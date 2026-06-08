@@ -1,5 +1,6 @@
 {
 	"$yuf_form_bid_required_msg": "*",
+	"$yuf_form_bid_url_msg": "Неправильный формат ссылки",
 	"$yuf_form_bid_pattern_not_match_msg": "Маска {pattern_val}",
 	"$yuf_form_bid_list_min_msg": "От {min_val} элементов",
 	"$yuf_form_bid_list_max_msg": "До {max_val} элементов",
