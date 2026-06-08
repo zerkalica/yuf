@@ -10617,16 +10617,16 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $mol_icon_backspace extends $mol_icon {
+	export class $mol_icon_trash_can extends $mol_icon {
 		path( ): string
 	}
 	
 }
 
-//# sourceMappingURL=backspace.view.tree.d.ts.map
+//# sourceMappingURL=can.view.tree.d.ts.map
 declare namespace $ {
 
-	export class $mol_icon_backspace_outline extends $mol_icon {
+	export class $mol_icon_trash_can_outline extends $mol_icon {
 		path( ): string
 	}
 	
@@ -10677,24 +10677,6 @@ declare namespace $.$$ {
 declare namespace $ {
 }
 
-declare namespace $ {
-
-	export class $mol_icon_trash_can extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=can.view.tree.d.ts.map
-declare namespace $ {
-
-	export class $mol_icon_trash_can_outline extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=outline.view.tree.d.ts.map
 declare namespace $ {
 
 	export class $mol_hor extends $mol_view {
@@ -11167,7 +11149,7 @@ declare namespace $ {
 		clear_all_click( next?: any ): any
 		clear_all_enabled( ): boolean
 		clear_all_hint( ): string
-		Clear_all_icon( ): $mol_icon_backspace_outline
+		Clear_all_icon( ): $mol_icon_trash_can_outline
 		Clear_all( ): $mol_button_minor
 		clear_all_content( ): readonly($mol_view)[]
 		sub( ): readonly(any)[]

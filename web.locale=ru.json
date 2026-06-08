@@ -64,6 +64,7 @@
 	"$yuf_form_bid_rows_max_msg": "До {max_val} строк",
 	"$yuf_form_bid_str_max_msg": "До {max_val} символов",
 	"$yuf_form_bid_str_min_msg": "От {min_val} символов",
+	"$yuf_form_bid_url_msg": "Неправильный формат ссылки",
 	"$yuf_form_bid_value_in_range_msg": "{range}",
 	"$yuf_link_close_hint": "Закрыть",
 	"$yuf_localizer_catalog_Save_hint": "Клик = меню сохранения",
