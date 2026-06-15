@@ -11084,6 +11084,7 @@ declare namespace $ {
 	export class $yuf_date_range_date extends $mol_date {
 		moment( next?: $mol_time_moment | null ): $mol_time_moment | null
 		trigger_enabled( ): ReturnType< $yuf_date_range_date['enabled'] >
+		parse_mask( ): string
 	}
 	
 }
@@ -11097,6 +11098,7 @@ declare namespace $.$$ {
     }
     class $yuf_date_range_date extends $.$yuf_date_range_date {
         value_moment(next?: $mol_time_moment | null): $mol_time_moment;
+        value(val?: string): string;
     }
 }
 

@@ -2307,6 +2307,7 @@ $yuf_date_range $mol_view
 $yuf_date_range_date $mol_date
 	moment? null $mol_time_moment
 	trigger_enabled <= enabled
+	parse_mask \YYYY-MM-DD hh:mm
 
 $yuf_date_range_demo $mol_example_small
 	title \Date range

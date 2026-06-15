@@ -21255,6 +21255,12 @@ var $;
                 padding: {
                     right: '3rem',
                 },
+                minWidth: 0,
+                flex: {
+                    grow: 1,
+                    shrink: 1,
+                },
+                boxSizing: 'border-box',
             }
         });
     })($$ = $.$$ || ($.$$ = {}));
@@ -22796,6 +22802,9 @@ var $;
 		trigger_enabled(){
 			return (this.enabled());
 		}
+		parse_mask(){
+			return "YYYY-MM-DD hh:mm";
+		}
 	};
 	($mol_mem(($.$yuf_date_range_date.prototype), "moment"));
 
@@ -22827,7 +22836,16 @@ var $;
             value_moment(next) {
                 return this.moment(next);
             }
+            value(val) {
+                const moment = this.value_moment();
+                if (val === undefined)
+                    return moment?.toString('YYYY-MM-DD hh:mm') ?? '';
+                return super.value(val);
+            }
         }
+        __decorate([
+            $mol_mem
+        ], $yuf_date_range_date.prototype, "value", null);
         $$.$yuf_date_range_date = $yuf_date_range_date;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
