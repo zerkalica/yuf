@@ -33,6 +33,12 @@ namespace $.$$ {
 			padding: {
 				right: '3rem',
 			},
+			minWidth: 0,
+			flex: {
+				grow: 1,
+				shrink: 1,
+			},
+			boxSizing: 'border-box',
 		}
 
 	} )

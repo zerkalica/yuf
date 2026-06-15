@@ -46,14 +46,14 @@ namespace $ {
 		return { code, message }
 	}
 
-	export function $yuf_gql_pick(json?: { data?: unknown, errors?: unknown } | null) {
+	export function $yuf_gql_pick(json?: { data?: unknown, errors?: unknown } | null, ctx?: () => {}) {
 		if ( json && typeof json === 'object' && ! Array.isArray(json) && json.data !== undefined && json.errors === undefined) {
 			return json.data
 		}
 
 		const { code , message } = $yuf_gql_pick_error(json) ?? { message: 'UNKNOWN' }
 
-		throw new Error(message, { cause: { code } } )
+		throw new Error(message, { cause: { ...ctx?.(), code } } )
 	}
 
 }

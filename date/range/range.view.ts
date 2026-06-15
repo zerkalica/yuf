@@ -19,6 +19,15 @@ namespace $.$$ {
 		override value_moment(next?: $mol_time_moment | null) {
 			return this.moment(next) as $mol_time_moment
 		}
+		@ $mol_mem
+		override value( val? : string ) {
+
+			const moment = this.value_moment()
+
+			if( val === undefined ) return moment?.toString( 'YYYY-MM-DD hh:mm' ) ?? ''
+
+			return super.value(val)
+		}
 
 	}
 }
