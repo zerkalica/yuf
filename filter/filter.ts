@@ -1,8 +1,10 @@
 namespace $ {
 	export class $yuf_filter extends $mol_object {
 		prefix() { return '' }
-		separator() { return '~' }
-		value_separator() { return '.' }
+		pairs_separator() { return '~' }
+		key_val_separator() { return '.' }
+		array_item_separator() { return '^' }
+		invert_marker() { return '!' }
 
 		@ $mol_action
 		reset() { this.data_str(null) }
@@ -27,18 +29,18 @@ namespace $ {
 		defaults() { return {} as Record<string, readonly string[] | string | number | boolean | null> }
 
 		protected serialize<Val>(val: Val, def: Val, name: string) {
-			if (val === def) return ''
+			if (val === null || $mol_compare_deep(val, def)) return ''
 			if (val === true) return name
 			if (val === false) return `!${name}`
 
-			return `${name}${this.value_separator()}${Array.isArray(val) ? val.join('^') : val}`
+			return `${name}${this.key_val_separator()}${Array.isArray(val) ? val.join(this.array_item_separator()) : val}`
 		}
 
 		protected deserialize(str: string, def: unknown) {
 			if (str === '') return def
 			if (typeof def === 'boolean') return str !== '0'
 			if (typeof def === 'number') return Number.isNaN(Number(str)) ? def : Number(str)
-			if (Array.isArray(def)) return str.split('^')
+			if (Array.isArray(def)) return str.split(this.array_item_separator())
 
 			return str ?? def
 		}
@@ -48,7 +50,7 @@ namespace $ {
 			type SO = Record<string, string | number | boolean | null>
 
 			const defaults = this.defaults() as SO
-			const sep = this.separator()
+			const sep = this.pairs_separator()
 			const keys = Object.keys(defaults)
 
 			const str = next
@@ -62,8 +64,8 @@ namespace $ {
 			const result: ReturnType<typeof this.defaults> = { ...defaults }
 
 			for (const chunk of chunks) {
-				const [name_raw, str] = chunk.split(this.value_separator()) ?? []
-				const neg = name_raw.startsWith('!')
+				const [name_raw, str] = chunk.split(this.key_val_separator()) ?? []
+				const neg = name_raw.startsWith(this.invert_marker())
 				const name = neg ? name_raw.slice(1) : name_raw
 
 				if (defaults[name] === undefined) continue
