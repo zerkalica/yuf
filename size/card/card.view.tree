@@ -1,0 +1,8 @@
+$yuf_size_card $mol_view
+	size 0
+	suffix *string
+		gb @ \Gb
+		mb @ \MB
+		kb @ \kB
+		b @ \B
+	sub /$mol_view_content <= size_msg \
