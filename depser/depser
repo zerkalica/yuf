@@ -170,10 +170,18 @@ depser_check_app() {
 
 depser_make() {
   local APP_PATH="$(depser_app_path)"
+  export npm_config_registry
+  export NPM_CONFIG_USERCONFIG="${NPM_CONFIG_USERCONFIG:-"${SRC_PATH}/.npmrc"}"
+
+  if [ ! -e "${NPM_CONFIG_USERCONFIG}" ]; then
+    export NPM_CONFIG_USERCONFIG=""
+  fi
 
   depser_dirs_link \
 	&& cd "${SRC_PATH}/.ci/mam" \
 	&& echo "Step 1. install npm" \
+	&& npm config list \
+	&& npm config get registry \
 	&& npm clean-install --ignore-scripts || {
 		depser_dirs_unlink
 		echo "ERROR: Step 1"
