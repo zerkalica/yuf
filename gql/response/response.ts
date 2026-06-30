@@ -6,14 +6,16 @@ namespace $ {
 
 			try {
 				text = response.text()
-				json = JSON.parse(text)
+				try {
+					json = JSON.parse(text)
+				} catch (e) {}
 				if (response.ok() && json.data !== undefined) return sub( json.data ) as ReturnType<Sub>
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
 				$mol_fail_log(e)
-				json = json ?? { internal: { error: { message: text } } }
 				if ( !(e instanceof SyntaxError) ) err = e as Error
 			}
+			json = json ?? { internal: { error: { message: text } } }
 
 			const { code , message } = $yuf_gql_pick_error(json) ?? {
 				message: err?.message ?? (response.ok() ? 'Unknown' : response.message())
