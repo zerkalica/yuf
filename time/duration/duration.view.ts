@@ -21,8 +21,10 @@ namespace $.$$ {
 			let value = key in data ? Math.round(data[key as time_parts]) : null
 			const text = value ? declOfNum(value, this[key as time_parts]().split('|')) : ''
 
-			return value
-				? `${this.show_minus() ? value : Math.abs(value)} ${text}`
+			const normalized = ! value ? null : this.show_minus() ? value : Math.abs(value)
+
+			return normalized
+				? `${normalized === 1 ? '' : `${normalized} `}${text}`
 				: (value === null ? key : null)
 		}
 

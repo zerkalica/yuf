@@ -3,7 +3,7 @@ namespace $.$$ {
 		
 		override blur_event() {
 			const next = this.value(this.value_string() ? undefined : this.value_min())
-			this.value_string(String(next || '0'))
+			this.value_string(String(next || ''))
 		}
 
 		// override allow_enriched() {
