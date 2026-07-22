@@ -22984,9 +22984,6 @@ var $;
             },
         });
         $mol_style_define($yuf_date_range_date, {
-            Bubble: {
-                maxWidth: '19rem',
-            },
             Trigger: {
                 padding: $mol_gap.block,
                 '@': {
