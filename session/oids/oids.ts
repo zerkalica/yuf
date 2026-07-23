@@ -9,6 +9,21 @@ namespace $ {
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
 
+	type Resource_role = 
+		| 'view-realm'
+		| 'manage-realm'
+		| 'manage-users'
+		| 'realm-admin'
+		| 'query-realms'
+		| 'view-users'
+		| 'view-clients'
+		| 'query-clients'
+		| 'query-groups'
+		| 'query-users'
+		| 'manage-account'
+		| 'manage-account-links'
+		| 'view-profile'
+
 	const Update_dto = rec({
 		access_token: opt(nul(str)),
 		id_token: opt(nul(str)),
@@ -78,11 +93,11 @@ namespace $ {
 
 		realm() { return 'mssc' }
 
-		realm_url() {
-			return `${this.auth_server_url().replace(/\/+$/, '')}/realms/${encodeURIComponent(this.realm())}`
+		realm_url(prefix = '') {
+			return `${this.auth_server_url().replace(/\/+$/, '')}${prefix}/realms/${encodeURIComponent(this.realm())}`
 		}
 
-		protected endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'account' | 'userinfo' | 'status' | 'step1') {
+		endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'account' | 'userinfo' | 'status' | 'step1') {
 			let str = key as string
 
 			let url = this.config_value(key)
@@ -240,11 +255,18 @@ namespace $ {
 			return token ? this.token_decode(token) : null
 		}
 
-		realm_roles() { return this.token_params()?.realm_access?.roles ?? [] }
+		roles() { return this.token_params()?.realm_access?.roles ?? [] }
 
-		resource_roles(resource: string) {
-			return this.token_params()?.resource_access?.[resource || this.client_id()]?.roles ?? []
+		resource_roles(resource: 'realm-management' | 'account') {
+			return (this.token_params()?.resource_access?.[resource || this.client_id()]?.roles ?? []) as readonly Resource_role[]
 		}
+
+		has_role(resource: 'realm-management' | 'account', roles: readonly Resource_role[]) {
+			return this.resource_roles(resource).some(r => roles.includes(r))
+		}
+
+		can_users_view() { return this.has_role('realm-management', ['view-users', 'manage-users', 'realm-admin', 'query-users']) }
+		can_users_logout() { return this.has_role('realm-management', ['manage-users', 'realm-admin', 'manage-realm']) }
 
 		@ $mol_mem
 		protected user_profile() {
@@ -254,13 +276,6 @@ namespace $ {
 
 		override user_id() { return this.user_profile()?.id ?? null }
 		user_name() { return this.user_profile()?.username ?? '' }
-
-		@ $mol_mem
-		protected user_info() {
-			const response = this.response_authorized(this.endpoint('userinfo'))
-
-			return response ? User_info_response(response) : null
-		}
 
 		@ $mol_mem
 		protected token_refresh(next?: string | null) {
@@ -430,11 +445,11 @@ namespace $ {
 				headers['Content-type'] = 'application/x-www-form-urlencoded'
 			}
 
-			return this.$.$mol_fetch.response(url, { ...params, method: params?.body ? 'POST' : 'GET', headers })
+			return this.$.$mol_fetch.response(url, { ...params, method: params?.method ?? (params?.body ? 'POST' : 'GET'), headers })
 		}
 
 		@ $mol_action
-		protected response_authorized(url: string, init?: RequestInit) {
+		response_authorized(url: string, init?: RequestInit) {
 			let token_second: undefined | string | null
 
 			do {

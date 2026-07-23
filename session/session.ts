@@ -23,6 +23,7 @@ namespace $ {
 		@ $mol_mem
 		logged() { return Boolean(this.token()) }
 		logout() { return this.token(null, 'logout') }
+		roles() { return [] as readonly string[] }
 	}
 
 }
