@@ -12867,6 +12867,7 @@ declare namespace $ {
         user_id_ensure(): string;
         logged(): boolean;
         logout(): string | null;
+        roles(): readonly string[];
     }
 }
 

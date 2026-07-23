@@ -26238,6 +26238,7 @@ var $;
         }
         logged() { return Boolean(this.token()); }
         logout() { return this.token(null, 'logout'); }
+        roles() { return []; }
     }
     __decorate([
         $mol_action
