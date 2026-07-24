@@ -64,12 +64,17 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		static sorted({ order_by, ...params }: Parameters<typeof this.data>[0] & { order_by?: `${'created' | 'modified' | 'login' | 'name'}${'' | '_desc'}`}) {
+		static sorted({ order_by, is_online, ...params }: Parameters<typeof this.data>[0] & {
+			is_online?: boolean
+			order_by?: `${'created' | 'modified' | 'login' | 'name'}${'' | '_desc'}`
+		}) {
 			const desc = order_by?.endsWith('_desc')
 			const by_login = order_by?.startsWith('order')
 			const by_name = order_by?.startsWith('name')
 
-			return this.data(params).toSorted((a, b) => {
+			return this.data(params)
+				.filter(rec => is_online === undefined || is_online === null ? true : is_online === this.by_id(rec.id).is_online())
+				.toSorted((a, b) => {
 				if (desc) {
 					let c = a
 					a = b
