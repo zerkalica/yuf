@@ -42,13 +42,14 @@ namespace $ {
 		protected static current = {} as Record<string, typeof User_dto.Value>
 
 		@ $mol_mem_key
-		protected static data({ first, max, search, enabled }: { search: string, first?: 0, max?: 1000, enabled?: boolean }) {
+		protected static data({ first, max, enabled, search }: { search?: string, first?: 0, max?: 1000, enabled?: boolean }) {
 			const q: Record<string, string> = {
 				briefRepresentation: 'true',
 				first: String(first || '0'),
 				max: String(max || '1000'),
-				search,
 			}
+
+			if (search) q.search = search
 
 			if (enabled || enabled === false) q.enabled = enabled ? 'true' : 'false'
 
@@ -65,6 +66,8 @@ namespace $ {
 		@ $mol_mem_key
 		static sorted({ order_by, ...params }: Parameters<typeof this.data>[0] & { order_by?: `${'created' | 'modified' | 'login' | 'name'}${'' | '_desc'}`}) {
 			const desc = order_by?.endsWith('_desc')
+			const by_login = order_by?.startsWith('order')
+			const by_name = order_by?.startsWith('name')
 
 			return this.data(params).toSorted((a, b) => {
 				if (desc) {
@@ -73,8 +76,10 @@ namespace $ {
 					b = c
 				}
 
-				if (order_by === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
-				if (order_by === 'name') return a.attributes?.name?.[0]?.localeCompare(b.attributes?.name?.[0] ?? '') ?? 0
+				if (by_login) return a.username?.localeCompare(b.username ?? '') ?? 0
+				if (by_name) {
+					return a.attributes?.name?.[0]?.localeCompare(b.attributes?.name?.[0] ?? '') ?? 0
+				}
 
 				return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
 			})
@@ -147,11 +152,12 @@ namespace $ {
 		name() { return this.attr('name') ?? '' }
 		birthday_raw() { return this.attr('dateOfBirth') ?? '' }
 
-		title() { return this.login() }
+		title() { return this.login() + ' ' + this.name() + ' ' + this.email() }
 
 		@ $mol_mem
 		is_online() {
-			return this.sessions().length > 0
+			const sessions = this.sessions()
+			return sessions.length > 0
 		}
 	}
 }
