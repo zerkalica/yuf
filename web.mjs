@@ -24536,7 +24536,7 @@ var $;
         actual() {
             $mol_wire_solid();
             const lang_id = this.id();
-            let url = this.url();
+            let url = this.url().replace(/[^\/]+\.html?/, '');
             if (!url)
                 return {};
             const response = $mol_error_fence(() => this.fetcher().success(url), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? null : e);
@@ -25243,6 +25243,9 @@ var $;
 			(obj.bubble_content) = () => ([(this.Save_content())]);
 			return obj;
 		}
+		Close(){
+			return null;
+		}
 		description_title(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_description_title"));
 		}
@@ -25332,7 +25335,8 @@ var $;
 				(this.Selected_lang()), 
 				(this.Keys_filter()), 
 				(this.Dupes()), 
-				(this.Save())
+				(this.Save()), 
+				(this.Close())
 			];
 		}
 		placeholders(){
@@ -25477,6 +25481,8 @@ var $;
             }
             projects_urls() {
                 const str = this.val_str('projects') ?? '';
+                if (!str)
+                    return [this.$.$mol_dom_context.location.pathname];
                 return str.split(/[\n\t]/).map(str => str.match(/^(?:https?)?:?(\/+[^#&?]+)/)?.[1]?.replace(/\/+(?:[\w\d]+\.[\w\d]+)?$/, '')?.trim() ?? '').filter(Boolean);
             }
             lang_main() {
@@ -25630,10 +25636,30 @@ var $;
         $mol_style_define($yuf_localizer_catalog, {
             Menu: {
                 flex: {
-                    basis: $yuf_theme_gap.page_l,
+                    basis: '21rem',
+                    grow: 0,
+                    shrink: 1,
                 },
                 Title: {
                     gap: 0,
+                    display: 'block',
+                    flex: {
+                        shrink: 1,
+                    },
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                },
+                Head: {
+                    flex: {
+                        wrap: 'nowrap',
+                        shrink: 1,
+                    },
+                    justifyContent: 'space-between',
+                },
+                Tools: {
+                    flex: {
+                        wrap: 'nowrap',
+                    },
                 },
                 Foot: {
                     justifyContent: 'space-between',

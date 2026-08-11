@@ -2639,7 +2639,7 @@ $yuf_localizer_catalog $yuf_catalog
 				Icon <= Settings_icon $mol_icon_settings
 				hint <= settings_check_hint @ \Settings
 				checked? <=> settings_checked? false
-	menu_tools /
+	menu_tools /$mol_view
 		<= Selected_lang $mol_select
 			hint <= selected_lang_hint @ \Select lang file
 			options <= langs_available /string
@@ -2681,6 +2681,7 @@ $yuf_localizer_catalog $yuf_catalog
 					<= Locale_copypaste $mol_button_copy
 						title <= locale_copypaste_hint @ \Copy-paste locale
 						text <= locale_file_json*whole \
+		<= Close null $mol_view
 	placeholders /
 		<= Description_page $mol_page
 			title <= description_title @ \Readme

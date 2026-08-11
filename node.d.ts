@@ -12590,6 +12590,7 @@ declare namespace $ {
 		Locale_copypaste( ): $mol_button_copy
 		Save_content( ): $mol_list
 		Save( ): $mol_pick
+		Close( ): $mol_view | null
 		description_title( ): string
 		description( ): string
 		Description_list( ): $mol_text
@@ -12612,7 +12613,7 @@ declare namespace $ {
 		param_prefix( ): string
 		param_suffix( ): string
 		menu_foot( ): readonly(any)[]
-		menu_tools( ): readonly(any)[]
+		menu_tools( ): readonly($mol_view)[]
 		placeholders( ): readonly(any)[]
 		Settings( ): $yuf_localizer_settings_page
 		projects( ): $yuf_localizer_project_store
