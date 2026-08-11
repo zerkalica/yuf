@@ -4,11 +4,30 @@ namespace $.$$ {
 	$mol_style_define( $yuf_localizer_catalog, {
 		Menu: {
 			flex: {
-				basis: $yuf_theme_gap.page_l,
+				basis: '21rem',
+				grow: 0,
+				shrink: 1,
 			},
-
 			Title: {
 				gap: 0,
+				display: 'block',
+				flex: {
+					shrink: 1,
+				},
+				textOverflow: 'ellipsis',
+				overflow: 'hidden',
+			},
+			Head: {
+				flex: {
+					wrap: 'nowrap',
+					shrink: 1,
+				},
+				justifyContent: 'space-between',
+			},
+			Tools: {
+				flex: {
+					wrap: 'nowrap',
+				},
 			},
 
 			Foot: {
@@ -16,6 +35,7 @@ namespace $.$$ {
 			}
 
 		},
+
 
 		$mol_text_span: {
 			'@': {

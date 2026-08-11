@@ -39,7 +39,7 @@ namespace $ {
 		actual() {
 			$mol_wire_solid()
 			const lang_id = this.id()
-			let url = this.url()
+			let url = this.url().replace(/[^\/]+\.html?/, '')
 			if (! url) return {}
 
 			const response = $mol_error_fence(

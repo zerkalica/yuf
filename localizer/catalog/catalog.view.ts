@@ -40,6 +40,7 @@ namespace $.$$ {
 		@ $mol_mem
 		override projects_urls() {
 			const str = this.val_str('projects') ?? ''
+			if (! str) return [ this.$.$mol_dom_context.location.pathname ]
 
 			return str.split(/[\n\t]/).map(
 				str => str.match(/^(?:https?)?:?(\/+[^#&?]+)/)?.[1]?.replace(/\/+(?:[\w\d]+\.[\w\d]+)?$/, '')?.trim() ?? ''
