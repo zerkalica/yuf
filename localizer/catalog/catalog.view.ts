@@ -52,14 +52,18 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override langs_available() {
+		override langs_available_dict() {
 			const lang_main = this.lang_main()
 			const str = this.val_str('langs') ?? ''
 
-			return [
+			return Object.fromEntries([
 				lang_main,
 				... str.split(/[\s,~]/).map(str => str.trim()).filter(str => str && str !== lang_main)
-			]
+			].map(code => [ code, code ]))
+		}
+
+		override langs_available() {
+			return Object.keys(this.langs_available_dict())
 		}
 
 		override project() {
