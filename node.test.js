@@ -25226,8 +25226,8 @@ var $;
 		selected_lang_hint(){
 			return (this.$.$mol_locale.text("$yuf_localizer_catalog_selected_lang_hint"));
 		}
-		langs_available(){
-			return [];
+		langs_available_dict(){
+			return {};
 		}
 		lang_code(next){
 			if(next !== undefined) return next;
@@ -25236,7 +25236,7 @@ var $;
 		Selected_lang(){
 			const obj = new this.$.$mol_select();
 			(obj.hint) = () => ((this.selected_lang_hint()));
-			(obj.options) = () => ((this.langs_available()));
+			(obj.dictionary) = () => ((this.langs_available_dict()));
 			(obj.value) = (next) => ((this.lang_code(next)));
 			return obj;
 		}
@@ -25463,6 +25463,9 @@ var $;
 		menu_foot(){
 			return [(this.Selected_project()), (this.Foot_tools())];
 		}
+		langs_available(){
+			return [];
+		}
 		menu_tools(){
 			return [
 				(this.Selected_lang()), 
@@ -25621,13 +25624,16 @@ var $;
             lang_main() {
                 return this.project()?.lang_main() ?? 'en';
             }
-            langs_available() {
+            langs_available_dict() {
                 const lang_main = this.lang_main();
                 const str = this.val_str('langs') ?? '';
-                return [
+                return Object.fromEntries([
                     lang_main,
                     ...str.split(/[\s,~]/).map(str => str.trim()).filter(str => str && str !== lang_main)
-                ];
+                ].map(code => [code, code]));
+            }
+            langs_available() {
+                return Object.keys(this.langs_available_dict());
             }
             project() {
                 return this.project_url() ? this.projects().project(this.project_url()) : null;
@@ -25734,7 +25740,7 @@ var $;
         ], $yuf_localizer_catalog.prototype, "projects_urls", null);
         __decorate([
             $mol_mem
-        ], $yuf_localizer_catalog.prototype, "langs_available", null);
+        ], $yuf_localizer_catalog.prototype, "langs_available_dict", null);
         __decorate([
             $mol_action
         ], $yuf_localizer_catalog.prototype, "settings_checked_default", null);

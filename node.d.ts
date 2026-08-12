@@ -12273,10 +12273,10 @@ declare namespace $ {
 		,
 		ReturnType< $mol_select['hint'] >
 	>
-	type $mol_select__options_yuf_localizer_catalog_11 = $mol_type_enforce<
-		ReturnType< $yuf_localizer_catalog['langs_available'] >
+	type $mol_select__dictionary_yuf_localizer_catalog_11 = $mol_type_enforce<
+		ReturnType< $yuf_localizer_catalog['langs_available_dict'] >
 		,
-		ReturnType< $mol_select['options'] >
+		ReturnType< $mol_select['dictionary'] >
 	>
 	type $mol_select__value_yuf_localizer_catalog_12 = $mol_type_enforce<
 		ReturnType< $yuf_localizer_catalog['lang_code'] >
@@ -12557,7 +12557,7 @@ declare namespace $ {
 		Settings_check( ): $mol_check_icon
 		Foot_tools( ): $mol_view
 		selected_lang_hint( ): string
-		langs_available( ): readonly(string)[]
+		langs_available_dict( ): Record<string, string>
 		lang_code( next?: string ): string
 		Selected_lang( ): $mol_select
 		key_filter_hint( ): string
@@ -12613,6 +12613,7 @@ declare namespace $ {
 		param_prefix( ): string
 		param_suffix( ): string
 		menu_foot( ): readonly(any)[]
+		langs_available( ): readonly(string)[]
 		menu_tools( ): readonly($mol_view)[]
 		placeholders( ): readonly(any)[]
 		Settings( ): $yuf_localizer_settings_page
@@ -12644,6 +12645,9 @@ declare namespace $.$$ {
         keys_filter(next?: $yuf_localizer_file_model_filter_type): $yuf_localizer_file_model_filter_type;
         projects_urls(): string[];
         lang_main(): string;
+        langs_available_dict(): {
+            [k: string]: string;
+        };
         langs_available(): string[];
         project(): $yuf_localizer_project_model | null;
         lang(): $yuf_localizer_file_model | null | undefined;

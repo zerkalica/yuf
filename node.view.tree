@@ -2639,10 +2639,11 @@ $yuf_localizer_catalog $yuf_catalog
 				Icon <= Settings_icon $mol_icon_settings
 				hint <= settings_check_hint @ \Settings
 				checked? <=> settings_checked? false
+	langs_available /string
 	menu_tools /$mol_view
 		<= Selected_lang $mol_select
 			hint <= selected_lang_hint @ \Select lang file
-			options <= langs_available /string
+			dictionary <= langs_available_dict *string
 			value? <=> lang_code? \en
 		<= Keys_filter $mol_select
 			hint <= key_filter_hint @ \Filter locale keys
