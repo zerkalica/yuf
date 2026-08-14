@@ -12,7 +12,7 @@ namespace $.$$ {
 			zIndex: $mol_layer.speck,
 			cursor: 'pointer',
 			margin: {
-				left: '-3rem',
+				inlineStart: '-3rem',
 			},
 			$mol_icon: {
 				width: '1.5rem',
@@ -31,7 +31,7 @@ namespace $.$$ {
 		Pass: {
 			order: '-1',
 			padding: {
-				right: '3rem',
+				inlineEnd: '3rem',
 			},
 			minWidth: 0,
 			flex: {

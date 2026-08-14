@@ -27,7 +27,7 @@ namespace $.$$ {
 		Right: {
 			alignItems: 'center',
 			padding: {
-				right: $mol_gap.block,
+				inlineEnd: $mol_gap.block,
 			},
 		},
 		Time: {

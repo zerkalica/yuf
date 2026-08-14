@@ -35,7 +35,7 @@ namespace $ {
 		Toolbar: {
 			minHeight: '2.5rem',
 			padding: {
-				left: rem(1),
+				inlineStart: rem(1),
 			},
 		},
 		// Placeholder: {

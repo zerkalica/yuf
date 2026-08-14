@@ -5,14 +5,14 @@ namespace $.$$ {
 		From: {
 			Bubble: {
 				margin: {
-					left: '-.25rem'
+					inlineStart: '-.25rem'
 				}
 			},
 		},
 		To: {
 			Bubble: {
 				margin: {
-					right: '-.25rem'
+					inlineEnd: '-.25rem'
 				}
 			},
 		},
