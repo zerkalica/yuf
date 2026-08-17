@@ -8,10 +8,5 @@ $yuf_keyboard_field $mol_view
 					checked? <=> keyboard_enabled? false
 		^ keyboard_content /
 			<= Keyboard $yuf_keyboard_card
-				layouts_avail <= layouts_avail *$yuf_keyboard_layout_en
-					ru <= Layout_ru $yuf_keyboard_layout_ru
-					fr <= Layout_fr $yuf_keyboard_layout_fr
-					es <= Layout_es $yuf_keyboard_layout_es
-					ar <= Layout_ar $yuf_keyboard_layout_ar
 				area <= Input $mol_view
 					focused? => input_focused?
