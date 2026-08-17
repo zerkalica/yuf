@@ -1,0 +1,76 @@
+$yuf_keyboard_layout_fr $yuf_keyboard_layout_en
+	alpha_1 /string
+		\A
+		\Z
+		\E
+		\R
+		\T
+		\Y
+		\U
+		\I
+		\O
+		\P
+	alpha_2 /string
+		\Q
+		\S
+		\D
+		\F
+		\G
+		\H
+		\J
+		\K
+		\L
+		\M
+	alpha_3 /string
+		\W
+		\X
+		\C
+		\V
+		\B
+		\N
+		\,
+		\.
+		\;
+		\:
+	special_1 /string
+		\é
+		\è
+		\ç
+		\à
+		\ù
+		\^
+		\¨
+		\$
+		\*
+		\)
+	special_2 /string
+		\-
+		\+
+		\=
+		\_
+		\~
+		\`
+		\{
+		\}
+		\[
+		\]
+	special_3 /string
+		\/
+		\\
+		\|
+		\'
+		\"
+		\~
+		\<
+		\>
+		\:
+		\;
+	special_4 /string
+		\.
+		\,
+		\abc
+		\?
+		\ 
+		\⌫
+		\◀
+		\▶

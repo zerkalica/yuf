@@ -1,0 +1,87 @@
+$yuf_keyboard_layout_ar $yuf_keyboard_layout_en
+	digits /string
+		\١
+		\٢
+		\٣
+		\٤
+		\٥
+		\٦
+		\٧
+		\٨
+		\٩
+		\٠
+	alpha_1 /string
+		\ض
+		\ص
+		\ث
+		\ق
+		\ف
+		\غ
+		\ع
+		\ه
+		\خ
+		\ح
+	alpha_2 /string
+		\ش
+		\س
+		\ي
+		\ب
+		\ل
+		\ا
+		\ت
+		\ن
+		\م
+		\ك
+	alpha_3 /string
+		\ظ
+		\ط
+		\ذ
+		\د
+		\ز
+		\ر
+		\و
+		\ة
+		\ى
+		\ء
+	special_1 /string
+		\!
+		\@
+		\#
+		\$
+		\%
+		\^
+		\&
+		\*
+		\(
+		\)
+	special_2 /string
+		\-
+		\+
+		\=
+		\_
+		\~
+		\`
+		\{
+		\}
+		\[
+		\]
+	special_3 /string
+		\/
+		\\
+		\|
+		\'
+		\"
+		\~
+		\<
+		\>
+		\:
+		\;
+	special_4 /string
+		\.
+		\,
+		\abc
+		\?
+		\ 
+		\⌫
+		\◀
+		\▶

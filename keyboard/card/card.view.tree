@@ -1,10 +1,10 @@
 $yuf_keyboard_card $mol_view
 	layout? \en
+	langs_available <= langs_available_default /string
+		\en
 	variant? \
 	area $mol_view
 	layouts *$yuf_keyboard_layout_en
-		en <= Layout_en $yuf_keyboard_layout_en
-		ru <= Layout_ru $yuf_keyboard_layout_ru
 	sub <= rows /
 		<= Row*0 $yuf_keyboard_row
 			max_buttons <= max_buttons 10

@@ -34,6 +34,5 @@ namespace $.$$ {
 		}
 
 		override Control() { return this.Input() }
-		
 	}
 }

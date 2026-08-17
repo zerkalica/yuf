@@ -23,6 +23,45 @@ namespace $.$$ {
 			return max
 		}
 
+		@ $mol_mem
+		override langs_available(next?: readonly string[]) {
+			return this.$.$mol_state_local.value(`${this}.langs_available()`, next) ?? []
+		}
+
+		lang() { return this.$.$mol_locale.lang() }
+
+		lang_detected() { return this.$.$mol_dom_context.navigator.language.replace( /-.*/ , '' ) || this.$.$mol_locale.lang_default() }
+
+		@ $mol_mem
+		langs_available_inited() {
+			let lang = this.lang()
+			if (lang === 'en') lang = this.lang_detected()
+
+			const all = this.$.$yuf_keyboard_avail
+			const first = this.langs_available().filter(k => all[k])
+			let avail: readonly string[] = first
+
+			if (! avail.length) avail = this.langs_available_default()
+			if (! avail.includes(lang) && all[lang]) avail = [ ... avail, lang ]
+
+			if (avail === first) return avail
+
+			// new lang code detected from locale and exists in layouts - store in localstorage
+			return this.langs_available(avail)
+		}
+
+		@ $mol_mem
+		override layouts() {
+			const all = this.$.$yuf_keyboard_avail
+			let keys = this.langs_available_inited()
+			if (! keys.length) keys = Object.keys(all)
+
+			const result = {} as typeof all
+			for (const lang of keys) result[lang] = all[lang]
+
+			return result
+		}
+
 		layout_ids() {
 			return Object.keys(this.layouts())
 		}
