@@ -56,7 +56,7 @@ $yuf_keyboard_layout_fr $yuf_keyboard_layout_en
 		\]
 	special_3 /string
 		\/
-		\\
+		\\\
 		\|
 		\'
 		\"
