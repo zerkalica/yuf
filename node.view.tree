@@ -1127,6 +1127,47 @@ $yuf_keyboard_check $mol_check_icon
 	Input $mol_view
 	Target? null
 
+$yuf_keyboard_cell $mol_view
+	input? null
+	upcase true
+	style *
+		^
+		--yuf_keyboard_cell_width_mul <= width_mul null
+	event *
+		^
+		pointerdown? <=> start? null
+		pointerup? <=> end? null
+		pointercancel? <=> abort? null
+	sub /
+		<= title <= symbol \
+
+$yuf_keyboard_row $mol_view
+	layout /string
+	input? null
+	max_buttons 10
+	lang_next \en
+	sub <= cells /
+		<= Cell*0 $yuf_keyboard_cell
+			symbol <= cell_symbol* \?
+			input? <=> cell_input*? null
+			upcase <= upcase false
+			width_mul <= width_mul* null
+
+$yuf_keyboard_card $mol_view
+	layout? \en
+	langs_available <= langs_available_default /string
+		\en
+	variant? \
+	area $mol_view
+	layouts *$yuf_keyboard_layout_en
+	sub <= rows /
+		<= Row*0 $yuf_keyboard_row
+			max_buttons <= max_buttons 10
+			layout <= row_layout* /string
+			input? <=> row_input*? null
+			upcase <= upcase? false
+			lang_next <= lang_next \en
+
 $yuf_keyboard_layout_en $mol_view
 	variants *string[][]
 		\
@@ -1239,86 +1280,6 @@ $yuf_keyboard_layout_en $mol_view
 			\◀
 			\▶
 
-$yuf_keyboard_layout_ru $yuf_keyboard_layout_en
-	before_space /string
-		\Х
-		\Ъ
-		\Э
-	alpha_1 /string
-		\Й
-		\Ц
-		\У
-		\К
-		\Е
-		\Н
-		\Г
-		\Ш
-		\Щ
-		\З
-	alpha_2 /string
-		\Ф
-		\Ы
-		\В
-		\А
-		\П
-		\Р
-		\О
-		\Л
-		\Д
-		\Ж
-	alpha_3 /string
-		\Я
-		\Ч
-		\С
-		\М
-		\И
-		\Т
-		\Ь
-		\Б
-		\Ю
-		\Ё
-
-$yuf_keyboard_cell $mol_view
-	input? null
-	upcase true
-	style *
-		^
-		--yuf_keyboard_cell_width_mul <= width_mul null
-	event *
-		^
-		pointerdown? <=> start? null
-		pointerup? <=> end? null
-		pointercancel? <=> abort? null
-	sub /
-		<= title <= symbol \
-
-$yuf_keyboard_row $mol_view
-	layout /string
-	input? null
-	max_buttons 10
-	lang_next \en
-	sub <= cells /
-		<= Cell*0 $yuf_keyboard_cell
-			symbol <= cell_symbol* \?
-			input? <=> cell_input*? null
-			upcase <= upcase false
-			width_mul <= width_mul* null
-
-$yuf_keyboard_card $mol_view
-	layout? \en
-	variant? \
-	area $mol_view
-	layouts *$yuf_keyboard_layout_en
-		en <= Layout_en $yuf_keyboard_layout_en
-		ru <= Layout_ru $yuf_keyboard_layout_ru
-	sub <= rows /
-		<= Row*0 $yuf_keyboard_row
-			max_buttons <= max_buttons 10
-			layout <= row_layout* /string
-			input? <=> row_input*? null
-			upcase <= upcase? false
-			lang_next <= lang_next \en
-
 $yuf_keyboard_field $mol_view
 	trigger_enabled false
 	sub /
@@ -1329,9 +1290,6 @@ $yuf_keyboard_field $mol_view
 					checked? <=> keyboard_enabled? false
 		^ keyboard_content /
 			<= Keyboard $yuf_keyboard_card
-				layouts <= layouts *$yuf_keyboard_layout_en
-					en <= Layout_en $yuf_keyboard_layout_en
-					ru <= Layout_ru $yuf_keyboard_layout_ru
 				area <= Input $mol_view
 					focused? => input_focused?
 

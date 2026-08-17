@@ -2078,12 +2078,12 @@ var $;
                 reuse: if (existen) {
                     if (!existen.temp)
                         break reuse;
-                    if (existen.task !== task) {
-                        cause = 'task';
-                        break reuse;
-                    }
                     if (existen.host !== host) {
                         cause = 'host';
+                        break reuse;
+                    }
+                    if (existen.task !== task) {
+                        cause = 'task';
                         break reuse;
                     }
                     if (!$mol_compare_deep(existen.args, args)) {
@@ -15322,226 +15322,6 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_keyboard_layout_en) = class $yuf_keyboard_layout_en extends ($.$mol_view) {
-		lang_key(){
-			return "\u0001lang";
-		}
-		before_space(){
-			return [];
-		}
-		controls(){
-			return [
-				"\u0001⇑", 
-				(this.lang_key()), 
-				"\u0001,.;", 
-				...(this.before_space()), 
-				" ", 
-				"\u0001⌫", 
-				"\u0001◀", 
-				"\u0001▶"
-			];
-		}
-		alpha3_end(){
-			return [
-				",", 
-				".", 
-				"@"
-			];
-		}
-		special_4_end(){
-			return [
-				" ", 
-				"\u0001⌫", 
-				"\u0001◀", 
-				"\u0001▶"
-			];
-		}
-		variants(){
-			return {"": [
-				(this.digits()), 
-				(this.alpha_1()), 
-				(this.alpha_2()), 
-				(this.alpha_3()), 
-				(this.controls())
-			], "special": [
-				(this.digits()), 
-				(this.special_1()), 
-				(this.special_2()), 
-				(this.special_3()), 
-				(this.special_4())
-			]};
-		}
-		digits(){
-			return [
-				"1", 
-				"2", 
-				"3", 
-				"4", 
-				"5", 
-				"6", 
-				"7", 
-				"8", 
-				"9", 
-				"0"
-			];
-		}
-		alpha_1(){
-			return [
-				"Q", 
-				"W", 
-				"E", 
-				"R", 
-				"T", 
-				"Y", 
-				"U", 
-				"I", 
-				"O", 
-				"P"
-			];
-		}
-		alpha_2(){
-			return [
-				"A", 
-				"S", 
-				"D", 
-				"F", 
-				"G", 
-				"H", 
-				"J", 
-				"K", 
-				"L", 
-				";"
-			];
-		}
-		alpha_3(){
-			return [
-				"Z", 
-				"X", 
-				"C", 
-				"V", 
-				"B", 
-				"N", 
-				"M", 
-				...(this.alpha3_end())
-			];
-		}
-		special_1(){
-			return [
-				"!", 
-				"@", 
-				"#", 
-				"$", 
-				"%", 
-				"^", 
-				"&", 
-				"*", 
-				"(", 
-				")"
-			];
-		}
-		special_2(){
-			return [
-				"-", 
-				"+", 
-				"=", 
-				"_", 
-				"~", 
-				"`", 
-				"{", 
-				"}", 
-				"[", 
-				"]"
-			];
-		}
-		special_3(){
-			return [
-				"/", 
-				"\\", 
-				"|", 
-				"'", 
-				"\"", 
-				"~", 
-				"<", 
-				">", 
-				":", 
-				";"
-			];
-		}
-		special_4(){
-			return [
-				".", 
-				",", 
-				"\u0001abc", 
-				"?", 
-				...(this.special_4_end())
-			];
-		}
-	};
-
-
-;
-"use strict";
-
-
-;
-	($.$yuf_keyboard_layout_ru) = class $yuf_keyboard_layout_ru extends ($.$yuf_keyboard_layout_en) {
-		before_space(){
-			return [
-				"Х", 
-				"Ъ", 
-				"Э"
-			];
-		}
-		alpha_1(){
-			return [
-				"Й", 
-				"Ц", 
-				"У", 
-				"К", 
-				"Е", 
-				"Н", 
-				"Г", 
-				"Ш", 
-				"Щ", 
-				"З"
-			];
-		}
-		alpha_2(){
-			return [
-				"Ф", 
-				"Ы", 
-				"В", 
-				"А", 
-				"П", 
-				"Р", 
-				"О", 
-				"Л", 
-				"Д", 
-				"Ж"
-			];
-		}
-		alpha_3(){
-			return [
-				"Я", 
-				"Ч", 
-				"С", 
-				"М", 
-				"И", 
-				"Т", 
-				"Ь", 
-				"Б", 
-				"Ю", 
-				"Ё"
-			];
-		}
-	};
-
-
-;
-"use strict";
-
-
-;
 	($.$yuf_keyboard_cell) = class $yuf_keyboard_cell extends ($.$mol_view) {
 		width_mul(){
 			return null;
@@ -15726,13 +15506,8 @@ var $;
 
 ;
 	($.$yuf_keyboard_card) = class $yuf_keyboard_card extends ($.$mol_view) {
-		Layout_en(){
-			const obj = new this.$.$yuf_keyboard_layout_en();
-			return obj;
-		}
-		Layout_ru(){
-			const obj = new this.$.$yuf_keyboard_layout_ru();
-			return obj;
+		langs_available_default(){
+			return ["en"];
 		}
 		max_buttons(){
 			return 10;
@@ -15767,6 +15542,9 @@ var $;
 			if(next !== undefined) return next;
 			return "en";
 		}
+		langs_available(){
+			return (this.langs_available_default());
+		}
 		variant(next){
 			if(next !== undefined) return next;
 			return "";
@@ -15776,14 +15554,12 @@ var $;
 			return obj;
 		}
 		layouts(){
-			return {"en": (this.Layout_en()), "ru": (this.Layout_ru())};
+			return {};
 		}
 		sub(){
 			return (this.rows());
 		}
 	};
-	($mol_mem(($.$yuf_keyboard_card.prototype), "Layout_en"));
-	($mol_mem(($.$yuf_keyboard_card.prototype), "Layout_ru"));
 	($mol_mem_key(($.$yuf_keyboard_card.prototype), "row_input"));
 	($mol_mem(($.$yuf_keyboard_card.prototype), "upcase"));
 	($mol_mem_key(($.$yuf_keyboard_card.prototype), "Row"));
@@ -15791,6 +15567,177 @@ var $;
 	($mol_mem(($.$yuf_keyboard_card.prototype), "variant"));
 	($mol_mem(($.$yuf_keyboard_card.prototype), "area"));
 
+
+;
+	($.$yuf_keyboard_layout_en) = class $yuf_keyboard_layout_en extends ($.$mol_view) {
+		lang_key(){
+			return "\u0001lang";
+		}
+		before_space(){
+			return [];
+		}
+		controls(){
+			return [
+				"\u0001⇑", 
+				(this.lang_key()), 
+				"\u0001,.;", 
+				...(this.before_space()), 
+				" ", 
+				"\u0001⌫", 
+				"\u0001◀", 
+				"\u0001▶"
+			];
+		}
+		alpha3_end(){
+			return [
+				",", 
+				".", 
+				"@"
+			];
+		}
+		special_4_end(){
+			return [
+				" ", 
+				"\u0001⌫", 
+				"\u0001◀", 
+				"\u0001▶"
+			];
+		}
+		variants(){
+			return {"": [
+				(this.digits()), 
+				(this.alpha_1()), 
+				(this.alpha_2()), 
+				(this.alpha_3()), 
+				(this.controls())
+			], "special": [
+				(this.digits()), 
+				(this.special_1()), 
+				(this.special_2()), 
+				(this.special_3()), 
+				(this.special_4())
+			]};
+		}
+		digits(){
+			return [
+				"1", 
+				"2", 
+				"3", 
+				"4", 
+				"5", 
+				"6", 
+				"7", 
+				"8", 
+				"9", 
+				"0"
+			];
+		}
+		alpha_1(){
+			return [
+				"Q", 
+				"W", 
+				"E", 
+				"R", 
+				"T", 
+				"Y", 
+				"U", 
+				"I", 
+				"O", 
+				"P"
+			];
+		}
+		alpha_2(){
+			return [
+				"A", 
+				"S", 
+				"D", 
+				"F", 
+				"G", 
+				"H", 
+				"J", 
+				"K", 
+				"L", 
+				";"
+			];
+		}
+		alpha_3(){
+			return [
+				"Z", 
+				"X", 
+				"C", 
+				"V", 
+				"B", 
+				"N", 
+				"M", 
+				...(this.alpha3_end())
+			];
+		}
+		special_1(){
+			return [
+				"!", 
+				"@", 
+				"#", 
+				"$", 
+				"%", 
+				"^", 
+				"&", 
+				"*", 
+				"(", 
+				")"
+			];
+		}
+		special_2(){
+			return [
+				"-", 
+				"+", 
+				"=", 
+				"_", 
+				"~", 
+				"`", 
+				"{", 
+				"}", 
+				"[", 
+				"]"
+			];
+		}
+		special_3(){
+			return [
+				"/", 
+				"\\", 
+				"|", 
+				"'", 
+				"\"", 
+				"~", 
+				"<", 
+				">", 
+				":", 
+				";"
+			];
+		}
+		special_4(){
+			return [
+				".", 
+				",", 
+				"\u0001abc", 
+				"?", 
+				...(this.special_4_end())
+			];
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_keyboard_avail = {
+        en: new $yuf_keyboard_layout_en
+    };
+})($ || ($ = {}));
 
 ;
 "use strict";
@@ -15820,6 +15767,37 @@ var $;
                     }
                 }
                 return max;
+            }
+            langs_available(next) {
+                return this.$.$mol_state_local.value(`${this}.langs_available()`, next) ?? [];
+            }
+            lang() { return this.$.$mol_locale.lang(); }
+            lang_detected() { return this.$.$mol_dom_context.navigator.language.replace(/-.*/, '') || this.$.$mol_locale.lang_default(); }
+            langs_available_inited() {
+                let lang = this.lang();
+                if (lang === 'en')
+                    lang = this.lang_detected();
+                const all = this.$.$yuf_keyboard_avail;
+                const first = this.langs_available().filter(k => all[k]);
+                let avail = first;
+                if (!avail.length)
+                    avail = this.langs_available_default();
+                if (!avail.includes(lang) && all[lang])
+                    avail = [...avail, lang];
+                if (avail === first)
+                    return avail;
+                // new lang code detected from locale and exists in layouts - store in localstorage
+                return this.langs_available(avail);
+            }
+            layouts() {
+                const all = this.$.$yuf_keyboard_avail;
+                let keys = this.langs_available_inited();
+                if (!keys.length)
+                    keys = Object.keys(all);
+                const result = {};
+                for (const lang of keys)
+                    result[lang] = all[lang];
+                return result;
             }
             layout_ids() {
                 return Object.keys(this.layouts());
@@ -15918,6 +15896,15 @@ var $;
         __decorate([
             $mol_mem
         ], $yuf_keyboard_card.prototype, "max_buttons", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_keyboard_card.prototype, "langs_available", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_keyboard_card.prototype, "langs_available_inited", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_keyboard_card.prototype, "layouts", null);
         __decorate([
             $mol_action
         ], $yuf_keyboard_card.prototype, "layout_switch", null);
@@ -16018,17 +16005,6 @@ var $;
 			(obj.sub) = () => ([(this.Control()), ...(this.trigger_content())]);
 			return obj;
 		}
-		Layout_en(){
-			const obj = new this.$.$yuf_keyboard_layout_en();
-			return obj;
-		}
-		Layout_ru(){
-			const obj = new this.$.$yuf_keyboard_layout_ru();
-			return obj;
-		}
-		layouts(){
-			return {"en": (this.Layout_en()), "ru": (this.Layout_ru())};
-		}
 		input_focused(next){
 			return (this.Input().focused(next));
 		}
@@ -16038,7 +16014,6 @@ var $;
 		}
 		Keyboard(){
 			const obj = new this.$.$yuf_keyboard_card();
-			(obj.layouts) = () => ((this.layouts()));
 			(obj.area) = () => ((this.Input()));
 			return obj;
 		}
@@ -16056,8 +16031,6 @@ var $;
 	($mol_mem(($.$yuf_keyboard_field.prototype), "keyboard_enabled"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Trigger"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "First"));
-	($mol_mem(($.$yuf_keyboard_field.prototype), "Layout_en"));
-	($mol_mem(($.$yuf_keyboard_field.prototype), "Layout_ru"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Input"));
 	($mol_mem(($.$yuf_keyboard_field.prototype), "Keyboard"));
 

@@ -6870,205 +6870,6 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $yuf_keyboard_layout_en extends $mol_view {
-		lang_key( ): string
-		before_space( ): readonly(string)[]
-		controls( ): readonly(any)[]
-		alpha3_end( ): readonly(any)[]
-		special_4_end( ): readonly(any)[]
-		variants( ): Record<string, string[][]>
-		digits( ): readonly(any)[]
-		alpha_1( ): readonly(any)[]
-		alpha_2( ): readonly(any)[]
-		alpha_3( ): readonly(any)[]
-		special_1( ): readonly(any)[]
-		special_2( ): readonly(any)[]
-		special_3( ): readonly(any)[]
-		special_4( ): readonly(any)[]
-	}
-	
-}
-
-//# sourceMappingURL=en.view.tree.d.ts.map
-declare namespace $ {
-
-	type $yuf_keyboard_layout_ru_before_space__1 = $mol_type_enforce<
-		`Х`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_before_space__2 = $mol_type_enforce<
-		`Ъ`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_before_space__3 = $mol_type_enforce<
-		`Э`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__4 = $mol_type_enforce<
-		`Й`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__5 = $mol_type_enforce<
-		`Ц`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__6 = $mol_type_enforce<
-		`У`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__7 = $mol_type_enforce<
-		`К`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__8 = $mol_type_enforce<
-		`Е`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__9 = $mol_type_enforce<
-		`Н`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__10 = $mol_type_enforce<
-		`Г`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__11 = $mol_type_enforce<
-		`Ш`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__12 = $mol_type_enforce<
-		`Щ`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_1__13 = $mol_type_enforce<
-		`З`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__14 = $mol_type_enforce<
-		`Ф`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__15 = $mol_type_enforce<
-		`Ы`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__16 = $mol_type_enforce<
-		`В`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__17 = $mol_type_enforce<
-		`А`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__18 = $mol_type_enforce<
-		`П`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__19 = $mol_type_enforce<
-		`Р`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__20 = $mol_type_enforce<
-		`О`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__21 = $mol_type_enforce<
-		`Л`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__22 = $mol_type_enforce<
-		`Д`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_2__23 = $mol_type_enforce<
-		`Ж`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__24 = $mol_type_enforce<
-		`Я`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__25 = $mol_type_enforce<
-		`Ч`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__26 = $mol_type_enforce<
-		`С`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__27 = $mol_type_enforce<
-		`М`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__28 = $mol_type_enforce<
-		`И`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__29 = $mol_type_enforce<
-		`Т`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__30 = $mol_type_enforce<
-		`Ь`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__31 = $mol_type_enforce<
-		`Б`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__32 = $mol_type_enforce<
-		`Ю`
-		,
-		string
-	>
-	type $yuf_keyboard_layout_ru_alpha_3__33 = $mol_type_enforce<
-		`Ё`
-		,
-		string
-	>
-	export class $yuf_keyboard_layout_ru extends $yuf_keyboard_layout_en {
-		before_space( ): readonly(string)[]
-		alpha_1( ): readonly(string)[]
-		alpha_2( ): readonly(string)[]
-		alpha_3( ): readonly(string)[]
-	}
-	
-}
-
-//# sourceMappingURL=ru.view.tree.d.ts.map
-declare namespace $ {
-
 	export class $yuf_keyboard_cell extends $mol_view {
 		width_mul( ): any
 		start( next?: any ): any
@@ -7152,34 +6953,64 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_keyboard_row__max_buttons_yuf_keyboard_card_1 = $mol_type_enforce<
+	export class $yuf_keyboard_layout_en extends $mol_view {
+		lang_key( ): string
+		before_space( ): readonly(string)[]
+		controls( ): readonly(any)[]
+		alpha3_end( ): readonly(any)[]
+		special_4_end( ): readonly(any)[]
+		variants( ): Record<string, string[][]>
+		digits( ): readonly(any)[]
+		alpha_1( ): readonly(any)[]
+		alpha_2( ): readonly(any)[]
+		alpha_3( ): readonly(any)[]
+		special_1( ): readonly(any)[]
+		special_2( ): readonly(any)[]
+		special_3( ): readonly(any)[]
+		special_4( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=en.view.tree.d.ts.map
+declare namespace $ {
+    const $yuf_keyboard_avail: Record<string, $yuf_keyboard_layout_en>;
+}
+
+declare namespace $ {
+
+	type $yuf_keyboard_card_langs_available_default__1 = $mol_type_enforce<
+		`en`
+		,
+		string
+	>
+	type $yuf_keyboard_row__max_buttons_yuf_keyboard_card_2 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_card['max_buttons'] >
 		,
 		ReturnType< $yuf_keyboard_row['max_buttons'] >
 	>
-	type $yuf_keyboard_row__layout_yuf_keyboard_card_2 = $mol_type_enforce<
+	type $yuf_keyboard_row__layout_yuf_keyboard_card_3 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_card['row_layout'] >
 		,
 		ReturnType< $yuf_keyboard_row['layout'] >
 	>
-	type $yuf_keyboard_row__input_yuf_keyboard_card_3 = $mol_type_enforce<
+	type $yuf_keyboard_row__input_yuf_keyboard_card_4 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_card['row_input'] >
 		,
 		ReturnType< $yuf_keyboard_row['input'] >
 	>
-	type $yuf_keyboard_row__upcase_yuf_keyboard_card_4 = $mol_type_enforce<
+	type $yuf_keyboard_row__upcase_yuf_keyboard_card_5 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_card['upcase'] >
 		,
 		ReturnType< $yuf_keyboard_row['upcase'] >
 	>
-	type $yuf_keyboard_row__lang_next_yuf_keyboard_card_5 = $mol_type_enforce<
+	type $yuf_keyboard_row__lang_next_yuf_keyboard_card_6 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_card['lang_next'] >
 		,
 		ReturnType< $yuf_keyboard_row['lang_next'] >
 	>
 	export class $yuf_keyboard_card extends $mol_view {
-		Layout_en( ): $yuf_keyboard_layout_en
-		Layout_ru( ): $yuf_keyboard_layout_ru
+		langs_available_default( ): readonly(string)[]
 		max_buttons( ): number
 		row_layout( id: any): readonly(string)[]
 		row_input( id: any, next?: any ): any
@@ -7188,6 +7019,7 @@ declare namespace $ {
 		Row( id: any): $yuf_keyboard_row
 		rows( ): readonly(any)[]
 		layout( next?: string ): string
+		langs_available( ): ReturnType< $yuf_keyboard_card['langs_available_default'] >
 		variant( next?: string ): string
 		area( ): $mol_view
 		layouts( ): Record<string, $yuf_keyboard_layout_en>
@@ -7201,6 +7033,11 @@ declare namespace $.$$ {
     class $yuf_keyboard_card extends $.$yuf_keyboard_card {
         row_input(row_index: number, next?: InputEvent): void;
         max_buttons(): number;
+        langs_available(next?: readonly string[]): readonly string[];
+        lang(): string;
+        lang_detected(): string;
+        langs_available_inited(): readonly string[];
+        layouts(): Record<string, $yuf_keyboard_layout_en>;
         layout_ids(): string[];
         layout_variants(): Record<string, string[][]>;
         layout_switch(): void;
@@ -7235,12 +7072,7 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >[0]
 	>
-	type $yuf_keyboard_card__layouts_yuf_keyboard_field_4 = $mol_type_enforce<
-		ReturnType< $yuf_keyboard_field['layouts'] >
-		,
-		ReturnType< $yuf_keyboard_card['layouts'] >
-	>
-	type $yuf_keyboard_card__area_yuf_keyboard_field_5 = $mol_type_enforce<
+	type $yuf_keyboard_card__area_yuf_keyboard_field_4 = $mol_type_enforce<
 		ReturnType< $yuf_keyboard_field['Input'] >
 		,
 		ReturnType< $yuf_keyboard_card['area'] >
@@ -7251,9 +7083,6 @@ declare namespace $ {
 		Trigger( ): $yuf_keyboard_check
 		trigger_content( ): readonly(any)[]
 		First( ): $mol_view
-		Layout_en( ): $yuf_keyboard_layout_en
-		Layout_ru( ): $yuf_keyboard_layout_ru
-		layouts( ): Record<string, $yuf_keyboard_layout_en>
 		input_focused( next?: ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] > ): ReturnType< ReturnType< $yuf_keyboard_field['Input'] >['focused'] >
 		Input( ): $mol_view
 		Keyboard( ): $yuf_keyboard_card
