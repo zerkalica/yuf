@@ -77,7 +77,7 @@ $yuf_localizer_catalog $yuf_catalog
 					\* commit changes in your projects
 					\* build project to ensure all deps downloaded
 					\* download or copypaste **all changes** into mam root via diskette button in menu header
-					\* run "node yuf/localizer/import/cli.mjs"
+					\* run "node yuf/localizer/merge/cli.mjs --update"
 					\* make pull requests from affected namespaces, which cli returns
 					\## Overriding in application
 					\Use, if you can't commit some keys to the mol ecosystem.
