@@ -25829,7 +25829,7 @@ var $;
             },
             Selected_lang: {
                 Trigger: {
-                    width: '3rem',
+                    minWidth: '3rem',
                 },
             },
             Keys_filter: {
