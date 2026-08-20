@@ -89,8 +89,9 @@ export class YufLocalizerMerge {
 
 	/**
      * @param {string} path
+	 * @param {{overwrite?: boolean}} options
      */
-	async locales_patch(path) {
+	async locales_patch(path, { overwrite }) {
        /** @type Record<string, Record<string, Record<string, string>>> */
 		const patch = {}
 
@@ -110,11 +111,14 @@ export class YufLocalizerMerge {
 				const module_locale_name = `${basename(module_dir)}.locale=${lang}.json`
 				const locale_file = join(module_dir, module_locale_name)
 
-				if (! patch[src_file]) patch[src_file] = {}
-				if (! patch[src_file][locale_file]) patch[src_file][locale_file] = {}
 				const old_locale = await this.locale(locale_file)
 
 				if (old_locale?.[key] === locale[key]) continue
+				if (! overwrite && old_locale?.[key]) continue
+
+				if (! patch[src_file]) patch[src_file] = {}
+				if (! patch[src_file][locale_file]) patch[src_file][locale_file] = {}
+
 				patch[src_file][locale_file][key] = locale[key]
 			}
 		}
@@ -124,10 +128,10 @@ export class YufLocalizerMerge {
 
 	/**
      * @param {string} path
-	 * @param {{exclude?: RegExp | null, include?: RegExp | null, update?: boolean}} options
+	 * @param {{exclude?: RegExp | null, include?: RegExp | null, update?: boolean, overwrite?: boolean }} options
      */
-	async update(path, { exclude, include, update }) {
-		const patches = await this.locales_patch(path)
+	async update(path, { exclude, include, update, overwrite }) {
+		const patches = await this.locales_patch(path, { overwrite })
 
 		/** @type Record<string, Record<string, number>> | undefined */
 		let success = undefined
@@ -146,7 +150,6 @@ export class YufLocalizerMerge {
 
 				const patch = group[locale_file]
 				const patch_keys = Object.keys(patch)
-
 
 				if (
 					(exclude && locale_file.match(exclude))
@@ -182,9 +185,13 @@ export class YufLocalizerMerge {
 
 		const has_success = success && Object.keys(success).length > 0
 
-		const suggest = ! update && has_success
-			? 'Add --update to write changes and --include=dir1,dir2 or --exclude=dir1,dir2 to include or exclude some paths from update'
-			: has_success ? undefined : 'No locales found'
+		const suggest = []
+
+		if (! update && has_success) suggest.push(
+			'Add --update to write changes',
+			'--overwrite to rewrite existing locale keys',
+			'--include=dir1,dir2 or --exclude=dir1,dir2 to include or exclude some paths from update'
+		)
 
 		return { success, errors, excluded, suggest }
 	}
@@ -224,6 +231,7 @@ export class YufLocalizerMerge {
 		return {
 			directories: args.filter(arg => ! arg.startsWith('--')),
 			update: this.param_raw('update') !== null,
+			overwrite: this.param_raw('overwrite') !== null,
 			include: this.param_regexp('include'),
 			exclude: this.param_regexp('exclude'),
 		}
@@ -233,7 +241,7 @@ export class YufLocalizerMerge {
 		const options = this.commands()
 		/** @type Record<string, Partial<Awaited<ReturnType<typeof this.update>>>> */
 		let rec = options.directories.length ? {} : { '': {
-			suggest: 'No directories provided',
+			suggest: ['No directories provided'],
 		} }
 
 		for (const path of options.directories) {
