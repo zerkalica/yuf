@@ -1,0 +1,19 @@
+$yuf_sj_ui_description_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_description_model
+		name => name
+		description => description
+	info_model $yuf_sj_ui_device_info_model
+		device_type => device_type
+	Description_form $yuf_sj_ui_description_form
+		device_id_name => device_id_name
+		description_name => description_name
+	Description_page $yuf_sj_ui_description_page
+		title => description_title
+	title <= description_title
+	content /
+		<= Name $mol_labeler
+			title <= device_id_name
+			content / <= name
+		<= Description $mol_labeler
+			title <= description_name
+			content / <= description

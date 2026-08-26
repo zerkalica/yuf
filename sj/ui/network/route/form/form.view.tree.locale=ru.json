@@ -1,0 +1,5 @@
+{
+	"$yuf_sj_ui_network_route_form_destination_hint": "Назначение",
+	"$yuf_sj_ui_network_route_form_gateway_hint": "Шлюз",
+	"$yuf_sj_ui_network_route_form_message_timeout": "Тайм-аут сервера. настройки, возможно, были применены"
+}

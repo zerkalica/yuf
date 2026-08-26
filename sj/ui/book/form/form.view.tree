@@ -1,0 +1,25 @@
+$yuf_sj_ui_book_form $yuf_sj_ui_form_draft
+	draft false
+	item_height_min 20
+	rows /
+		<= First $mol_view sub /
+			^ body
+			<= Foot
+		<= Second $mol_view sub /
+			<= Result
+			^ reset_content /
+				<= Reset
+	buttons /
+		^ add_content /
+			<= Add $yuf_button_add
+				enabled <= submit_allowed_and_changed <= submit_allowed
+				click? <=> submit?
+		^ save_content /
+			<= Save $yuf_button_save
+				hint <= submit_hint
+				activate? => submit_activate?
+				enabled <= submit_allowed_and_changed
+				click? <=> submit?
+		^ remove_content /
+			<= Remove $yuf_button_remove
+				click? <=> remove_event? null

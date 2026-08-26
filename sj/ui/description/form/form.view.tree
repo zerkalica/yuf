@@ -1,0 +1,26 @@
+$yuf_sj_ui_description_form $yuf_sj_ui_form_draft
+	model $yuf_sj_ui_description_model
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+		ip4* => ip4*
+		latin_digits_alpha* => latin_digits_alpha*
+	form_fields /
+		<= Device_id_field $mol_form_field
+			name <= device_id_name @ \Device id
+			bids /
+				<= required*name
+				<= min*name
+				<= latin_digits_alpha*name
+			control <= Device_id $mol_string
+				value? <=> value_str*name?
+				submit? <=> submit_activate_fork? null
+				length_max 128
+		<= Description_field $mol_form_field
+			name <= description_name @ \Description
+			bids /
+				<= min*description
+			control <= Description $yuf_sj_ui_textarea
+				length_max 512
+				value? <=> value_str*description?

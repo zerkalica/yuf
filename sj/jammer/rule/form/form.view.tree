@@ -1,0 +1,57 @@
+$yuf_sj_jammer_rule_form $yuf_sj_ui_form_draft
+	model $yuf_sj_jammer_rule_model
+		bind_uuid_required => bind_uuid_required
+		sdr => sdr
+			bands => bands
+			spreads_available => spreads_available
+	done? false
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+	buttons /
+		^
+		^ buttons_extra /$mol_view
+			^ rule_content /$mol_view
+				<= Whitelist $mol_button_minor
+					enabled <= rule_allowed false
+					click? <=> rule_event? null
+					title <= rule_title @ \To whitelist
+	body /
+		^ bind_uuid_content /$mol_view
+			<= Bind_uuid_field $mol_form_field
+				bids /
+					<= bind_uuid_required_bid <= required*bind_uuid
+					<= numbers_check*bind_uuid @ \Example: 123, 345, 15, 22
+				name <= bind_uuid_name @ \Bind uuid
+				control <= Bind_uuid $mol_string
+					hint <= bind_uuid_hint @ \123, 345, 15, 22
+					length_max 80
+					value? <=> value_str*bind_uuid?
+					submit? <=> submit?
+		<= Access_field $mol_form_field
+			name <= access_name @ \Access
+			control <= Access $yuf_sj_jammer_rule_switch
+				value? <=> value_str*access?
+		<= Comment_field $mol_form_field
+			name <= comment_name @ \Comment
+			control <= Comment $yuf_sj_ui_textarea
+				length_max 128
+				value? <=> value_str*comment?
+				submit? <=> submit?
+		<= Freq_range $yuf_sj_ui_freq_range
+			bands <= bands
+			value*? <=> freq_value*? 0
+		<= Spreads_field $mol_form_field
+			name <= spreads_name @ \Spreads
+			control <= Spreads $yuf_check_list
+				value? <=> list_string*spreads?
+				options <= spreads_available
+		- <= Freqs_field $mol_form_field
+			bids /
+				<= numbers_check*freqs_str
+			name <= freqs_name @ \Freq, integers kHz
+			control <= Freqs $yuf_sj_ui_textarea
+				length_max 4096
+				hint <= freqs_hint \150, 150000, 1_200_000
+				value? <=> value_str*freqs_str?
+				submit? <=> submit?

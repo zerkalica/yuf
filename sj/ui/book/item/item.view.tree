@@ -1,0 +1,7 @@
+$yuf_sj_ui_book_item $mol_view
+	sub /
+		<= Link $yuf_link
+			arg <= arg *
+		<= Buttons $mol_view
+			minimal_width <= buttons_minimal_width 40
+			sub <= buttons /$mol_view

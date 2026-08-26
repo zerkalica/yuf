@@ -1,0 +1,29 @@
+$yuf_sj_ui_range_group $mol_labeler
+	limit $mol_vector_range<number> /
+		0
+		0
+	value*? 0
+	content /
+		<= Min_field $mol_form_field
+			name <= min_name @ \Min
+			bids /
+				<= required_num*min <= required_msg \*
+				<= limit_msg*min \
+			Content <= Min $mol_number
+				value? <=> value*min?
+				enabled <= enabled true
+				submit? <=> submit? null
+				Dec null
+				Inc null
+		<= Max_field $mol_form_field
+			name <= max_name @ \Max
+			bids /
+				<= required_num*max
+				<= limit_msg*max
+				<= greater_min*max <= greater_min_message \> {min}
+			Content <= Max $mol_number
+				submit? <=> submit?
+				value? <=> value*max?
+				enabled <= enabled true
+				Dec null
+				Inc null

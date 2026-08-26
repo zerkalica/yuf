@@ -1,0 +1,14 @@
+$yuf_sj_ui_device_reboot_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_device_info_model
+		uptime => uptime
+		uptime_dur => uptime_dur
+		firmware_version => firmware_version
+	Admin_page $yuf_sj_ui_device_reboot_page
+		title => admin_title
+	title <= admin_title
+	content /
+		<= Version $yuf_sj_ui_device_updater_version
+			version <= firmware_version
+		<= Uptime $yuf_sj_ui_uptime
+			uptime <= uptime
+			uptime_dur <= uptime_dur

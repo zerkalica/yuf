@@ -1,0 +1,11 @@
+{
+	"$yuf_sj_ui_network_form_ip_type_name": "Тип соединения",
+	"$yuf_sj_ui_network_form_no_actual_ip_text": "Сохраните форму для получения IP из DHCP",
+	"$yuf_sj_ui_network_form_static_title": "Статический",
+	"$yuf_sj_ui_network_form_dhcp_title": "DHCP",
+	"$yuf_sj_ui_network_form_ip_name": "IP и маска",
+	"$yuf_sj_ui_network_form_gateway_name": "Шлюз",
+	"$yuf_sj_ui_network_form_dns_name": "DNS 1",
+	"$yuf_sj_ui_network_form_dns2_name": "DNS 2",
+	"$yuf_sj_ui_network_form_message_timeout": "Тайм-аут сервера. настройки, возможно, были применены, перевойдите по новой ссылке"
+}

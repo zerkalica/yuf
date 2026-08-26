@@ -1,0 +1,8 @@
+{
+	"$yuf_sj_ui_log_page_logs_max_title": "Загружать макс. строк:",
+	"$yuf_sj_ui_log_page_up_hint": "Скролить наверх",
+	"$yuf_sj_ui_log_page_filter_text_hint": "Искать в логе",
+	"$yuf_sj_ui_log_page_log_level_hint": "Наблюдать",
+	"$yuf_sj_ui_log_page_empty_text": "Выберите уровень для сбора логов",
+	"$yuf_sj_ui_log_page_title": "Логи"
+}

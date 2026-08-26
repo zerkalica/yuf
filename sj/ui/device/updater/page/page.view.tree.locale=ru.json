@@ -1,0 +1,7 @@
+{
+	"$yuf_sj_ui_device_updater_page_title": "Обновление",
+	"$yuf_sj_ui_device_updater_page_progress_status_text": "Обновление прошивки {progress}%",
+	"$yuf_sj_ui_device_updater_page_success_jammer": "Готово, перезагружаем...",
+	"$yuf_sj_ui_device_updater_page_success_module": "Готово",
+	"$yuf_sj_ui_device_updater_page_reset_title": "Обновить еще"
+}

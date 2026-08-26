@@ -1,0 +1,63 @@
+$yuf_sj_ui_app $yuf_catalog_app
+	login_body /
+		<= Login_form $yuf_sj_ui_login_form
+			enter? <=> enter? null
+			login => login
+			password => password
+		<= Server_offline $mol_status
+			message <= server_offline @ \Waiting server online... {error}
+	-
+	foot_second_post /
+		<= Ws_status $yuf_ws_status ws <= ws
+	model $yuf_sj_ui_device_model
+		ws => ws
+		session => session
+			logged => logged
+		auto => model_auto
+		auth => auth
+		log => log_model
+		devices => devices
+		network => network
+		description => description_model
+		info => info_model
+			firmware_version => version
+	-
+	auto /
+		^ model_auto
+	Placeholder $mol_page
+		title <= placeholder_title @ \Overall
+		body /$mol_view
+			<= Description_block $yuf_sj_ui_description_card
+				model <= description_model
+				arg <= menu_link_arg*description
+			<= Network_block $yuf_sj_ui_network_card
+				model <= network
+				arg <= menu_link_arg*network
+				network_content <= placeholder_network_content /$mol_view
+			<= Admin_block $yuf_sj_ui_device_reboot_card
+				model <= info_model
+				arg <= menu_link_arg*admin
+	param \yuf_sj
+	spreads *
+		description <= Description $yuf_sj_ui_description_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= description_model
+		network <= Network $yuf_sj_ui_network_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= network
+		^ spreads_mid *
+		logging <= Logging $yuf_sj_ui_log_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= log_model
+		updater <= Updater $yuf_sj_ui_device_updater_book
+			param_prefix <= param
+			Close <= Spread_close
+			info <= info_model
+			devices <= devices
+		admin <= Admin $yuf_sj_ui_device_reboot_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= info_model

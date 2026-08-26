@@ -1,0 +1,25 @@
+$yuf_sj_jammer_task_catalog $yuf_catalog
+	menu_title @ \Tasks
+	param_suffix \task
+	addon_tools /
+		^ add_content /$mol_view
+			<= Add $yuf_button_add
+				click? <=> task_add_event? null
+		<= Close null
+	store $yuf_sj_jammer_task_store
+		by_id* => task*
+			status => status*
+		ids => spread_ids
+	Menu_item* $yuf_sj_jammer_task_item
+		arg <= arg*
+		model <= task*
+		needle <= menu_filter
+		submitted? <=> task_submitted*? null
+	Spread* $yuf_sj_jammer_task_page
+		model <= task*
+		sdr <= sdr $yuf_sj_jammer_sdr_model
+		submitted? <=> task_submitted*?
+		Close <= Spread_close
+	Status* $yuf_sj_jammer_task_status
+		status <= status*
+		text => status_text*

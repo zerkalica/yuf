@@ -1,0 +1,36 @@
+$yuf_sj_jammer_sdr_page $yuf_sj_ui_book_list
+	title @ \Settings
+	model $yuf_sj_jammer_sdr_model
+		range_ids => ids
+		mode? => mode?
+		master? => master?
+		band_limit_hard => band_limit_hard
+		range_by_id* => range_by_id*
+	max_rows 1
+	Row*0 $yuf_sj_jammer_sdr_form
+		model <= range_by_id*
+		limit <= band_limit_hard
+		remove_event? <=> remove_event*? null
+	Row_draft*0 $yuf_sj_jammer_sdr_form
+		draft true
+		model <= range_by_id*
+		limit <= band_limit_hard
+		remove_event? <=> remove_event*?
+	body /
+		<= Mode_field $mol_form_field
+			name <= mode_name @ \Modes
+			content /
+				<= Master $mol_check_box
+					checked? <=> master?
+					title <= master_title @ \Is master
+				^ mode_content /$mol_view
+					<= Mode $mol_check_box
+						checked? <=> confirm_checked? false
+						hint <= mode_hint @ \Do not show jamming / cancel buttons in tasks if enabled
+						title <= mode_title @ \Auto confirm jamming
+		^ freq_content /$mol_view
+			<= Rows_block $mol_labeler
+				title <= frequency_range_title @ \Frequencies, kHz
+				content /
+					<= Rows
+					<= Draft_label

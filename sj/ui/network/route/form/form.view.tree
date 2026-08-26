@@ -1,0 +1,31 @@
+$yuf_sj_ui_network_route_form $yuf_sj_ui_book_form
+	model $yuf_sj_ui_network_route_model
+	Bid $yuf_form_bid
+		value* <= value_str*
+		-
+		required* => required*
+		ip4* => ip4*
+		ip4_mask* => ip4_mask*
+	message_timeout @ \Server timeout. Settings maybe have been applied
+	timeout_success? false
+	form_fields /
+		<= Destination_label $mol_form_field
+			bids /
+				<= required*destination
+				<= ip4_mask*destination
+			name <= destination_hint @ \Destination
+			Content <= Destination $mol_string
+				hint \192.168.0.0/24
+				length_max 24
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*destination?
+		<= Gateway_label $mol_form_field
+			bids /
+				<= required*gateway
+				<= ip4*gateway
+			name <= gateway_hint @ \Gateway
+			Content <= Gateway $mol_string
+				hint \192.168.10.10
+				length_max 24
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*gateway?

@@ -1,0 +1,52 @@
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="idle"] {
+	color: lightslategray;
+}
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="scanning"] {
+	color: cyan;
+}
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="receiving"] {
+	color: green;
+}
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="jamming"] {
+	color: red;
+}
+
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="waiting"] {
+	color: orangered;
+}
+
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="confirmed"] {
+	color: orchid;
+}
+
+[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="cancelled"] {
+	color: gold;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="idle"] {
+	color: darkslategray;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="scanning"] {
+	color: darkcyan;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="receiving"] {
+	color: darkgreen;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="jamming"] {
+	color: darkred;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="waiting"] {
+	color: orangered;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="confirmed"] {
+	color: darkorchid;
+}
+
+[mol_theme="$mol_theme_light"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode="cancelled"] {
+	color: darkgoldenrod;
+}

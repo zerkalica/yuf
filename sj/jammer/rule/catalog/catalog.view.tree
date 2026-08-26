@@ -1,0 +1,38 @@
+$yuf_sj_jammer_rule_catalog $yuf_catalog
+	menu_title @ \Whitelist
+	menu_title_blacklist @ \Blacklist
+	param_suffix \rule
+	store $yuf_sj_jammer_rule_store
+		by_id* => rule*
+		ids => spread_ids
+		access_type => access_type
+		sdr => sdr
+			master => master
+	menu_tools /$mol_view_content
+		^ add_content /$mol_view
+			<= Add $yuf_button_add
+				click? <=> add_event? null
+		^ remove_content /$mol_view
+			<= Remove_all $yuf_button_remove_all
+				click? <=> remove_all_event? null
+		<= Close null
+	menu_head /
+		<= Menu_filter
+		<= Menu_tools
+	menu_body /
+		<= Menu_links
+	Menu_filter $mol_search
+		hint <= menu_filter_hint @ \{type} search
+		query? <=> menu_filter?
+	Spread* $yuf_sj_jammer_rule_page
+		model <= rule*
+		remove_event? <=> remove_event*? null
+		done? <=> done*? false
+		Close <= Spread_close
+	Menu_item* $mol_view
+		minimal_height 60
+		sub <= menu_item_content* /
+			<= Menu_link* $yuf_sj_jammer_rule_link
+				arg <= arg*
+				model <= rule*
+				menu_filter <= menu_filter

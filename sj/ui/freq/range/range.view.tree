@@ -1,0 +1,16 @@
+$yuf_sj_ui_freq_range $mol_view
+	bands *readonly(number)[]
+	sub /
+		<= Freq_range_fields $yuf_sj_ui_range_group
+			title <= freq_range_title @ \Frequency, kHz
+			limit <= limit $mol_vector_range<number> /
+				0
+				0
+			enabled <= enabled true
+			value*? <=> value*? 0
+		<= Freq_range_help_field $mol_form_field
+			name <= freq_range_help_available @ \Available ranges, kHz
+			content /
+				<= Freq_range_help $mol_view
+					sub /
+						<= help_message \

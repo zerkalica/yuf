@@ -1,0 +1,67 @@
+$yuf_sj_ui_network_form $yuf_sj_ui_form_draft
+	model $yuf_sj_ui_network_model
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+		max* => max*
+		ip4* => ip4*
+		ip4_mask_required* => ip4_mask_required*
+	errors *string
+		^
+		\Request timeout
+			<= message_timeout @ \Server timeout. Settings maybe have been applied, relogin using a new link
+	body /$mol_form_field
+		<= Ip_type_field $mol_form_field
+			name <= ip_type_name @ \Connection type
+			content /
+				<= Ip_type $mol_switch
+					value? <=> ip_type? \
+					options <= ip_type_options *
+						static <= static_title @ \Static
+						dhcp <= dhcp_title @ \DHCP
+				^ dhcp_actualize_content /
+					<= No_actual_ip $mol_view
+						sub / <= no_actual_ip_text @ \Save to obtain IP from DHCP
+		<= Ip_content $mol_view sub <= ip_content /$mol_form_field
+			<= Ip_field $mol_form_field
+				name <= ip_name @ \IP and mask
+				bids /
+					<= required_dhcp*ip \
+					<= ip4_mask_required*ip
+				control <= Ip $mol_string
+					length_max 24
+					hint <= ip_mask_hint \192.168.1.1/24
+					submit? <=> submit_activate_fork? null
+					enabled <= ip_edit_enabled false
+					value? <=> value_str*ip?
+			<= Gateway_field $mol_form_field
+				name <= gateway_name @ \Gateway
+				bids /
+					<= ip4*gateway
+				control <= Gateway $mol_string
+					length_max 24
+					hint <= ip_hint \192.168.1.1
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*gateway?
+			<= Dns_field $mol_form_field
+				name <= dns_name @ \DNS 1
+				bids /
+					<= ip4*dns
+				control <= Dns $mol_string
+					length_max 24
+					hint <= ip_hint
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*dns?
+			<= Dns2_field $mol_form_field
+				name <= dns2_name @ \DNS 2
+				bids /
+					<= ip4*dns2
+				control <= Dns2 $mol_string
+					length_max 24
+					hint <= ip_hint
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*dns2?

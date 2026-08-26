@@ -1,0 +1,30 @@
+$yuf_sj_jammer_rule_link $yuf_link
+	theme_selected \$mol_theme_current
+	attr *
+		^
+		mol_theme <= card_theme <= theme_normal \
+	model $yuf_sj_jammer_rule_model
+		comment => comment
+		access => access
+		freq_min => freq_min
+		freq_max => freq_max
+		spreads => spreads
+	minimal_height 112
+	sub /
+		<= Time_row $mol_view sub /
+			<= Time $mol_dimmer
+				needle <= menu_filter
+				haystack <= created_at_formatted \DD.MM.YY  / hh:mm:ss.sss
+			^ bind_uuid_content /$mol_view
+				<= Uuid $mol_dimmer
+					needle <= menu_filter
+					haystack <= bind_uuid \
+			<= Access $yuf_sj_jammer_rule_icon
+				status <= access
+		<= Freqs $mol_view
+			sub / <= freqs <= freq_range_formatted @ \{freq_min} - {freq_max} kHz
+		<= Spreads $mol_view
+			sub / <= spreads_formatted \
+		<= Comment $mol_dimmer
+			needle <= menu_filter \
+			haystack <= comment

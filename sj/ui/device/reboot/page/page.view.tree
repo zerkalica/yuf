@@ -1,0 +1,27 @@
+$yuf_sj_ui_device_reboot_page $mol_page
+	title @ \Administration
+	param_prefix \
+	tools /
+		<= Close null
+	model $yuf_sj_ui_device_info_model
+		uptime => uptime
+		uptime_dur => uptime_dur
+		reboot_enabled => reboot_enabled
+		device_status => device_status
+	body /
+		<= Top $mol_view sub /
+			<= Uptime_label $yuf_sj_ui_uptime
+				uptime_dur <= uptime_dur
+				uptime <= uptime
+			<= Reboot_block $mol_view sub /
+				<= Status_label $yuf_sj_ui_device_status_label
+					device_status <= device_status
+				<= Reboot $mol_button_major
+					enabled <= reboot_enabled
+					sub / <= reboot_label @ \Reboot
+					click? <=> reboot? null
+		<= Admin_form $yuf_sj_ui_device_reboot_form
+			save? <=> save_password? null
+			password_new? => password_new?
+			password_old? => password_old?
+			reset => reset

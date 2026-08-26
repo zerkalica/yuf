@@ -1,0 +1,13 @@
+$yuf_sj_jammer_rule_page $mol_page
+	model $yuf_sj_jammer_rule_model
+	tools /
+		^ remove_content /$mol_view
+			<= Remove $mol_button_minor
+				hint <= remove_hint @ \Remove rule
+				sub / <= Delete_icon $mol_icon_trash_can_outline
+				click? <=> remove_event? null
+		<= Close null
+	body /
+		<= Form $yuf_sj_jammer_rule_form
+			model <= model
+			done? <=> done? false

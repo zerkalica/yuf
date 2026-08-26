@@ -1,0 +1,5 @@
+$yuf_sj_jammer_rule_icon $mol_icon_hand_back_left
+	status \deny
+	status_icon *$mol_icon
+		allow <= Allow_icon $mol_icon_check
+		deny <= Deny_icon $mol_icon_hand_back_left

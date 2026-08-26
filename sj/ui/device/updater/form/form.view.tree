@@ -1,0 +1,45 @@
+$yuf_sj_ui_device_updater_form $mol_form
+	selected_file? null
+	version_min* \
+	firmware_type_select_message @ \Select firmware type
+	model $yuf_sj_ui_device_info_model
+		firmware_version => version
+		version_latest* => version_latest*
+		firmware => firmware
+			supported_options => supported_options
+			progress? => progress?
+	body /
+		<= Firmware_type_field $mol_form_field
+			name <= firmware_type_name @ \Firmware type
+			bids /
+				<= required_firmware_type \*
+			content /
+				<= Firmware_type $mol_switch
+					value? <=> firmware_type? \
+					options <= supported_options
+		<= Version_label $mol_labeler
+			title <= version_title @ \Version
+			content /
+				<= Version_actual $mol_view sub / <= version_formatted \
+				<= Version_latest $mol_view sub / <= version_latest_formatted @ \(latest: {version_latest})
+		<= File_field $mol_form_field
+			name <= file_name @ \Firmware file
+			bids /
+				<= required_selected_file \*
+			content /
+				<= File $mol_button_open
+					title <= file_title @ \Firmware
+					multiple false
+					files? <=> selected_files? /File
+				^ selected_file_content /
+					<= Selected_file $mol_view sub / <= selected_file_name \
+	submit_title @ \Upload
+	message_done @ \Uploaded
+	message_empty_firmware @ \Firmware not selected
+	message_empty_firmware_type @ \Firmware type not selected
+	Submit $mol_button_major
+		title <= submit_title
+		enabled <= submit_allowed
+		hint <= submit_hint
+		activate? => submit_activate?
+		click? <=> submit?

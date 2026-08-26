@@ -1,0 +1,30 @@
+$yuf_sj_ui_device_catalog $yuf_catalog
+	menu_title @ \Devices
+	param_suffix \device
+	menu_tools / <= Close null
+	device_type \
+	store $yuf_sj_ui_device_store
+		by_id* => model*
+			info => info*
+		ids => spread_ids
+	Menu_item*0 $yuf_sj_ui_device_catalog_item
+		arg <= arg*
+		model <= info*
+	Menu_links_empty $mol_view sub /
+		<= empty_message @ \Devices not found
+	Spread* $yuf_sj_ui_device_page
+		title <= spread_title*
+		model <= info*
+		Close <= Spread_close
+
+$yuf_sj_ui_device_catalog_item $mol_view
+	sub /
+		<= Link $yuf_sj_ui_device_link
+			arg <= arg *
+			click? <=> click? null
+			model <= model $yuf_sj_ui_device_info_model
+		<= Buttons $mol_view sub /
+			<= Reset $yuf_button_reset
+				sub / <= Reset_icon $mol_icon_power
+				hint <= reset_title @ \Reset
+				click? <=> reset_event? null

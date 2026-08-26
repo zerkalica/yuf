@@ -1,0 +1,7 @@
+{
+	"$yuf_sj_ui_device_link_device_type_label": "Тип",
+	"$yuf_sj_ui_device_link_uptime_label": "Опрошено",
+	"$yuf_sj_ui_device_link_uptime_hint": "Время первого ответа",
+	"$yuf_sj_ui_device_link_version_label": "Версия",
+	"$yuf_sj_ui_device_link_serial_title": "Серийный номер"
+}

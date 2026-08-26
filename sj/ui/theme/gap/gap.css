@@ -1,0 +1,30 @@
+:root {
+	--yuf_sj_ui_theme_gap_page_s: 12rem;
+	--yuf_sj_ui_theme_gap_page_m: 22rem;
+	--yuf_sj_ui_theme_gap_page_l: 32rem;
+	--yuf_sj_ui_theme_gap_page_xl: calc( 100vw - var(--yuf_sj_ui_theme_gap_page_s) )
+}
+
+@media (max-width: 480px) {
+	:root {
+		--yuf_sj_ui_theme_gap_page_s: 100vw;
+		--yuf_sj_ui_theme_gap_page_m: 100vw;
+		--yuf_sj_ui_theme_gap_page_l: 100vw;
+	}
+}
+
+/* 481-767 Low resolution Tablets and iPads */
+@media (min-width: 481px) and (max-width: 767px) {
+	:root {
+		--yuf_sj_ui_theme_gap_page_m: 100vw;
+		--yuf_sj_ui_theme_gap_page_l: 100vw;
+	}
+}
+
+/*	768-1024 Tablets iPads (Portrait) */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	:root {
+		--yuf_sj_ui_theme_gap_page_l: calc( 100vw - var(--yuf_sj_ui_theme_gap_page_m) );
+	}
+}

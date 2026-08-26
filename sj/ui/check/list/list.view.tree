@@ -1,0 +1,7 @@
+$yuf_sj_ui_check_list $mol_check_list
+	Option* $mol_check_box
+		checked? <=> option_checked*?
+		label <= option_label*
+		enabled <= option_enabled*
+		hint <= option_hint*
+		minimal_height 24

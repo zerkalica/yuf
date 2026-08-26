@@ -1,0 +1,5 @@
+$yuf_sj_ui_device_status_label $mol_labeler
+	title @ \Status
+	content /
+		<= Status $yuf_sj_ui_device_status
+			value <= device_status null

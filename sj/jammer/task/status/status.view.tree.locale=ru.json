@@ -1,0 +1,10 @@
+{
+	"$yuf_sj_jammer_task_status_text_pending": "Неизвестно",
+	"$yuf_sj_jammer_task_status_dict_idle": "Простаивает",
+	"$yuf_sj_jammer_task_status_dict_scanning": "Сканирование",
+	"$yuf_sj_jammer_task_status_dict_receiving": "Прием",
+	"$yuf_sj_jammer_task_status_dict_jamming": "Подавление",
+	"$yuf_sj_jammer_task_status_dict_waiting": "Ожидает",
+	"$yuf_sj_jammer_task_status_dict_confirmed": "Подтверждено",
+	"$yuf_sj_jammer_task_status_dict_cancelled": "Отменяется"
+}

@@ -1,0 +1,442 @@
+asyncapi: '3.0.0'
+info:
+    title: Smart jammer common api
+    version: '1.0.0'
+components:
+    schemas:
+        api_ws:
+            oneOf:
+                - $ref: '#/components/schemas/auth_ws'
+                - $ref: '#/components/schemas/ping_ws'
+                - $ref: '#/components/schemas/pong_ws'
+                - $ref: '#/components/schemas/password_change_ws'
+                - $ref: '#/components/schemas/reboot_ws'
+                - $ref: '#/components/schemas/firmware_ws'
+                - $ref: '#/components/schemas/description_ws'
+                - $ref: '#/components/schemas/info_ws'
+                - $ref: '#/components/schemas/network_ws'
+                - $ref: '#/components/schemas/log_rows_ws'
+                - $ref: '#/components/schemas/log_settings_ws'
+        devices_ws:
+            description: Device updates from server
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: devices
+                      data:
+                          $ref: '#/components/schemas/devices'
+        devices:
+            description: Device id list
+            type: array
+            items:
+                type: string
+                description: Device id
+        ws_object:
+            type: object
+            required: ['type']
+            description: Standart ws message / command. Non-standart object properties moved to data property
+            properties:
+                id:
+                    description: entity id
+                    type: [string, number]
+                query:
+                    description: Search args object
+                    type: object
+                device:
+                    type: array
+                    description: device ids - path to subdevice
+                    examples:
+                        - "{ device: [ '123' ], type: 'rules', query: { allow: 1 }, data: null } is DELETE  `/device/123/rules?allow=1`"
+                    items:
+                        type: string
+                data:
+                    description: If undefined - request by type+query and subscribe to changes, null - delete object, else - patch object
+                    type: [object, 'null']
+                error:
+                    description: >
+                        Error code, if server returns error for type+query subscription
+                        Client send to server null, if wants to unsubscribe from changes in type + id + query + device
+                    type: [string, 'null']
+                    enum:
+                        - 'AUTH_FAILED'
+                        - 'DEVICE_NOT_FOUND'
+                        - 'OBJECT_NOT_FOUND'
+                        - 'INVALID_OBJECT'
+                        - 'FILE_READ_ERROR'
+                        - 'SCRIPT_ERROR'
+                        - 'INTERNAL_ERROR'
+                message:
+                    description: Optional error message or stack
+                    type: string
+        task:
+            type: object
+            required: ['id', 'freq_range', 'status', 'comment', 'auto']
+            properties:
+                id:
+                    type: string
+                    description: Client creates id
+                status:
+                    type: [string, 'null']
+                    enum: ['idle', 'scanning', 'receiving', 'jamming', 'waiting', 'confirmed', 'cancelled']
+                    description: >
+                        null - is dirty, not synced with server task, client switch waiting to jamming
+                        `waiting` - Wait to user confirm or cancel, user switch to `confirmed`
+                        `cancelled` - User wants cancel jamming, switching to `idle` by server
+                freq_range:
+                    $ref: '#/components/schemas/range'
+                    description: Frequency range in kHz, editable if auto false, required, jammer_settings bands
+                auto:
+                    type: boolean
+                    description: System task, created by server
+                comment:
+                    type: string
+                    description: User defined comment, editable if auto false
+        task_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: task
+                      data:
+                          $ref: '#/components/schemas/task'
+        tasks:
+            type: array
+            items:
+                type: string
+                description: Task ids
+        tasks_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: tasks
+                      data:
+                          $ref: '#/components/schemas/tasks'
+        password_change_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: password_change
+                      data:
+                          $ref: '#/components/schemas/password_change'
+        password_change:
+            type: object
+            required: ['password_new', 'password_old']
+            properties:
+                password_old:
+                    type: string
+                password_new:
+                    type: string
+        firmware_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: firmware
+                      data:
+                          $ref: '#/components/schemas/firmware'
+        firmware:
+            type: object
+            required: ['type']
+            description: Firmware object
+            properties:
+                type:
+                    type: string
+                    enum: ['JAMMER', 'JAMMER_MODULE', 'SDR']
+                data:
+                    description: Binary base64 data
+                    type: string
+                progress:
+                    type: integer
+                    description: Flashing progress in percents 0 - 100
+        log_rows_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: log_rows
+                      query:
+                          type: object
+                          properties:
+                              level:
+                                  type: [string, 'null']
+                                  enum: ['error', 'warn', 'info', 'debug', 'trace']
+                                  description: Log level to query, null - all
+                              max:
+                                  description: Lines max from end
+                                  type: integer
+                                  default: 1000
+                                  minimum: 100
+                                  maximum: 100000000
+                  data:
+                      $ref: '#/components/schemas/log_rows'
+        log_rows:
+            type: array
+            description: Log strings from server in realtime
+            items:
+                type: string
+        auth:
+            type: object
+            description: Client sends login and password or token to authorize
+            properties:
+                login:
+                    type: string
+                password:
+                    type: string
+                token:
+                    description: Server always returns token on success
+                    type: string
+        auth_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: auth
+                      data:
+                          $ref: '#/components/schemas/auth'
+        ping_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: ping
+        pong_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: pong
+        rule_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: rule
+                      data:
+                          $ref: '#/components/schemas/rule'
+        rule:
+            type: object
+            description: Black/white list rule
+            required: ['id', 'access', 'freq_range']
+            properties:
+                id:
+                    type: string
+                time:
+                    type: string
+                    format: date-time
+                    description: Rule creation time in ISO 8601
+                access:
+                    type: string
+                    enum: ['allow', 'deny']
+                comment:
+                    type: string
+                bind_uuid:
+                    type: [string, 'null']
+                    description: If bind_uuid string - only one freq in freqs required
+                freq_range:
+                    $ref: '#/components/schemas/range'
+                    description: Frequency range in kHz
+                spread_factors:
+                    type: array
+                    description: Spread factors
+                    item:
+                        type: string
+        rules_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  required:
+                      - query
+                  properties:
+                      type:
+                          type: string
+                          const: rules
+                      query:
+                          type: object
+                          required:
+                              - access
+                          properties:
+                              access:
+                                  type: string
+                                  enum: ['allow', 'deny']
+                      data:
+                          $ref: '#/components/schemas/rules'
+        rules:
+            type: array
+            items:
+                type: string
+                description: Rules ids
+        routes_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: routes
+                      data:
+                          $ref: '#/components/schemas/routes'
+        routes:
+            type: array
+            description: Routes objects, assume server response timeout (10sec) after submit as success
+            items:
+                $ref: '#/components/schemas/route'
+        route:
+            type: object
+            description: Static route
+            required: ['destination', 'gateway']
+            properties:
+                destination:
+                    type: string
+                    description: Destination ip mask, 192.168.0.0/24
+                gateway:
+                    type: string
+                    description: Gateway ip, 192.168.10.10
+        range:
+            description: Integer range
+            type: array
+            prefixItems:
+                - type: integer
+                  description: Min
+                - type: integer
+                  description: Max
+        range_dict:
+            type: object
+            additionalProperties:
+                $ref: '#/components/schemas/range'
+        info_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: info
+                      data:
+                          $ref: '#/components/schemas/info'
+        info:
+            description: Common device status
+            type: object
+            required: ['type', 'uptime', 'status']
+            properties:
+                type:
+                    type: string
+                    enum: ['JAMMER', 'JAMMER_MODULE', 'SDR']
+                firmware_version:
+                    type: string
+                    description: Firmware version
+                serial_number:
+                    type: string
+                    description: Device serial number, hardcoded in hardware
+                uptime:
+                    type: number
+                    description: Time from device start, ms
+                status:
+                    type: [string, 'null']
+                    enum: ['ok', 'err', 'na', 'reset-planned', 'resetting']
+                    description: >
+                        `ok` - Device ready, server sends to client
+                        `err` - Device error, server sends to client
+                        `na` - Device not available, server sends to client if configured USB device was sometime available and now is not
+                        `reset-planned` - Device reset suggest, client sends to server when wants to reset device
+                        `resetting` - Device is resetting, server sends to client, when make USB device reset, after receiving `reset-planned` from client
+                        `null` - Status unknown, server sends to client, if never did not receive any messages from device after power on
+                status_updated_at:
+                    type: number
+                    description: Time from last device query, ms
+        log_settings_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: log_settings
+                      data:
+                          $ref: '#/components/schemas/log_settings'
+        log_settings:
+            type: object
+            description: Log settings
+            properties:
+                level:
+                    type: [string, 'null']
+                    enum: ['error', 'warn', 'info', 'debug', 'trace']
+                    description: Log level to collect, null - disabled
+        description_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: description
+                      data:
+                          $ref: '#/components/schemas/description'
+        description:
+            type: object
+            description: Description settings
+            required: ['name']
+            properties:
+                name:
+                    type: string
+                    description: Device name (id)
+                description:
+                    type: string
+                    description: Device description
+        network_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: network
+                      data:
+                          $ref: '#/components/schemas/network'
+        network:
+            type: object
+            description: Network settings, assume server response timeout (10sec) after submit as success
+            required: ['ip', 'network_type']
+            properties:
+                network_type:
+                    type: string
+                    enum: ['dhcp', 'static']
+                ip:
+                    description: Ip with mask, default mask is /24
+                    examples:
+                        - 192.168.1.1/24
+                    type: string
+                gateway:
+                    type: string
+                dns:
+                    type: string
+                dns2:
+                    type: string
+        timestamp:
+            type: string
+            format: date-time
+            description: date and time in ISO 8601 format with milliseconds
+            examples:
+                - '2017-07-21T17:32:28.123Z'

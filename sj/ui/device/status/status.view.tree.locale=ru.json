@@ -1,0 +1,8 @@
+{
+	"$yuf_sj_ui_device_status_text_pending": "Неизвестно",
+	"$yuf_sj_ui_device_status_dict_err": "Ошибка",
+	"$yuf_sj_ui_device_status_dict_na": "Недоступен",
+	"$yuf_sj_ui_device_status_dict_ok": "Исправен",
+	"$yuf_sj_ui_device_status_dict_reset-planned": "Перезагрузка",
+	"$yuf_sj_ui_device_status_dict_resetting": "Перезагружается"
+}

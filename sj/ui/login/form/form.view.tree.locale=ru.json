@@ -1,0 +1,8 @@
+{
+	"$yuf_sj_ui_login_form_login_label": "Имя",
+	"$yuf_sj_ui_login_form_password_label": "Пароль",
+	"$yuf_sj_ui_login_form_login_error": "Неправильный логин или пароль",
+	"$yuf_sj_ui_login_form_error_token_empty": "Сервер вернул пустой токен",
+	"$yuf_sj_ui_login_form_unknown_error": "Ошибка сервера",
+	"$yuf_sj_ui_login_form_submit_title": "Войти"
+}

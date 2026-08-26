@@ -1,0 +1,16 @@
+$yuf_sj_ui_device_updater_book $mol_book
+	pages /
+		<= Main $yuf_sj_ui_device_updater_page
+			param_prefix <= param_prefix \
+			title => title
+			firmware_type => firmware_type
+			Close <= Close_main <= Close null
+			model <= info $yuf_sj_ui_device_info_model
+			version_min* <= version_min*
+		^ dev_list_content /$mol_view
+			<= Dev_list $yuf_sj_ui_device_catalog
+				param_prefix <= param_prefix
+				Close <= Close
+				device_type \JAMMER_MODULE
+				store <= devices $yuf_sj_ui_device_store
+					version_min* => version_min*

@@ -1,0 +1,22 @@
+$yuf_sj_jammer_task_page $mol_page
+	Buttons $yuf_sj_jammer_task_controls
+		model <= model
+		remove_content => remove_content
+		submitted? <=> submitted? null
+	title_content /
+		<= Status $yuf_sj_jammer_task_status status <= status
+		<= title
+	tools /
+		^ user_content /
+			<= User $mol_view sub /
+				<= User_icon $yuf_sj_jammer_task_icon_auto
+		^ remove_content
+		<= Close null
+	body /
+		<= Form $yuf_sj_jammer_task_form
+			submitted? <=> submitted?
+			model <= model $yuf_sj_jammer_task_model
+				title => title
+				status => status
+				auto => task_auto
+			sdr <= sdr $yuf_sj_jammer_sdr_model

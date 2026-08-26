@@ -1,0 +1,10 @@
+$yuf_sj_jammer_task_item $yuf_sj_ui_book_item
+	minimal_height 128
+	Link $yuf_sj_jammer_task_link
+		arg <= arg
+		needle <= needle \
+		model <= model $yuf_sj_jammer_task_model
+	Buttons $yuf_sj_jammer_task_controls
+		model <= model
+		submitted? <=> submitted? null
+		minimal_width <= buttons_minimal_width 40

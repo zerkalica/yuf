@@ -1,0 +1,12 @@
+$yuf_sj_jammer_sdr_book $yuf_catalog
+	pages /
+		<= Main $yuf_sj_jammer_sdr_page
+			title => title
+			param_prefix <= param_prefix \
+			model <= model $yuf_sj_jammer_sdr_model
+				slaves => slaves_model
+			Close <= Close null
+		^ slave_content /$mol_view
+			<= Slaves $yuf_sj_jammer_slave_page
+				param_prefix <= param_prefix
+				model <= slaves_model

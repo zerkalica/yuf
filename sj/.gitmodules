@@ -1,0 +1,19 @@
+[submodule "jammer/.ci/yuf"]
+	path = jammer/.ci/yuf
+	url = https://github.com/zerkalica/yuf.git
+[submodule "jammer/.ci/mam"]
+	path = jammer/.ci/mam
+	url = https://github.com/hyoo-ru/mam.git
+	branch = master
+[submodule "jammer/.ci/node"]
+	path = jammer/.ci/node
+	url = https://github.com/hyoo-ru/mam_node.git
+	branch = master
+[submodule "jammer/.ci/mol"]
+	path = jammer/.ci/mol
+	url = https://github.com/hyoo-ru/mam_mol.git
+	branch = master
+[submodule "jammer/.ci/mol-icon"]
+	path = jammer/.ci/mol-icon
+	url = https://github.com/nin-jin/mol_icon.git
+	branch = master

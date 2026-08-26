@@ -1,0 +1,16 @@
+$yuf_sj_jammer_sdr_form $yuf_sj_ui_book_form
+	model $yuf_sj_jammer_sdr_model_range
+	body /
+		<= Freq_range_fields $yuf_sj_jammer_sdr_form_ranges
+			submit? <=> submit_activate_fork?
+			limit <= limit $mol_vector_range<number> /
+				0
+				0
+			value*? <=> value_number*?
+			-
+			Min_field => Freq_range_min_field
+			Max_field => Freq_range_max_field
+
+$yuf_sj_jammer_sdr_form_ranges $yuf_sj_ui_range_group
+	rows /
+		<= Content

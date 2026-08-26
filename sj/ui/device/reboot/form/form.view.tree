@@ -1,0 +1,25 @@
+$yuf_sj_ui_device_reboot_form $mol_form
+	password_old? \
+	password_new? \
+	password_new2? \
+	reset? null
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+	form_fields /
+		<= Password_new_field $mol_form_field
+			bids /
+				<= required*password_new
+			name <= password_new_label @ \New password
+			control <= Password_new $yuf_password
+				value? <=> value_str*password_new? \
+				submit? <=> submit_activate?
+		<= Password_new2_field $mol_form_field
+			bids /
+				<= required*password_new2
+				<= new_password_equal*password_new2 @ \Not equal
+			name <= password_new2_label @ \New password (repeat)
+			control <= Password_new2 $yuf_password
+				value? <=> value_str*password_new2? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+	submit_title @ \Change password

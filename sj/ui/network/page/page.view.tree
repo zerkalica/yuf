@@ -1,0 +1,9 @@
+$yuf_sj_ui_network_page $mol_page
+	title @ \Network
+	param_prefix \
+	model $yuf_sj_ui_network_model
+	tools /
+		<= Close null
+	body /
+		<= Network_form $yuf_sj_ui_network_form
+			model <= model

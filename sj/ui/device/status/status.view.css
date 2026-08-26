@@ -1,0 +1,21 @@
+[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="na"] {
+	color: gold;
+}
+[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="ok"] {
+	color: chartreuse;
+}
+[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="err"] {
+	color: red;
+}
+
+:where([mol_theme="$mol_theme_light"], [mol_theme="$yuf_theme_light"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="na"] {
+	color: brown;
+}
+
+:where([mol_theme="$mol_theme_light"], [mol_theme="$yuf_theme_light"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="ok"] {
+	color: green;
+}
+
+:where([mol_theme="$mol_theme_light"], [mol_theme="$yuf_theme_light"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode="err"] {
+	color: red;
+}

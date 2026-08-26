@@ -1,0 +1,3 @@
+$yuf_sj_ui_device_updater_version $mol_labeler
+	title @ \Software version
+	content / <= version \

@@ -1,0 +1,13 @@
+{
+	"$yuf_sj_ui_device_updater_form_firmware_type_name": "Тип прошивки",
+	"$yuf_sj_ui_device_updater_form_file_name": "Файл прошивки",
+	"$yuf_sj_ui_device_updater_form_submit_title": "Загрузить",
+	"$yuf_sj_ui_device_updater_form_message_empty_firmware_type": "Тип прошивки не выбран",
+	"$yuf_sj_ui_device_updater_form_message_empty_firmware": "Файл прошивки не выбран",
+	"$yuf_sj_ui_device_updater_form_message_done": "Загружено",
+	"$yuf_sj_ui_device_updater_form_version_title": "Версия",
+	"$yuf_sj_ui_device_updater_form_version_latest_formatted": "({version_latest})",
+	"$yuf_sj_ui_device_updater_form_file_title": "Прошивка",
+	"$yuf_sj_ui_device_updater_form_firmware_type_select_message": "Выберите тип прошивки"
+
+}

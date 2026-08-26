@@ -1,0 +1,11 @@
+$yuf_sj_jammer_app_demo $mol_example_large
+	title \Jammer
+	sub /
+		<= Jammer $yuf_sj_jammer_app_mocked
+	tags /
+		\websocket
+		\crud
+		\rest
+		\harp
+	aspects /
+		\Application

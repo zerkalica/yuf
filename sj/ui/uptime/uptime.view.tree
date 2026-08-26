@@ -1,0 +1,9 @@
+$yuf_sj_ui_uptime $mol_labeler
+	title <= uptime_label @ \Uptime from {formatted_date}
+	Uptime $yuf_time_card
+		format \short
+		moment <= uptime $mol_time_moment
+		formatted_date => formatted_date
+	content /
+		<= Uptime_dur $yuf_time_duration
+			value <= uptime_dur $mol_time_duration

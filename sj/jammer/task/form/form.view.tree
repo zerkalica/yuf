@@ -1,0 +1,28 @@
+$yuf_sj_jammer_task_form $yuf_sj_ui_form_draft
+	model $yuf_sj_jammer_task_model
+	submitted?event null
+	sdr $yuf_sj_jammer_sdr_model
+		bands => bands
+	Bid $yuf_form_bid
+		required_msg => required_msg
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+	buttons /
+		^
+		^ buttons_foot /$mol_view
+	submit_title_run @ \Run
+	body /
+		<= Comment_field $mol_form_field
+			name <= comment_name @ \Comment
+			bids /
+				<= min*comment
+			control <= Comment $yuf_sj_ui_textarea
+				length_max 512
+				value? <=> value_str*comment?
+		<= Freq_group $mol_form_group sub /
+			^ freq_range_content /
+				<= Freq_range_fields $yuf_sj_ui_freq_range
+					bands <= bands
+					enabled <= freq_range_edit_enabled true
+					value*? <=> freq_value*? 0

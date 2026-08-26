@@ -1,0 +1,9 @@
+{
+	"$yuf_sj_jammer_rule_form_rule_title": "В белый список",
+	"$yuf_sj_jammer_rule_form_bind_uuid_name": "Bind uuid",
+	"$yuf_sj_jammer_rule_form_bind_uuid_hint": "123, 345, 15, 22",
+	"$yuf_sj_jammer_rule_form_comment_name": "Комментарий",
+	"$yuf_sj_jammer_rule_form_freqs_name": "Частоты, целые числа, kHz",
+	"$yuf_sj_jammer_rule_form_spreads_name": "Спредфактор",
+	"$yuf_sj_jammer_rule_form_access_name": "Доступ"
+}

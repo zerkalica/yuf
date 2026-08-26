@@ -1,0 +1,11 @@
+{
+	"$yuf_sj_jammer_sdr_page_title": "Настройки",
+	"$yuf_sj_jammer_sdr_page_mode_name": "Режимы",
+	"$yuf_sj_jammer_sdr_page_mode_hint": "Не показывать кнопки подавления / отмены в задачах, если включено",
+	"$yuf_sj_jammer_sdr_page_mode_title": "Автоматическое подавление",
+	"$yuf_sj_jammer_sdr_page_frequency_range_title": "Частоты, kHz",
+	"$yuf_sj_jammer_sdr_page_master_title": "Мастер",
+	"$yuf_sj_jammer_sdr_page_slaves_name": "Слейвы",
+	"$yuf_sj_jammer_sdr_page_slaves_hint": "admin:password@host:port admin2:password2@host2:port",
+	"$yuf_sj_jammer_sdr_page_slaves_save_title": "Сохранить"
+}

@@ -1,0 +1,36 @@
+$yuf_sj_jammer_app $yuf_sj_ui_app
+	menu_title @ \Jammer
+	Menu_logo $mol_icon_rocket_launch
+	model $yuf_sj_jammer_model
+		ws => ws
+		sdr => sdr
+		tasks => tasks
+		rules* => rules*
+		routes => routes
+		devices => devices
+	spreads_mid *
+		routes <= Routes $yuf_sj_ui_network_route_list
+			param_prefix <= param
+			routes <= routes
+			Close <= Spread_close
+		settings <= Settings $yuf_sj_jammer_sdr_book
+			param_prefix <= param
+			model <= sdr
+			Close <= Spread_close
+		task <= Task $yuf_sj_jammer_task_catalog
+			param_prefix <= param
+			sdr <= sdr
+			store <= tasks
+			Close <= Spread_close
+		- whitelist <= Whitelist $yuf_sj_jammer_rule_catalog
+			param_prefix <= param
+			store <= rules*allow
+			Close <= Spread_close
+		blacklist <= Blacklist $yuf_sj_jammer_rule_catalog
+			param_prefix <= param
+			store <= rules*deny
+			Close <= Spread_close
+		devices <= Devices $yuf_sj_ui_device_catalog
+			param_prefix <= param
+			store <= devices
+			Close <= Spread_close

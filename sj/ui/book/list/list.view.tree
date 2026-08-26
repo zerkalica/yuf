@@ -1,0 +1,16 @@
+$yuf_sj_ui_book_list $mol_page
+	draft_id? \
+	param_prefix \
+	ids /string
+	tools /
+		^ tools_foot /
+			<= Close null
+	max_rows 10
+	body /
+		<= Rows $mol_list
+			item_width_min* <= item_width_min 200
+			item_height_min* <= item_height_min 80
+			rows <= rows /
+				<= Row*0 $mol_view
+		<= Draft_label $mol_view sub <= draft_content /
+			<= Row_draft*0 $mol_view

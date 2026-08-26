@@ -1,0 +1,101 @@
+asyncapi: '3.0.0'
+info:
+    title: Smart jammer jammer api
+    version: '1.0.0'
+servers:
+    production:
+        host: http://127.0.0.1:9098
+        pathname: /ws
+        protocol: wss
+components:
+    messages:
+        $ref: '#/components/schemas/api_ws'
+    schemas:
+        api_ws:
+            oneOf:
+                - $ref: '../asyncapi.yaml#/components/schemas/api_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/routes_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/rule_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/rules_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/tasks_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/task_ws'
+                - $ref: '../asyncapi.yaml#/components/schemas/devices_ws'
+                - $ref: '#/components/schemas/jammer_settings_ws'
+                - $ref: '#/components/schemas/jammer_limits_ws'
+        jammer_limits_ws:
+            allOf:
+                - $ref: '../asyncapi.yaml#/components/schemas/ws_object'
+                - $ref: '#/components/schemas/jammer_limits'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: jammer_limits
+                      data:
+                          $ref: '#/components/schemas/jammer_limits'
+        jammer_limits:
+            description: Sdr settings limits for form validation, read only, in sdr config
+            type: object
+            required:
+                - bands
+            properties:
+                bands:
+                    $ref: '../asyncapi.yaml#/components/schemas/range_dict'
+                spread_factors:
+                    type: array
+                    items:
+                        type: string
+                        description: Spread factors
+        jammer_settings_ws:
+            allOf:
+                - $ref: '../asyncapi.yaml#/components/schemas/ws_object'
+                - $ref: '#/components/schemas/jammer_settings'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: jammer_settings
+                      data:
+                          $ref: '#/components/schemas/jammer_settings'
+        jammer_settings:
+            description: Sdr settings
+            type: object
+            required: ['bands', 'mode', 'master']
+            properties:
+                master:
+                    type: boolean
+                    description: Connect to slaves
+                mode:
+                    type: string
+                    enum: ['auto', 'manual']
+                    description: Ask user to confirm or jam via task waiting status
+                bands:
+                    type: object
+                    description: >
+                        Allowed frequencies in kHz
+                        Each range - manual text inputs
+                        Limiting by jammer_limits
+                    $ref: '../asyncapi.yaml#/components/schemas/range_dict'
+        slaves_ws:
+            allOf:
+                - $ref: '#/components/schemas/ws_object'
+                - type: object
+                  properties:
+                      type:
+                          type: string
+                          const: slaves
+                      data:
+                          $ref: '#/components/schemas/slaves'
+        slaves:
+            type: array
+            description: Slave object
+            items:
+                $ref: '#/components/schemas/slave'
+        slave:
+            type: object
+            description: Slave
+            required: ['uri']
+            properties:
+                uri:
+                    type: string
+                    description: login:password@host:port

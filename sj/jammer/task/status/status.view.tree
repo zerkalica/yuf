@@ -1,0 +1,15 @@
+$yuf_sj_jammer_task_status $mol_view
+	attr *
+		^
+		yuf_sj_jammer_task_status_mode <= mode_attr \pending
+	status null
+	dict *string
+		idle @ \Idle
+		scanning @ \Scanning
+		receiving @ \Receiving
+		jamming @ \Jamming
+		waiting @ \Waiting
+		confirmed @ \Confirmed
+		cancelled @ \Cancelling
+	sub /
+		<= text <= text_pending @ \Unknown

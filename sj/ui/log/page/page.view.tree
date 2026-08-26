@@ -1,0 +1,48 @@
+$yuf_sj_ui_log_page $mol_page
+	title @ \Logging
+	param_prefix \
+	model $yuf_sj_ui_log_model
+		level? => log_level?
+		lines_max? => lines_max?
+		search_text? => search_text?
+		levels_available => log_levels_available
+		server_logs_available => server_logs_available
+	tools /
+		<= Close null
+	foot /
+		<= Foot_tools_left $mol_view sub /
+			<= Logs_max_group $mol_view sub /
+				<= Logs_max_number_label $mol_view sub / <= logs_max_title
+				<= Logs_max_number $yuf_sj_ui_number
+					Dec null
+					Inc null
+					precision_change 1000
+					value_min 1000
+					value_max 1000000
+					hint <= logs_max_title @ \Strings to load max:
+					value? <=> lines_max?
+		<= Foot_tools_right $mol_view sub /
+			<= Up $mol_button_minor
+				hint <= up_hint @ \Scroll up
+				enabled <= up_enabled false
+				sub / <= Up_icon $mol_icon_arrow_up
+				click? <=> up_event? null
+	Title $mol_view sub /
+		<= Filter_text $mol_search
+			hint <= filter_text_hint @ \Search in logs
+			query? <=> search_text?
+		<= Log_level $mol_select
+			Filter null
+			trigger_enabled <= server_logs_available
+			dictionary <= log_levels_available
+			hint <= log_level_hint @ \Watch
+			value? <=> log_level?
+	body /
+		^ empty_content /
+			<= Empty_row $mol_view sub / <= empty_text @ \Set log level to grab logs
+		^ log_content /
+			<= List_dummy $mol_view
+				sub <= rows / <= Item*0 $mol_dimmer
+					minimal_height 40
+					needle <= search_text
+					haystack <= log_row* \

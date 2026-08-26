@@ -1,0 +1,16 @@
+$yuf_sj_jammer_slave_form $yuf_sj_ui_book_form
+	model $yuf_sj_jammer_slave_model
+	Bid $yuf_form_bid
+		value* <= value_str*
+		-
+		required* => required*
+	form_fields /
+		<= Uri_label $mol_form_field
+			bids /
+				<= required*uri
+			name <= uri_hint @ \URI
+			Content <= Uri $mol_string
+				hint \admin:password@host:port
+				length_max 128
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*uri?

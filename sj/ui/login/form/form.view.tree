@@ -1,0 +1,35 @@
+$yuf_sj_ui_login_form $mol_form
+	unknown_error @ \Server error
+	enter? null
+	errors *string
+		^
+		\Wrong password
+			<= login_error @ \Wrong password
+		\Server auth token is empty
+			<= error_token_empty @ \Server auth token is empty
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+		min* => min*
+		max* => max*
+	form_fields /
+		<= Login_field $mol_form_field
+			bids /
+				<= required*login
+				<= min*login
+				<= max*login
+			name <= login_label @ \User name
+			control <= Login $mol_string
+				value? <=> login? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+		<= Password_field $mol_form_field
+			bids /
+				<= required*password
+				<= min*password
+				<= max*password
+			name <= password_label @ \Password
+			control <= Password $yuf_password
+				value? <=> password? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+		^ form_fields_end /$mol_view
+	submit_title @ \Log In

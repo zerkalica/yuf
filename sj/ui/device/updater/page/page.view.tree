@@ -1,0 +1,28 @@
+$yuf_sj_ui_device_updater_page $mol_page
+	title @ \Update
+	param_prefix \
+	model $yuf_sj_ui_device_info_model
+		firmware => firmware
+			progress? => progress?
+			device_type => device_type
+	tools /
+		<= Close null
+	file_name? \
+	body /
+		^ form_content /$mol_view
+			<= Updater_form $yuf_sj_ui_device_updater_form
+				model <= model
+				version_min* <= version_min* \
+				save? <=> upload? null
+				firmware_type? => firmware_type?
+				selected_file => selected_file
+		<= Progress_block $mol_view sub <= progress_content /$mol_view
+			<= Info $mol_view sub / <= info \
+			<= Progress_status $mol_view sub <= progress_status_content /$mol_view_content
+				<= progress_status_text @ \Firmware update progress {progress}%
+				<= success_jammer @ \Done, rebooting...
+				<= success_module @ \Done
+			^ reset_content /$mol_view
+				<= Reset $mol_button_major
+					title <= reset_title @ \Flash again
+					click? <=> reset? null

@@ -1,0 +1,16 @@
+$yuf_sj_jammer_task_controls $mol_view
+	model $yuf_sj_jammer_task_model
+	submitted?event null
+	sub /
+		^ remove_content /
+			<= Remove $yuf_button_remove
+				click? <=> remove? null
+		^ confirm_content /
+			<= Confirm $mol_button_minor
+				sub / <= Confirm_icon $mol_icon_access_point
+				hint <= confirm_hint @ \Switch to jamming
+				click? <=> click_status*confirmed? null
+			<= Decline $mol_button_minor
+				sub / <= Decline_icon $mol_icon_sleep
+				hint <= decline_hint @ \Switch to idle
+				click? <=> click_status*cancelled?

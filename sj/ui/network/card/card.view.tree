@@ -1,0 +1,34 @@
+$yuf_sj_ui_network_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_network_model
+		ip_type => ip_type
+		ip => ip
+		gateway => gateway
+		dns => dns
+		dns2 => dns2
+	Network_page $yuf_sj_ui_network_page
+		title => network_title
+	Network_form $yuf_sj_ui_network_form
+		ip_type_name => ip_type_name
+		ip_type_options => ip_type_options
+		ip_name => ip_name
+		gateway_name => gateway_name
+		dns_name => dns_name
+		dns2_name => dns2_name
+	title <= network_title
+	content /
+		<= Ip_type $mol_labeler
+			title <= ip_type_name
+			content / <= ip_type
+		<= Ip $mol_labeler
+			title <= ip_name
+			content / <= ip
+		<= Gateway $mol_labeler
+			title <= gateway_name
+			content / <= gateway
+		<= Dns $mol_labeler
+			title <= dns_name
+			content / <= dns
+		<= Dns2 $mol_labeler
+			title <= dns2_name
+			content / <= dns2
+		^ network_content /$mol_view

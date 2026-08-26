@@ -1,0 +1,9 @@
+$yuf_sj_jammer_rule_switch $mol_switch
+	options *
+		allow <= access_allow @ \Allow
+		deny <= access_deny @ \Deny
+	Icon* $yuf_sj_jammer_rule_icon
+		status <= icon_status* \deny
+	option_label* /
+		<= Icon*
+		<= option_title*

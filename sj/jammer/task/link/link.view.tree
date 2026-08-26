@@ -1,0 +1,20 @@
+$yuf_sj_jammer_task_link $yuf_link
+	model $yuf_sj_jammer_task_model
+		comment => comment
+		status => status
+		auto => task_auto
+		freq_min => freq_min
+		freq_max => freq_max
+		id => id
+	minimal_height 80
+	sub /
+		<= Description $mol_view sub /
+			<= Status $yuf_sj_jammer_task_status status <= status
+			<= Status_block $mol_view sub /
+				<= Title $mol_dimmer
+					needle <= needle
+					haystack <= freq_range_formatted \{min} - {max} kHz
+				^ user_content / <= User_icon $yuf_sj_jammer_task_icon_auto
+		<= Comment $mol_dimmer
+			needle <= needle \
+			haystack <= comment

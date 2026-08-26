@@ -1,0 +1,13 @@
+$yuf_sj_ui_device_status $mol_view
+	attr *
+		^
+		yuf_sj_ui_device_status_mode <= mode_attr \pending
+	value null
+	dict *string
+		err @ \Error
+		na @ \Not available
+		ok @ \Ok
+		reset-planned @ \Reset planned
+		resetting @ \Resetting
+	sub /
+		<= text <= text_pending @ \Unknown
