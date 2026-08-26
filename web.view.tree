@@ -3133,3 +3133,1430 @@ $yuf_list_slicer_demo_item $mol_view
 	minimal_height 200
 	sub / <= Link $mol_link
 		title <= title
+
+$yuf_sj_ui_login_form $mol_form
+	unknown_error @ \Server error
+	enter? null
+	errors *string
+		^
+		\Wrong password
+			<= login_error @ \Wrong password
+		\Server auth token is empty
+			<= error_token_empty @ \Server auth token is empty
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+		min* => min*
+		max* => max*
+	form_fields /
+		<= Login_field $mol_form_field
+			bids /
+				<= required*login
+				<= min*login
+				<= max*login
+			name <= login_label @ \User name
+			control <= Login $mol_string
+				value? <=> login? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+		<= Password_field $mol_form_field
+			bids /
+				<= required*password
+				<= min*password
+				<= max*password
+			name <= password_label @ \Password
+			control <= Password $yuf_password
+				value? <=> password? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+		^ form_fields_end /$mol_view
+	submit_title @ \Log In
+
+$yuf_sj_ui_dash_card $mol_view
+	sub /
+		<= Link $yuf_link
+			arg <= arg *
+			sub /
+				<= Title $mol_view
+					dom_name \h1
+					sub / <= title \
+		<= Content $mol_view sub <= content /
+
+$yuf_sj_ui_form_draft $mol_form_draft
+	submit_activate_fork? null
+	changed_message @ \Draft, save to reset
+
+$yuf_sj_ui_textarea $mol_textarea
+	spellcheck false
+
+$yuf_sj_ui_description_form $yuf_sj_ui_form_draft
+	model $yuf_sj_ui_description_model
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+		ip4* => ip4*
+		latin_digits_alpha* => latin_digits_alpha*
+	form_fields /
+		<= Device_id_field $mol_form_field
+			name <= device_id_name @ \Device id
+			bids /
+				<= required*name
+				<= min*name
+				<= latin_digits_alpha*name
+			control <= Device_id $mol_string
+				value? <=> value_str*name?
+				submit? <=> submit_activate_fork? null
+				length_max 128
+		<= Description_field $mol_form_field
+			name <= description_name @ \Description
+			bids /
+				<= min*description
+			control <= Description $yuf_sj_ui_textarea
+				length_max 512
+				value? <=> value_str*description?
+
+$yuf_sj_ui_description_page $mol_page
+	title @ \Description
+	param_prefix \
+	tools /
+		<= Close null
+	body /
+		<= Form $yuf_sj_ui_description_form
+			model <= model $yuf_sj_ui_description_model
+
+$yuf_sj_ui_description_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_description_model
+		name => name
+		description => description
+	info_model $yuf_sj_ui_device_info_model
+		device_type => device_type
+	Description_form $yuf_sj_ui_description_form
+		device_id_name => device_id_name
+		description_name => description_name
+	Description_page $yuf_sj_ui_description_page
+		title => description_title
+	title <= description_title
+	content /
+		<= Name $mol_labeler
+			title <= device_id_name
+			content / <= name
+		<= Description $mol_labeler
+			title <= description_name
+			content / <= description
+
+$mol_check_list $mol_view
+	dictionary *
+	Option* $mol_check
+		checked? <=> option_checked*? false
+		label <= option_label* /
+			<= option_title* \
+		enabled <= option_enabled* <= enabled true
+		hint <= option_hint* \
+		minimal_height 24
+	options *
+	keys /string
+	sub <= items /$mol_check
+
+$mol_switch $mol_check_list
+	value? \
+
+$yuf_sj_ui_network_form $yuf_sj_ui_form_draft
+	model $yuf_sj_ui_network_model
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+		max* => max*
+		ip4* => ip4*
+		ip4_mask_required* => ip4_mask_required*
+	errors *string
+		^
+		\Request timeout
+			<= message_timeout @ \Server timeout. Settings maybe have been applied, relogin using a new link
+	body /$mol_form_field
+		<= Ip_type_field $mol_form_field
+			name <= ip_type_name @ \Connection type
+			content /
+				<= Ip_type $mol_switch
+					value? <=> ip_type? \
+					options <= ip_type_options *
+						static <= static_title @ \Static
+						dhcp <= dhcp_title @ \DHCP
+				^ dhcp_actualize_content /
+					<= No_actual_ip $mol_view
+						sub / <= no_actual_ip_text @ \Save to obtain IP from DHCP
+		<= Ip_content $mol_view sub <= ip_content /$mol_form_field
+			<= Ip_field $mol_form_field
+				name <= ip_name @ \IP and mask
+				bids /
+					<= required_dhcp*ip \
+					<= ip4_mask_required*ip
+				control <= Ip $mol_string
+					length_max 24
+					hint <= ip_mask_hint \192.168.1.1/24
+					submit? <=> submit_activate_fork? null
+					enabled <= ip_edit_enabled false
+					value? <=> value_str*ip?
+			<= Gateway_field $mol_form_field
+				name <= gateway_name @ \Gateway
+				bids /
+					<= ip4*gateway
+				control <= Gateway $mol_string
+					length_max 24
+					hint <= ip_hint \192.168.1.1
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*gateway?
+			<= Dns_field $mol_form_field
+				name <= dns_name @ \DNS 1
+				bids /
+					<= ip4*dns
+				control <= Dns $mol_string
+					length_max 24
+					hint <= ip_hint
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*dns?
+			<= Dns2_field $mol_form_field
+				name <= dns2_name @ \DNS 2
+				bids /
+					<= ip4*dns2
+				control <= Dns2 $mol_string
+					length_max 24
+					hint <= ip_hint
+					submit? <=> submit_activate_fork?
+					enabled <= ip_edit_enabled
+					value? <=> value_str*dns2?
+
+$yuf_sj_ui_network_page $mol_page
+	title @ \Network
+	param_prefix \
+	model $yuf_sj_ui_network_model
+	tools /
+		<= Close null
+	body /
+		<= Network_form $yuf_sj_ui_network_form
+			model <= model
+
+$yuf_sj_ui_network_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_network_model
+		ip_type => ip_type
+		ip => ip
+		gateway => gateway
+		dns => dns
+		dns2 => dns2
+	Network_page $yuf_sj_ui_network_page
+		title => network_title
+	Network_form $yuf_sj_ui_network_form
+		ip_type_name => ip_type_name
+		ip_type_options => ip_type_options
+		ip_name => ip_name
+		gateway_name => gateway_name
+		dns_name => dns_name
+		dns2_name => dns2_name
+	title <= network_title
+	content /
+		<= Ip_type $mol_labeler
+			title <= ip_type_name
+			content / <= ip_type
+		<= Ip $mol_labeler
+			title <= ip_name
+			content / <= ip
+		<= Gateway $mol_labeler
+			title <= gateway_name
+			content / <= gateway
+		<= Dns $mol_labeler
+			title <= dns_name
+			content / <= dns
+		<= Dns2 $mol_labeler
+			title <= dns2_name
+			content / <= dns2
+		^ network_content /$mol_view
+
+$yuf_sj_ui_device_updater_version $mol_labeler
+	title @ \Software version
+	content / <= version \
+
+$yuf_time_duration $mol_view
+	normalized <= value $mol_time_duration
+	show_minus true
+	template /string
+		\year
+		\month
+		\day
+		\hour
+		\minute
+		\second
+	year @ \year|years|years
+	month @ \month|months|months
+	day @ \day|days|days
+	hour @ \hour|hours|hours
+	minute @ \minute|minutes|minutes
+	second @ \second|seconds|seconds
+	sub /
+		<= formatted \
+
+$yuf_time_card $mol_view
+	format \normal
+	formats *string
+		normal \DD Month YY hh:mm:ss
+		short \DD.MM.YY hh:mm
+		hint \DD Month YYYY hh:mm:ss
+	local false
+	moment $mol_time_moment|null
+	attr *
+		^
+		title <= hint \
+	sub /
+		<= formatted_date \
+
+$yuf_sj_ui_uptime $mol_labeler
+	title <= uptime_label @ \Uptime from {formatted_date}
+	Uptime $yuf_time_card
+		format \short
+		moment <= uptime $mol_time_moment
+		formatted_date => formatted_date
+	content /
+		<= Uptime_dur $yuf_time_duration
+			value <= uptime_dur $mol_time_duration
+
+$yuf_sj_ui_device_status $mol_view
+	attr *
+		^
+		yuf_sj_ui_device_status_mode <= mode_attr \pending
+	value null
+	dict *string
+		err @ \Error
+		na @ \Not available
+		ok @ \Ok
+		reset-planned @ \Reset planned
+		resetting @ \Resetting
+	sub /
+		<= text <= text_pending @ \Unknown
+
+$yuf_sj_ui_device_status_label $mol_labeler
+	title @ \Status
+	content /
+		<= Status $yuf_sj_ui_device_status
+			value <= device_status null
+
+$yuf_sj_ui_device_reboot_form $mol_form
+	password_old? \
+	password_new? \
+	password_new2? \
+	reset? null
+	Bid $yuf_form_bid
+		value* <= value_str*? \
+		required* => required*
+	form_fields /
+		<= Password_new_field $mol_form_field
+			bids /
+				<= required*password_new
+			name <= password_new_label @ \New password
+			control <= Password_new $yuf_password
+				value? <=> value_str*password_new? \
+				submit? <=> submit_activate?
+		<= Password_new2_field $mol_form_field
+			bids /
+				<= required*password_new2
+				<= new_password_equal*password_new2 @ \Not equal
+			name <= password_new2_label @ \New password (repeat)
+			control <= Password_new2 $yuf_password
+				value? <=> value_str*password_new2? \
+				submit? <=> submit_activate_fork? <=> submit_activate?
+	submit_title @ \Change password
+
+$yuf_sj_ui_device_reboot_page $mol_page
+	title @ \Administration
+	param_prefix \
+	tools /
+		<= Close null
+	model $yuf_sj_ui_device_info_model
+		uptime => uptime
+		uptime_dur => uptime_dur
+		reboot_enabled => reboot_enabled
+		device_status => device_status
+	body /
+		<= Top $mol_view sub /
+			<= Uptime_label $yuf_sj_ui_uptime
+				uptime_dur <= uptime_dur
+				uptime <= uptime
+			<= Reboot_block $mol_view sub /
+				<= Status_label $yuf_sj_ui_device_status_label
+					device_status <= device_status
+				<= Reboot $mol_button_major
+					enabled <= reboot_enabled
+					sub / <= reboot_label @ \Reboot
+					click? <=> reboot? null
+		<= Admin_form $yuf_sj_ui_device_reboot_form
+			save? <=> save_password? null
+			password_new? => password_new?
+			password_old? => password_old?
+			reset => reset
+
+$yuf_sj_ui_device_reboot_card $yuf_sj_ui_dash_card
+	model $yuf_sj_ui_device_info_model
+		uptime => uptime
+		uptime_dur => uptime_dur
+		firmware_version => firmware_version
+	Admin_page $yuf_sj_ui_device_reboot_page
+		title => admin_title
+	title <= admin_title
+	content /
+		<= Version $yuf_sj_ui_device_updater_version
+			version <= firmware_version
+		<= Uptime $yuf_sj_ui_uptime
+			uptime <= uptime
+			uptime_dur <= uptime_dur
+
+$yuf_sj_ui_number $mol_number
+	String $yuf_sj_ui_number_string
+		blur_event? <=> blur_event? null
+		type <= type
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+
+$yuf_sj_ui_number_string $mol_string
+	event *
+		^
+		blur? <=> blur_event? null
+
+$mol_icon_arrow_up $mol_icon path \M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z
+
+$yuf_sj_ui_log_page $mol_page
+	title @ \Logging
+	param_prefix \
+	model $yuf_sj_ui_log_model
+		level? => log_level?
+		lines_max? => lines_max?
+		search_text? => search_text?
+		levels_available => log_levels_available
+		server_logs_available => server_logs_available
+	tools /
+		<= Close null
+	foot /
+		<= Foot_tools_left $mol_view sub /
+			<= Logs_max_group $mol_view sub /
+				<= Logs_max_number_label $mol_view sub / <= logs_max_title
+				<= Logs_max_number $yuf_sj_ui_number
+					Dec null
+					Inc null
+					precision_change 1000
+					value_min 1000
+					value_max 1000000
+					hint <= logs_max_title @ \Strings to load max:
+					value? <=> lines_max?
+		<= Foot_tools_right $mol_view sub /
+			<= Up $mol_button_minor
+				hint <= up_hint @ \Scroll up
+				enabled <= up_enabled false
+				sub / <= Up_icon $mol_icon_arrow_up
+				click? <=> up_event? null
+	Title $mol_view sub /
+		<= Filter_text $mol_search
+			hint <= filter_text_hint @ \Search in logs
+			query? <=> search_text?
+		<= Log_level $mol_select
+			Filter null
+			trigger_enabled <= server_logs_available
+			dictionary <= log_levels_available
+			hint <= log_level_hint @ \Watch
+			value? <=> log_level?
+	body /
+		^ empty_content /
+			<= Empty_row $mol_view sub / <= empty_text @ \Set log level to grab logs
+		^ log_content /
+			<= List_dummy $mol_view
+				sub <= rows / <= Item*0 $mol_dimmer
+					minimal_height 40
+					needle <= search_text
+					haystack <= log_row* \
+
+$mol_meter $mol_plugin
+	zoom 1
+	-
+	width? 0
+	height? 0
+	-
+	left? 0
+	right? 0
+	bottom? 0
+	top? 0
+
+$mol_touch $mol_plugin
+	start_zoom? 0
+	start_distance? 0
+	zoom? 1
+	allow_draw true
+	allow_pan true
+	allow_zoom true
+	action_type? \
+	action_point? $mol_vector_2d<number> /
+		NaN
+		NaN
+	-
+	start_pan? /
+		0
+		0
+	pan? $mol_vector_2d<number> /
+		0
+		0
+	pointer_center $mol_vector_2d<number> /
+		NaN
+		NaN
+	-
+	start_pos? null
+	swipe_precision 16
+	-
+	swipe_right? null
+	swipe_bottom? null
+	swipe_left? null
+	swipe_top? null
+	-
+	swipe_from_right? null
+	swipe_from_bottom? null
+	swipe_from_left? null
+	swipe_from_top? null
+	-
+	swipe_to_right? null
+	swipe_to_bottom? null
+	swipe_to_left? null
+	swipe_to_top? null
+	-
+	draw_start? null
+	draw? null
+	draw_end? null
+	-
+	style *
+		^
+		touch-action \none
+		overscroll-behavior \none
+	-
+	event *
+		^
+		pointerdown? <=> event_start? null
+		pointermove? <=> event_move? null
+		pointerup? <=> event_end? null
+		pointerleave? <=> event_leave? null
+		wheel? <=> event_wheel? null
+
+$mol_book $mol_view
+	sub <= pages_wrapped /$mol_view
+	minimal_width 0
+	pages /$mol_view
+	plugins /$mol_plugin
+		<= Meter $mol_meter
+			width => width
+		<= Touch $mol_touch
+			swipe_from_left? <=> event_front_up? null
+			swipe_to_left? <=> event_front_down? null
+	Page* $mol_book_page
+		Sub <= page* null
+		visible <= page_visible* true
+	Placeholder $mol_book_placeholder
+		title <= title
+
+$mol_book_placeholder $mol_view
+	minimal_width 400
+	attr *
+		^
+		tabindex null
+
+$mol_book_page $mol_ghost
+	attr_static *
+		^
+		tabindex 0
+		mol_book_page_visible true
+	attr *
+		^
+		mol_book_page_focused <= focused
+		mol_book_page_visible <= visible true
+
+$yuf_sj_ui_device_updater_form $mol_form
+	selected_file? null
+	version_min* \
+	firmware_type_select_message @ \Select firmware type
+	model $yuf_sj_ui_device_info_model
+		firmware_version => version
+		version_latest* => version_latest*
+		firmware => firmware
+			supported_options => supported_options
+			progress? => progress?
+	body /
+		<= Firmware_type_field $mol_form_field
+			name <= firmware_type_name @ \Firmware type
+			bids /
+				<= required_firmware_type \*
+			content /
+				<= Firmware_type $mol_switch
+					value? <=> firmware_type? \
+					options <= supported_options
+		<= Version_label $mol_labeler
+			title <= version_title @ \Version
+			content /
+				<= Version_actual $mol_view sub / <= version_formatted \
+				<= Version_latest $mol_view sub / <= version_latest_formatted @ \(latest: {version_latest})
+		<= File_field $mol_form_field
+			name <= file_name @ \Firmware file
+			bids /
+				<= required_selected_file \*
+			content /
+				<= File $mol_button_open
+					title <= file_title @ \Firmware
+					multiple false
+					files? <=> selected_files? /File
+				^ selected_file_content /
+					<= Selected_file $mol_view sub / <= selected_file_name \
+	submit_title @ \Upload
+	message_done @ \Uploaded
+	message_empty_firmware @ \Firmware not selected
+	message_empty_firmware_type @ \Firmware type not selected
+	Submit $mol_button_major
+		title <= submit_title
+		enabled <= submit_allowed
+		hint <= submit_hint
+		activate? => submit_activate?
+		click? <=> submit?
+
+$yuf_sj_ui_device_updater_page $mol_page
+	title @ \Update
+	param_prefix \
+	model $yuf_sj_ui_device_info_model
+		firmware => firmware
+			progress? => progress?
+			device_type => device_type
+	tools /
+		<= Close null
+	file_name? \
+	body /
+		^ form_content /$mol_view
+			<= Updater_form $yuf_sj_ui_device_updater_form
+				model <= model
+				version_min* <= version_min* \
+				save? <=> upload? null
+				firmware_type? => firmware_type?
+				selected_file => selected_file
+		<= Progress_block $mol_view sub <= progress_content /$mol_view
+			<= Info $mol_view sub / <= info \
+			<= Progress_status $mol_view sub <= progress_status_content /$mol_view_content
+				<= progress_status_text @ \Firmware update progress {progress}%
+				<= success_jammer @ \Done, rebooting...
+				<= success_module @ \Done
+			^ reset_content /$mol_view
+				<= Reset $mol_button_major
+					title <= reset_title @ \Flash again
+					click? <=> reset? null
+
+$yuf_sj_ui_device_page $yuf_sj_ui_device_updater_page
+
+$yuf_sj_ui_device_link $yuf_link
+	name \
+	model $yuf_sj_ui_device_info_model
+		id => id
+		device_type => device_type
+		device_status => device_status
+		uptime => uptime
+		serial => serial
+		firmware_version => version
+	minimal_height 168
+	sub /
+		<= Description $mol_view sub /
+			<= Title $mol_view sub /
+				<= name_id <= id
+			<= Status_block $mol_view sub /
+				<= Status $yuf_sj_ui_device_status
+					value <= device_status
+		<= Footer $mol_view sub /
+			<= Device_type_label $yuf_sj_ui_device_link_label
+				title <= device_type_label @ \Type
+				content / <= device_type_formatted \
+			<= Uptime_label $yuf_sj_ui_device_link_label
+				title <= uptime_label @ \Start
+				content / <= Uptime $yuf_time_card
+					moment <= uptime
+					hint <= uptime_hint @ \First data at
+					format \short
+			<= Version_label $yuf_sj_ui_device_link_label
+				title <= version_label @ \Ver
+				content / <= version
+			^ serial_content /
+				<= Serial_label $yuf_sj_ui_device_link_label
+					title <= serial_title @ \Serial number
+					content / <= serial
+
+$yuf_sj_ui_device_link_label $mol_labeler
+	Label $mol_view sub <= label
+
+$mol_icon_power $mol_icon path \M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13
+
+$yuf_button_reset $mol_button_minor
+	title @ \Reset
+	sub / <= Icon $mol_icon_refresh
+
+$yuf_sj_ui_device_catalog $yuf_catalog
+	menu_title @ \Devices
+	param_suffix \device
+	menu_tools / <= Close null
+	device_type \
+	store $yuf_sj_ui_device_store
+		by_id* => model*
+			info => info*
+		ids => spread_ids
+	Menu_item*0 $yuf_sj_ui_device_catalog_item
+		arg <= arg*
+		model <= info*
+	Menu_links_empty $mol_view sub /
+		<= empty_message @ \Devices not found
+	Spread* $yuf_sj_ui_device_page
+		title <= spread_title*
+		model <= info*
+		Close <= Spread_close
+
+$yuf_sj_ui_device_catalog_item $mol_view
+	sub /
+		<= Link $yuf_sj_ui_device_link
+			arg <= arg *
+			click? <=> click? null
+			model <= model $yuf_sj_ui_device_info_model
+		<= Buttons $mol_view sub /
+			<= Reset $yuf_button_reset
+				sub / <= Reset_icon $mol_icon_power
+				hint <= reset_title @ \Reset
+				click? <=> reset_event? null
+
+$yuf_sj_ui_device_updater_book $mol_book
+	pages /
+		<= Main $yuf_sj_ui_device_updater_page
+			param_prefix <= param_prefix \
+			title => title
+			firmware_type => firmware_type
+			Close <= Close_main <= Close null
+			model <= info $yuf_sj_ui_device_info_model
+			version_min* <= version_min*
+		^ dev_list_content /$mol_view
+			<= Dev_list $yuf_sj_ui_device_catalog
+				param_prefix <= param_prefix
+				Close <= Close
+				device_type \JAMMER_MODULE
+				store <= devices $yuf_sj_ui_device_store
+					version_min* => version_min*
+
+$yuf_sj_ui_app $yuf_catalog_app
+	login_body /
+		<= Login_form $yuf_sj_ui_login_form
+			enter? <=> enter? null
+			login => login
+			password => password
+		<= Server_offline $mol_status
+			message <= server_offline @ \Waiting server online... {error}
+	-
+	foot_second_post /
+		<= Ws_status $yuf_ws_status ws <= ws
+	model $yuf_sj_ui_device_model
+		ws => ws
+		session => session
+			logged => logged
+		auto => model_auto
+		auth => auth
+		log => log_model
+		devices => devices
+		network => network
+		description => description_model
+		info => info_model
+			firmware_version => version
+	-
+	auto /
+		^ model_auto
+	Placeholder $mol_page
+		title <= placeholder_title @ \Overall
+		body /$mol_view
+			<= Description_block $yuf_sj_ui_description_card
+				model <= description_model
+				arg <= menu_link_arg*description
+			<= Network_block $yuf_sj_ui_network_card
+				model <= network
+				arg <= menu_link_arg*network
+				network_content <= placeholder_network_content /$mol_view
+			<= Admin_block $yuf_sj_ui_device_reboot_card
+				model <= info_model
+				arg <= menu_link_arg*admin
+	param \yuf_sj
+	spreads *
+		description <= Description $yuf_sj_ui_description_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= description_model
+		network <= Network $yuf_sj_ui_network_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= network
+		^ spreads_mid *
+		logging <= Logging $yuf_sj_ui_log_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= log_model
+		updater <= Updater $yuf_sj_ui_device_updater_book
+			param_prefix <= param
+			Close <= Spread_close
+			info <= info_model
+			devices <= devices
+		admin <= Admin $yuf_sj_ui_device_reboot_page
+			param_prefix <= param
+			Close <= Spread_close
+			model <= info_model
+
+$yuf_sj_ui_book_list $mol_page
+	draft_id? \
+	param_prefix \
+	ids /string
+	tools /
+		^ tools_foot /
+			<= Close null
+	max_rows 10
+	body /
+		<= Rows $mol_list
+			item_width_min* <= item_width_min 200
+			item_height_min* <= item_height_min 80
+			rows <= rows /
+				<= Row*0 $mol_view
+		<= Draft_label $mol_view sub <= draft_content /
+			<= Row_draft*0 $mol_view
+
+$yuf_button_add $mol_button_minor
+	hint @ \Add
+	sub / <= Icon $mol_icon_plus
+
+$yuf_button_save $mol_button_minor
+	hint @ \Save
+	sub / <= Icon $mol_icon_content_save
+
+$yuf_button_remove $mol_button_minor
+	hint @ \Remove
+	sub /
+		<= Icon $mol_icon_trash_can_outline
+
+$yuf_sj_ui_book_form $yuf_sj_ui_form_draft
+	draft false
+	item_height_min 20
+	rows /
+		<= First $mol_view sub /
+			^ body
+			<= Foot
+		<= Second $mol_view sub /
+			<= Result
+			^ reset_content /
+				<= Reset
+	buttons /
+		^ add_content /
+			<= Add $yuf_button_add
+				enabled <= submit_allowed_and_changed <= submit_allowed
+				click? <=> submit?
+		^ save_content /
+			<= Save $yuf_button_save
+				hint <= submit_hint
+				activate? => submit_activate?
+				enabled <= submit_allowed_and_changed
+				click? <=> submit?
+		^ remove_content /
+			<= Remove $yuf_button_remove
+				click? <=> remove_event? null
+
+$yuf_sj_ui_network_route_form $yuf_sj_ui_book_form
+	model $yuf_sj_ui_network_route_model
+	Bid $yuf_form_bid
+		value* <= value_str*
+		-
+		required* => required*
+		ip4* => ip4*
+		ip4_mask* => ip4_mask*
+	message_timeout @ \Server timeout. Settings maybe have been applied
+	timeout_success? false
+	form_fields /
+		<= Destination_label $mol_form_field
+			bids /
+				<= required*destination
+				<= ip4_mask*destination
+			name <= destination_hint @ \Destination
+			Content <= Destination $mol_string
+				hint \192.168.0.0/24
+				length_max 24
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*destination?
+		<= Gateway_label $mol_form_field
+			bids /
+				<= required*gateway
+				<= ip4*gateway
+			name <= gateway_hint @ \Gateway
+			Content <= Gateway $mol_string
+				hint \192.168.10.10
+				length_max 24
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*gateway?
+
+$yuf_sj_ui_network_route_list $yuf_sj_ui_book_list
+	title @ \Routes
+	tools /
+		^ tools_foot /
+			<= Close null
+	routes $yuf_sj_ui_network_route_store
+		ids => ids
+		by_id* => by_id*
+	Row*0 $yuf_sj_ui_network_route_form
+		model <= by_id*
+		remove_event? <=> remove_event*? null
+	Row_draft*0 $yuf_sj_ui_network_route_form
+		draft true
+		model <= by_id*
+		remove_event? <=> remove_event*?
+
+$yuf_sj_ui_range_group $mol_labeler
+	limit $mol_vector_range<number> /
+		0
+		0
+	value*? 0
+	content /
+		<= Min_field $mol_form_field
+			name <= min_name @ \Min
+			bids /
+				<= required_num*min <= required_msg \*
+				<= limit_msg*min \
+			Content <= Min $mol_number
+				value? <=> value*min?
+				enabled <= enabled true
+				submit? <=> submit? null
+				Dec null
+				Inc null
+		<= Max_field $mol_form_field
+			name <= max_name @ \Max
+			bids /
+				<= required_num*max
+				<= limit_msg*max
+				<= greater_min*max <= greater_min_message \> {min}
+			Content <= Max $mol_number
+				submit? <=> submit?
+				value? <=> value*max?
+				enabled <= enabled true
+				Dec null
+				Inc null
+
+$yuf_sj_jammer_sdr_form $yuf_sj_ui_book_form
+	model $yuf_sj_jammer_sdr_model_range
+	body /
+		<= Freq_range_fields $yuf_sj_jammer_sdr_form_ranges
+			submit? <=> submit_activate_fork?
+			limit <= limit $mol_vector_range<number> /
+				0
+				0
+			value*? <=> value_number*?
+			-
+			Min_field => Freq_range_min_field
+			Max_field => Freq_range_max_field
+
+$yuf_sj_jammer_sdr_form_ranges $yuf_sj_ui_range_group
+	rows /
+		<= Content
+
+$yuf_sj_jammer_sdr_page $yuf_sj_ui_book_list
+	title @ \Settings
+	model $yuf_sj_jammer_sdr_model
+		range_ids => ids
+		mode? => mode?
+		master? => master?
+		band_limit_hard => band_limit_hard
+		range_by_id* => range_by_id*
+	max_rows 1
+	Row*0 $yuf_sj_jammer_sdr_form
+		model <= range_by_id*
+		limit <= band_limit_hard
+		remove_event? <=> remove_event*? null
+	Row_draft*0 $yuf_sj_jammer_sdr_form
+		draft true
+		model <= range_by_id*
+		limit <= band_limit_hard
+		remove_event? <=> remove_event*?
+	body /
+		<= Mode_field $mol_form_field
+			name <= mode_name @ \Modes
+			content /
+				<= Master $mol_check_box
+					checked? <=> master?
+					title <= master_title @ \Is master
+				^ mode_content /$mol_view
+					<= Mode $mol_check_box
+						checked? <=> confirm_checked? false
+						hint <= mode_hint @ \Do not show jamming / cancel buttons in tasks if enabled
+						title <= mode_title @ \Auto confirm jamming
+		^ freq_content /$mol_view
+			<= Rows_block $mol_labeler
+				title <= frequency_range_title @ \Frequencies, kHz
+				content /
+					<= Rows
+					<= Draft_label
+
+$yuf_sj_jammer_slave_form $yuf_sj_ui_book_form
+	model $yuf_sj_jammer_slave_model
+	Bid $yuf_form_bid
+		value* <= value_str*
+		-
+		required* => required*
+	form_fields /
+		<= Uri_label $mol_form_field
+			bids /
+				<= required*uri
+			name <= uri_hint @ \URI
+			Content <= Uri $mol_string
+				hint \admin:password@host:port
+				length_max 128
+				submit? <=> submit_activate_fork?
+				value? <=> value_str*uri?
+
+$yuf_sj_jammer_slave_page $yuf_sj_ui_book_list
+	title @ \Slaves
+	model $yuf_sj_jammer_slave_store
+		ids => ids
+		by_id* => slave_by_id*
+	max_rows 20
+	Row*0 $yuf_sj_jammer_slave_form
+		model <= slave_by_id*
+		remove_event? <=> remove_event*? null
+	Row_draft*0 $yuf_sj_jammer_slave_form
+		draft true
+		model <= slave_by_id*
+		remove_event? <=> remove_event*?
+
+$yuf_sj_jammer_sdr_book $yuf_catalog
+	pages /
+		<= Main $yuf_sj_jammer_sdr_page
+			title => title
+			param_prefix <= param_prefix \
+			model <= model $yuf_sj_jammer_sdr_model
+				slaves => slaves_model
+			Close <= Close null
+		^ slave_content /$mol_view
+			<= Slaves $yuf_sj_jammer_slave_page
+				param_prefix <= param_prefix
+				model <= slaves_model
+
+$yuf_sj_ui_book_item $mol_view
+	sub /
+		<= Link $yuf_link
+			arg <= arg *
+		<= Buttons $mol_view
+			minimal_width <= buttons_minimal_width 40
+			sub <= buttons /$mol_view
+
+$yuf_sj_jammer_task_status $mol_view
+	attr *
+		^
+		yuf_sj_jammer_task_status_mode <= mode_attr \pending
+	status null
+	dict *string
+		idle @ \Idle
+		scanning @ \Scanning
+		receiving @ \Receiving
+		jamming @ \Jamming
+		waiting @ \Waiting
+		confirmed @ \Confirmed
+		cancelled @ \Cancelling
+	sub /
+		<= text <= text_pending @ \Unknown
+
+$mol_icon_account $mol_icon path \M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z
+
+$yuf_sj_jammer_task_icon_auto $mol_icon_account
+
+$yuf_sj_jammer_task_link $yuf_link
+	model $yuf_sj_jammer_task_model
+		comment => comment
+		status => status
+		auto => task_auto
+		freq_min => freq_min
+		freq_max => freq_max
+		id => id
+	minimal_height 80
+	sub /
+		<= Description $mol_view sub /
+			<= Status $yuf_sj_jammer_task_status status <= status
+			<= Status_block $mol_view sub /
+				<= Title $mol_dimmer
+					needle <= needle
+					haystack <= freq_range_formatted \{min} - {max} kHz
+				^ user_content / <= User_icon $yuf_sj_jammer_task_icon_auto
+		<= Comment $mol_dimmer
+			needle <= needle \
+			haystack <= comment
+
+$mol_icon_access_point $mol_icon path \M4.93,4.93C3.12,6.74 2,9.24 2,12C2,14.76 3.12,17.26 4.93,19.07L6.34,17.66C4.89,16.22 4,14.22 4,12C4,9.79 4.89,7.78 6.34,6.34L4.93,4.93M19.07,4.93L17.66,6.34C19.11,7.78 20,9.79 20,12C20,14.22 19.11,16.22 17.66,17.66L19.07,19.07C20.88,17.26 22,14.76 22,12C22,9.24 20.88,6.74 19.07,4.93M7.76,7.76C6.67,8.85 6,10.35 6,12C6,13.65 6.67,15.15 7.76,16.24L9.17,14.83C8.45,14.11 8,13.11 8,12C8,10.89 8.45,9.89 9.17,9.17L7.76,7.76M16.24,7.76L14.83,9.17C15.55,9.89 16,10.89 16,12C16,13.11 15.55,14.11 14.83,14.83L16.24,16.24C17.33,15.15 18,13.65 18,12C18,10.35 17.33,8.85 16.24,7.76M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z
+
+$mol_icon_sleep $mol_icon path \M23,12H17V10L20.39,6H17V4H23V6L19.62,10H23V12M15,16H9V14L12.39,10H9V8H15V10L11.62,14H15V16M7,20H1V18L4.39,14H1V12H7V14L3.62,18H7V20Z
+
+$yuf_sj_jammer_task_controls $mol_view
+	model $yuf_sj_jammer_task_model
+	submitted?event null
+	sub /
+		^ remove_content /
+			<= Remove $yuf_button_remove
+				click? <=> remove? null
+		^ confirm_content /
+			<= Confirm $mol_button_minor
+				sub / <= Confirm_icon $mol_icon_access_point
+				hint <= confirm_hint @ \Switch to jamming
+				click? <=> click_status*confirmed? null
+			<= Decline $mol_button_minor
+				sub / <= Decline_icon $mol_icon_sleep
+				hint <= decline_hint @ \Switch to idle
+				click? <=> click_status*cancelled?
+
+$yuf_sj_jammer_task_item $yuf_sj_ui_book_item
+	minimal_height 128
+	Link $yuf_sj_jammer_task_link
+		arg <= arg
+		needle <= needle \
+		model <= model $yuf_sj_jammer_task_model
+	Buttons $yuf_sj_jammer_task_controls
+		model <= model
+		submitted? <=> submitted? null
+		minimal_width <= buttons_minimal_width 40
+
+$yuf_sj_ui_freq_range $mol_view
+	bands *readonly(number)[]
+	sub /
+		<= Freq_range_fields $yuf_sj_ui_range_group
+			title <= freq_range_title @ \Frequency, kHz
+			limit <= limit $mol_vector_range<number> /
+				0
+				0
+			enabled <= enabled true
+			value*? <=> value*? 0
+		<= Freq_range_help_field $mol_form_field
+			name <= freq_range_help_available @ \Available ranges, kHz
+			content /
+				<= Freq_range_help $mol_view
+					sub /
+						<= help_message \
+
+$mol_form_group $mol_view
+
+$yuf_sj_jammer_task_form $yuf_sj_ui_form_draft
+	model $yuf_sj_jammer_task_model
+	submitted?event null
+	sdr $yuf_sj_jammer_sdr_model
+		bands => bands
+	Bid $yuf_form_bid
+		required_msg => required_msg
+		value* <= value_str*?
+		required* => required*
+		min* => min*
+	buttons /
+		^
+		^ buttons_foot /$mol_view
+	submit_title_run @ \Run
+	body /
+		<= Comment_field $mol_form_field
+			name <= comment_name @ \Comment
+			bids /
+				<= min*comment
+			control <= Comment $yuf_sj_ui_textarea
+				length_max 512
+				value? <=> value_str*comment?
+		<= Freq_group $mol_form_group sub /
+			^ freq_range_content /
+				<= Freq_range_fields $yuf_sj_ui_freq_range
+					bands <= bands
+					enabled <= freq_range_edit_enabled true
+					value*? <=> freq_value*? 0
+
+$yuf_sj_jammer_task_page $mol_page
+	Buttons $yuf_sj_jammer_task_controls
+		model <= model
+		remove_content => remove_content
+		submitted? <=> submitted? null
+	title_content /
+		<= Status $yuf_sj_jammer_task_status status <= status
+		<= title
+	tools /
+		^ user_content /
+			<= User $mol_view sub /
+				<= User_icon $yuf_sj_jammer_task_icon_auto
+		^ remove_content
+		<= Close null
+	body /
+		<= Form $yuf_sj_jammer_task_form
+			submitted? <=> submitted?
+			model <= model $yuf_sj_jammer_task_model
+				title => title
+				status => status
+				auto => task_auto
+			sdr <= sdr $yuf_sj_jammer_sdr_model
+
+$yuf_sj_jammer_task_catalog $yuf_catalog
+	menu_title @ \Tasks
+	param_suffix \task
+	addon_tools /
+		^ add_content /$mol_view
+			<= Add $yuf_button_add
+				click? <=> task_add_event? null
+		<= Close null
+	store $yuf_sj_jammer_task_store
+		by_id* => task*
+			status => status*
+		ids => spread_ids
+	Menu_item* $yuf_sj_jammer_task_item
+		arg <= arg*
+		model <= task*
+		needle <= menu_filter
+		submitted? <=> task_submitted*? null
+	Spread* $yuf_sj_jammer_task_page
+		model <= task*
+		sdr <= sdr $yuf_sj_jammer_sdr_model
+		submitted? <=> task_submitted*?
+		Close <= Spread_close
+	Status* $yuf_sj_jammer_task_status
+		status <= status*
+		text => status_text*
+
+$mol_icon_delete $mol_icon path \M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z
+
+$mol_icon_delete_forever $mol_icon path \M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z
+
+$yuf_button_remove_all $mol_button_minor
+	hint @ \Remove all
+	sub /
+		<= Icon $mol_icon_delete_forever
+
+$mol_icon_hand $mol_icon path \M6.58,19H14.58V22H6.58V19M19.74,11.6C19.55,11.4 19.29,11.28 19,11.28L18.78,11.31L15.58,13V11.83L16.09,2.9C16.12,2.35 15.7,1.87 15.15,1.84C14.6,1.81 14.12,2.23 14.09,2.78L13.82,7.47H13.58L12.54,7.58V2C12.54,1.45 12.09,1 11.54,1C11,1 10.54,1.45 10.54,2V8.41L9.72,8.78L9.03,3.32C8.96,2.77 8.46,2.38 7.91,2.45C7.36,2.5 6.97,3 7.04,3.57L7.81,9.63L7.43,9.8C7.3,9.85 7.18,9.93 7.07,10L5.97,6.11C5.81,5.54 5.25,5.2 4.71,5.34C4.18,5.5 3.88,6.08 4.04,6.65L6.61,15.77C6.61,15.8 6.63,15.84 6.64,15.87L6.67,16H6.68C6.9,16.57 7.47,17 8.08,17H14.58C14.97,17 15.32,16.84 15.58,16.57L20.5,12.37L19.74,11.6Z
+
+$mol_icon_hand_back_left $mol_icon path \M3 16V5.75C3 5.06 3.56 4.5 4.25 4.5S5.5 5.06 5.5 5.75V12H6.5V2.75C6.5 2.06 7.06 1.5 7.75 1.5C8.44 1.5 9 2.06 9 2.75V12H10V1.25C10 .56 10.56 0 11.25 0S12.5 .56 12.5 1.25V12H13.5V3.25C13.5 2.56 14.06 2 14.75 2S16 2.56 16 3.25V15H16.75L18.16 11.47C18.38 10.92 18.84 10.5 19.4 10.31L20.19 10.05C21 9.79 21.74 10.58 21.43 11.37L18.4 19C17.19 22 14.26 24 11 24C6.58 24 3 20.42 3 16Z
+
+$yuf_sj_jammer_rule_icon $mol_icon_hand_back_left
+	status \deny
+	status_icon *$mol_icon
+		allow <= Allow_icon $mol_icon_check
+		deny <= Deny_icon $mol_icon_hand_back_left
+
+$yuf_sj_jammer_rule_link $yuf_link
+	theme_selected \$mol_theme_current
+	attr *
+		^
+		mol_theme <= card_theme <= theme_normal \
+	model $yuf_sj_jammer_rule_model
+		comment => comment
+		access => access
+		freq_min => freq_min
+		freq_max => freq_max
+		spreads => spreads
+	minimal_height 112
+	sub /
+		<= Time_row $mol_view sub /
+			<= Time $mol_dimmer
+				needle <= menu_filter
+				haystack <= created_at_formatted \DD.MM.YY  / hh:mm:ss.sss
+			^ bind_uuid_content /$mol_view
+				<= Uuid $mol_dimmer
+					needle <= menu_filter
+					haystack <= bind_uuid \
+			<= Access $yuf_sj_jammer_rule_icon
+				status <= access
+		<= Freqs $mol_view
+			sub / <= freqs <= freq_range_formatted @ \{freq_min} - {freq_max} kHz
+		<= Spreads $mol_view
+			sub / <= spreads_formatted \
+		<= Comment $mol_dimmer
+			needle <= menu_filter \
+			haystack <= comment
+
+$yuf_sj_jammer_rule_switch $mol_switch
+	options *
+		allow <= access_allow @ \Allow
+		deny <= access_deny @ \Deny
+	Icon* $yuf_sj_jammer_rule_icon
+		status <= icon_status* \deny
+	option_label* /
+		<= Icon*
+		<= option_title*
+
+$mol_check_group $mol_check_box
+	checks /$mol_check
+	full true
+
+$mol_icon_check_all $mol_icon path \M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z
+
+$yuf_check_list $mol_view
+	value? /string
+	options /string
+	dictionary *string
+	sub /
+		<= All $mol_check_group
+			title @ \All
+			checks <= checks
+		^ checks /$mol_check
+			<= Item*0 $mol_check_box
+				checked? <=> item_checked*? false
+				title <= item_title* \
+
+$yuf_sj_jammer_rule_form $yuf_sj_ui_form_draft
+	model $yuf_sj_jammer_rule_model
+		bind_uuid_required => bind_uuid_required
+		sdr => sdr
+			bands => bands
+			spreads_available => spreads_available
+	done? false
+	Bid $yuf_form_bid
+		value* <= value_str*?
+		required* => required*
+	buttons /
+		^
+		^ buttons_extra /$mol_view
+			^ rule_content /$mol_view
+				<= Whitelist $mol_button_minor
+					enabled <= rule_allowed false
+					click? <=> rule_event? null
+					title <= rule_title @ \To whitelist
+	body /
+		^ bind_uuid_content /$mol_view
+			<= Bind_uuid_field $mol_form_field
+				bids /
+					<= bind_uuid_required_bid <= required*bind_uuid
+					<= numbers_check*bind_uuid @ \Example: 123, 345, 15, 22
+				name <= bind_uuid_name @ \Bind uuid
+				control <= Bind_uuid $mol_string
+					hint <= bind_uuid_hint @ \123, 345, 15, 22
+					length_max 80
+					value? <=> value_str*bind_uuid?
+					submit? <=> submit?
+		<= Access_field $mol_form_field
+			name <= access_name @ \Access
+			control <= Access $yuf_sj_jammer_rule_switch
+				value? <=> value_str*access?
+		<= Comment_field $mol_form_field
+			name <= comment_name @ \Comment
+			control <= Comment $yuf_sj_ui_textarea
+				length_max 128
+				value? <=> value_str*comment?
+				submit? <=> submit?
+		<= Freq_range $yuf_sj_ui_freq_range
+			bands <= bands
+			value*? <=> freq_value*? 0
+		<= Spreads_field $mol_form_field
+			name <= spreads_name @ \Spreads
+			control <= Spreads $yuf_check_list
+				value? <=> list_string*spreads?
+				options <= spreads_available
+		- <= Freqs_field $mol_form_field
+			bids /
+				<= numbers_check*freqs_str
+			name <= freqs_name @ \Freq, integers kHz
+			control <= Freqs $yuf_sj_ui_textarea
+				length_max 4096
+				hint <= freqs_hint \150, 150000, 1_200_000
+				value? <=> value_str*freqs_str?
+				submit? <=> submit?
+
+$yuf_sj_jammer_rule_page $mol_page
+	model $yuf_sj_jammer_rule_model
+	tools /
+		^ remove_content /$mol_view
+			<= Remove $mol_button_minor
+				hint <= remove_hint @ \Remove rule
+				sub / <= Delete_icon $mol_icon_trash_can_outline
+				click? <=> remove_event? null
+		<= Close null
+	body /
+		<= Form $yuf_sj_jammer_rule_form
+			model <= model
+			done? <=> done? false
+
+$yuf_sj_jammer_rule_catalog $yuf_catalog
+	menu_title @ \Whitelist
+	menu_title_blacklist @ \Blacklist
+	param_suffix \rule
+	store $yuf_sj_jammer_rule_store
+		by_id* => rule*
+		ids => spread_ids
+		access_type => access_type
+		sdr => sdr
+			master => master
+	menu_tools /$mol_view_content
+		^ add_content /$mol_view
+			<= Add $yuf_button_add
+				click? <=> add_event? null
+		^ remove_content /$mol_view
+			<= Remove_all $yuf_button_remove_all
+				click? <=> remove_all_event? null
+		<= Close null
+	menu_head /
+		<= Menu_filter
+		<= Menu_tools
+	menu_body /
+		<= Menu_links
+	Menu_filter $mol_search
+		hint <= menu_filter_hint @ \{type} search
+		query? <=> menu_filter?
+	Spread* $yuf_sj_jammer_rule_page
+		model <= rule*
+		remove_event? <=> remove_event*? null
+		done? <=> done*? false
+		Close <= Spread_close
+	Menu_item* $mol_view
+		minimal_height 60
+		sub <= menu_item_content* /
+			<= Menu_link* $yuf_sj_jammer_rule_link
+				arg <= arg*
+				model <= rule*
+				menu_filter <= menu_filter
+
+$mol_icon_rocket $mol_icon path \M20 22L16.14 20.45C16.84 18.92 17.34 17.34 17.65 15.73L20 22M7.86 20.45L4 22L6.35 15.73C6.66 17.34 7.16 18.92 7.86 20.45M12 2C12 2 17 4 17 12C17 15.1 16.25 17.75 15.33 19.83C15 20.55 14.29 21 13.5 21H10.5C9.71 21 9 20.55 8.67 19.83C7.76 17.75 7 15.1 7 12C7 4 12 2 12 2M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z
+
+$mol_icon_rocket_launch $mol_icon path \M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z
+
+$yuf_sj_jammer_app $yuf_sj_ui_app
+	menu_title @ \Jammer
+	Menu_logo $mol_icon_rocket_launch
+	model $yuf_sj_jammer_model
+		ws => ws
+		sdr => sdr
+		tasks => tasks
+		rules* => rules*
+		routes => routes
+		devices => devices
+	spreads_mid *
+		routes <= Routes $yuf_sj_ui_network_route_list
+			param_prefix <= param
+			routes <= routes
+			Close <= Spread_close
+		settings <= Settings $yuf_sj_jammer_sdr_book
+			param_prefix <= param
+			model <= sdr
+			Close <= Spread_close
+		task <= Task $yuf_sj_jammer_task_catalog
+			param_prefix <= param
+			sdr <= sdr
+			store <= tasks
+			Close <= Spread_close
+		- whitelist <= Whitelist $yuf_sj_jammer_rule_catalog
+			param_prefix <= param
+			store <= rules*allow
+			Close <= Spread_close
+		blacklist <= Blacklist $yuf_sj_jammer_rule_catalog
+			param_prefix <= param
+			store <= rules*deny
+			Close <= Spread_close
+		devices <= Devices $yuf_sj_ui_device_catalog
+			param_prefix <= param
+			store <= devices
+			Close <= Spread_close
+
+$yuf_sj_jammer_app_mocked $yuf_sj_jammer_app
+
+$yuf_sj_jammer_app_demo $mol_example_large
+	title \Jammer
+	sub /
+		<= Jammer $yuf_sj_jammer_app_mocked
+	tags /
+		\websocket
+		\crud
+		\rest
+		\harp
+	aspects /
+		\Application

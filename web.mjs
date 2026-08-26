@@ -29923,6 +29923,10080 @@ var $;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
+;
+	($.$yuf_sj_ui_login_form) = class $yuf_sj_ui_login_form extends ($.$mol_form) {
+		login_error(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_login_error"));
+		}
+		error_token_empty(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_error_token_empty"));
+		}
+		value_str(id, next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		required(id){
+			return (this.Bid().required(id));
+		}
+		min(id){
+			return (this.Bid().min(id));
+		}
+		max(id){
+			return (this.Bid().max(id));
+		}
+		login_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_login_label"));
+		}
+		login(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		submit_activate_fork(next){
+			return (this.submit_activate(next));
+		}
+		Login(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.login(next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			return obj;
+		}
+		Login_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([
+				(this.required("login")), 
+				(this.min("login")), 
+				(this.max("login"))
+			]);
+			(obj.name) = () => ((this.login_label()));
+			(obj.control) = () => ((this.Login()));
+			return obj;
+		}
+		password_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_password_label"));
+		}
+		password(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Password(){
+			const obj = new this.$.$yuf_password();
+			(obj.value) = (next) => ((this.password(next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			return obj;
+		}
+		Password_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([
+				(this.required("password")), 
+				(this.min("password")), 
+				(this.max("password"))
+			]);
+			(obj.name) = () => ((this.password_label()));
+			(obj.control) = () => ((this.Password()));
+			return obj;
+		}
+		form_fields_end(){
+			return [];
+		}
+		unknown_error(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_unknown_error"));
+		}
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		errors(){
+			return {
+				...(super.errors()), 
+				"Wrong password": (this.login_error()), 
+				"Server auth token is empty": (this.error_token_empty())
+			};
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		form_fields(){
+			return [
+				(this.Login_field()), 
+				(this.Password_field()), 
+				...(this.form_fields_end())
+			];
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_login_form_submit_title"));
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_ui_login_form.prototype), "value_str"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "login"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "Login"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "Login_field"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "password"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "Password"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "Password_field"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "enter"));
+	($mol_mem(($.$yuf_sj_ui_login_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_login_form extends $.$yuf_sj_ui_login_form {
+            value_str(field) {
+                return this[field]();
+            }
+            login_focus() {
+                new $mol_after_timeout(100, () => {
+                    this.Login().focused(true);
+                });
+            }
+            auto() {
+                this.login_focus();
+                return super.auto();
+            }
+            submit_activate_fork(e) {
+                // prevent cancelling save task if other button pressed, while saving
+                return $mol_wire_async(this).submit_activate(e);
+            }
+            result(next) {
+                if (next instanceof Error) {
+                    const message = typeof next.cause === 'object'
+                        && next.cause
+                        && 'message' in next.cause
+                        && typeof next.cause.message === 'string'
+                        ? next.cause.message
+                        : '';
+                    next = (this.errors()[next.message] || next.message || this.form_invalid())
+                        + `${message ? `: ${message}` : ''}`;
+                }
+                return next ?? '';
+            }
+            save(next) {
+                return $mol_error_fence(() => this.enter({
+                    login: this.login(),
+                    password: this.password(),
+                }), e => e.message === 'AUTH_FAILED'
+                    ? new $mol_error_mix('Wrong password', e.cause, e)
+                    : e);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_login_form.prototype, "login_focus", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_login_form.prototype, "result", null);
+        $$.$yuf_sj_ui_login_form = $yuf_sj_ui_login_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { rem, px, per } = $mol_style_unit;
+        $mol_style_define($yuf_sj_ui_login_form, {
+            Result: {
+                padding: 0,
+            },
+            Foot: {
+                flex: {
+                    direction: 'column',
+                }
+            },
+            Submit: {
+                flex: {
+                    grow: 1,
+                },
+                justifyContent: 'center',
+                gap: $mol_gap.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_dash_card) = class $yuf_sj_ui_dash_card extends ($.$mol_view) {
+		arg(){
+			return {};
+		}
+		title(){
+			return "";
+		}
+		Title(){
+			const obj = new this.$.$mol_view();
+			(obj.dom_name) = () => ("h1");
+			(obj.sub) = () => ([(this.title())]);
+			return obj;
+		}
+		Link(){
+			const obj = new this.$.$yuf_link();
+			(obj.arg) = () => ((this.arg()));
+			(obj.sub) = () => ([(this.Title())]);
+			return obj;
+		}
+		content(){
+			return [];
+		}
+		Content(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.content()));
+			return obj;
+		}
+		sub(){
+			return [(this.Link()), (this.Content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_dash_card.prototype), "Title"));
+	($mol_mem(($.$yuf_sj_ui_dash_card.prototype), "Link"));
+	($mol_mem(($.$yuf_sj_ui_dash_card.prototype), "Content"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_dash_card, {
+            flex: {
+                direction: 'column',
+            },
+            border: { radius: $mol_gap.round },
+            background: {
+                color: $mol_theme.card
+            },
+            padding: $mol_gap.block,
+            Content: {
+                flex: {
+                    wrap: 'wrap',
+                    shrink: 1,
+                    grow: 1,
+                },
+                gap: $mol_gap.block,
+            },
+            Title: {
+                margin: 0,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for number and returns number type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_number_demo
+     */
+    $.$mol_data_number = (val) => {
+        if (typeof val === 'number')
+            return val;
+        return $mol_fail(new $mol_data_error(`${val} is not a number`));
+    };
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for undefined or passing given runtype.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_optional_demo
+     */
+    function $mol_data_optional(sub, fallback) {
+        return $mol_data_setup((val) => {
+            if (val === undefined) {
+                return fallback?.();
+            }
+            return sub(val);
+        }, { sub, fallback });
+    }
+    $.$mol_data_optional = $mol_data_optional;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for null or passing given runtype.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_nullable_demo
+     */
+    function $mol_data_nullable(sub) {
+        return $mol_data_setup((val) => {
+            if (val === null)
+                return null;
+            return sub(val);
+        }, sub);
+    }
+    $.$mol_data_nullable = $mol_data_nullable;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for some of given runtype or throws error.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_variant_demo
+     */
+    function $mol_data_variant(...sub) {
+        return $mol_data_setup((val) => {
+            const errors = [];
+            for (const type of sub) {
+                let hidden = $.$mol_fail_hidden;
+                try {
+                    $.$mol_fail = $.$mol_fail_hidden;
+                    return type(val);
+                }
+                catch (error) {
+                    $.$mol_fail = hidden;
+                    if (error instanceof $mol_data_error) {
+                        errors.push(error);
+                    }
+                    else {
+                        return $mol_fail_hidden(error);
+                    }
+                }
+            }
+            return $mol_fail(new $mol_data_error(`${val} is not any of variants`, {}, ...errors));
+        }, sub);
+    }
+    $.$mol_data_variant = $mol_data_variant;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for equality to given value and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_const_demo
+     */
+    function $mol_data_const(ref) {
+        return $mol_data_setup((val) => {
+            if ($mol_compare_deep(val, ref))
+                return ref;
+            return $mol_fail(new $mol_data_error(`${JSON.stringify(val)} is not ${JSON.stringify(ref)}`));
+        }, ref);
+    }
+    $.$mol_data_const = $mol_data_const;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for array of given runtype and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_array_demo
+     */
+    function $mol_data_array(sub) {
+        return $mol_data_setup((val) => {
+            if (!Array.isArray(val))
+                return $mol_fail(new $mol_data_error(`${val} is not an array`));
+            return val.map((item, index) => {
+                try {
+                    return sub(item);
+                }
+                catch (error) {
+                    if (error instanceof Promise)
+                        return $mol_fail_hidden(error);
+                    error.message = `[${index}] ${error.message}`;
+                    return $mol_fail(error);
+                }
+            });
+        }, sub);
+    }
+    $.$mol_data_array = $mol_data_array;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_description_model_dto = rec({
+        name: opt(str),
+        description: opt(str),
+    });
+    class $yuf_sj_ui_description_model extends $yuf_ws_entity {
+        type() { return 'description'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return $.$yuf_sj_ui_description_model_dto({
+                name: '',
+                description: '',
+                ...raw,
+            });
+        }
+        name(next) { return this.value('name', next); }
+        description(next) { return this.value('description', next); }
+    }
+    $.$yuf_sj_ui_description_model = $yuf_sj_ui_description_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_device_type = vr(cnst('SDR'), cnst('JAMMER'), cnst('JAMMER_MODULE'));
+    $.$yuf_sj_ui_device_type_status = vr(cnst('ok'), // ok
+    cnst('err'), // error
+    cnst('na'), // not available
+    cnst('reset-planned'), cnst('resetting'));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $mol_base64_encode(src) {
+        return src.toBase64();
+    }
+    $.$mol_base64_encode = $mol_base64_encode;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function binary_string(bytes) {
+        let binary = '';
+        if (typeof bytes !== 'string') {
+            for (const byte of bytes)
+                binary += String.fromCharCode(byte);
+        }
+        else {
+            binary = unescape(encodeURIComponent(bytes));
+        }
+        return binary;
+    }
+    function $mol_base64_encode_web(str) {
+        return $mol_dom_context.btoa(binary_string(str));
+    }
+    $.$mol_base64_encode_web = $mol_base64_encode_web;
+    if (!('toBase64' in Uint8Array.prototype)) {
+        $.$mol_base64_encode = $mol_base64_encode_web;
+    }
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_device_updater_model_dto = rec({
+        type: $yuf_sj_ui_device_type,
+        data: opt(nul(str)),
+        progress: opt(nul(num)),
+    });
+    class $yuf_sj_ui_device_updater_model extends $yuf_ws_entity {
+        type() { return 'firmware'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return $.$yuf_sj_ui_device_updater_model_dto({
+                type: 'JAMMER',
+                data: null,
+                progress: null,
+                ...raw,
+            });
+        }
+        file_buffer(file) {
+            return new Uint8Array($mol_wire_sync(file).arrayBuffer());
+        }
+        update(data) {
+            const file = data.file;
+            if (file) {
+                data = {
+                    ...data,
+                    file: undefined,
+                    data: $mol_base64_encode(this.file_buffer(file))
+                };
+            }
+            this.data(data);
+        }
+        device_type() { return this.value('type') ?? ''; }
+        draft_mem_only() {
+            return true;
+        }
+        progress(next) {
+            const actual = this.value('progress') ?? null;
+            if (next === undefined)
+                return actual;
+            return next;
+        }
+        supported_options() {
+            const result = {};
+            for (const { config: name } of $yuf_sj_ui_device_type.config) {
+                if (name === 'SDR')
+                    continue;
+                result[name] = name.replace('JAMMER_MODULE', 'MODULE');
+            }
+            return result;
+        }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_sj_ui_device_updater_model.prototype, "file_buffer", null);
+    __decorate([
+        $mol_action
+    ], $yuf_sj_ui_device_updater_model.prototype, "update", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_updater_model.prototype, "progress", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_updater_model.prototype, "supported_options", null);
+    $.$yuf_sj_ui_device_updater_model = $yuf_sj_ui_device_updater_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    const password_dto = rec({
+        password_old: str,
+        password_new: str,
+    });
+    class $yuf_sj_ui_device_reboot_model extends $yuf_ws_entity {
+        type() { return 'password_change'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return password_dto({
+                password_old: '',
+                password_new: '',
+                ...raw,
+            });
+        }
+    }
+    $.$yuf_sj_ui_device_reboot_model = $yuf_sj_ui_device_reboot_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_device_info_model_dto = rec({
+        type: $yuf_sj_ui_device_type,
+        firmware_version: str,
+        serial_number: str,
+        uptime: num, // ms from device power on
+        status: opt(nul($yuf_sj_ui_device_type_status)),
+        status_updated_at: num, // ms from last device query
+    });
+    class $yuf_sj_ui_device_info_model extends $yuf_ws_entity {
+        type() { return 'info'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return $.$yuf_sj_ui_device_info_model_dto({
+                type: 'JAMMER',
+                uptime: 0,
+                firmware_version: '0.0.0',
+                serial_number: '',
+                status_updated_at: 0,
+                status: null,
+                ...raw,
+            });
+        }
+        uptime() { return new this.$.$mol_time_moment(Date.now() - (this.value('uptime') ?? 0)); }
+        uptime_dur() { return new this.$.$mol_time_duration(this.value('uptime') ?? 0); }
+        device_status(next) { return this.value('status', next) ?? null; }
+        device_status_updated_at() {
+            return new this.$.$mol_time_moment(Date.now() - (this.value('status_updated_at') ?? 0));
+        }
+        reboot_enabled() {
+            const status = this.device_status();
+            return status === 'ok' || status === 'err';
+        }
+        reboot() {
+            this.device_status('reset-planned');
+            this.logout();
+        }
+        session() { return this.$.$mol_one.$yuf_session; }
+        logout_supported() {
+            if (this.id() || this.device().length)
+                return false;
+            if (this.device_type() !== 'JAMMER')
+                return false;
+            return true;
+        }
+        logout() {
+            if (!this.logout_supported())
+                return;
+            this.session().logout();
+        }
+        serial() { return this.value('serial_number') ?? '0.0.0'; }
+        device_type() { return this.value('type') ?? ''; }
+        version_check_url() { return '/version-latest'; }
+        version_latest(type) {
+            const text = this.$.$mol_fetch.success(this.version_check_url()).text();
+            return text.match(/(\d+\.\d+\.\d+)/)?.[1] ?? '';
+        }
+        firmware() {
+            return this.$.$yuf_sj_ui_device_updater_model.make({
+                id: () => this.id(),
+                ws: () => this.ws(),
+            });
+        }
+        firmware_version() { return this.value('firmware_version') ?? '0.0.0'; }
+        password_model() {
+            return this.$.$yuf_sj_ui_device_reboot_model.make({
+                id: () => this.id(),
+                ws: () => this.ws(),
+            });
+        }
+        password(next) {
+            this.password_model().data(next);
+            if (next !== undefined)
+                this.logout();
+            return null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "uptime", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "uptime_dur", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "device_status_updated_at", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "reboot_enabled", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "serial", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_ui_device_info_model.prototype, "version_latest", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "firmware", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "password_model", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_info_model.prototype, "password", null);
+    $.$yuf_sj_ui_device_info_model = $yuf_sj_ui_device_info_model;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_form_draft) = class $yuf_sj_ui_form_draft extends ($.$mol_form_draft) {
+		submit_activate_fork(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		changed_message(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_form_draft_changed_message"));
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_form_draft.prototype), "submit_activate_fork"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_form_draft extends $.$yuf_sj_ui_form_draft {
+            submit_activate_fork(e) {
+                // prevent cancelling save task if other button pressed, while saving
+                $mol_wire_async(this).submit_activate(e);
+            }
+            result(next) {
+                return super.result(next) || (this.changed() ? this.changed_message() : '');
+            }
+        }
+        $$.$yuf_sj_ui_form_draft = $yuf_sj_ui_form_draft;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_form_draft, {
+            Result: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                }
+            },
+            border: {
+                radius: $mol_gap.round
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_textarea) = class $yuf_sj_ui_textarea extends ($.$mol_textarea) {
+		spellcheck(){
+			return false;
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $$.dummy_template = new $mol_syntax2({
+            'brace-open': /\{{2}/,
+            'brace-close': /\}{2}/,
+            'placeholder': /\{(\w+)\}/,
+        });
+        class $yuf_sj_ui_textarea extends $.$yuf_sj_ui_textarea {
+            syntax() {
+                return $$.dummy_template;
+            }
+        }
+        $$.$yuf_sj_ui_textarea = $yuf_sj_ui_textarea;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_textarea, {
+            flex: {
+                basis: '20rem',
+                shrink: 1,
+                grow: 1,
+            },
+            font: {
+                family: 'inherit',
+            },
+            minHeight: '5rem',
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_description_form) = class $yuf_sj_ui_description_form extends ($.$yuf_sj_ui_form_draft) {
+		required(id){
+			return (this.Bid().required(id));
+		}
+		min(id){
+			return (this.Bid().min(id));
+		}
+		ip4(id){
+			return (this.Bid().ip4(id));
+		}
+		latin_digits_alpha(id){
+			return (this.Bid().latin_digits_alpha(id));
+		}
+		device_id_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_description_form_device_id_name"));
+		}
+		submit_activate_fork(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Device_id(){
+			const obj = new this.$.$mol_string();
+			(obj.value) = (next) => ((this.value_str("name", next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.length_max) = () => (128);
+			return obj;
+		}
+		Device_id_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.device_id_name()));
+			(obj.bids) = () => ([
+				(this.required("name")), 
+				(this.min("name")), 
+				(this.latin_digits_alpha("name"))
+			]);
+			(obj.control) = () => ((this.Device_id()));
+			return obj;
+		}
+		description_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_description_form_description_name"));
+		}
+		Description(){
+			const obj = new this.$.$yuf_sj_ui_textarea();
+			(obj.length_max) = () => (512);
+			(obj.value) = (next) => ((this.value_str("description", next)));
+			return obj;
+		}
+		Description_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.description_name()));
+			(obj.bids) = () => ([(this.min("description"))]);
+			(obj.control) = () => ((this.Description()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_description_model();
+			return obj;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		form_fields(){
+			return [(this.Device_id_field()), (this.Description_field())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "submit_activate_fork"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "Device_id"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "Device_id_field"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "Description"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "Description_field"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_description_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_description_form extends $.$yuf_sj_ui_description_form {
+        }
+        $$.$yuf_sj_ui_description_form = $yuf_sj_ui_description_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_description_page) = class $yuf_sj_ui_description_page extends ($.$mol_page) {
+		Close(){
+			return null;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_description_model();
+			return obj;
+		}
+		Form(){
+			const obj = new this.$.$yuf_sj_ui_description_form();
+			(obj.model) = () => ((this.model()));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_description_page_title"));
+		}
+		param_prefix(){
+			return "";
+		}
+		tools(){
+			return [(this.Close())];
+		}
+		body(){
+			return [(this.Form())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_description_page.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_description_page.prototype), "Form"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_sj_ui_theme_gap = $mol_style_prop('yuf_sj_ui_theme_gap', [
+        'page_s',
+        'page_m',
+        'page_l',
+        'page_xl',
+    ]);
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/sj/ui/theme/gap/gap.css", ":root {\n\t--yuf_sj_ui_theme_gap_page_s: 12rem;\n\t--yuf_sj_ui_theme_gap_page_m: 22rem;\n\t--yuf_sj_ui_theme_gap_page_l: 32rem;\n\t--yuf_sj_ui_theme_gap_page_xl: calc( 100vw - var(--yuf_sj_ui_theme_gap_page_s) )\n}\n\n@media (max-width: 480px) {\n\t:root {\n\t\t--yuf_sj_ui_theme_gap_page_s: 100vw;\n\t\t--yuf_sj_ui_theme_gap_page_m: 100vw;\n\t\t--yuf_sj_ui_theme_gap_page_l: 100vw;\n\t}\n}\n\n/* 481-767 Low resolution Tablets and iPads */\n@media (min-width: 481px) and (max-width: 767px) {\n\t:root {\n\t\t--yuf_sj_ui_theme_gap_page_m: 100vw;\n\t\t--yuf_sj_ui_theme_gap_page_l: 100vw;\n\t}\n}\n\n/*\t768-1024 Tablets iPads (Portrait) */\n\n@media (min-width: 768px) and (max-width: 1024px) {\n\t:root {\n\t\t--yuf_sj_ui_theme_gap_page_l: calc( 100vw - var(--yuf_sj_ui_theme_gap_page_m) );\n\t}\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { calc, hsla, vary, steps } = $mol_style_func;
+        $mol_style_define($yuf_sj_ui_description_page, {
+            flex: {
+                basis: $yuf_sj_ui_theme_gap.page_l,
+                grow: 0,
+                shrink: 0,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_description_card) = class $yuf_sj_ui_description_card extends ($.$yuf_sj_ui_dash_card) {
+		name(){
+			return (this.model().name());
+		}
+		description(){
+			return (this.model().description());
+		}
+		device_type(){
+			return (this.info_model().device_type());
+		}
+		device_id_name(){
+			return (this.Description_form().device_id_name());
+		}
+		description_name(){
+			return (this.Description_form().description_name());
+		}
+		description_title(){
+			return (this.Description_page().title());
+		}
+		Name(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.device_id_name()));
+			(obj.content) = () => ([(this.name())]);
+			return obj;
+		}
+		Description(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.description_name()));
+			(obj.content) = () => ([(this.description())]);
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_description_model();
+			return obj;
+		}
+		info_model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		Description_form(){
+			const obj = new this.$.$yuf_sj_ui_description_form();
+			return obj;
+		}
+		Description_page(){
+			const obj = new this.$.$yuf_sj_ui_description_page();
+			return obj;
+		}
+		title(){
+			return (this.description_title());
+		}
+		content(){
+			return [(this.Name()), (this.Description())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "Name"));
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "Description"));
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "info_model"));
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "Description_form"));
+	($mol_mem(($.$yuf_sj_ui_description_card.prototype), "Description_page"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_description_card, {
+            Description: {
+                flex: {
+                    basis: '40rem',
+                    shrink: 0,
+                    grow: 1,
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_network_model_type_dto = vr(cnst('static'), cnst('dhcp'));
+    const network_settings_dto = rec({
+        network_type: $.$yuf_sj_ui_network_model_type_dto,
+        ip: opt(str),
+        gateway: opt(str),
+        dns: opt(str),
+        dns2: opt(str),
+    });
+    class $yuf_sj_ui_network_model extends $yuf_ws_entity {
+        type() { return 'network'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return network_settings_dto({
+                network_type: 'dhcp',
+                ip: '',
+                gateway: '',
+                dns: '',
+                dns2: '',
+                ...raw,
+            });
+        }
+        ip_type(next) {
+            return this.value('network_type', next) ?? 'dhcp';
+        }
+        ip(next) { return this.value('ip', next); }
+        gateway(next) { return this.value('gateway', next); }
+        dns(next) { return this.value('dns', next); }
+        dns2(next) { return this.value('dns2', next); }
+    }
+    $.$yuf_sj_ui_network_model = $yuf_sj_ui_network_model;
+})($ || ($ = {}));
+
+;
+	($.$mol_check_list) = class $mol_check_list extends ($.$mol_view) {
+		option_checked(id, next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		option_title(id){
+			return "";
+		}
+		option_label(id){
+			return [(this.option_title(id))];
+		}
+		enabled(){
+			return true;
+		}
+		option_enabled(id){
+			return (this.enabled());
+		}
+		option_hint(id){
+			return "";
+		}
+		items(){
+			return [];
+		}
+		dictionary(){
+			return {};
+		}
+		Option(id){
+			const obj = new this.$.$mol_check();
+			(obj.checked) = (next) => ((this.option_checked(id, next)));
+			(obj.label) = () => ((this.option_label(id)));
+			(obj.enabled) = () => ((this.option_enabled(id)));
+			(obj.hint) = () => ((this.option_hint(id)));
+			(obj.minimal_height) = () => (24);
+			return obj;
+		}
+		options(){
+			return {};
+		}
+		keys(){
+			return [];
+		}
+		sub(){
+			return (this.items());
+		}
+	};
+	($mol_mem_key(($.$mol_check_list.prototype), "option_checked"));
+	($mol_mem_key(($.$mol_check_list.prototype), "Option"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * List of checkboxes
+         * @see https://mol.hyoo.ru/#!section=demos/demo=mol_check_list_demo
+         */
+        class $mol_check_list extends $.$mol_check_list {
+            options() {
+                return {};
+            }
+            dictionary(next) {
+                return next ?? {};
+            }
+            option_checked(id, next) {
+                const prev = this.dictionary();
+                if (next === undefined)
+                    return prev[id] ?? null;
+                const next_rec = { ...prev, [id]: next };
+                if (next === null)
+                    delete next_rec[id];
+                return this.dictionary(next_rec)[id] ?? null;
+            }
+            keys() {
+                return Object.keys(this.options());
+            }
+            items() {
+                return this.keys().map(key => this.Option(key));
+            }
+            option_title(key) {
+                return this.options()[key] || key;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_check_list.prototype, "keys", null);
+        __decorate([
+            $mol_mem
+        ], $mol_check_list.prototype, "items", null);
+        $$.$mol_check_list = $mol_check_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/check/list/list.view.css", "[mol_check_list] {\n\tdisplay: flex;\n\tflex-wrap: wrap;\n\tflex: 1 1 auto;\n\tborder-radius: var(--mol_gap_round);\n\tgap: 1px;\n}\n\n[mol_check_list_option] {\n\tflex: 0 1 auto;\n}\n\n[mol_check_list_option]:where([mol_check_checked=\"true\"]) {\n\ttext-shadow: 0 0;\n\tcolor: var(--mol_theme_current);\n}\n\n[mol_check_list_option]:where([mol_check_checked=\"true\"][disabled]) {\n\tcolor: var(--mol_theme_text);\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_switch) = class $mol_switch extends ($.$mol_check_list) {
+		value(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+	};
+	($mol_mem(($.$mol_switch.prototype), "value"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * Buttons which switching the state
+         * @see https://mol.hyoo.ru/#!section=demos/demo=mol_switch_demo
+         */
+        class $mol_switch extends $.$mol_switch {
+            value(next) {
+                return $mol_state_session.value(`${this}.value()`, next) ?? '';
+            }
+            option_checked(key, next) {
+                if (next === undefined)
+                    return this.value() == key;
+                this.value(next ? key : '');
+                return next;
+            }
+        }
+        $$.$mol_switch = $mol_switch;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_network_form) = class $yuf_sj_ui_network_form extends ($.$yuf_sj_ui_form_draft) {
+		required(id){
+			return (this.Bid().required(id));
+		}
+		min(id){
+			return (this.Bid().min(id));
+		}
+		max(id){
+			return (this.Bid().max(id));
+		}
+		ip4(id){
+			return (this.Bid().ip4(id));
+		}
+		ip4_mask_required(id){
+			return (this.Bid().ip4_mask_required(id));
+		}
+		message_timeout(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_message_timeout"));
+		}
+		ip_type_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_ip_type_name"));
+		}
+		ip_type(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		static_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_static_title"));
+		}
+		dhcp_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_dhcp_title"));
+		}
+		ip_type_options(){
+			return {"static": (this.static_title()), "dhcp": (this.dhcp_title())};
+		}
+		Ip_type(){
+			const obj = new this.$.$mol_switch();
+			(obj.value) = (next) => ((this.ip_type(next)));
+			(obj.options) = () => ((this.ip_type_options()));
+			return obj;
+		}
+		no_actual_ip_text(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_no_actual_ip_text"));
+		}
+		No_actual_ip(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.no_actual_ip_text())]);
+			return obj;
+		}
+		dhcp_actualize_content(){
+			return [(this.No_actual_ip())];
+		}
+		Ip_type_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.ip_type_name()));
+			(obj.content) = () => ([(this.Ip_type()), ...(this.dhcp_actualize_content())]);
+			return obj;
+		}
+		ip_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_ip_name"));
+		}
+		required_dhcp(id){
+			return "";
+		}
+		ip_mask_hint(){
+			return "192.168.1.1/24";
+		}
+		submit_activate_fork(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		ip_edit_enabled(){
+			return false;
+		}
+		Ip(){
+			const obj = new this.$.$mol_string();
+			(obj.length_max) = () => (24);
+			(obj.hint) = () => ((this.ip_mask_hint()));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.enabled) = () => ((this.ip_edit_enabled()));
+			(obj.value) = (next) => ((this.value_str("ip", next)));
+			return obj;
+		}
+		Ip_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.ip_name()));
+			(obj.bids) = () => ([(this.required_dhcp("ip")), (this.ip4_mask_required("ip"))]);
+			(obj.control) = () => ((this.Ip()));
+			return obj;
+		}
+		gateway_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_gateway_name"));
+		}
+		ip_hint(){
+			return "192.168.1.1";
+		}
+		Gateway(){
+			const obj = new this.$.$mol_string();
+			(obj.length_max) = () => (24);
+			(obj.hint) = () => ((this.ip_hint()));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.enabled) = () => ((this.ip_edit_enabled()));
+			(obj.value) = (next) => ((this.value_str("gateway", next)));
+			return obj;
+		}
+		Gateway_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.gateway_name()));
+			(obj.bids) = () => ([(this.ip4("gateway"))]);
+			(obj.control) = () => ((this.Gateway()));
+			return obj;
+		}
+		dns_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_dns_name"));
+		}
+		Dns(){
+			const obj = new this.$.$mol_string();
+			(obj.length_max) = () => (24);
+			(obj.hint) = () => ((this.ip_hint()));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.enabled) = () => ((this.ip_edit_enabled()));
+			(obj.value) = (next) => ((this.value_str("dns", next)));
+			return obj;
+		}
+		Dns_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.dns_name()));
+			(obj.bids) = () => ([(this.ip4("dns"))]);
+			(obj.control) = () => ((this.Dns()));
+			return obj;
+		}
+		dns2_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_form_dns2_name"));
+		}
+		Dns2(){
+			const obj = new this.$.$mol_string();
+			(obj.length_max) = () => (24);
+			(obj.hint) = () => ((this.ip_hint()));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.enabled) = () => ((this.ip_edit_enabled()));
+			(obj.value) = (next) => ((this.value_str("dns2", next)));
+			return obj;
+		}
+		Dns2_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.dns2_name()));
+			(obj.bids) = () => ([(this.ip4("dns2"))]);
+			(obj.control) = () => ((this.Dns2()));
+			return obj;
+		}
+		ip_content(){
+			return [
+				(this.Ip_field()), 
+				(this.Gateway_field()), 
+				(this.Dns_field()), 
+				(this.Dns2_field())
+			];
+		}
+		Ip_content(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.ip_content()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_network_model();
+			return obj;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		errors(){
+			return {...(super.errors()), "Request timeout": (this.message_timeout())};
+		}
+		body(){
+			return [(this.Ip_type_field()), (this.Ip_content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "ip_type"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Ip_type"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "No_actual_ip"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Ip_type_field"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "submit_activate_fork"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Ip"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Ip_field"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Gateway"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Gateway_field"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Dns"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Dns_field"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Dns2"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Dns2_field"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Ip_content"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_network_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_network_form extends $.$yuf_sj_ui_network_form {
+            ip_edit_enabled() {
+                return this.ip_type() !== 'dhcp';
+            }
+            required_dhcp(key) {
+                if (this.ip_type() === 'dhcp')
+                    return '';
+                return this.required(key);
+            }
+            need_actualize() {
+                return this.ip_type() === 'dhcp' && this.changed();
+            }
+            ip_content() { return this.need_actualize() ? [] : super.ip_content(); }
+            dhcp_actualize_content() {
+                return this.need_actualize() ? super.dhcp_actualize_content() : [];
+            }
+            submit_activate_fork(e) {
+                // prevent cancelling save task if other button pressed, while saving
+                $mol_wire_async(this).submit_activate(e);
+            }
+            ip_type(next) {
+                if (next === '')
+                    next = undefined;
+                return this.value_str('ip_type', next) ?? 'dhcp';
+            }
+            reset_dhcp_fields() {
+                const fields = ['ip', 'gateway', 'dns'];
+                for (const field of fields) {
+                    if (this.value_str(field) === this.model()[field]())
+                        continue;
+                    this.value_str(field, '');
+                }
+            }
+            save(e) {
+                try {
+                    if (this.ip_type() === 'dhcp')
+                        this.reset_dhcp_fields();
+                    super.save(e);
+                }
+                catch (error) {
+                    if (error instanceof Error
+                        && error.message === $mol_rest_code[$mol_rest_code['Request Timeout']]) {
+                        this.reset();
+                        this.done(true);
+                    }
+                    $mol_fail_hidden(error);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_network_form.prototype, "ip_type", null);
+        __decorate([
+            $mol_action
+        ], $yuf_sj_ui_network_form.prototype, "reset_dhcp_fields", null);
+        $$.$yuf_sj_ui_network_form = $yuf_sj_ui_network_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_network_form, {
+            Ip_type_field: {
+                Content: {
+                    flex: {
+                        direction: 'column'
+                    },
+                    gap: $mol_gap.text,
+                }
+            },
+            Body: {
+                gap: $mol_gap.space,
+            },
+            Ip_content: {
+                flex: {
+                    direction: 'column'
+                },
+            },
+            No_actual_ip: {
+                flex: { basis: '352px' },
+                justifyContent: 'center',
+                alignItems: 'center',
+                background: { color: $mol_theme.card },
+                border: { radius: $mol_gap.round },
+            },
+            Foot: {
+                gap: $mol_gap.block,
+            },
+            $mol_string: {
+                // @ts-ignore
+                ':disabled:not(:placeholder-shown)': {
+                    background: {
+                        color: $mol_theme.field,
+                    }
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_network_page) = class $yuf_sj_ui_network_page extends ($.$mol_page) {
+		Close(){
+			return null;
+		}
+		Network_form(){
+			const obj = new this.$.$yuf_sj_ui_network_form();
+			(obj.model) = () => ((this.model()));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_page_title"));
+		}
+		param_prefix(){
+			return "";
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_network_model();
+			return obj;
+		}
+		tools(){
+			return [(this.Close())];
+		}
+		body(){
+			return [(this.Network_form())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_network_page.prototype), "Network_form"));
+	($mol_mem(($.$yuf_sj_ui_network_page.prototype), "model"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_network_page, {
+            flex: {
+                shrink: 0,
+                grow: 0,
+                basis: $yuf_sj_ui_theme_gap.page_l,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_network_card) = class $yuf_sj_ui_network_card extends ($.$yuf_sj_ui_dash_card) {
+		ip_type(){
+			return (this.model().ip_type());
+		}
+		ip(){
+			return (this.model().ip());
+		}
+		gateway(){
+			return (this.model().gateway());
+		}
+		dns(){
+			return (this.model().dns());
+		}
+		dns2(){
+			return (this.model().dns2());
+		}
+		network_title(){
+			return (this.Network_page().title());
+		}
+		ip_type_name(){
+			return (this.Network_form().ip_type_name());
+		}
+		ip_type_options(){
+			return (this.Network_form().ip_type_options());
+		}
+		ip_name(){
+			return (this.Network_form().ip_name());
+		}
+		gateway_name(){
+			return (this.Network_form().gateway_name());
+		}
+		dns_name(){
+			return (this.Network_form().dns_name());
+		}
+		dns2_name(){
+			return (this.Network_form().dns2_name());
+		}
+		Ip_type(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.ip_type_name()));
+			(obj.content) = () => ([(this.ip_type())]);
+			return obj;
+		}
+		Ip(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.ip_name()));
+			(obj.content) = () => ([(this.ip())]);
+			return obj;
+		}
+		Gateway(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.gateway_name()));
+			(obj.content) = () => ([(this.gateway())]);
+			return obj;
+		}
+		Dns(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.dns_name()));
+			(obj.content) = () => ([(this.dns())]);
+			return obj;
+		}
+		Dns2(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.dns2_name()));
+			(obj.content) = () => ([(this.dns2())]);
+			return obj;
+		}
+		network_content(){
+			return [];
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_network_model();
+			return obj;
+		}
+		Network_page(){
+			const obj = new this.$.$yuf_sj_ui_network_page();
+			return obj;
+		}
+		Network_form(){
+			const obj = new this.$.$yuf_sj_ui_network_form();
+			return obj;
+		}
+		title(){
+			return (this.network_title());
+		}
+		content(){
+			return [
+				(this.Ip_type()), 
+				(this.Ip()), 
+				(this.Gateway()), 
+				(this.Dns()), 
+				(this.Dns2()), 
+				...(this.network_content())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Ip_type"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Ip"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Gateway"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Dns"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Dns2"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Network_page"));
+	($mol_mem(($.$yuf_sj_ui_network_card.prototype), "Network_form"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_ui_device_updater_version) = class $yuf_sj_ui_device_updater_version extends ($.$mol_labeler) {
+		version(){
+			return "";
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_version_title"));
+		}
+		content(){
+			return [(this.version())];
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_updater_version, {
+            Content: {
+                minHeight: '2.5rem'
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_time_duration) = class $yuf_time_duration extends ($.$mol_view) {
+		value(){
+			const obj = new this.$.$mol_time_duration();
+			return obj;
+		}
+		formatted(){
+			return "";
+		}
+		normalized(){
+			return (this.value());
+		}
+		show_minus(){
+			return true;
+		}
+		template(){
+			return [
+				"year", 
+				"month", 
+				"day", 
+				"hour", 
+				"minute", 
+				"second"
+			];
+		}
+		year(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_year"));
+		}
+		month(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_month"));
+		}
+		day(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_day"));
+		}
+		hour(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_hour"));
+		}
+		minute(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_minute"));
+		}
+		second(){
+			return (this.$.$mol_locale.text("$yuf_time_duration_second"));
+		}
+		sub(){
+			return [(this.formatted())];
+		}
+	};
+	($mol_mem(($.$yuf_time_duration.prototype), "value"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        function declOfNum(number, titles) {
+            const cases = [2, 0, 1, 1, 1, 2];
+            number = Math.abs(number);
+            return titles[(number % 100 > 4 && number % 100 < 20)
+                ? 2
+                : cases[(number % 10 < 5) ? number % 10 : 5]];
+        }
+        class $yuf_time_duration extends $.$yuf_time_duration {
+            normalized() {
+                return this.value().normal;
+            }
+            part(key, index) {
+                const data = this.normalized();
+                let value = key in data ? Math.round(data[key]) : null;
+                const text = value ? declOfNum(value, this[key]().split('|')) : '';
+                const normalized = !value ? null : this.show_minus() ? value : Math.abs(value);
+                return normalized
+                    ? `${normalized === 1 ? '' : `${normalized} `}${text}`
+                    : (value === null ? key : null);
+            }
+            formatted() {
+                return this.template().map((key, i) => this.part(key, i)).filter(Boolean).join(' ');
+            }
+        }
+        $$.$yuf_time_duration = $yuf_time_duration;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_time_card) = class $yuf_time_card extends ($.$mol_view) {
+		hint(){
+			return "";
+		}
+		formatted_date(){
+			return "";
+		}
+		format(){
+			return "normal";
+		}
+		formats(){
+			return {
+				"normal": "DD Month YY hh:mm:ss", 
+				"short": "DD.MM.YY hh:mm", 
+				"hint": "DD Month YYYY hh:mm:ss"
+			};
+		}
+		local(){
+			return false;
+		}
+		moment(){
+			const obj = new this.$["$mol_time_moment|null"]();
+			return obj;
+		}
+		attr(){
+			return {...(super.attr()), "title": (this.hint())};
+		}
+		sub(){
+			return [(this.formatted_date())];
+		}
+	};
+	($mol_mem(($.$yuf_time_card.prototype), "moment"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_time_card extends $.$yuf_time_card {
+            current() {
+                const moment = this.moment();
+                return this.local() ? moment?.toOffset() : moment;
+            }
+            format_value() {
+                return this.formats()[this.format()] || this.format() || this.formats().normal;
+            }
+            formatted_date() {
+                return this.current()?.toString(this.format_value()) ?? '';
+            }
+            hint() {
+                return this.current()?.toString(this.formats()['hint'] ?? '') ?? '';
+            }
+        }
+        $$.$yuf_time_card = $yuf_time_card;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { rem, px, per } = $mol_style_unit;
+        $mol_style_define($yuf_time_card, {
+            font: {
+                size: rem(0.9)
+            },
+            flex: {
+                shrink: 0,
+                grow: 0,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_uptime) = class $yuf_sj_ui_uptime extends ($.$mol_labeler) {
+		uptime_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_uptime_uptime_label"));
+		}
+		uptime(){
+			const obj = new this.$.$mol_time_moment();
+			return obj;
+		}
+		formatted_date(){
+			return (this.Uptime().formatted_date());
+		}
+		uptime_dur(){
+			const obj = new this.$.$mol_time_duration();
+			return obj;
+		}
+		Uptime_dur(){
+			const obj = new this.$.$yuf_time_duration();
+			(obj.value) = () => ((this.uptime_dur()));
+			return obj;
+		}
+		title(){
+			return (this.uptime_label());
+		}
+		Uptime(){
+			const obj = new this.$.$yuf_time_card();
+			(obj.format) = () => ("short");
+			(obj.moment) = () => ((this.uptime()));
+			return obj;
+		}
+		content(){
+			return [(this.Uptime_dur())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_uptime.prototype), "uptime"));
+	($mol_mem(($.$yuf_sj_ui_uptime.prototype), "uptime_dur"));
+	($mol_mem(($.$yuf_sj_ui_uptime.prototype), "Uptime_dur"));
+	($mol_mem(($.$yuf_sj_ui_uptime.prototype), "Uptime"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_uptime, {
+            Content: {
+                flex: {
+                    direction: 'column',
+                },
+                minHeight: '2.5rem',
+                gap: $mol_gap.text,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_uptime extends $.$yuf_sj_ui_uptime {
+            title() {
+                return super.title().replace('{formatted_date}', this.formatted_date());
+            }
+        }
+        $$.$yuf_sj_ui_uptime = $yuf_sj_ui_uptime;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_status) = class $yuf_sj_ui_device_status extends ($.$mol_view) {
+		mode_attr(){
+			return "pending";
+		}
+		text_pending(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_status_text_pending"));
+		}
+		text(){
+			return (this.text_pending());
+		}
+		attr(){
+			return {...(super.attr()), "yuf_sj_ui_device_status_mode": (this.mode_attr())};
+		}
+		value(){
+			return null;
+		}
+		dict(){
+			return {
+				"err": (this.$.$mol_locale.text("$yuf_sj_ui_device_status_dict_err")), 
+				"na": (this.$.$mol_locale.text("$yuf_sj_ui_device_status_dict_na")), 
+				"ok": (this.$.$mol_locale.text("$yuf_sj_ui_device_status_dict_ok")), 
+				"reset-planned": (this.$.$mol_locale.text("$yuf_sj_ui_device_status_dict_reset-planned")), 
+				"resetting": (this.$.$mol_locale.text("$yuf_sj_ui_device_status_dict_resetting"))
+			};
+		}
+		sub(){
+			return [(this.text())];
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_status extends $.$yuf_sj_ui_device_status {
+            text() {
+                const status = this.value();
+                if (!status)
+                    return super.text();
+                return this.dict()[status] || status;
+            }
+            mode_attr() {
+                return this.value() ?? super.mode_attr();
+            }
+        }
+        $$.$yuf_sj_ui_device_status = $yuf_sj_ui_device_status;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/sj/ui/device/status/status.view.css", "[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"na\"] {\n\tcolor: gold;\n}\n[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"ok\"] {\n\tcolor: chartreuse;\n}\n[yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"err\"] {\n\tcolor: red;\n}\n\n:where([mol_theme=\"$mol_theme_light\"], [mol_theme=\"$yuf_theme_light\"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"na\"] {\n\tcolor: brown;\n}\n\n:where([mol_theme=\"$mol_theme_light\"], [mol_theme=\"$yuf_theme_light\"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"ok\"] {\n\tcolor: green;\n}\n\n:where([mol_theme=\"$mol_theme_light\"], [mol_theme=\"$yuf_theme_light\"]) [yuf_sj_ui_device_status][yuf_sj_ui_device_status_mode=\"err\"] {\n\tcolor: red;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_status, {
+            whiteSpace: 'break-spaces',
+            border: {
+                radius: $mol_gap.round,
+            },
+            color: $mol_theme.shade,
+            padding: 0,
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_status_label) = class $yuf_sj_ui_device_status_label extends ($.$mol_labeler) {
+		device_status(){
+			return null;
+		}
+		Status(){
+			const obj = new this.$.$yuf_sj_ui_device_status();
+			(obj.value) = () => ((this.device_status()));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_status_label_title"));
+		}
+		content(){
+			return [(this.Status())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_status_label.prototype), "Status"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_status_label, {
+            Content: {
+                minHeight: '2.5rem'
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_reboot_form) = class $yuf_sj_ui_device_reboot_form extends ($.$mol_form) {
+		value_str(id, next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		required(id){
+			return (this.Bid().required(id));
+		}
+		password_new_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_form_password_new_label"));
+		}
+		Password_new(){
+			const obj = new this.$.$yuf_password();
+			(obj.value) = (next) => ((this.value_str("password_new", next)));
+			(obj.submit) = (next) => ((this.submit_activate(next)));
+			return obj;
+		}
+		Password_new_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.required("password_new"))]);
+			(obj.name) = () => ((this.password_new_label()));
+			(obj.control) = () => ((this.Password_new()));
+			return obj;
+		}
+		new_password_equal(id){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_form_new_password_equal"));
+		}
+		password_new2_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_form_password_new2_label"));
+		}
+		submit_activate_fork(next){
+			return (this.submit_activate(next));
+		}
+		Password_new2(){
+			const obj = new this.$.$yuf_password();
+			(obj.value) = (next) => ((this.value_str("password_new2", next)));
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			return obj;
+		}
+		Password_new2_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.required("password_new2")), (this.new_password_equal("password_new2"))]);
+			(obj.name) = () => ((this.password_new2_label()));
+			(obj.control) = () => ((this.Password_new2()));
+			return obj;
+		}
+		password_old(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		password_new(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		password_new2(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		reset(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		form_fields(){
+			return [(this.Password_new_field()), (this.Password_new2_field())];
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_form_submit_title"));
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_ui_device_reboot_form.prototype), "value_str"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "Password_new"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "Password_new_field"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "Password_new2"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "Password_new2_field"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "password_old"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "password_new"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "password_new2"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "reset"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_reboot_form extends $.$yuf_sj_ui_device_reboot_form {
+            new_password_equal(field) {
+                const new2 = this.value_str(field);
+                if (!new2)
+                    return '';
+                if (new2 === this.password_new())
+                    return '';
+                return super.new_password_equal(field);
+            }
+            value_str(id, next) {
+                if (id === 'password_new' || id === 'password_new2')
+                    return this[id](next);
+                return next ?? '';
+            }
+            reset() {
+                this.password_new2('');
+                this.password_new('');
+            }
+            submit_activate_fork(e) {
+                // prevent cancelling save task if other button pressed, while saving
+                return $mol_wire_async(this).submit_activate(e);
+            }
+        }
+        __decorate([
+            $mol_mem_key
+        ], $yuf_sj_ui_device_reboot_form.prototype, "value_str", null);
+        $$.$yuf_sj_ui_device_reboot_form = $yuf_sj_ui_device_reboot_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_reboot_page) = class $yuf_sj_ui_device_reboot_page extends ($.$mol_page) {
+		Close(){
+			return null;
+		}
+		uptime(){
+			return (this.model().uptime());
+		}
+		uptime_dur(){
+			return (this.model().uptime_dur());
+		}
+		reboot_enabled(){
+			return (this.model().reboot_enabled());
+		}
+		device_status(){
+			return (this.model().device_status());
+		}
+		Uptime_label(){
+			const obj = new this.$.$yuf_sj_ui_uptime();
+			(obj.uptime_dur) = () => ((this.uptime_dur()));
+			(obj.uptime) = () => ((this.uptime()));
+			return obj;
+		}
+		Status_label(){
+			const obj = new this.$.$yuf_sj_ui_device_status_label();
+			(obj.device_status) = () => ((this.device_status()));
+			return obj;
+		}
+		reboot_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_page_reboot_label"));
+		}
+		reboot(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Reboot(){
+			const obj = new this.$.$mol_button_major();
+			(obj.enabled) = () => ((this.reboot_enabled()));
+			(obj.sub) = () => ([(this.reboot_label())]);
+			(obj.click) = (next) => ((this.reboot(next)));
+			return obj;
+		}
+		Reboot_block(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Status_label()), (this.Reboot())]);
+			return obj;
+		}
+		Top(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Uptime_label()), (this.Reboot_block())]);
+			return obj;
+		}
+		save_password(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		password_new(next){
+			return (this.Admin_form().password_new(next));
+		}
+		password_old(next){
+			return (this.Admin_form().password_old(next));
+		}
+		reset(){
+			return (this.Admin_form().reset());
+		}
+		Admin_form(){
+			const obj = new this.$.$yuf_sj_ui_device_reboot_form();
+			(obj.save) = (next) => ((this.save_password(next)));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_reboot_page_title"));
+		}
+		param_prefix(){
+			return "";
+		}
+		tools(){
+			return [(this.Close())];
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		body(){
+			return [(this.Top()), (this.Admin_form())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Uptime_label"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Status_label"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "reboot"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Reboot"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Reboot_block"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Top"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "save_password"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "Admin_form"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_page.prototype), "model"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_reboot_page extends $.$yuf_sj_ui_device_reboot_page {
+            save_password(e) {
+                this.model().password({
+                    password_new: this.password_new(),
+                    password_old: this.password_old(),
+                });
+                this.reset();
+            }
+            reboot(e) {
+                const model = this.model();
+                model.reboot();
+            }
+        }
+        $$.$yuf_sj_ui_device_reboot_page = $yuf_sj_ui_device_reboot_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_reboot_page, {
+            flex: {
+                shrink: 0,
+                basis: $yuf_sj_ui_theme_gap.page_m,
+            },
+            Body_content: {
+                gap: '2rem',
+            },
+            Top: {
+                flex: {
+                    direction: 'column'
+                }
+            },
+            Reboot: {
+                minHeight: '2.5rem'
+            },
+            Admin_form: {
+                padding: 0
+            },
+            Reboot_block: {
+                flex: {
+                    direction: 'column',
+                },
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_reboot_card) = class $yuf_sj_ui_device_reboot_card extends ($.$yuf_sj_ui_dash_card) {
+		uptime(){
+			return (this.model().uptime());
+		}
+		uptime_dur(){
+			return (this.model().uptime_dur());
+		}
+		firmware_version(){
+			return (this.model().firmware_version());
+		}
+		admin_title(){
+			return (this.Admin_page().title());
+		}
+		Version(){
+			const obj = new this.$.$yuf_sj_ui_device_updater_version();
+			(obj.version) = () => ((this.firmware_version()));
+			return obj;
+		}
+		Uptime(){
+			const obj = new this.$.$yuf_sj_ui_uptime();
+			(obj.uptime) = () => ((this.uptime()));
+			(obj.uptime_dur) = () => ((this.uptime_dur()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		Admin_page(){
+			const obj = new this.$.$yuf_sj_ui_device_reboot_page();
+			return obj;
+		}
+		title(){
+			return (this.admin_title());
+		}
+		content(){
+			return [(this.Version()), (this.Uptime())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_reboot_card.prototype), "Version"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_card.prototype), "Uptime"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_card.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_device_reboot_card.prototype), "Admin_page"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_ui_number) = class $yuf_sj_ui_number extends ($.$mol_number) {
+		blur_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		String(){
+			const obj = new this.$.$yuf_sj_ui_number_string();
+			(obj.blur_event) = (next) => ((this.blur_event(next)));
+			(obj.type) = () => ((this.type()));
+			(obj.value) = (next) => ((this.value_string(next)));
+			(obj.hint) = () => ((this.hint()));
+			(obj.enabled) = () => ((this.string_enabled()));
+			(obj.submit) = (next) => ((this.submit(next)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_number.prototype), "blur_event"));
+	($mol_mem(($.$yuf_sj_ui_number.prototype), "String"));
+	($.$yuf_sj_ui_number_string) = class $yuf_sj_ui_number_string extends ($.$mol_string) {
+		blur_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event(){
+			return {...(super.event()), "blur": (next) => (this.blur_event(next))};
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_number_string.prototype), "blur_event"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_number extends $.$yuf_sj_ui_number {
+            blur_event() {
+                const next = this.value(this.value_string() ? undefined : this.value_min());
+                this.value_string(String(next || '0'));
+            }
+        }
+        $$.$yuf_sj_ui_number = $yuf_sj_ui_number;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_arrow_up) = class $mol_icon_arrow_up extends ($.$mol_icon) {
+		path(){
+			return "M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for boolean and returns boolean type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_boolean_demo
+     */
+    $.$mol_data_boolean = (val) => {
+        if (typeof val === 'boolean')
+            return val;
+        return $mol_fail(new $mol_data_error(`${val} is not a boolean`));
+    };
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    const bool = $mol_data_boolean;
+    $.$yuf_sj_ui_log_model_level_dto = vr(cnst('error'), cnst('warn'), cnst('info'), cnst('debug'), cnst('trace'));
+    const log_settings_dto = rec({
+        level: nul($.$yuf_sj_ui_log_model_level_dto),
+    });
+    const log_lines_dto = arr(str);
+    class $yuf_sj_ui_log_model_lines extends $yuf_ws_entity {
+        type() { return 'log_rows'; }
+        defaults(raw) { return log_lines_dto(raw ?? []); }
+        limit() { return 0; }
+        level() {
+            return 'trace';
+        }
+        query() {
+            return {
+                max: String(this.limit()),
+            };
+        }
+    }
+    $.$yuf_sj_ui_log_model_lines = $yuf_sj_ui_log_model_lines;
+    class $yuf_sj_ui_log_model extends $yuf_ws_entity {
+        type() { return 'log_settings'; }
+        defaults(raw) {
+            return log_settings_dto({
+                level: null,
+                ...raw
+            });
+        }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        level(next) {
+            return this.value('level', next === '' ? null : next) ?? '';
+        }
+        levels_available() {
+            const record = { '': 'off' };
+            for (const item of $.$yuf_sj_ui_log_model_level_dto.config) {
+                record[item.config] = item.config;
+            }
+            return record;
+        }
+        lines_collected_max() {
+            return 300_000;
+        }
+        lines_max(next) {
+            return next === undefined
+                ? 10_000
+                : Math.min(1_000_000, Math.max(1000, next));
+        }
+        ws_logs_enabled(next) {
+            return next ?? (this.log_enabled() && !this.server_logs_available());
+        }
+        server_logs_available() {
+            return true;
+        }
+        log_enabled() {
+            return Boolean(this.level());
+        }
+        lines_sub() {
+            return this.$.$yuf_sj_ui_log_model_lines.make({
+                ws: () => this.ws(),
+                limit: () => this.lines_max(),
+                level: () => this.level(),
+            });
+        }
+        lines(reset) {
+            if (reset === null)
+                return [];
+            if (!this.log_enabled())
+                return [];
+            const sub = this.server_logs_available() ? this.lines_sub() : null;
+            const server_logs = sub?.data() ?? [];
+            const ws_logs = !this.ws_logs_enabled()
+                ? []
+                : this.ws().messages_grab().map(message => JSON.stringify(message, null, ' '));
+            let prev = $mol_wire_probe(() => this.lines()) ?? [];
+            // to prevent memory leak, cut too much lines
+            if (prev.length > this.lines_collected_max())
+                prev = prev.slice(0, 100);
+            return [...prev, ...server_logs, ...ws_logs];
+        }
+        search_text(next) { return next ?? ''; }
+        search_text_debounce = null;
+        search_text_normalized(reset) {
+            const next = this.search_text().toLowerCase().split(' ');
+            const prev = $mol_wire_probe(() => this.search_text_normalized());
+            if (reset === null)
+                return next;
+            if (!prev)
+                return next;
+            this.search_text_debounce?.destructor();
+            this.search_text_debounce = new $mol_after_timeout(300, () => this.search_text_normalized(null));
+            return prev;
+        }
+        visible_max() { return this.lines_max(); }
+        indices() {
+            const limit = this.visible_max();
+            const needles = this.search_text_normalized();
+            const all = this.lines();
+            const indices = [];
+            const before_index = all.length - 1;
+            for (let index = before_index; index >= 0; index--) {
+                const line = all[index].toLowerCase();
+                if (!needles.length || needles.every(needle => line.includes(needle))) {
+                    indices.push(index);
+                }
+                if (indices.length >= limit)
+                    break;
+            }
+            return indices;
+        }
+        line(index) { return this.lines()[index]; }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "levels_available", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "lines_max", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "ws_logs_enabled", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "log_enabled", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "lines_sub", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "lines", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "search_text", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "search_text_normalized", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model.prototype, "indices", null);
+    $.$yuf_sj_ui_log_model = $yuf_sj_ui_log_model;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_log_page) = class $yuf_sj_ui_log_page extends ($.$mol_page) {
+		log_level(next){
+			return (this.model().level(next));
+		}
+		lines_max(next){
+			return (this.model().lines_max(next));
+		}
+		search_text(next){
+			return (this.model().search_text(next));
+		}
+		log_levels_available(){
+			return (this.model().levels_available());
+		}
+		server_logs_available(){
+			return (this.model().server_logs_available());
+		}
+		Close(){
+			return null;
+		}
+		Logs_max_number_label(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.logs_max_title())]);
+			return obj;
+		}
+		logs_max_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_logs_max_title"));
+		}
+		Logs_max_number(){
+			const obj = new this.$.$yuf_sj_ui_number();
+			(obj.Dec) = () => (null);
+			(obj.Inc) = () => (null);
+			(obj.precision_change) = () => (1000);
+			(obj.value_min) = () => (1000);
+			(obj.value_max) = () => (1000000);
+			(obj.hint) = () => ((this.logs_max_title()));
+			(obj.value) = (next) => ((this.lines_max(next)));
+			return obj;
+		}
+		Logs_max_group(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Logs_max_number_label()), (this.Logs_max_number())]);
+			return obj;
+		}
+		Foot_tools_left(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Logs_max_group())]);
+			return obj;
+		}
+		up_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_up_hint"));
+		}
+		up_enabled(){
+			return false;
+		}
+		Up_icon(){
+			const obj = new this.$.$mol_icon_arrow_up();
+			return obj;
+		}
+		up_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Up(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.up_hint()));
+			(obj.enabled) = () => ((this.up_enabled()));
+			(obj.sub) = () => ([(this.Up_icon())]);
+			(obj.click) = (next) => ((this.up_event(next)));
+			return obj;
+		}
+		Foot_tools_right(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Up())]);
+			return obj;
+		}
+		filter_text_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_filter_text_hint"));
+		}
+		Filter_text(){
+			const obj = new this.$.$mol_search();
+			(obj.hint) = () => ((this.filter_text_hint()));
+			(obj.query) = (next) => ((this.search_text(next)));
+			return obj;
+		}
+		log_level_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_log_level_hint"));
+		}
+		Log_level(){
+			const obj = new this.$.$mol_select();
+			(obj.Filter) = () => (null);
+			(obj.trigger_enabled) = () => ((this.server_logs_available()));
+			(obj.dictionary) = () => ((this.log_levels_available()));
+			(obj.hint) = () => ((this.log_level_hint()));
+			(obj.value) = (next) => ((this.log_level(next)));
+			return obj;
+		}
+		empty_text(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_empty_text"));
+		}
+		Empty_row(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.empty_text())]);
+			return obj;
+		}
+		empty_content(){
+			return [(this.Empty_row())];
+		}
+		log_row(id){
+			return "";
+		}
+		Item(id){
+			const obj = new this.$.$mol_dimmer();
+			(obj.minimal_height) = () => (40);
+			(obj.needle) = () => ((this.search_text()));
+			(obj.haystack) = () => ((this.log_row(id)));
+			return obj;
+		}
+		rows(){
+			return [(this.Item("0"))];
+		}
+		List_dummy(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.rows()));
+			return obj;
+		}
+		log_content(){
+			return [(this.List_dummy())];
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_log_page_title"));
+		}
+		param_prefix(){
+			return "";
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_log_model();
+			return obj;
+		}
+		tools(){
+			return [(this.Close())];
+		}
+		foot(){
+			return [(this.Foot_tools_left()), (this.Foot_tools_right())];
+		}
+		Title(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Filter_text()), (this.Log_level())]);
+			return obj;
+		}
+		body(){
+			return [...(this.empty_content()), ...(this.log_content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Logs_max_number_label"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Logs_max_number"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Logs_max_group"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Foot_tools_left"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Up_icon"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "up_event"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Up"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Foot_tools_right"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Filter_text"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Log_level"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Empty_row"));
+	($mol_mem_key(($.$yuf_sj_ui_log_page.prototype), "Item"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "List_dummy"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_log_page.prototype), "Title"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_log_page extends $.$yuf_sj_ui_log_page {
+            log_row(index) {
+                return this.model().line(index);
+            }
+            rows() {
+                return this.model().indices().map(index => this.Item(index));
+            }
+            scroll_reset() {
+                this.search_text();
+                this.lines_max();
+                this.body_scroll_top(0);
+                return null;
+            }
+            log_content() {
+                if (!this.log_level())
+                    return [];
+                return super.log_content();
+            }
+            empty_content() {
+                if (this.log_level())
+                    return [];
+                return super.empty_content();
+            }
+            up_enabled() {
+                return this.body_scroll_top() > 0;
+            }
+            up_event() {
+                this.body_scroll_top(0);
+            }
+            auto() {
+                this.scroll_reset();
+                return super.auto();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_log_page.prototype, "scroll_reset", null);
+        $$.$yuf_sj_ui_log_page = $yuf_sj_ui_log_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_log_page, {
+            flex: {
+                shrink: 1,
+                basis: $yuf_sj_ui_theme_gap.page_xl,
+            },
+            Item: {
+                whiteSpace: 'break-spaces',
+                wordBreak: 'break-all',
+                minHeight: '2.5rem',
+                flex: {
+                    shrink: 1,
+                },
+                padding: { top: $mol_gap.space, bottom: $mol_gap.space, },
+            },
+            Head: {
+                padding: $mol_gap.space,
+            },
+            Tools: {
+                padding: $mol_gap.text,
+            },
+            List_dummy: {
+                minHeight: '2.5rem',
+                willChange: 'contents',
+                flex: {
+                    shrink: 1,
+                    direction: 'column',
+                },
+            },
+            // List: {
+            // 	minHeight: '2.5rem',
+            // },
+            Filter_text: {
+                flex: {
+                    basis: `24rem`,
+                    grow: 0,
+                    shrink: 1,
+                },
+            },
+            Logs_max_group: {
+                alignItems: 'center',
+                gap: $mol_gap.space,
+                color: $mol_theme.shade,
+            },
+            Logs_max_number: {
+                String: {
+                    flex: {
+                        grow: 0,
+                        basis: '5rem',
+                    },
+                },
+                padding: 0,
+            },
+            Body: {
+                background: {
+                    color: $mol_theme.card,
+                },
+            },
+            Foot: {
+                padding: {
+                    left: $mol_gap.block,
+                    right: $mol_gap.block,
+                    top: $mol_gap.space,
+                    bottom: $mol_gap.space
+                },
+            },
+            Foot_tools_left: {
+                flex: {
+                    grow: 1,
+                }
+            },
+            Foot_tools_right: {
+                flex: { grow: 0 },
+                justifyContent: 'end',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_meter) = class $mol_meter extends ($.$mol_plugin) {
+		zoom(){
+			return 1;
+		}
+		width(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		height(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		left(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		right(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		bottom(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		top(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+	};
+	($mol_mem(($.$mol_meter.prototype), "width"));
+	($mol_mem(($.$mol_meter.prototype), "height"));
+	($mol_mem(($.$mol_meter.prototype), "left"));
+	($mol_mem(($.$mol_meter.prototype), "right"));
+	($mol_mem(($.$mol_meter.prototype), "bottom"));
+	($mol_mem(($.$mol_meter.prototype), "top"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /** @deprecated Use $mol_view..view_rect **/
+        class $mol_meter extends $.$mol_meter {
+            rect() {
+                const node = this.dom_node();
+                const win = this.$.$mol_dom_context;
+                if (node !== $mol_dom_context.document.body) {
+                    const rect = this.view_rect();
+                    if (rect) {
+                        const { left, top, right, bottom, width, height } = rect;
+                        return { left, top, right, bottom, width, height, zoom: win.devicePixelRatio || 1 };
+                    }
+                }
+                const size = $mol_window.size();
+                return {
+                    zoom: win.devicePixelRatio || 1,
+                    left: 0,
+                    top: 0,
+                    right: size.width,
+                    bottom: size.height,
+                    width: size.width,
+                    height: size.height,
+                };
+            }
+            top() {
+                return this.rect().top;
+            }
+            bottom() {
+                return this.rect().bottom;
+            }
+            left() {
+                return this.rect().left;
+            }
+            right() {
+                return this.rect().right;
+            }
+            width() {
+                return this.rect().width;
+            }
+            height() {
+                return this.rect().height;
+            }
+            zoom() {
+                return this.rect().zoom;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_meter.prototype, "rect", null);
+        $$.$mol_meter = $mol_meter;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $mol_vector extends Array {
+        get length() {
+            return super.length;
+        }
+        constructor(...values) { super(...values); }
+        map(convert, self) {
+            return super.map(convert, self);
+        }
+        merged(patches, combine) {
+            return this.map((value, index) => combine(value, patches[index]));
+        }
+        limited(limits) {
+            return this.merged(limits, (value, [min, max]) => (value < min) ? min : (value > max) ? max : value);
+        }
+        added0(diff) {
+            return this.map(value => value + diff);
+        }
+        added1(diff) {
+            return this.merged(diff, (a, b) => a + b);
+        }
+        substracted1(diff) {
+            return this.merged(diff, (a, b) => a - b);
+        }
+        multed0(mult) {
+            return this.map(value => value * mult);
+        }
+        multed1(mults) {
+            return this.merged(mults, (a, b) => a * b);
+        }
+        divided1(mults) {
+            return this.merged(mults, (a, b) => a / b);
+        }
+        powered0(mult) {
+            return this.map(value => value ** mult);
+        }
+        expanded1(point) {
+            return this.merged(point, (range, value) => range.expanded0(value));
+        }
+        expanded2(point) {
+            return this.merged(point, (range1, range2) => {
+                let next = range1;
+                const Range = range1.constructor;
+                if (range1[0] > range2[0])
+                    next = new Range(range2[0], next.max);
+                if (range1[1] < range2[1])
+                    next = new Range(next.min, range2[1]);
+                return next;
+            });
+        }
+        center() {
+            const Result = this[0].constructor;
+            return new Result(...this[0].map((_, i) => this.reduce((sum, point) => sum + point[i], 0) / this.length));
+        }
+        distance() {
+            let distance = 0;
+            for (let i = 1; i < this.length; ++i) {
+                distance += this[i - 1].reduce((sum, min, j) => sum + (min - this[i][j]) ** 2, 0) ** (1 / this[i].length);
+            }
+            return distance;
+        }
+        transponed() {
+            return this[0].map((_, i) => this.map(row => row[i]));
+        }
+        get x() { return this[0]; }
+        set x(next) { this[0] = next; }
+        get y() { return this[1]; }
+        set y(next) { this[1] = next; }
+        get z() { return this[2]; }
+        set z(next) { this[2] = next; }
+    }
+    $.$mol_vector = $mol_vector;
+    class $mol_vector_1d extends $mol_vector {
+    }
+    $.$mol_vector_1d = $mol_vector_1d;
+    class $mol_vector_2d extends $mol_vector {
+    }
+    $.$mol_vector_2d = $mol_vector_2d;
+    class $mol_vector_3d extends $mol_vector {
+    }
+    $.$mol_vector_3d = $mol_vector_3d;
+    class $mol_vector_range extends $mol_vector {
+        0;
+        1;
+        constructor(min, max = min) {
+            super(min, max);
+            this[0] = min;
+            this[1] = max;
+        }
+        get min() { return this[0]; }
+        set min(next) { this[0] = next; }
+        get max() { return this[1]; }
+        set max(next) { this[1] = next; }
+        get inversed() {
+            return new this.constructor(this.max, this.min);
+        }
+        expanded0(value) {
+            const Range = this.constructor;
+            let range = this;
+            if (value > range.max)
+                range = new Range(range.min, value);
+            if (value < range.min)
+                range = new Range(value, range.max);
+            return range;
+        }
+    }
+    $.$mol_vector_range = $mol_vector_range;
+    $.$mol_vector_range_full = new $mol_vector_range(Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+    class $mol_vector_matrix extends $mol_vector {
+        added2(diff) {
+            return this.merged(diff, (a, b) => a.map((a2, index) => a2 + b[index]));
+        }
+        multed2(diff) {
+            return this.merged(diff, (a, b) => a.map((a2, index) => a2 * b[index]));
+        }
+    }
+    $.$mol_vector_matrix = $mol_vector_matrix;
+})($ || ($ = {}));
+
+;
+	($.$mol_touch) = class $mol_touch extends ($.$mol_plugin) {
+		event_start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_leave(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_wheel(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		start_zoom(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		start_distance(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		zoom(next){
+			if(next !== undefined) return next;
+			return 1;
+		}
+		allow_draw(){
+			return true;
+		}
+		allow_pan(){
+			return true;
+		}
+		allow_zoom(){
+			return true;
+		}
+		action_type(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		action_point(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(NaN, NaN);
+			return obj;
+		}
+		start_pan(next){
+			if(next !== undefined) return next;
+			return [0, 0];
+		}
+		pan(next){
+			if(next !== undefined) return next;
+			const obj = new this.$.$mol_vector_2d(0, 0);
+			return obj;
+		}
+		pointer_center(){
+			const obj = new this.$.$mol_vector_2d(NaN, NaN);
+			return obj;
+		}
+		start_pos(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_precision(){
+			return 16;
+		}
+		swipe_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_from_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_right(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_bottom(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_left(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		swipe_to_top(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw_start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		draw_end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		style(){
+			return {
+				...(super.style()), 
+				"touch-action": "none", 
+				"overscroll-behavior": "none"
+			};
+		}
+		event(){
+			return {
+				...(super.event()), 
+				"pointerdown": (next) => (this.event_start(next)), 
+				"pointermove": (next) => (this.event_move(next)), 
+				"pointerup": (next) => (this.event_end(next)), 
+				"pointerleave": (next) => (this.event_leave(next)), 
+				"wheel": (next) => (this.event_wheel(next))
+			};
+		}
+	};
+	($mol_mem(($.$mol_touch.prototype), "event_start"));
+	($mol_mem(($.$mol_touch.prototype), "event_move"));
+	($mol_mem(($.$mol_touch.prototype), "event_end"));
+	($mol_mem(($.$mol_touch.prototype), "event_leave"));
+	($mol_mem(($.$mol_touch.prototype), "event_wheel"));
+	($mol_mem(($.$mol_touch.prototype), "start_zoom"));
+	($mol_mem(($.$mol_touch.prototype), "start_distance"));
+	($mol_mem(($.$mol_touch.prototype), "zoom"));
+	($mol_mem(($.$mol_touch.prototype), "action_type"));
+	($mol_mem(($.$mol_touch.prototype), "action_point"));
+	($mol_mem(($.$mol_touch.prototype), "start_pan"));
+	($mol_mem(($.$mol_touch.prototype), "pan"));
+	($mol_mem(($.$mol_touch.prototype), "pointer_center"));
+	($mol_mem(($.$mol_touch.prototype), "start_pos"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_top"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_from_top"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_right"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_bottom"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_left"));
+	($mol_mem(($.$mol_touch.prototype), "swipe_to_top"));
+	($mol_mem(($.$mol_touch.prototype), "draw_start"));
+	($mol_mem(($.$mol_touch.prototype), "draw"));
+	($mol_mem(($.$mol_touch.prototype), "draw_end"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * Plugin for touch gestures.
+         * @see [mol_plugin](../plugin/readme.md)
+         */
+        class $mol_touch extends $.$mol_touch {
+            auto() {
+                this.pointer_events();
+                this.start_pan();
+                this.start_pos();
+                this.start_distance();
+                this.start_zoom();
+                this.action_type();
+                this.view_rect();
+            }
+            pointer_events(next = []) {
+                return next;
+            }
+            pointer_coords() {
+                const events = this.pointer_events();
+                const touches = events.filter(e => e.pointerType === 'touch');
+                const pens = events.filter(e => e.pointerType === 'pen');
+                const mouses = events.filter(e => !e.pointerType || e.pointerType === 'mouse');
+                const choosen = touches.length ? touches : pens.length ? pens : mouses;
+                return new $mol_vector(...choosen.map(event => this.event_coords(event)));
+            }
+            pointer_center() {
+                const coords = this.pointer_coords();
+                return coords.length ? coords.center() : new $mol_vector_2d(NaN, NaN);
+            }
+            event_coords(event) {
+                const { left, top } = this.view_rect();
+                return new $mol_vector_2d(Math.round(event.pageX - left), Math.round(event.pageY - top));
+            }
+            action_point() {
+                const coord = this.pointer_center();
+                if (!coord)
+                    return null;
+                const zoom = this.zoom();
+                const pan = this.pan();
+                return new $mol_vector_2d((coord.x - pan.x) / zoom, (coord.y - pan.y) / zoom);
+            }
+            event_eat(event) {
+                if (event instanceof PointerEvent) {
+                    const events = this.pointer_events()
+                        .filter(e => e instanceof PointerEvent)
+                        .filter(e => e.pointerId !== event.pointerId);
+                    if (event.type !== 'pointerup' && event.type !== 'pointerleave')
+                        events.push(event);
+                    this.pointer_events(events);
+                    const touch_count = events.filter(e => e.pointerType === 'touch').length;
+                    if (this.allow_zoom() && touch_count === 2) {
+                        return this.action_type('zoom');
+                    }
+                    if (this.action_type() === 'zoom' && touch_count === 1) {
+                        return this.action_type('zoom');
+                    }
+                    let button;
+                    (function (button) {
+                        button[button["left"] = 1] = "left";
+                        button[button["right"] = 2] = "right";
+                        button[button["middle"] = 4] = "middle";
+                    })(button || (button = {}));
+                    if (events.length > 0) {
+                        if (event.ctrlKey && this.allow_zoom())
+                            return this.action_type('zoom');
+                        if (event.buttons === button.left && this.allow_draw())
+                            return this.action_type('draw');
+                        if (event.buttons && this.allow_pan())
+                            return this.action_type('pan');
+                    }
+                    return this.action_type('');
+                }
+                if (event instanceof WheelEvent) {
+                    this.pointer_events([event]);
+                    if (event.shiftKey)
+                        return this.action_type('pan');
+                    return this.action_type('zoom');
+                }
+                return this.action_type('');
+            }
+            event_start(event) {
+                if (event.defaultPrevented)
+                    return;
+                this.start_pan(this.pan());
+                const action_type = this.event_eat(event);
+                if (!action_type)
+                    return;
+                const coords = this.pointer_coords();
+                this.start_pos(coords.center());
+                if (action_type === 'draw') {
+                    this.draw_start(event);
+                    return;
+                }
+                this.start_distance(coords.distance());
+                this.start_zoom(this.zoom());
+            }
+            event_move(event) {
+                if (event.defaultPrevented)
+                    return;
+                const rect = this.view_rect();
+                if (!rect)
+                    return;
+                const start_pan = this.start_pan();
+                const action_type = this.event_eat(event);
+                const start_pos = this.start_pos();
+                let pos = this.pointer_center();
+                if (!action_type)
+                    return;
+                if (!start_pos)
+                    return;
+                if (action_type === 'draw') {
+                    const distance = new $mol_vector(start_pos, pos).distance();
+                    if (distance >= 4) {
+                        this.draw(event);
+                    }
+                    return;
+                }
+                if (action_type === 'pan') {
+                    this.dom_node().setPointerCapture(event.pointerId);
+                    this.pan(new $mol_vector_2d(start_pan[0] + pos[0] - start_pos[0], start_pan[1] + pos[1] - start_pos[1]));
+                }
+                const precision = this.swipe_precision();
+                if ((this.swipe_right !== $mol_touch.prototype.swipe_right
+                    || this.swipe_from_left !== $mol_touch.prototype.swipe_from_left
+                    || this.swipe_to_right !== $mol_touch.prototype.swipe_to_right)
+                    && pos[0] - start_pos[0] > precision * 2
+                    && Math.abs(pos[1] - start_pos[1]) < precision) {
+                    this.swipe_right(event);
+                }
+                if ((this.swipe_left !== $mol_touch.prototype.swipe_left
+                    || this.swipe_from_right !== $mol_touch.prototype.swipe_from_right
+                    || this.swipe_to_left !== $mol_touch.prototype.swipe_to_left)
+                    && start_pos[0] - pos[0] > precision * 2
+                    && Math.abs(pos[1] - start_pos[1]) < precision) {
+                    this.swipe_left(event);
+                }
+                if ((this.swipe_bottom !== $mol_touch.prototype.swipe_bottom
+                    || this.swipe_from_top !== $mol_touch.prototype.swipe_from_top
+                    || this.swipe_to_bottom !== $mol_touch.prototype.swipe_to_bottom)
+                    && pos[1] - start_pos[1] > precision * 2
+                    && Math.abs(pos[0] - start_pos[0]) < precision) {
+                    this.swipe_bottom(event);
+                }
+                if ((this.swipe_top !== $mol_touch.prototype.swipe_top
+                    || this.swipe_from_bottom !== $mol_touch.prototype.swipe_from_bottom
+                    || this.swipe_to_top !== $mol_touch.prototype.swipe_to_top)
+                    && start_pos[1] - pos[1] > precision * 2
+                    && Math.abs(pos[0] - start_pos[0]) < precision) {
+                    this.swipe_top(event);
+                }
+                if (action_type === 'zoom') {
+                    const coords = this.pointer_coords();
+                    const distance = coords.distance();
+                    const start_distance = this.start_distance();
+                    const center = coords.center();
+                    const start_zoom = this.start_zoom();
+                    let mult = Math.abs(distance - start_distance) < 32 ? 1 : distance / start_distance;
+                    this.zoom(start_zoom * mult);
+                    const pan = new $mol_vector_2d((start_pan[0] - center[0] + pos[0] - start_pos[0]) * mult + center[0], (start_pan[1] - center[1] + pos[1] - start_pos[1]) * mult + center[1]);
+                    this.pan(pan);
+                }
+            }
+            event_end(event) {
+                const action = this.action_type();
+                if (action === 'draw') {
+                    this.draw_end(event);
+                }
+                this.event_leave(event);
+            }
+            event_leave(event) {
+                this.event_eat(event);
+                this.dom_node().releasePointerCapture(event.pointerId);
+                this.start_pos(null);
+            }
+            swipe_left(event) {
+                if (this.view_rect().right - this.start_pos()[0] < this.swipe_precision() * 2)
+                    this.swipe_from_right(event);
+                else
+                    this.swipe_to_left(event);
+                this.event_end(event);
+            }
+            swipe_right(event) {
+                if (this.start_pos()[0] - this.view_rect().left < this.swipe_precision() * 2)
+                    this.swipe_from_left(event);
+                else
+                    this.swipe_to_right(event);
+                this.event_end(event);
+            }
+            swipe_top(event) {
+                if (this.view_rect().bottom - this.start_pos()[1] < this.swipe_precision() * 2)
+                    this.swipe_from_bottom(event);
+                else
+                    this.swipe_to_top(event);
+                this.event_end(event);
+            }
+            swipe_bottom(event) {
+                if (this.start_pos()[1] - this.view_rect().top < this.swipe_precision() * 2)
+                    this.swipe_from_top(event);
+                else
+                    this.swipe_to_bottom(event);
+                this.event_end(event);
+            }
+            event_wheel(event) {
+                if (event.defaultPrevented)
+                    return;
+                if (this.pan === $mol_touch.prototype.pan && this.zoom === $mol_touch.prototype.zoom)
+                    return;
+                if (this.pan !== $mol_touch.prototype.pan) {
+                    event.preventDefault();
+                }
+                const action_type = this.event_eat(event);
+                if (action_type === 'zoom') {
+                    const zoom_prev = this.zoom() || 0.001;
+                    let zoom_next = zoom_prev * (1 - .001 * Math.min(event.deltaY, 100));
+                    zoom_next = this.zoom(zoom_next);
+                    const mult = zoom_next / zoom_prev;
+                    const pan_prev = this.pan();
+                    const center = this.pointer_center();
+                    const pan_next = pan_prev.multed0(mult).added1(center.multed0(1 - mult));
+                    this.pan(pan_next);
+                }
+                if (action_type === 'pan') {
+                    const pan_prev = this.pan();
+                    const pan_next = new $mol_vector_2d(pan_prev.x - event.deltaX, pan_prev.y - event.deltaY);
+                    this.pan(pan_next);
+                }
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_events", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_coords", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "pointer_center", null);
+        __decorate([
+            $mol_mem
+        ], $mol_touch.prototype, "action_point", null);
+        $$.$mol_touch = $mol_touch;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_book) = class $mol_book extends ($.$mol_view) {
+		pages_wrapped(){
+			return [];
+		}
+		width(){
+			return (this.Meter().width());
+		}
+		Meter(){
+			const obj = new this.$.$mol_meter();
+			return obj;
+		}
+		event_front_up(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		event_front_down(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Touch(){
+			const obj = new this.$.$mol_touch();
+			(obj.swipe_from_left) = (next) => ((this.event_front_up(next)));
+			(obj.swipe_to_left) = (next) => ((this.event_front_down(next)));
+			return obj;
+		}
+		page(id){
+			return null;
+		}
+		page_visible(id){
+			return true;
+		}
+		sub(){
+			return (this.pages_wrapped());
+		}
+		minimal_width(){
+			return 0;
+		}
+		pages(){
+			return [];
+		}
+		plugins(){
+			return [(this.Meter()), (this.Touch())];
+		}
+		Page(id){
+			const obj = new this.$.$mol_book_page();
+			(obj.Sub) = () => ((this.page(id)));
+			(obj.visible) = () => ((this.page_visible(id)));
+			return obj;
+		}
+		Placeholder(){
+			const obj = new this.$.$mol_book_placeholder();
+			(obj.title) = () => ((this.title()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$mol_book.prototype), "Meter"));
+	($mol_mem(($.$mol_book.prototype), "event_front_up"));
+	($mol_mem(($.$mol_book.prototype), "event_front_down"));
+	($mol_mem(($.$mol_book.prototype), "Touch"));
+	($mol_mem_key(($.$mol_book.prototype), "Page"));
+	($mol_mem(($.$mol_book.prototype), "Placeholder"));
+	($.$mol_book_placeholder) = class $mol_book_placeholder extends ($.$mol_view) {
+		minimal_width(){
+			return 400;
+		}
+		attr(){
+			return {...(super.attr()), "tabindex": null};
+		}
+	};
+	($.$mol_book_page) = class $mol_book_page extends ($.$mol_ghost) {
+		visible(){
+			return true;
+		}
+		attr_static(){
+			return {
+				...(super.attr_static()), 
+				"tabindex": 0, 
+				"mol_book_page_visible": true
+			};
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"mol_book_page_focused": (this.focused()), 
+				"mol_book_page_visible": (this.visible())
+			};
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /** @deprecated Use $mol_book2 **/
+        class $mol_book extends $.$mol_book {
+            pages_extended() {
+                return [this.Placeholder(), ...this.pages()];
+            }
+            break_point() {
+                const pages = this.pages_extended();
+                const limit = this.width();
+                let width = 0;
+                for (var break_point = pages.length; break_point > 0; --break_point) {
+                    const page = pages[break_point - 1];
+                    if (!page)
+                        continue;
+                    const page_width = page.minimal_width();
+                    if (width + page_width > limit)
+                        break;
+                    width += page_width;
+                }
+                if (width === 0)
+                    --break_point;
+                return break_point;
+            }
+            page(index) {
+                return this.pages_extended()[index];
+            }
+            page_visible(index) {
+                return index >= this.break_point();
+            }
+            pages_wrapped() {
+                const pages = this.pages_extended();
+                const extended = [];
+                for (let i = 1; i < pages.length; ++i) {
+                    if (pages[i])
+                        extended.push(this.Page(i));
+                }
+                if (pages[0])
+                    extended.push(this.Page(0));
+                return extended;
+            }
+            title() {
+                return this.pages().map(page => page.title()).reverse().join(' | ');
+            }
+            event_front_up(event) {
+                if (!event)
+                    return;
+                if (event.defaultPrevented)
+                    return;
+                this.page(1).focused(true);
+            }
+            event_front_down(event) {
+                if (!event)
+                    return;
+                if (event.defaultPrevented)
+                    return;
+                this.page(1).focused(false);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_book.prototype, "pages_extended", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book.prototype, "break_point", null);
+        __decorate([
+            $mol_mem
+        ], $mol_book.prototype, "pages_wrapped", null);
+        $$.$mol_book = $mol_book;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/book/book.view.css", "[mol_book] {\n\tdisplay: flex;\n\tflex-flow: row nowrap;\n\talign-items: stretch;\n\tjustify-content: flex-start;\n\toverflow: hidden;\n\tflex: 1 1 auto;\n\talign-self: stretch;\n\tmargin: 0;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\ttransform: translateZ( 0 );\n}\n\n[mol_book] > *:not([mol_book_page_visible]) {\n\tposition: absolute; \n\tleft: 0;\n\ttop: 0;\n}\n\n[mol_book] > [mol_book_page_focused]:not([mol_book_page_visible]) ~ * {\n\topacity: .2;\n\tpointer-events: none;\n\tz-index: -1;\n}\n\n[mol_book] > *:not([mol_book_page_visible]):not([mol_book_page_focused]) {\n\ttransform: translate3d( -100% , 0 , 0 );\n}\n\n[mol_book] > *:not([mol_book_page_visible]):not([mol_book_page_focused]) + *:before {\n\tcontent : '•••';\n\tposition: absolute;\n\ttop: 1rem;\n\tleft: 0;\n\tz-index: 2;\n\tpointer-events: none;\n\tcolor: var(--mol_theme_text);\n\ttransform: rotate(90deg);\n}\n\n[mol_book] > * {\n\tposition: relative;\n\t/* animation: mol_book_page_show linear .2s; */\n\ttransition-timing-function: linear;\n\tz-index: 0;\n\tmin-height: 100%;\n\tmax-height: 100%;\n}\n\n[mol_book_placeholder] {\n\tflex: 1000 1 400px;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n\tbackground: var(--mol_theme_field);\n\tz-index: -1;\n}\n\n[mol_book_placeholder]:hover {\n\toutline: none;\n}\n\n/*\n@keyframes mol_book_page_show {\n\tfrom {\n\t\ttransform: translateX( 100% );\n\t\topacity: 0;\n\t\tz-index: -1;\n\t}\n}\n\n[mol_book_page]:not(:first-child) {\n\tanimation: mol_book_page_show .25s ease-out;\n}\n*/\n");
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_updater_form) = class $yuf_sj_ui_device_updater_form extends ($.$mol_form) {
+		version(){
+			return (this.model().firmware_version());
+		}
+		version_latest(id){
+			return (this.model().version_latest(id));
+		}
+		firmware(){
+			return (this.model().firmware());
+		}
+		supported_options(){
+			return (this.firmware().supported_options());
+		}
+		progress(next){
+			return (this.firmware().progress(next));
+		}
+		firmware_type_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_firmware_type_name"));
+		}
+		required_firmware_type(){
+			return "*";
+		}
+		firmware_type(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Firmware_type(){
+			const obj = new this.$.$mol_switch();
+			(obj.value) = (next) => ((this.firmware_type(next)));
+			(obj.options) = () => ((this.supported_options()));
+			return obj;
+		}
+		Firmware_type_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.firmware_type_name()));
+			(obj.bids) = () => ([(this.required_firmware_type())]);
+			(obj.content) = () => ([(this.Firmware_type())]);
+			return obj;
+		}
+		version_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_version_title"));
+		}
+		version_formatted(){
+			return "";
+		}
+		Version_actual(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.version_formatted())]);
+			return obj;
+		}
+		version_latest_formatted(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_version_latest_formatted"));
+		}
+		Version_latest(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.version_latest_formatted())]);
+			return obj;
+		}
+		Version_label(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.version_title()));
+			(obj.content) = () => ([(this.Version_actual()), (this.Version_latest())]);
+			return obj;
+		}
+		file_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_file_name"));
+		}
+		required_selected_file(){
+			return "*";
+		}
+		file_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_file_title"));
+		}
+		selected_files(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		File(){
+			const obj = new this.$.$mol_button_open();
+			(obj.title) = () => ((this.file_title()));
+			(obj.multiple) = () => (false);
+			(obj.files) = (next) => ((this.selected_files(next)));
+			return obj;
+		}
+		selected_file_name(){
+			return "";
+		}
+		Selected_file(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.selected_file_name())]);
+			return obj;
+		}
+		selected_file_content(){
+			return [(this.Selected_file())];
+		}
+		File_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.file_name()));
+			(obj.bids) = () => ([(this.required_selected_file())]);
+			(obj.content) = () => ([(this.File()), ...(this.selected_file_content())]);
+			return obj;
+		}
+		submit_activate(next){
+			return (this.Submit().activate(next));
+		}
+		selected_file(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		version_min(id){
+			return "";
+		}
+		firmware_type_select_message(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_firmware_type_select_message"));
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		body(){
+			return [
+				(this.Firmware_type_field()), 
+				(this.Version_label()), 
+				(this.File_field())
+			];
+		}
+		submit_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_submit_title"));
+		}
+		message_done(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_message_done"));
+		}
+		message_empty_firmware(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_message_empty_firmware"));
+		}
+		message_empty_firmware_type(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_form_message_empty_firmware_type"));
+		}
+		Submit(){
+			const obj = new this.$.$mol_button_major();
+			(obj.title) = () => ((this.submit_title()));
+			(obj.enabled) = () => ((this.submit_allowed()));
+			(obj.hint) = () => ((this.submit_hint()));
+			(obj.click) = (next) => ((this.submit(next)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "firmware_type"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Firmware_type"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Firmware_type_field"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Version_actual"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Version_latest"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Version_label"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "selected_files"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "File"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Selected_file"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "File_field"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "selected_file"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_form.prototype), "Submit"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_updater_form extends $.$yuf_sj_ui_device_updater_form {
+            version_formatted() {
+                const type = this.firmware_type();
+                if (!type)
+                    return this.firmware_type_select_message();
+                const version = type === 'JAMMER'
+                    ? this.version()
+                    : this.version_min(type);
+                return version;
+            }
+            version_latest_formatted() {
+                const type = this.firmware_type();
+                if (!type)
+                    return '';
+                let latest = 'n/a';
+                try {
+                    if (type)
+                        latest = this.version_latest(type);
+                }
+                catch (e) {
+                    if ($mol_promise_like(e))
+                        $mol_fail_hidden(e);
+                    $mol_fail_log(e);
+                }
+                return super.version_latest_formatted().replace('{version_latest}', latest);
+            }
+            selected_file() {
+                return this.selected_files()?.[0] ?? null;
+            }
+            selected_file_name() {
+                return this.selected_file()?.name ?? null;
+            }
+            required_firmware_type() {
+                return this.firmware_type() ? '' : super.required_firmware_type();
+            }
+            selected_files(next) {
+                this.firmware_type();
+                return next ?? [];
+            }
+            required_selected_file() {
+                return this.selected_file() ? '' : super.required_selected_file();
+            }
+            form_invalid() {
+                if (!this.firmware_type())
+                    return this.message_empty_firmware_type();
+                if (!this.selected_files().length)
+                    return this.message_empty_firmware();
+                return super.form_invalid();
+            }
+            selected_file_content() {
+                if (!this.selected_file_name())
+                    return [];
+                return super.selected_file_content();
+            }
+            result(next) {
+                this.firmware_type();
+                this.selected_file();
+                this.progress(null);
+                if (next instanceof Error)
+                    next = this.errors()[next.message] || next.message || this.form_invalid();
+                return next ?? '';
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_form.prototype, "version_formatted", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_form.prototype, "version_latest_formatted", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_form.prototype, "selected_files", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_form.prototype, "result", null);
+        $$.$yuf_sj_ui_device_updater_form = $yuf_sj_ui_device_updater_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_updater_form, {
+            File: {
+                background: { color: $mol_theme.card },
+                width: '6rem',
+                height: '6rem',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+                $mol_icon: {
+                    width: '50%',
+                    height: '50%',
+                },
+            },
+            Body: {
+                gap: 0
+            },
+            File_field: {
+                Content: {
+                    flex: {
+                        direction: 'column'
+                    },
+                    gap: $mol_gap.space,
+                }
+            },
+            Version_label: {
+                Content: {
+                    gap: $mol_gap.block,
+                }
+            },
+            Selected_file: {
+                whiteSpace: 'break-spaces',
+                wordBreak: 'break-all',
+                flex: {
+                    wrap: 'wrap',
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_updater_page) = class $yuf_sj_ui_device_updater_page extends ($.$mol_page) {
+		firmware(){
+			return (this.model().firmware());
+		}
+		progress(next){
+			return (this.firmware().progress(next));
+		}
+		device_type(){
+			return (this.firmware().device_type());
+		}
+		Close(){
+			return null;
+		}
+		version_min(id){
+			return "";
+		}
+		upload(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		firmware_type(next){
+			return (this.Updater_form().firmware_type(next));
+		}
+		selected_file(){
+			return (this.Updater_form().selected_file());
+		}
+		Updater_form(){
+			const obj = new this.$.$yuf_sj_ui_device_updater_form();
+			(obj.model) = () => ((this.model()));
+			(obj.version_min) = (id) => ((this.version_min(id)));
+			(obj.save) = (next) => ((this.upload(next)));
+			return obj;
+		}
+		form_content(){
+			return [(this.Updater_form())];
+		}
+		info(){
+			return "";
+		}
+		Info(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.info())]);
+			return obj;
+		}
+		progress_status_text(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_page_progress_status_text"));
+		}
+		success_jammer(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_page_success_jammer"));
+		}
+		success_module(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_page_success_module"));
+		}
+		progress_status_content(){
+			return [
+				(this.progress_status_text()), 
+				(this.success_jammer()), 
+				(this.success_module())
+			];
+		}
+		Progress_status(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.progress_status_content()));
+			return obj;
+		}
+		reset_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_page_reset_title"));
+		}
+		reset(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Reset(){
+			const obj = new this.$.$mol_button_major();
+			(obj.title) = () => ((this.reset_title()));
+			(obj.click) = (next) => ((this.reset(next)));
+			return obj;
+		}
+		reset_content(){
+			return [(this.Reset())];
+		}
+		progress_content(){
+			return [
+				(this.Info()), 
+				(this.Progress_status()), 
+				...(this.reset_content())
+			];
+		}
+		Progress_block(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.progress_content()));
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_updater_page_title"));
+		}
+		param_prefix(){
+			return "";
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		tools(){
+			return [(this.Close())];
+		}
+		file_name(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		body(){
+			return [...(this.form_content()), (this.Progress_block())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "upload"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "Updater_form"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "Info"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "Progress_status"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "reset"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "Reset"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "Progress_block"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_page.prototype), "file_name"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_updater_page extends $.$yuf_sj_ui_device_updater_page {
+            upload(e) {
+                const file = this.selected_file();
+                if (!file)
+                    return null;
+                const type = this.firmware_type();
+                if (!type)
+                    return null;
+                this.file_name(file.name);
+                this.firmware().update({
+                    type,
+                    file,
+                });
+            }
+            form_content() {
+                const progress = this.progress() ?? 0;
+                return progress < 1 ? super.form_content() : [];
+            }
+            progress_content() {
+                const progress = this.progress();
+                return progress !== null ? super.progress_content() : [];
+            }
+            reset_content() {
+                const progress = this.progress() ?? 0;
+                if (progress < 100)
+                    return [];
+                if (this.device_type() === 'JAMMER' && this.model().logout_supported())
+                    return [];
+                return super.reset_content();
+            }
+            success_reboot_task() {
+                return new $mol_after_timeout(5000, $mol_wire_async(() => this.model().logout()));
+            }
+            progress_status_content() {
+                const type = this.device_type();
+                const progress = this.progress() ?? 0;
+                if (progress < 100) {
+                    return [this.progress_status_text().replace('{progress}', '' + progress)];
+                }
+                if (type === 'JAMMER') {
+                    this.success_reboot_task();
+                    return [this.success_jammer()];
+                }
+                return [this.success_module()];
+            }
+            info() {
+                return this.file_name() + ' (' + this.device_type() + ')';
+            }
+            reset(e) {
+                this.progress(null);
+            }
+        }
+        __decorate([
+            $mol_action
+        ], $yuf_sj_ui_device_updater_page.prototype, "upload", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_page.prototype, "success_reboot_task", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_updater_page.prototype, "progress_status_content", null);
+        $$.$yuf_sj_ui_device_updater_page = $yuf_sj_ui_device_updater_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_updater_page, {
+            flex: {
+                shrink: 0,
+                basis: $yuf_sj_ui_theme_gap.page_m,
+            },
+            Progress_block: {
+                gap: $mol_gap.block,
+                flex: {
+                    direction: 'column'
+                }
+            },
+            Info: {
+                color: $mol_theme.shade,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    const auth_dto = rec({
+        login: opt(nul(str)),
+        password: opt(nul(str)),
+        token: opt(nul(str)),
+    });
+    class $yuf_sj_ui_login_model extends $yuf_ws_entity {
+        type() { return 'auth'; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        defaults(raw) {
+            return auth_dto({
+                login: null,
+                password: null,
+                token: undefined,
+                ...raw,
+            });
+        }
+        session() { return this.$.$mol_one.$yuf_session; }
+        login(next) { return this.value('login', next); }
+        password(next) { return this.value('password', next); }
+    }
+    $.$yuf_sj_ui_login_model = $yuf_sj_ui_login_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const error_codes_map = {
+        '1': 'AUTH_FAILED',
+        '2': 'DEVICE_NOT_FOUND',
+        '3': 'OBJECT_NOT_FOUND',
+        '4': 'INVALID_OBJECT',
+        '5': 'FILE_READ_ERROR',
+        '6': 'SCRIPT_ERROR',
+        '7': 'INTERNAL_ERROR',
+    };
+    class $yuf_sj_ui_device_model extends $mol_object {
+        ws() {
+            return this.$.$yuf_ws_statefull.make({
+                url: () => this.ws_url(),
+                enabled: () => this.ws_enabled(),
+                session: () => this.session(),
+                code_normalize: error => this.code_to_error(error),
+                heatbeat_enabled: () => this.heatbeat_enabled(),
+                watchdog_enabled: () => this.watchdog_enabled(),
+            });
+        }
+        devices() {
+            return this.$.$yuf_sj_ui_device_store.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+            });
+        }
+        ws_url() {
+            const loc = this.$.$mol_dom_context.location;
+            const port = Number(loc.port || 0);
+            return port ? `${loc.protocol.replace('http', 'ws')}//${loc.hostname}:${port + 1}` : '/ws';
+        }
+        code_to_error(error) {
+            return error_codes_map['' + error] || ('' + error);
+        }
+        ws_enabled() {
+            // return ! this.$.$yuf_browser_live.hidden()
+            return true;
+        }
+        heatbeat_enabled() { return true; }
+        watchdog_enabled() { return true; }
+        id() { return ''; }
+        session() { return this.$.$mol_one.$yuf_session; }
+        auto() {
+            if (!this.session().logged())
+                return [];
+            return $mol_wire_race(() => this.info().serial(), () => this.description().name(), () => this.network().ip());
+        }
+        info() {
+            return this.$.$yuf_sj_ui_device_info_model.make({
+                ws: () => this.ws(),
+                session: () => this.session(),
+                id: () => this.id(),
+            });
+        }
+        description() {
+            return this.$.$yuf_sj_ui_description_model.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+            });
+        }
+        title() {
+            return this.description().name() ?? this.info().serial() ?? '';
+        }
+        network() {
+            return this.$.$yuf_sj_ui_network_model.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+            });
+        }
+        log() {
+            return this.$.$yuf_sj_ui_log_model.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+            });
+        }
+        auth() {
+            return this.$.$yuf_sj_ui_login_model.make({
+                ws: () => this.ws(),
+                session: () => this.session(),
+                id: () => this.id(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "ws", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "devices", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "info", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "description", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "title", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "network", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "log", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_device_model.prototype, "auth", null);
+    $.$yuf_sj_ui_device_model = $yuf_sj_ui_device_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_device_store extends $yuf_ws_entity {
+        type() { return 'devices'; }
+        defaults(raw) {
+            return [...raw ?? []];
+        }
+        ids(next) {
+            return this.data(next) ?? [];
+        }
+        by_id(id) {
+            return this.$.$yuf_sj_ui_device_model.make({
+                id: $mol_const(id),
+                ws: () => this.ws(),
+            });
+        }
+        version_min(type) {
+            return this.ids()
+                .map(id => this.by_id(id).info())
+                .filter(info => info.device_type() === type)
+                .map(info => info.firmware_version())?.[0] ?? null;
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_ui_device_store.prototype, "by_id", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_ui_device_store.prototype, "version_min", null);
+    $.$yuf_sj_ui_device_store = $yuf_sj_ui_device_store;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_page) = class $yuf_sj_ui_device_page extends ($.$yuf_sj_ui_device_updater_page) {};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_page, {
+            Title: {
+                flex: {
+                    basis: '18rem',
+                    grow: 0,
+                    wrap: 'nowrap',
+                },
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_link) = class $yuf_sj_ui_device_link extends ($.$yuf_link) {
+		id(){
+			return (this.model().id());
+		}
+		device_type(){
+			return (this.model().device_type());
+		}
+		device_status(){
+			return (this.model().device_status());
+		}
+		uptime(){
+			return (this.model().uptime());
+		}
+		serial(){
+			return (this.model().serial());
+		}
+		version(){
+			return (this.model().firmware_version());
+		}
+		name_id(){
+			return (this.id());
+		}
+		Title(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.name_id())]);
+			return obj;
+		}
+		Status(){
+			const obj = new this.$.$yuf_sj_ui_device_status();
+			(obj.value) = () => ((this.device_status()));
+			return obj;
+		}
+		Status_block(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Status())]);
+			return obj;
+		}
+		Description(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Title()), (this.Status_block())]);
+			return obj;
+		}
+		device_type_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_link_device_type_label"));
+		}
+		device_type_formatted(){
+			return "";
+		}
+		Device_type_label(){
+			const obj = new this.$.$yuf_sj_ui_device_link_label();
+			(obj.title) = () => ((this.device_type_label()));
+			(obj.content) = () => ([(this.device_type_formatted())]);
+			return obj;
+		}
+		uptime_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_link_uptime_label"));
+		}
+		uptime_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_link_uptime_hint"));
+		}
+		Uptime(){
+			const obj = new this.$.$yuf_time_card();
+			(obj.moment) = () => ((this.uptime()));
+			(obj.hint) = () => ((this.uptime_hint()));
+			(obj.format) = () => ("short");
+			return obj;
+		}
+		Uptime_label(){
+			const obj = new this.$.$yuf_sj_ui_device_link_label();
+			(obj.title) = () => ((this.uptime_label()));
+			(obj.content) = () => ([(this.Uptime())]);
+			return obj;
+		}
+		version_label(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_link_version_label"));
+		}
+		Version_label(){
+			const obj = new this.$.$yuf_sj_ui_device_link_label();
+			(obj.title) = () => ((this.version_label()));
+			(obj.content) = () => ([(this.version())]);
+			return obj;
+		}
+		serial_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_link_serial_title"));
+		}
+		Serial_label(){
+			const obj = new this.$.$yuf_sj_ui_device_link_label();
+			(obj.title) = () => ((this.serial_title()));
+			(obj.content) = () => ([(this.serial())]);
+			return obj;
+		}
+		serial_content(){
+			return [(this.Serial_label())];
+		}
+		Footer(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([
+				(this.Device_type_label()), 
+				(this.Uptime_label()), 
+				(this.Version_label()), 
+				...(this.serial_content())
+			]);
+			return obj;
+		}
+		name(){
+			return "";
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		minimal_height(){
+			return 168;
+		}
+		sub(){
+			return [(this.Description()), (this.Footer())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Title"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Status"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Status_block"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Description"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Device_type_label"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Uptime"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Uptime_label"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Version_label"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Serial_label"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "Footer"));
+	($mol_mem(($.$yuf_sj_ui_device_link.prototype), "model"));
+	($.$yuf_sj_ui_device_link_label) = class $yuf_sj_ui_device_link_label extends ($.$mol_labeler) {
+		Label(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.label()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_link_label.prototype), "Label"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_link extends $.$yuf_sj_ui_device_link {
+            name_id() {
+                return this.name().trim() || `# ${this.id()}`;
+            }
+            serial_content() { return this.serial() ? super.serial_content() : []; }
+            device_type_formatted() {
+                return this.device_type().replace('JAMMER_MODULE', 'MODULE');
+            }
+        }
+        $$.$yuf_sj_ui_device_link = $yuf_sj_ui_device_link;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_link, {
+            padding: 0,
+            flex: {
+                grow: 1,
+                shrink: 1,
+            },
+            gap: $mol_gap.block,
+            minHeight: '9rem',
+            Description: {
+                justifyContent: 'space-between',
+                minHeight: '1.25rem',
+                alignItems: 'end',
+                gap: $mol_gap.text,
+            },
+            Status_block: {
+                alignItems: 'center',
+                gap: $mol_gap.space,
+            },
+            Footer: {
+                justifyContent: 'space-between',
+                flex: {
+                    wrap: 'wrap',
+                    shrink: 1,
+                    grow: 1,
+                    direction: 'row',
+                },
+                gap: $mol_gap.space,
+            },
+            Version_label: {
+                flex: { basis: '10rem', shrink: 1, wrap: 'nowrap' },
+            },
+            Uptime_label: {
+                flex: { basis: '7rem' },
+            },
+            Uptime: {
+                color: $mol_theme.text,
+                font: { size: '1rem' },
+            },
+            Serial_label: {
+                Content: {
+                    font: { size: '.9rem' },
+                },
+                flex: {
+                    basis: '24rem',
+                },
+            },
+            Device_type_label: {
+                flex: { basis: '6rem' },
+            },
+        });
+        $mol_style_define($yuf_sj_ui_device_link_label, {
+            flex: {
+                direction: 'column',
+            },
+            Content: {
+                wordBreak: 'break-all',
+                whiteSpace: 'break-spaces',
+                flex: { shrink: 1 },
+                padding: 0,
+                minHeight: '1.5rem',
+                color: $mol_theme.text,
+            },
+            gap: 0,
+            Label: {
+                minHeight: '1rem',
+                padding: 0,
+                color: $mol_theme.shade,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_power) = class $mol_icon_power extends ($.$mol_icon) {
+		path(){
+			return "M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_button_reset) = class $yuf_button_reset extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_refresh();
+			return obj;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_button_reset_title"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_reset.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_ui_device_catalog) = class $yuf_sj_ui_device_catalog extends ($.$yuf_catalog) {
+		Close(){
+			return null;
+		}
+		model(id){
+			return (this.store().by_id(id));
+		}
+		info(id){
+			return (this.model(id).info());
+		}
+		spread_ids(){
+			return (this.store().ids());
+		}
+		empty_message(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_catalog_empty_message"));
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_catalog_menu_title"));
+		}
+		param_suffix(){
+			return "device";
+		}
+		menu_tools(){
+			return [(this.Close())];
+		}
+		device_type(){
+			return "";
+		}
+		store(){
+			const obj = new this.$.$yuf_sj_ui_device_store();
+			return obj;
+		}
+		Menu_item(id){
+			const obj = new this.$.$yuf_sj_ui_device_catalog_item();
+			(obj.arg) = () => ((this.arg(id)));
+			(obj.model) = () => ((this.info(id)));
+			return obj;
+		}
+		Menu_links_empty(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.empty_message())]);
+			return obj;
+		}
+		Spread(id){
+			const obj = new this.$.$yuf_sj_ui_device_page();
+			(obj.title) = () => ((this.spread_title(id)));
+			(obj.model) = () => ((this.info(id)));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_catalog.prototype), "store"));
+	($mol_mem_key(($.$yuf_sj_ui_device_catalog.prototype), "Menu_item"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog.prototype), "Menu_links_empty"));
+	($mol_mem_key(($.$yuf_sj_ui_device_catalog.prototype), "Spread"));
+	($.$yuf_sj_ui_device_catalog_item) = class $yuf_sj_ui_device_catalog_item extends ($.$mol_view) {
+		arg(){
+			return {};
+		}
+		click(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		Link(){
+			const obj = new this.$.$yuf_sj_ui_device_link();
+			(obj.arg) = () => ((this.arg()));
+			(obj.click) = (next) => ((this.click(next)));
+			(obj.model) = () => ((this.model()));
+			return obj;
+		}
+		Reset_icon(){
+			const obj = new this.$.$mol_icon_power();
+			return obj;
+		}
+		reset_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_device_catalog_item_reset_title"));
+		}
+		reset_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Reset(){
+			const obj = new this.$.$yuf_button_reset();
+			(obj.sub) = () => ([(this.Reset_icon())]);
+			(obj.hint) = () => ((this.reset_title()));
+			(obj.click) = (next) => ((this.reset_event(next)));
+			return obj;
+		}
+		Buttons(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Reset())]);
+			return obj;
+		}
+		sub(){
+			return [(this.Link()), (this.Buttons())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "click"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "Link"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "Reset_icon"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "reset_event"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "Reset"));
+	($mol_mem(($.$yuf_sj_ui_device_catalog_item.prototype), "Buttons"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_catalog extends $.$yuf_sj_ui_device_catalog {
+            spread_title(id) {
+                return this.model(id).title() ?? '';
+            }
+            spread_ids_filtered() {
+                const ids = super.spread_ids_filtered();
+                const device_type = this.device_type();
+                if (device_type)
+                    return ids.filter(id => this.model(id).info().device_type() === device_type);
+                return ids;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_device_catalog.prototype, "spread_ids_filtered", null);
+        $$.$yuf_sj_ui_device_catalog = $yuf_sj_ui_device_catalog;
+        class $yuf_sj_ui_device_catalog_item extends $.$yuf_sj_ui_device_catalog_item {
+            reset_event(e) {
+                e && this.$.$mol_dom_event.wrap(e).prevented(true);
+                this.model().reboot();
+            }
+            click(e) {
+                e && this.$.$mol_dom_event.wrap(e).prevented(true);
+            }
+        }
+        $$.$yuf_sj_ui_device_catalog_item = $yuf_sj_ui_device_catalog_item;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_device_catalog, {
+            Menu: {
+                flex: {
+                    basis: $yuf_sj_ui_theme_gap.page_l,
+                },
+            },
+        });
+        $mol_style_define($yuf_sj_ui_device_catalog_item, {
+            padding: { top: $mol_gap.space, bottom: $mol_gap.space },
+            border: {
+                radius: $mol_gap.round,
+            },
+            overflow: 'hidden',
+            flex: {
+                direction: 'row',
+            },
+            Link: {
+                background: {
+                    color: $mol_theme.card,
+                },
+                border: {
+                    // @ts-ignore
+                    bottomRight: { radius: 0 },
+                    topRight: { radius: 0 },
+                },
+                flex: {
+                    direction: 'column',
+                    grow: 1,
+                },
+                padding: $mol_gap.text,
+            },
+            Buttons: {
+                background: {
+                    color: $mol_theme.back,
+                },
+                border: {
+                    // @ts-ignore
+                    bottomRight: { radius: $mol_gap.round },
+                    topRight: { radius: $mol_gap.round },
+                },
+                alignSelf: 'stretch',
+                flex: { direction: 'column' },
+                gap: $mol_gap.space,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_device_updater_book) = class $yuf_sj_ui_device_updater_book extends ($.$mol_book) {
+		param_prefix(){
+			return "";
+		}
+		title(){
+			return (this.Main().title());
+		}
+		firmware_type(){
+			return (this.Main().firmware_type());
+		}
+		Close(){
+			return null;
+		}
+		Close_main(){
+			return (this.Close());
+		}
+		info(){
+			const obj = new this.$.$yuf_sj_ui_device_info_model();
+			return obj;
+		}
+		Main(){
+			const obj = new this.$.$yuf_sj_ui_device_updater_page();
+			(obj.param_prefix) = () => ((this.param_prefix()));
+			(obj.Close) = () => ((this.Close_main()));
+			(obj.model) = () => ((this.info()));
+			(obj.version_min) = (id) => ((this.version_min(id)));
+			return obj;
+		}
+		version_min(id){
+			return (this.devices().version_min(id));
+		}
+		devices(){
+			const obj = new this.$.$yuf_sj_ui_device_store();
+			return obj;
+		}
+		Dev_list(){
+			const obj = new this.$.$yuf_sj_ui_device_catalog();
+			(obj.param_prefix) = () => ((this.param_prefix()));
+			(obj.Close) = () => ((this.Close()));
+			(obj.device_type) = () => ("JAMMER_MODULE");
+			(obj.store) = () => ((this.devices()));
+			return obj;
+		}
+		dev_list_content(){
+			return [(this.Dev_list())];
+		}
+		pages(){
+			return [(this.Main()), ...(this.dev_list_content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_device_updater_book.prototype), "info"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_book.prototype), "Main"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_book.prototype), "devices"));
+	($mol_mem(($.$yuf_sj_ui_device_updater_book.prototype), "Dev_list"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_device_updater_book extends $.$yuf_sj_ui_device_updater_book {
+            dev_list_content() {
+                return this.firmware_type() === 'JAMMER_MODULE' ? super.dev_list_content() : [];
+            }
+            Close_main() {
+                return this.firmware_type() === 'JAMMER_MODULE' ? null : super.Close_main();
+            }
+        }
+        $$.$yuf_sj_ui_device_updater_book = $yuf_sj_ui_device_updater_book;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_app) = class $yuf_sj_ui_app extends ($.$yuf_catalog_app) {
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		login(){
+			return (this.Login_form().login());
+		}
+		password(){
+			return (this.Login_form().password());
+		}
+		Login_form(){
+			const obj = new this.$.$yuf_sj_ui_login_form();
+			(obj.enter) = (next) => ((this.enter(next)));
+			return obj;
+		}
+		server_offline(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_app_server_offline"));
+		}
+		Server_offline(){
+			const obj = new this.$.$mol_status();
+			(obj.message) = () => ((this.server_offline()));
+			return obj;
+		}
+		Ws_status(){
+			const obj = new this.$.$yuf_ws_status();
+			(obj.ws) = () => ((this.ws()));
+			return obj;
+		}
+		ws(){
+			return (this.model().ws());
+		}
+		session(){
+			return (this.model().session());
+		}
+		logged(){
+			return (this.session().logged());
+		}
+		model_auto(){
+			return (this.model().auto());
+		}
+		auth(){
+			return (this.model().auth());
+		}
+		log_model(){
+			return (this.model().log());
+		}
+		devices(){
+			return (this.model().devices());
+		}
+		network(){
+			return (this.model().network());
+		}
+		description_model(){
+			return (this.model().description());
+		}
+		info_model(){
+			return (this.model().info());
+		}
+		version(){
+			return (this.info_model().firmware_version());
+		}
+		placeholder_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_app_placeholder_title"));
+		}
+		Description_block(){
+			const obj = new this.$.$yuf_sj_ui_description_card();
+			(obj.model) = () => ((this.description_model()));
+			(obj.arg) = () => ((this.menu_link_arg("description")));
+			return obj;
+		}
+		placeholder_network_content(){
+			return [];
+		}
+		Network_block(){
+			const obj = new this.$.$yuf_sj_ui_network_card();
+			(obj.model) = () => ((this.network()));
+			(obj.arg) = () => ((this.menu_link_arg("network")));
+			(obj.network_content) = () => ((this.placeholder_network_content()));
+			return obj;
+		}
+		Admin_block(){
+			const obj = new this.$.$yuf_sj_ui_device_reboot_card();
+			(obj.model) = () => ((this.info_model()));
+			(obj.arg) = () => ((this.menu_link_arg("admin")));
+			return obj;
+		}
+		Description(){
+			const obj = new this.$.$yuf_sj_ui_description_page();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.Close) = () => ((this.Spread_close()));
+			(obj.model) = () => ((this.description_model()));
+			return obj;
+		}
+		Network(){
+			const obj = new this.$.$yuf_sj_ui_network_page();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.Close) = () => ((this.Spread_close()));
+			(obj.model) = () => ((this.network()));
+			return obj;
+		}
+		spreads_mid(){
+			return {};
+		}
+		Logging(){
+			const obj = new this.$.$yuf_sj_ui_log_page();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.Close) = () => ((this.Spread_close()));
+			(obj.model) = () => ((this.log_model()));
+			return obj;
+		}
+		Updater(){
+			const obj = new this.$.$yuf_sj_ui_device_updater_book();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.Close) = () => ((this.Spread_close()));
+			(obj.info) = () => ((this.info_model()));
+			(obj.devices) = () => ((this.devices()));
+			return obj;
+		}
+		Admin(){
+			const obj = new this.$.$yuf_sj_ui_device_reboot_page();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.Close) = () => ((this.Spread_close()));
+			(obj.model) = () => ((this.info_model()));
+			return obj;
+		}
+		login_body(){
+			return [(this.Login_form()), (this.Server_offline())];
+		}
+		foot_second_post(){
+			return [(this.Ws_status())];
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_device_model();
+			return obj;
+		}
+		auto(){
+			return [...(this.model_auto())];
+		}
+		Placeholder(){
+			const obj = new this.$.$mol_page();
+			(obj.title) = () => ((this.placeholder_title()));
+			(obj.body) = () => ([
+				(this.Description_block()), 
+				(this.Network_block()), 
+				(this.Admin_block())
+			]);
+			return obj;
+		}
+		param(){
+			return "yuf_sj";
+		}
+		spreads(){
+			return {
+				"description": (this.Description()), 
+				"network": (this.Network()), 
+				...(this.spreads_mid()), 
+				"logging": (this.Logging()), 
+				"updater": (this.Updater()), 
+				"admin": (this.Admin())
+			};
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "enter"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Login_form"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Server_offline"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Ws_status"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Description_block"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Network_block"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Admin_block"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Description"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Network"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Logging"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Updater"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Admin"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_app.prototype), "Placeholder"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_app extends $.$yuf_sj_ui_app {
+            get $() {
+                return super.$.$mol_ambient({
+                    $yuf_session: class yuf_sj_ui_app_session extends super.$.$yuf_session {
+                        client_id() { return 'sj'; }
+                    },
+                });
+            }
+            logout(e) {
+                this.session().logout();
+            }
+            server_offline() {
+                const ws = this.ws();
+                if (ws.ready())
+                    return '';
+                return super.server_offline().replace('{error}', ws.error_message());
+            }
+            enter() {
+                const res = this.auth().data({
+                    login: this.login(),
+                    password: this.password(),
+                });
+                if (!res?.token)
+                    throw new Error('Server auth token is empty');
+                this.session().token(res.token);
+            }
+        }
+        __decorate([
+            $mol_memo.field
+        ], $yuf_sj_ui_app.prototype, "$", null);
+        $$.$yuf_sj_ui_app = $yuf_sj_ui_app;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_app, {
+            Menu: {
+                Head: { padding: { left: 0, right: 0 } },
+                flex: {
+                    basis: $yuf_sj_ui_theme_gap.page_s
+                }
+            },
+            Menu_logo: {
+                width: '1.5rem'
+            },
+            Login: {
+                flex: {
+                    basis: $yuf_sj_ui_theme_gap.page_m
+                }
+            },
+            Ws_status: {
+                padding: $mol_gap.text,
+            },
+            Placeholder: {
+                Body_content: {
+                    gap: $mol_gap.block
+                },
+                flex: {
+                    grow: 0,
+                    basis: $yuf_sj_ui_theme_gap.page_xl,
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_book_list) = class $yuf_sj_ui_book_list extends ($.$mol_page) {
+		Close(){
+			return null;
+		}
+		tools_foot(){
+			return [(this.Close())];
+		}
+		item_width_min(){
+			return 200;
+		}
+		item_height_min(){
+			return 80;
+		}
+		Row(id){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		rows(){
+			return [(this.Row("0"))];
+		}
+		Rows(){
+			const obj = new this.$.$mol_list();
+			(obj.item_width_min) = (id) => ((this.item_width_min()));
+			(obj.item_height_min) = (id) => ((this.item_height_min()));
+			(obj.rows) = () => ((this.rows()));
+			return obj;
+		}
+		Row_draft(id){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		draft_content(){
+			return [(this.Row_draft("0"))];
+		}
+		Draft_label(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.draft_content()));
+			return obj;
+		}
+		draft_id(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		param_prefix(){
+			return "";
+		}
+		ids(){
+			return [];
+		}
+		tools(){
+			return [...(this.tools_foot())];
+		}
+		max_rows(){
+			return 10;
+		}
+		body(){
+			return [(this.Rows()), (this.Draft_label())];
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_ui_book_list.prototype), "Row"));
+	($mol_mem(($.$yuf_sj_ui_book_list.prototype), "Rows"));
+	($mol_mem_key(($.$yuf_sj_ui_book_list.prototype), "Row_draft"));
+	($mol_mem(($.$yuf_sj_ui_book_list.prototype), "Draft_label"));
+	($mol_mem(($.$yuf_sj_ui_book_list.prototype), "draft_id"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_book_list extends $.$yuf_sj_ui_book_list {
+            rows() { return this.ids().map(id => this.Row(id)); }
+            draft_id(next) {
+                this.ids();
+                return next ?? $mol_guid();
+            }
+            draft_content() {
+                if (this.ids().length >= this.max_rows())
+                    return [];
+                return [this.Row_draft(this.draft_id())];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_book_list.prototype, "rows", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_book_list.prototype, "draft_id", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_ui_book_list.prototype, "draft_content", null);
+        $$.$yuf_sj_ui_book_list = $yuf_sj_ui_book_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_book_list, {
+            flex: {
+                shrink: 1,
+                grow: 0,
+                basis: '36rem',
+            },
+            Body: {
+                flex: {
+                    direction: 'column',
+                },
+            },
+            Body_content: {
+                gap: $mol_gap.block,
+                padding: $mol_gap.space,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $yuf_sj_ui_range_expanded(bands) {
+        const limit = new $mol_vector_range(Infinity, -Infinity);
+        for (const [min, max] of Object.values(bands)) {
+            limit.min = Math.min(min, limit.min);
+            limit.max = Math.max(max, limit.max);
+        }
+        return limit;
+    }
+    $.$yuf_sj_ui_range_expanded = $yuf_sj_ui_range_expanded;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const arr = $mol_data_array;
+    $.$yuf_sj_jammer_slave_model_dto = rec({
+        uri: str,
+    });
+    class $yuf_sj_jammer_slave_model extends $yuf_ws_entity {
+        defaults(raw) {
+            return $.$yuf_sj_jammer_slave_model_dto({
+                uri: '',
+                ...raw,
+            });
+        }
+        uri(next) { return this.value('uri', next); }
+    }
+    $.$yuf_sj_jammer_slave_model = $yuf_sj_jammer_slave_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_entity2_store_fake extends $yuf_entity2_store {
+        data_normalized(next, cache) {
+            const prev = $mol_wire_probe(() => this.data_normalized());
+            next = next ? { ...prev, ...next } : next;
+            const items = next ? Object.values(next).filter($mol_guard_defined) : next;
+            const data = (this.data(items, cache) ?? []);
+            const result = {};
+            for (let i = 0; i < data.length; i++) {
+                const id = this.item_id(data[i]) || String(i + 1);
+                result[id] = data[i];
+            }
+            return result;
+        }
+        item_id(item) {
+            return '';
+        }
+        ids() { return Object.keys(this.data_normalized() ?? {}); }
+        row_data(id, patch, cache) {
+            return this.data_normalized(patch === undefined ? patch : { [id]: patch }, cache)?.[id] ?? null;
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_entity2_store_fake.prototype, "data_normalized", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_entity2_store_fake.prototype, "ids", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_entity2_store_fake.prototype, "row_data", null);
+    $.$yuf_entity2_store_fake = $yuf_entity2_store_fake;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_ws_entity_store_fake extends $yuf_entity2_store_fake {
+        type() { return ''; }
+        query() { return {}; }
+        device() {
+            return this.id() ? [this.id()] : [];
+        }
+        signature() {
+            const query = this.query();
+            const device = this.device();
+            return {
+                type: this.type(),
+                id: this.id() || undefined,
+                query: Object.keys(query).length ? query : undefined,
+                device: device.length ? device : undefined,
+            };
+        }
+        ws() { return this.$.$mol_one.$yuf_ws_statefull; }
+        actual(next, refresh) {
+            this.propagate();
+            return this.ws().data(this.signature(), next, refresh);
+        }
+        toString() { return JSON.stringify(this.signature()); }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_ws_entity_store_fake.prototype, "signature", null);
+    $.$yuf_ws_entity_store_fake = $yuf_ws_entity_store_fake;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const arr = $mol_data_array;
+    const slaves_dto = arr($yuf_sj_jammer_slave_model_dto);
+    class $yuf_sj_jammer_slave_store extends $yuf_ws_entity_store_fake {
+        type() { return 'slaves'; }
+        defaults(raw) {
+            return slaves_dto([...raw ?? []]);
+        }
+        by_id(id) {
+            return this.$.$yuf_sj_jammer_slave_model.make({
+                _id: id,
+                ws: () => this.ws(),
+                actual: (next) => this.row_data(id, next)
+            });
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_slave_store.prototype, "by_id", null);
+    $.$yuf_sj_jammer_slave_store = $yuf_sj_jammer_slave_store;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const str = $mol_data_string;
+    const bool = $mol_data_boolean;
+    const arr = $mol_data_array;
+    const dict = $mol_data_dict;
+    const cnst = $mol_data_const;
+    const vr = $mol_data_variant;
+    const sdr_limits_dto = rec({
+        bands: dict(arr(num)),
+        spread_factors: opt(nul(arr(str))),
+    });
+    const mode_dto = vr(cnst('auto'), cnst('manual'));
+    $.$yuf_sj_jammer_sdr_model_dto = rec({
+        bands: dict(arr(num)),
+        mode: mode_dto,
+        master: bool,
+    });
+    class $yuf_sj_jammer_sdr_model_limits extends $yuf_ws_entity {
+        type() { return 'jammer_limits'; }
+        defaults(raw) {
+            return sdr_limits_dto({
+                bands: {
+                    '1': [150_000, 1_200_000_000],
+                    '2': [500_000, 1020_000],
+                    '3': [2100_000, 2700_000],
+                },
+                spread_factors: ['sf5', 'sf6', 'sf7', 'sf8', 'sf9', 'sf10', 'sf11', 'sf12', 'sf13'],
+                ...raw,
+            });
+        }
+        bands(next) {
+            return this.value('bands', next) ?? {};
+        }
+        spread_factors(next) {
+            return this.value('spread_factors', next) ?? [];
+        }
+        band_limit() { return $yuf_sj_ui_range_expanded(this.bands()); }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_sdr_model_limits.prototype, "band_limit", null);
+    $.$yuf_sj_jammer_sdr_model_limits = $yuf_sj_jammer_sdr_model_limits;
+    class $yuf_sj_jammer_sdr_model_range extends $yuf_ws_entity {
+        defaults(raw) {
+            return {
+                min: 0,
+                max: 0,
+                ...raw,
+            };
+        }
+        min(next) { return this.value('min', next) ?? null; }
+        max(next) { return this.value('max', next) ?? null; }
+    }
+    $.$yuf_sj_jammer_sdr_model_range = $yuf_sj_jammer_sdr_model_range;
+    class $yuf_sj_jammer_sdr_model extends $yuf_ws_entity {
+        defaults(raw) {
+            return $.$yuf_sj_jammer_sdr_model_dto({
+                mode: 'auto',
+                master: false,
+                bands: {},
+                ...raw,
+            });
+        }
+        type() { return 'jammer_settings'; }
+        master(next) { return this.value('master', next) ?? false; }
+        slaves() {
+            return this.$.$yuf_sj_jammer_slave_store.make({
+                id: () => this.id(),
+                ws: () => this.ws(),
+            });
+        }
+        mode(next) { return this.value('mode', next); }
+        bands(next) {
+            return this.value('bands', next) ?? {};
+        }
+        range_ids() {
+            return Object.keys(this.bands());
+        }
+        range_data(id, next) {
+            let prev = this.bands();
+            if (next || next === null) {
+                const draft = this.draft()?.bands;
+                const draft_val = draft?.[id] ?? prev?.[id];
+                const full = {
+                    ...prev,
+                    ...draft,
+                };
+                if (next)
+                    full[id] = [next.min ?? draft_val?.[0], next.max ?? draft_val?.[1]];
+                if (next === null)
+                    delete full[id];
+                prev = this.bands(full);
+                if (next === null)
+                    return null;
+            }
+            return prev[id] ? { min: prev[id][0], max: prev[id][1] } : null;
+        }
+        range_by_id(id) {
+            return this.$.$yuf_sj_jammer_sdr_model_range.make({
+                data: next => this.range_data(id, next),
+            });
+        }
+        hard_limits() {
+            return this.$.$yuf_sj_jammer_sdr_model_limits.make({
+                id: () => this.id(),
+                ws: () => this.ws(),
+            });
+        }
+        band_limit_hard() { return this.hard_limits().band_limit(); }
+        spreads_available() {
+            return this.hard_limits().spread_factors();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_sdr_model.prototype, "slaves", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_sdr_model.prototype, "bands", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_sdr_model.prototype, "range_data", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_sdr_model.prototype, "range_by_id", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_sdr_model.prototype, "hard_limits", null);
+    $.$yuf_sj_jammer_sdr_model = $yuf_sj_jammer_sdr_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const arr = $mol_data_array;
+    $.$yuf_sj_ui_network_route_model_dto = rec({
+        destination: str,
+        gateway: str,
+        dev: opt(nul(str)),
+    });
+    class $yuf_sj_ui_network_route_model extends $yuf_ws_entity {
+        defaults(raw) {
+            return $.$yuf_sj_ui_network_route_model_dto({
+                destination: '',
+                gateway: '',
+                dev: null,
+                ...raw,
+            });
+        }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        master() { return this.sdr().master(); }
+        destination(next) { return this.value('destination', next); }
+        gateway(next) { return this.value('gateway', next); }
+        dev(next) { return this.value('dev', next); }
+    }
+    $.$yuf_sj_ui_network_route_model = $yuf_sj_ui_network_route_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const arr = $mol_data_array;
+    const routes_dto = arr($yuf_sj_ui_network_route_model_dto);
+    class $yuf_sj_ui_network_route_store extends $yuf_ws_entity_store_fake {
+        type() { return 'routes'; }
+        defaults(raw) {
+            return routes_dto([...raw ?? []]);
+        }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        by_id(id) {
+            return this.$.$yuf_sj_ui_network_route_model.make({
+                _id: id,
+                ws: () => this.ws(),
+                actual: (next) => this.row_data(id, next),
+                sdr: () => this.sdr(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_ui_network_route_store.prototype, "by_id", null);
+    $.$yuf_sj_ui_network_route_store = $yuf_sj_ui_network_route_store;
+})($ || ($ = {}));
+
+;
+	($.$yuf_button_add) = class $yuf_button_add extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_plus();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_button_add_hint"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_add.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_button_save) = class $yuf_button_save extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_content_save();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_button_save_hint"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_save.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_button_remove) = class $yuf_button_remove extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_trash_can_outline();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_button_remove_hint"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_remove.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_ui_book_form) = class $yuf_sj_ui_book_form extends ($.$yuf_sj_ui_form_draft) {
+		First(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([...(this.body()), (this.Foot())]);
+			return obj;
+		}
+		reset_content(){
+			return [(this.Reset())];
+		}
+		Second(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Result()), ...(this.reset_content())]);
+			return obj;
+		}
+		submit_allowed_and_changed(){
+			return (this.submit_allowed());
+		}
+		Add(){
+			const obj = new this.$.$yuf_button_add();
+			(obj.enabled) = () => ((this.submit_allowed_and_changed()));
+			(obj.click) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		add_content(){
+			return [(this.Add())];
+		}
+		submit_activate(next){
+			return (this.Save().activate(next));
+		}
+		Save(){
+			const obj = new this.$.$yuf_button_save();
+			(obj.hint) = () => ((this.submit_hint()));
+			(obj.enabled) = () => ((this.submit_allowed_and_changed()));
+			(obj.click) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		save_content(){
+			return [(this.Save())];
+		}
+		remove_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Remove(){
+			const obj = new this.$.$yuf_button_remove();
+			(obj.click) = (next) => ((this.remove_event(next)));
+			return obj;
+		}
+		remove_content(){
+			return [(this.Remove())];
+		}
+		draft(){
+			return false;
+		}
+		item_height_min(){
+			return 20;
+		}
+		rows(){
+			return [(this.First()), (this.Second())];
+		}
+		buttons(){
+			return [
+				...(this.add_content()), 
+				...(this.save_content()), 
+				...(this.remove_content())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "First"));
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "Second"));
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "Add"));
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "Save"));
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "remove_event"));
+	($mol_mem(($.$yuf_sj_ui_book_form.prototype), "Remove"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_book_form extends $.$yuf_sj_ui_book_form {
+            remove_content() {
+                return this.draft() ? [] : super.remove_content();
+            }
+            save_content() {
+                return this.draft() ? [] : super.save_content();
+            }
+            add_content() {
+                return !this.draft() ? [] : super.add_content();
+            }
+            submit_allowed_and_changed() {
+                return this.changed() && this.submit_allowed();
+            }
+            reset_content() {
+                return this.changed() ? super.reset_content() : [];
+            }
+        }
+        $$.$yuf_sj_ui_book_form = $yuf_sj_ui_book_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_book_form, {
+            padding: $mol_gap.space,
+            gap: 0,
+            border: {
+                radius: $mol_gap.round
+            },
+            First: {
+                gap: $mol_gap.block,
+                flex: {
+                    grow: 1,
+                    wrap: 'wrap',
+                }
+            },
+            Second: {
+                gap: $mol_gap.block,
+                justifyContent: 'end',
+                flex: {
+                    grow: 1
+                }
+            },
+            Foot: {
+                padding: 0,
+                gap: 0,
+                justifyContent: 'end',
+                alignItems: 'flex-end',
+                flex: {
+                    grow: 1,
+                    wrap: 'nowrap',
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_network_route_form) = class $yuf_sj_ui_network_route_form extends ($.$yuf_sj_ui_book_form) {
+		required(id){
+			return (this.Bid().required(id));
+		}
+		ip4(id){
+			return (this.Bid().ip4(id));
+		}
+		ip4_mask(id){
+			return (this.Bid().ip4_mask(id));
+		}
+		destination_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_route_form_destination_hint"));
+		}
+		Destination(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ("192.168.0.0/24");
+			(obj.length_max) = () => (24);
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.value) = (next) => ((this.value_str("destination", next)));
+			return obj;
+		}
+		Destination_label(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.required("destination")), (this.ip4_mask("destination"))]);
+			(obj.name) = () => ((this.destination_hint()));
+			(obj.Content) = () => ((this.Destination()));
+			return obj;
+		}
+		gateway_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_route_form_gateway_hint"));
+		}
+		Gateway(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ("192.168.10.10");
+			(obj.length_max) = () => (24);
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.value) = (next) => ((this.value_str("gateway", next)));
+			return obj;
+		}
+		Gateway_label(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.required("gateway")), (this.ip4("gateway"))]);
+			(obj.name) = () => ((this.gateway_hint()));
+			(obj.Content) = () => ((this.Gateway()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_ui_network_route_model();
+			return obj;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		message_timeout(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_route_form_message_timeout"));
+		}
+		timeout_success(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		form_fields(){
+			return [(this.Destination_label()), (this.Gateway_label())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "Destination"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "Destination_label"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "Gateway"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "Gateway_label"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "Bid"));
+	($mol_mem(($.$yuf_sj_ui_network_route_form.prototype), "timeout_success"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_network_route_form extends $.$yuf_sj_ui_network_route_form {
+            save(e) {
+                try {
+                    super.save(e);
+                }
+                catch (error) {
+                    if (error instanceof Error
+                        && error.message === $mol_rest_code[$mol_rest_code['Request Timeout']]) {
+                        return this.timeout_success(true);
+                    }
+                    $mol_fail_hidden(error);
+                }
+            }
+            result(next) {
+                return super.result(next) + (this.timeout_success() ? ('. ' + this.message_timeout()) : '');
+            }
+        }
+        $$.$yuf_sj_ui_network_route_form = $yuf_sj_ui_network_route_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_network_route_form, {
+            Destination_label: {
+                maxWidth: $yuf_sj_ui_theme_gap.page_s,
+            },
+            Gateway_label: {
+                maxWidth: $yuf_sj_ui_theme_gap.page_s,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_network_route_list) = class $yuf_sj_ui_network_route_list extends ($.$yuf_sj_ui_book_list) {
+		Close(){
+			return null;
+		}
+		tools_foot(){
+			return [(this.Close())];
+		}
+		ids(){
+			return (this.routes().ids());
+		}
+		by_id(id){
+			return (this.routes().by_id(id));
+		}
+		remove_event(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_network_route_list_title"));
+		}
+		tools(){
+			return [...(this.tools_foot())];
+		}
+		routes(){
+			const obj = new this.$.$yuf_sj_ui_network_route_store();
+			return obj;
+		}
+		Row(id){
+			const obj = new this.$.$yuf_sj_ui_network_route_form();
+			(obj.model) = () => ((this.by_id(id)));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+		Row_draft(id){
+			const obj = new this.$.$yuf_sj_ui_network_route_form();
+			(obj.draft) = () => (true);
+			(obj.model) = () => ((this.by_id(id)));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_ui_network_route_list.prototype), "remove_event"));
+	($mol_mem(($.$yuf_sj_ui_network_route_list.prototype), "routes"));
+	($mol_mem_key(($.$yuf_sj_ui_network_route_list.prototype), "Row"));
+	($mol_mem_key(($.$yuf_sj_ui_network_route_list.prototype), "Row_draft"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_network_route_list extends $.$yuf_sj_ui_network_route_list {
+            remove_event(id, event) {
+                const routes = this.routes();
+                routes.by_id(id).remove();
+                routes.id_remove(id);
+            }
+            draft_id() {
+                return '' + this.ids().length + 1;
+            }
+        }
+        $$.$yuf_sj_ui_network_route_list = $yuf_sj_ui_network_route_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_network_route_list, {
+            flex: {
+                basis: $yuf_sj_ui_theme_gap.page_l,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_range_group) = class $yuf_sj_ui_range_group extends ($.$mol_labeler) {
+		min_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_range_group_min_name"));
+		}
+		required_msg(){
+			return "*";
+		}
+		required_num(id){
+			return (this.required_msg());
+		}
+		limit_msg(id){
+			return "";
+		}
+		enabled(){
+			return true;
+		}
+		submit(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Min(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.value("min", next)));
+			(obj.enabled) = () => ((this.enabled()));
+			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.Dec) = () => (null);
+			(obj.Inc) = () => (null);
+			return obj;
+		}
+		Min_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.min_name()));
+			(obj.bids) = () => ([(this.required_num("min")), (this.limit_msg("min"))]);
+			(obj.Content) = () => ((this.Min()));
+			return obj;
+		}
+		max_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_range_group_max_name"));
+		}
+		greater_min_message(){
+			return "> {min}";
+		}
+		greater_min(id){
+			return (this.greater_min_message());
+		}
+		Max(){
+			const obj = new this.$.$mol_number();
+			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.value) = (next) => ((this.value("max", next)));
+			(obj.enabled) = () => ((this.enabled()));
+			(obj.Dec) = () => (null);
+			(obj.Inc) = () => (null);
+			return obj;
+		}
+		Max_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.max_name()));
+			(obj.bids) = () => ([
+				(this.required_num("max")), 
+				(this.limit_msg("max")), 
+				(this.greater_min("max"))
+			]);
+			(obj.Content) = () => ((this.Max()));
+			return obj;
+		}
+		limit(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		value(id, next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		content(){
+			return [(this.Min_field()), (this.Max_field())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "submit"));
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Min"));
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Min_field"));
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Max"));
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Max_field"));
+	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "limit"));
+	($mol_mem_key(($.$yuf_sj_ui_range_group.prototype), "value"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_range_group extends $.$yuf_sj_ui_range_group {
+            required_num(key) {
+                const value = this.value(key);
+                if (Number.isNaN(value))
+                    return super.required_num(key);
+                return '';
+            }
+            limit_msg(key) {
+                const value = this.value(key);
+                if (Number.isNaN(value))
+                    return '';
+                const limit = this.limit();
+                const { min, max } = limit;
+                if (!Number.isNaN(min) && value < min) {
+                    return `> ${min}`;
+                }
+                if (!Number.isNaN(max) && value > max) {
+                    return `< ${max}`;
+                }
+                return '';
+            }
+            greater_min(key) {
+                const value = this.value(key);
+                if (Number.isNaN(value))
+                    return '';
+                const min = this.value('min');
+                if (Number.isNaN(min))
+                    return '';
+                if (this.limit_msg('min'))
+                    return '';
+                if (value > min)
+                    return '';
+                return super.greater_min(key).replace('{min}', min.toFixed());
+            }
+        }
+        $$.$yuf_sj_ui_range_group = $yuf_sj_ui_range_group;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_range_group, {
+            Content: {
+                padding: { top: 0, bottom: 0 },
+                gap: $mol_gap.block,
+            },
+            Min_field: {
+                Label: {
+                    padding: { top: $mol_gap.space, left: 0 }
+                },
+                flex: {
+                    grow: 0,
+                    basis: '12rem',
+                }
+            },
+            Max_field: {
+                Label: {
+                    padding: { top: $mol_gap.space, left: 0 }
+                },
+                flex: {
+                    grow: 0,
+                    basis: '12rem',
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_sdr_form) = class $yuf_sj_jammer_sdr_form extends ($.$yuf_sj_ui_book_form) {
+		limit(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		Freq_range_min_field(){
+			return (this.Freq_range_fields().Min_field());
+		}
+		Freq_range_max_field(){
+			return (this.Freq_range_fields().Max_field());
+		}
+		Freq_range_fields(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_form_ranges();
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.limit) = () => ((this.limit()));
+			(obj.value) = (id, next) => ((this.value_number(id, next)));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model_range();
+			return obj;
+		}
+		body(){
+			return [(this.Freq_range_fields())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "limit"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "Freq_range_fields"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "model"));
+	($.$yuf_sj_jammer_sdr_form_ranges) = class $yuf_sj_jammer_sdr_form_ranges extends ($.$yuf_sj_ui_range_group) {
+		rows(){
+			return [(this.Content())];
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_sdr_form extends $.$yuf_sj_jammer_sdr_form {
+        }
+        $$.$yuf_sj_jammer_sdr_form = $yuf_sj_jammer_sdr_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_sdr_form, {
+            Freq_range_fields: {
+                flex: {
+                    grow: 11,
+                },
+                maxWidth: '25rem'
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_sdr_page) = class $yuf_sj_jammer_sdr_page extends ($.$yuf_sj_ui_book_list) {
+		ids(){
+			return (this.model().range_ids());
+		}
+		mode(next){
+			return (this.model().mode(next));
+		}
+		master(next){
+			return (this.model().master(next));
+		}
+		band_limit_hard(){
+			return (this.model().band_limit_hard());
+		}
+		range_by_id(id){
+			return (this.model().range_by_id(id));
+		}
+		remove_event(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		mode_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_mode_name"));
+		}
+		master_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_master_title"));
+		}
+		Master(){
+			const obj = new this.$.$mol_check_box();
+			(obj.checked) = (next) => ((this.master(next)));
+			(obj.title) = () => ((this.master_title()));
+			return obj;
+		}
+		confirm_checked(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		mode_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_mode_hint"));
+		}
+		mode_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_mode_title"));
+		}
+		Mode(){
+			const obj = new this.$.$mol_check_box();
+			(obj.checked) = (next) => ((this.confirm_checked(next)));
+			(obj.hint) = () => ((this.mode_hint()));
+			(obj.title) = () => ((this.mode_title()));
+			return obj;
+		}
+		mode_content(){
+			return [(this.Mode())];
+		}
+		Mode_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.mode_name()));
+			(obj.content) = () => ([(this.Master()), ...(this.mode_content())]);
+			return obj;
+		}
+		frequency_range_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_frequency_range_title"));
+		}
+		Rows_block(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.frequency_range_title()));
+			(obj.content) = () => ([(this.Rows()), (this.Draft_label())]);
+			return obj;
+		}
+		freq_content(){
+			return [(this.Rows_block())];
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_sdr_page_title"));
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model();
+			return obj;
+		}
+		max_rows(){
+			return 1;
+		}
+		Row(id){
+			const obj = new this.$.$yuf_sj_jammer_sdr_form();
+			(obj.model) = () => ((this.range_by_id(id)));
+			(obj.limit) = () => ((this.band_limit_hard()));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+		Row_draft(id){
+			const obj = new this.$.$yuf_sj_jammer_sdr_form();
+			(obj.draft) = () => (true);
+			(obj.model) = () => ((this.range_by_id(id)));
+			(obj.limit) = () => ((this.band_limit_hard()));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+		body(){
+			return [(this.Mode_field()), ...(this.freq_content())];
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_jammer_sdr_page.prototype), "remove_event"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "Master"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "confirm_checked"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "Mode"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "Mode_field"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "Rows_block"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_page.prototype), "model"));
+	($mol_mem_key(($.$yuf_sj_jammer_sdr_page.prototype), "Row"));
+	($mol_mem_key(($.$yuf_sj_jammer_sdr_page.prototype), "Row_draft"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_sdr_page extends $.$yuf_sj_jammer_sdr_page {
+            remove_event(id, e) {
+                this.model().range_by_id(id).data(null);
+            }
+            confirm_checked(next) {
+                return this.mode(next ? 'auto' : next === false ? 'manual' : undefined) === 'auto';
+            }
+            mode_content() {
+                return this.master() ? super.mode_content() : [];
+            }
+            freq_content() {
+                return this.master() ? super.freq_content() : [];
+            }
+        }
+        $$.$yuf_sj_jammer_sdr_page = $yuf_sj_jammer_sdr_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_sdr_page, {
+            Rows_block: {
+                Content: {
+                    flex: {
+                        direction: 'column',
+                    },
+                    gap: $mol_gap.block,
+                    padding: 0,
+                }
+            },
+            Body_content: {
+                gap: 0
+            },
+            flex: {
+                shrink: 0,
+                grow: 0,
+                basis: $yuf_sj_ui_theme_gap.page_l,
+            },
+            Mode_field: {
+                Content: {
+                    flex: {
+                        direction: 'column',
+                    },
+                    padding: 0
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_slave_form) = class $yuf_sj_jammer_slave_form extends ($.$yuf_sj_ui_book_form) {
+		required(id){
+			return (this.Bid().required(id));
+		}
+		uri_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_slave_form_uri_hint"));
+		}
+		Uri(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ("admin:password@host:port");
+			(obj.length_max) = () => (128);
+			(obj.submit) = (next) => ((this.submit_activate_fork(next)));
+			(obj.value) = (next) => ((this.value_str("uri", next)));
+			return obj;
+		}
+		Uri_label(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.required("uri"))]);
+			(obj.name) = () => ((this.uri_hint()));
+			(obj.Content) = () => ((this.Uri()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_slave_model();
+			return obj;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		form_fields(){
+			return [(this.Uri_label())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_slave_form.prototype), "Uri"));
+	($mol_mem(($.$yuf_sj_jammer_slave_form.prototype), "Uri_label"));
+	($mol_mem(($.$yuf_sj_jammer_slave_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_slave_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_slave_form extends $.$yuf_sj_jammer_slave_form {
+        }
+        $$.$yuf_sj_jammer_slave_form = $yuf_sj_jammer_slave_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_slave_form, {
+            Uri_label: {
+                flex: {
+                    basis: $yuf_sj_ui_theme_gap.page_l,
+                    grow: 0,
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_slave_page) = class $yuf_sj_jammer_slave_page extends ($.$yuf_sj_ui_book_list) {
+		ids(){
+			return (this.model().ids());
+		}
+		slave_by_id(id){
+			return (this.model().by_id(id));
+		}
+		remove_event(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_slave_page_title"));
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_slave_store();
+			return obj;
+		}
+		max_rows(){
+			return 20;
+		}
+		Row(id){
+			const obj = new this.$.$yuf_sj_jammer_slave_form();
+			(obj.model) = () => ((this.slave_by_id(id)));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+		Row_draft(id){
+			const obj = new this.$.$yuf_sj_jammer_slave_form();
+			(obj.draft) = () => (true);
+			(obj.model) = () => ((this.slave_by_id(id)));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			return obj;
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_jammer_slave_page.prototype), "remove_event"));
+	($mol_mem(($.$yuf_sj_jammer_slave_page.prototype), "model"));
+	($mol_mem_key(($.$yuf_sj_jammer_slave_page.prototype), "Row"));
+	($mol_mem_key(($.$yuf_sj_jammer_slave_page.prototype), "Row_draft"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_slave_page extends $.$yuf_sj_jammer_slave_page {
+            remove_event(id, e) {
+                this.model().by_id(id).data(null);
+            }
+        }
+        $$.$yuf_sj_jammer_slave_page = $yuf_sj_jammer_slave_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_slave_page, {
+            Body_content: {
+                gap: 0
+            },
+            Row: {
+                First: {
+                    gap: 0,
+                },
+            },
+            Row_draft: {
+                First: {
+                    gap: 0,
+                },
+            },
+            flex: {
+                shrink: 0,
+                grow: 0,
+                basis: $yuf_sj_ui_theme_gap.page_m,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_sdr_book) = class $yuf_sj_jammer_sdr_book extends ($.$yuf_catalog) {
+		title(){
+			return (this.Main().title());
+		}
+		param_prefix(){
+			return "";
+		}
+		slaves_model(){
+			return (this.model().slaves());
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model();
+			return obj;
+		}
+		Close(){
+			return null;
+		}
+		Main(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_page();
+			(obj.param_prefix) = () => ((this.param_prefix()));
+			(obj.model) = () => ((this.model()));
+			(obj.Close) = () => ((this.Close()));
+			return obj;
+		}
+		Slaves(){
+			const obj = new this.$.$yuf_sj_jammer_slave_page();
+			(obj.param_prefix) = () => ((this.param_prefix()));
+			(obj.model) = () => ((this.slaves_model()));
+			return obj;
+		}
+		slave_content(){
+			return [(this.Slaves())];
+		}
+		pages(){
+			return [(this.Main()), ...(this.slave_content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_sdr_book.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_book.prototype), "Main"));
+	($mol_mem(($.$yuf_sj_jammer_sdr_book.prototype), "Slaves"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_sdr_book extends $.$yuf_sj_jammer_sdr_book {
+            slave_content() {
+                return this.model().master() ? super.slave_content() : [];
+            }
+        }
+        $$.$yuf_sj_jammer_sdr_book = $yuf_sj_jammer_sdr_book;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const bool = $mol_data_boolean;
+    const opt = $mol_data_optional;
+    const arr = $mol_data_array;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    $.$yuf_sj_jammer_task_model_status_dto = vr(cnst('idle'), cnst('scanning'), cnst('receiving'), cnst('jamming'), cnst('waiting'), cnst('confirmed'), cnst('cancelled'));
+    $.$yuf_sj_jammer_task_model_dto = rec({
+        id: str,
+        status: opt(nul($.$yuf_sj_jammer_task_model_status_dto)),
+        freq_range: arr(num),
+        comment: opt(nul(str)),
+        auto: opt(nul(bool)),
+    });
+    class $yuf_sj_jammer_task_model extends $yuf_ws_entity {
+        type() { return 'task'; }
+        defaults(raw) {
+            return $.$yuf_sj_jammer_task_model_dto({
+                id: this.id() || '1',
+                status: null,
+                freq_range: [],
+                comment: '',
+                auto: false,
+                ...raw
+            });
+        }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        status(next) {
+            return this.value('status', next) ?? null;
+        }
+        freq_range(next) {
+            return this.value('freq_range', next) ?? [];
+        }
+        freq_min(next) {
+            const draft = next === undefined ? next : this.draft()?.freq_range;
+            const [, max = 0] = draft ?? this.freq_range();
+            return this.freq_range(next === undefined ? next : [next, max])?.[0] ?? null;
+        }
+        freq_max(next) {
+            const draft = next === undefined ? next : this.draft()?.freq_range;
+            const [min = 0,] = draft ?? this.freq_range();
+            return this.freq_range(next === undefined ? next : [min, next])?.[1] ?? null;
+        }
+        comment(next) { return this.value('comment', next) ?? ''; }
+        auto(next) { return this.value('auto', next) ?? false; }
+        master() { return this.sdr().master(); }
+        title() {
+            const [min, max] = this.freq_range();
+            return `#${this.id()} ${min ?? '?'} - ${max ?? '?'} kHz`;
+        }
+    }
+    $.$yuf_sj_jammer_task_model = $yuf_sj_jammer_task_model;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_task_store extends $yuf_ws_entity_store {
+        type() { return 'tasks'; }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        by_id(id) {
+            return this.$.$yuf_sj_jammer_task_model.make({
+                _id: id,
+                ws: () => this.ws(),
+                sdr: () => this.sdr(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_task_store.prototype, "by_id", null);
+    $.$yuf_sj_jammer_task_store = $yuf_sj_jammer_task_store;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_book_item) = class $yuf_sj_ui_book_item extends ($.$mol_view) {
+		arg(){
+			return {};
+		}
+		Link(){
+			const obj = new this.$.$yuf_link();
+			(obj.arg) = () => ((this.arg()));
+			return obj;
+		}
+		buttons_minimal_width(){
+			return 40;
+		}
+		buttons(){
+			return [];
+		}
+		Buttons(){
+			const obj = new this.$.$mol_view();
+			(obj.minimal_width) = () => ((this.buttons_minimal_width()));
+			(obj.sub) = () => ((this.buttons()));
+			return obj;
+		}
+		sub(){
+			return [(this.Link()), (this.Buttons())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_book_item.prototype), "Link"));
+	($mol_mem(($.$yuf_sj_ui_book_item.prototype), "Buttons"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_book_item, {
+            padding: { top: $mol_gap.space, bottom: $mol_gap.space },
+            border: {
+                radius: $mol_gap.round,
+            },
+            overflow: 'hidden',
+            flex: { direction: 'row', },
+            Link: {
+                border: {
+                    // @ts-ignore
+                    bottomRight: { radius: 0 },
+                    topRight: { radius: 0 },
+                },
+            },
+            Buttons: {
+                minWidth: '2.5rem',
+                background: {
+                    color: $mol_theme.back,
+                },
+                border: {
+                    // @ts-ignore
+                    bottomRight: { radius: $mol_gap.round },
+                    topRight: { radius: $mol_gap.round },
+                },
+                alignSelf: 'stretch',
+                flex: { direction: 'column' },
+                gap: $mol_gap.space,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_task_status) = class $yuf_sj_jammer_task_status extends ($.$mol_view) {
+		mode_attr(){
+			return "pending";
+		}
+		text_pending(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_text_pending"));
+		}
+		text(){
+			return (this.text_pending());
+		}
+		attr(){
+			return {...(super.attr()), "yuf_sj_jammer_task_status_mode": (this.mode_attr())};
+		}
+		status(){
+			return null;
+		}
+		dict(){
+			return {
+				"idle": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_idle")), 
+				"scanning": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_scanning")), 
+				"receiving": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_receiving")), 
+				"jamming": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_jamming")), 
+				"waiting": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_waiting")), 
+				"confirmed": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_confirmed")), 
+				"cancelled": (this.$.$mol_locale.text("$yuf_sj_jammer_task_status_dict_cancelled"))
+			};
+		}
+		sub(){
+			return [(this.text())];
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_status extends $.$yuf_sj_jammer_task_status {
+            text() {
+                const status = this.status();
+                if (!status)
+                    return super.text();
+                return this.dict()[status] || status;
+            }
+            mode_attr() {
+                return this.status() ?? super.mode_attr();
+            }
+        }
+        $$.$yuf_sj_jammer_task_status = $yuf_sj_jammer_task_status;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("yuf/sj/jammer/task/status/status.view.css", "[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"idle\"] {\n\tcolor: lightslategray;\n}\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"scanning\"] {\n\tcolor: cyan;\n}\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"receiving\"] {\n\tcolor: green;\n}\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"jamming\"] {\n\tcolor: red;\n}\n\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"waiting\"] {\n\tcolor: orangered;\n}\n\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"confirmed\"] {\n\tcolor: orchid;\n}\n\n[yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"cancelled\"] {\n\tcolor: gold;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"idle\"] {\n\tcolor: darkslategray;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"scanning\"] {\n\tcolor: darkcyan;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"receiving\"] {\n\tcolor: darkgreen;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"jamming\"] {\n\tcolor: darkred;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"waiting\"] {\n\tcolor: orangered;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"confirmed\"] {\n\tcolor: darkorchid;\n}\n\n[mol_theme=\"$mol_theme_light\"] [yuf_sj_jammer_task_status][yuf_sj_jammer_task_status_mode=\"cancelled\"] {\n\tcolor: darkgoldenrod;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_status, {
+            whiteSpace: 'break-spaces',
+            border: {
+                radius: $mol_gap.round,
+            },
+            color: $mol_theme.shade,
+            background: {
+                color: $mol_theme.card,
+            },
+            padding: {
+                left: $mol_gap.blur,
+                right: $mol_gap.blur,
+            },
+            gap: $mol_gap.text,
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_account) = class $mol_icon_account extends ($.$mol_icon) {
+		path(){
+			return "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_jammer_task_icon_auto) = class $yuf_sj_jammer_task_icon_auto extends ($.$mol_icon_account) {};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_jammer_task_link) = class $yuf_sj_jammer_task_link extends ($.$yuf_link) {
+		comment(){
+			return (this.model().comment());
+		}
+		status(){
+			return (this.model().status());
+		}
+		task_auto(){
+			return (this.model().auto());
+		}
+		freq_min(){
+			return (this.model().freq_min());
+		}
+		freq_max(){
+			return (this.model().freq_max());
+		}
+		id(){
+			return (this.model().id());
+		}
+		Status(){
+			const obj = new this.$.$yuf_sj_jammer_task_status();
+			(obj.status) = () => ((this.status()));
+			return obj;
+		}
+		freq_range_formatted(){
+			return "{min} - {max} kHz";
+		}
+		Title(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.needle()));
+			(obj.haystack) = () => ((this.freq_range_formatted()));
+			return obj;
+		}
+		User_icon(){
+			const obj = new this.$.$yuf_sj_jammer_task_icon_auto();
+			return obj;
+		}
+		user_content(){
+			return [(this.User_icon())];
+		}
+		Status_block(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Title()), ...(this.user_content())]);
+			return obj;
+		}
+		Description(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Status()), (this.Status_block())]);
+			return obj;
+		}
+		needle(){
+			return "";
+		}
+		Comment(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.needle()));
+			(obj.haystack) = () => ((this.comment()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_task_model();
+			return obj;
+		}
+		minimal_height(){
+			return 80;
+		}
+		sub(){
+			return [(this.Description()), (this.Comment())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "Status"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "Title"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "User_icon"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "Status_block"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "Description"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "Comment"));
+	($mol_mem(($.$yuf_sj_jammer_task_link.prototype), "model"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_link extends $.$yuf_sj_jammer_task_link {
+            user_content() {
+                return this.task_auto() ? [] : super.user_content();
+            }
+            freq_range_formatted() {
+                return super.freq_range_formatted()
+                    .replace('{min}', '' + (this.freq_min() ?? '?'))
+                    .replace('{max}', '' + (this.freq_max() ?? '?'));
+            }
+        }
+        $$.$yuf_sj_jammer_task_link = $yuf_sj_jammer_task_link;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_link, {
+            Description: {
+                justifyContent: 'space-between',
+            },
+            minHeight: '8rem',
+            flex: {
+                direction: 'column',
+                grow: 1,
+                shrink: 1,
+            },
+            padding: $mol_gap.text,
+            background: {
+                color: $mol_theme.card,
+            },
+            Title: {
+                gap: $mol_gap.space,
+                color: $mol_theme.shade,
+            },
+            Status_block: {
+                gap: $mol_gap.block,
+                alignItems: 'center',
+            },
+            User_icon: {
+                color: $mol_theme.text,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_access_point) = class $mol_icon_access_point extends ($.$mol_icon) {
+		path(){
+			return "M4.93,4.93C3.12,6.74 2,9.24 2,12C2,14.76 3.12,17.26 4.93,19.07L6.34,17.66C4.89,16.22 4,14.22 4,12C4,9.79 4.89,7.78 6.34,6.34L4.93,4.93M19.07,4.93L17.66,6.34C19.11,7.78 20,9.79 20,12C20,14.22 19.11,16.22 17.66,17.66L19.07,19.07C20.88,17.26 22,14.76 22,12C22,9.24 20.88,6.74 19.07,4.93M7.76,7.76C6.67,8.85 6,10.35 6,12C6,13.65 6.67,15.15 7.76,16.24L9.17,14.83C8.45,14.11 8,13.11 8,12C8,10.89 8.45,9.89 9.17,9.17L7.76,7.76M16.24,7.76L14.83,9.17C15.55,9.89 16,10.89 16,12C16,13.11 15.55,14.11 14.83,14.83L16.24,16.24C17.33,15.15 18,13.65 18,12C18,10.35 17.33,8.85 16.24,7.76M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_sleep) = class $mol_icon_sleep extends ($.$mol_icon) {
+		path(){
+			return "M23,12H17V10L20.39,6H17V4H23V6L19.62,10H23V12M15,16H9V14L12.39,10H9V8H15V10L11.62,14H15V16M7,20H1V18L4.39,14H1V12H7V14L3.62,18H7V20Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_jammer_task_controls) = class $yuf_sj_jammer_task_controls extends ($.$mol_view) {
+		remove(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Remove(){
+			const obj = new this.$.$yuf_button_remove();
+			(obj.click) = (next) => ((this.remove(next)));
+			return obj;
+		}
+		remove_content(){
+			return [(this.Remove())];
+		}
+		Confirm_icon(){
+			const obj = new this.$.$mol_icon_access_point();
+			return obj;
+		}
+		confirm_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_controls_confirm_hint"));
+		}
+		click_status(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Confirm(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Confirm_icon())]);
+			(obj.hint) = () => ((this.confirm_hint()));
+			(obj.click) = (next) => ((this.click_status("confirmed", next)));
+			return obj;
+		}
+		Decline_icon(){
+			const obj = new this.$.$mol_icon_sleep();
+			return obj;
+		}
+		decline_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_controls_decline_hint"));
+		}
+		Decline(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Decline_icon())]);
+			(obj.hint) = () => ((this.decline_hint()));
+			(obj.click) = (next) => ((this.click_status("cancelled", next)));
+			return obj;
+		}
+		confirm_content(){
+			return [(this.Confirm()), (this.Decline())];
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_task_model();
+			return obj;
+		}
+		submitted(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		sub(){
+			return [...(this.remove_content()), ...(this.confirm_content())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "remove"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "Remove"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "Confirm_icon"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_controls.prototype), "click_status"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "Confirm"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "Decline_icon"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "Decline"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_task_controls.prototype), "submitted"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_controls extends $.$yuf_sj_jammer_task_controls {
+            confirm_content() {
+                return this.model().status() === 'waiting' ? super.confirm_content() : [];
+            }
+            click_status(key, e) {
+                e && $mol_dom_event.wrap(e).prevented(true);
+                this.model().status(key);
+                this.submitted(e);
+            }
+            remove(next) {
+                this.model().remove();
+                this.submitted(next);
+            }
+            remove_content() {
+                return this.model().auto() || !this.model().master() ? [] : super.remove_content();
+            }
+        }
+        $$.$yuf_sj_jammer_task_controls = $yuf_sj_jammer_task_controls;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_task_item) = class $yuf_sj_jammer_task_item extends ($.$yuf_sj_ui_book_item) {
+		needle(){
+			return "";
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_task_model();
+			return obj;
+		}
+		submitted(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		buttons_minimal_width(){
+			return 40;
+		}
+		minimal_height(){
+			return 128;
+		}
+		Link(){
+			const obj = new this.$.$yuf_sj_jammer_task_link();
+			(obj.arg) = () => ((this.arg()));
+			(obj.needle) = () => ((this.needle()));
+			(obj.model) = () => ((this.model()));
+			return obj;
+		}
+		Buttons(){
+			const obj = new this.$.$yuf_sj_jammer_task_controls();
+			(obj.model) = () => ((this.model()));
+			(obj.submitted) = (next) => ((this.submitted(next)));
+			(obj.minimal_width) = () => ((this.buttons_minimal_width()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_item.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_task_item.prototype), "submitted"));
+	($mol_mem(($.$yuf_sj_jammer_task_item.prototype), "Link"));
+	($mol_mem(($.$yuf_sj_jammer_task_item.prototype), "Buttons"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_item extends $.$yuf_sj_jammer_task_item {
+        }
+        $$.$yuf_sj_jammer_task_item = $yuf_sj_jammer_task_item;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_item, {
+            padding: { top: $mol_gap.space, bottom: $mol_gap.space },
+            border: {
+                radius: $mol_gap.round,
+            },
+            overflow: 'hidden',
+            flex: { direction: 'row', },
+            Link: {
+                border: {
+                    // @ts-ignore
+                    bottomRight: { radius: 0 },
+                    topRight: { radius: 0 },
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_ui_freq_range) = class $yuf_sj_ui_freq_range extends ($.$mol_view) {
+		freq_range_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_freq_range_freq_range_title"));
+		}
+		limit(){
+			const obj = new this.$.$mol_vector_range(0, 0);
+			return obj;
+		}
+		enabled(){
+			return true;
+		}
+		value(id, next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		Freq_range_fields(){
+			const obj = new this.$.$yuf_sj_ui_range_group();
+			(obj.title) = () => ((this.freq_range_title()));
+			(obj.limit) = () => ((this.limit()));
+			(obj.enabled) = () => ((this.enabled()));
+			(obj.value) = (id, next) => ((this.value(id, next)));
+			return obj;
+		}
+		freq_range_help_available(){
+			return (this.$.$mol_locale.text("$yuf_sj_ui_freq_range_freq_range_help_available"));
+		}
+		help_message(){
+			return "";
+		}
+		Freq_range_help(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.help_message())]);
+			return obj;
+		}
+		Freq_range_help_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.freq_range_help_available()));
+			(obj.content) = () => ([(this.Freq_range_help())]);
+			return obj;
+		}
+		bands(){
+			return {};
+		}
+		sub(){
+			return [(this.Freq_range_fields()), (this.Freq_range_help_field())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_ui_freq_range.prototype), "limit"));
+	($mol_mem_key(($.$yuf_sj_ui_freq_range.prototype), "value"));
+	($mol_mem(($.$yuf_sj_ui_freq_range.prototype), "Freq_range_fields"));
+	($mol_mem(($.$yuf_sj_ui_freq_range.prototype), "Freq_range_help"));
+	($mol_mem(($.$yuf_sj_ui_freq_range.prototype), "Freq_range_help_field"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_ui_freq_range extends $.$yuf_sj_ui_freq_range {
+            bands_values() {
+                return Object.values(this.bands());
+            }
+            help_message() {
+                const bands = this.bands_values();
+                return bands.map(([min, max]) => `${min} - ${max}`).join(', ');
+            }
+            limit() {
+                return $yuf_sj_ui_range_expanded(this.bands());
+            }
+        }
+        $$.$yuf_sj_ui_freq_range = $yuf_sj_ui_freq_range;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_ui_freq_range, {
+            flex: {
+                direction: 'column',
+            },
+            Freq_range_help: {
+                flex: {
+                    shrink: 1
+                }
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_form_group) = class $mol_form_group extends ($.$mol_view) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/form/group/group.view.css", "[mol_form_group] {\n\tflex-wrap: wrap;\n\tgap: var(--mol_gap_block);\n}\n\n[mol_form_group] > * {\n\tflex: 1 1 18rem;\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_jammer_task_form) = class $yuf_sj_jammer_task_form extends ($.$yuf_sj_ui_form_draft) {
+		bands(){
+			return (this.sdr().bands());
+		}
+		required_msg(){
+			return (this.Bid().required_msg());
+		}
+		required(id){
+			return (this.Bid().required(id));
+		}
+		min(id){
+			return (this.Bid().min(id));
+		}
+		buttons_foot(){
+			return [];
+		}
+		comment_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_form_comment_name"));
+		}
+		Comment(){
+			const obj = new this.$.$yuf_sj_ui_textarea();
+			(obj.length_max) = () => (512);
+			(obj.value) = (next) => ((this.value_str("comment", next)));
+			return obj;
+		}
+		Comment_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.comment_name()));
+			(obj.bids) = () => ([(this.min("comment"))]);
+			(obj.control) = () => ((this.Comment()));
+			return obj;
+		}
+		freq_range_edit_enabled(){
+			return true;
+		}
+		freq_value(id, next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		Freq_range_fields(){
+			const obj = new this.$.$yuf_sj_ui_freq_range();
+			(obj.bands) = () => ((this.bands()));
+			(obj.enabled) = () => ((this.freq_range_edit_enabled()));
+			(obj.value) = (id, next) => ((this.freq_value(id, next)));
+			return obj;
+		}
+		freq_range_content(){
+			return [(this.Freq_range_fields())];
+		}
+		Freq_group(){
+			const obj = new this.$.$mol_form_group();
+			(obj.sub) = () => ([...(this.freq_range_content())]);
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_task_model();
+			return obj;
+		}
+		submitted(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		sdr(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model();
+			return obj;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		buttons(){
+			return [...(super.buttons()), ...(this.buttons_foot())];
+		}
+		submit_title_run(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_form_submit_title_run"));
+		}
+		body(){
+			return [(this.Comment_field()), (this.Freq_group())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "Comment"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "Comment_field"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_form.prototype), "freq_value"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "Freq_range_fields"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "Freq_group"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "submitted"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "sdr"));
+	($mol_mem(($.$yuf_sj_jammer_task_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_form extends $.$yuf_sj_jammer_task_form {
+            value_number(field, next) {
+                return Number(this.value(field, next) ?? Number.NaN);
+            }
+            freq_value(key, next) {
+                return this.value_number(key === 'min' ? 'freq_min' : 'freq_max', next);
+            }
+            freq_range_content() {
+                return this.model().auto() ? [] : super.freq_range_content();
+            }
+            freq_range_edit_enabled() {
+                return !this.model().auto();
+            }
+            submit(e) {
+                const ok = super.submit(e);
+                if (ok)
+                    this.submitted(e);
+                return ok;
+            }
+            submit_title() {
+                return this.model().status() ? super.submit_title() : this.submit_title_run();
+            }
+        }
+        __decorate([
+            $mol_mem_key
+        ], $yuf_sj_jammer_task_form.prototype, "value_number", null);
+        $$.$yuf_sj_jammer_task_form = $yuf_sj_jammer_task_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_form, {
+            Body: {
+                gap: 0,
+            },
+            Foot: {
+                padding: $mol_gap.block,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_task_page) = class $yuf_sj_jammer_task_page extends ($.$mol_page) {
+		remove_content(){
+			return (this.Buttons().remove_content());
+		}
+		submitted(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Status(){
+			const obj = new this.$.$yuf_sj_jammer_task_status();
+			(obj.status) = () => ((this.status()));
+			return obj;
+		}
+		User_icon(){
+			const obj = new this.$.$yuf_sj_jammer_task_icon_auto();
+			return obj;
+		}
+		User(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.User_icon())]);
+			return obj;
+		}
+		user_content(){
+			return [(this.User())];
+		}
+		Close(){
+			return null;
+		}
+		title(){
+			return (this.model().title());
+		}
+		status(){
+			return (this.model().status());
+		}
+		task_auto(){
+			return (this.model().auto());
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_task_model();
+			return obj;
+		}
+		sdr(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model();
+			return obj;
+		}
+		Form(){
+			const obj = new this.$.$yuf_sj_jammer_task_form();
+			(obj.submitted) = (next) => ((this.submitted(next)));
+			(obj.model) = () => ((this.model()));
+			(obj.sdr) = () => ((this.sdr()));
+			return obj;
+		}
+		Buttons(){
+			const obj = new this.$.$yuf_sj_jammer_task_controls();
+			(obj.model) = () => ((this.model()));
+			(obj.submitted) = (next) => ((this.submitted(next)));
+			return obj;
+		}
+		title_content(){
+			return [(this.Status()), (this.title())];
+		}
+		tools(){
+			return [
+				...(this.user_content()), 
+				...(this.remove_content()), 
+				(this.Close())
+			];
+		}
+		body(){
+			return [(this.Form())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "submitted"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "Status"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "User_icon"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "User"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "sdr"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "Form"));
+	($mol_mem(($.$yuf_sj_jammer_task_page.prototype), "Buttons"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_page extends $.$yuf_sj_jammer_task_page {
+            user_content() {
+                return this.task_auto() ? [] : super.user_content();
+            }
+        }
+        $$.$yuf_sj_jammer_task_page = $yuf_sj_jammer_task_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_page, {
+            flex: {
+                basis: $yuf_sj_ui_theme_gap.page_l,
+            },
+            Body_content: {
+                padding: { left: 0, right: 0 },
+            },
+            Tools: {
+                alignItems: 'center'
+            },
+            User: {
+                padding: $mol_gap.text
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_task_catalog) = class $yuf_sj_jammer_task_catalog extends ($.$yuf_catalog) {
+		task_add_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Add(){
+			const obj = new this.$.$yuf_button_add();
+			(obj.click) = (next) => ((this.task_add_event(next)));
+			return obj;
+		}
+		add_content(){
+			return [(this.Add())];
+		}
+		Close(){
+			return null;
+		}
+		task(id){
+			return (this.store().by_id(id));
+		}
+		status(id){
+			return (this.task(id).status());
+		}
+		spread_ids(){
+			return (this.store().ids());
+		}
+		task_submitted(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		sdr(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_model();
+			return obj;
+		}
+		status_text(id){
+			return (this.Status(id).text());
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_task_catalog_menu_title"));
+		}
+		param_suffix(){
+			return "task";
+		}
+		addon_tools(){
+			return [...(this.add_content()), (this.Close())];
+		}
+		store(){
+			const obj = new this.$.$yuf_sj_jammer_task_store();
+			return obj;
+		}
+		Menu_item(id){
+			const obj = new this.$.$yuf_sj_jammer_task_item();
+			(obj.arg) = () => ((this.arg(id)));
+			(obj.model) = () => ((this.task(id)));
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.submitted) = (next) => ((this.task_submitted(id, next)));
+			return obj;
+		}
+		Spread(id){
+			const obj = new this.$.$yuf_sj_jammer_task_page();
+			(obj.model) = () => ((this.task(id)));
+			(obj.sdr) = () => ((this.sdr()));
+			(obj.submitted) = (next) => ((this.task_submitted(id, next)));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Status(id){
+			const obj = new this.$.$yuf_sj_jammer_task_status();
+			(obj.status) = () => ((this.status(id)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_task_catalog.prototype), "task_add_event"));
+	($mol_mem(($.$yuf_sj_jammer_task_catalog.prototype), "Add"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_catalog.prototype), "task_submitted"));
+	($mol_mem(($.$yuf_sj_jammer_task_catalog.prototype), "sdr"));
+	($mol_mem(($.$yuf_sj_jammer_task_catalog.prototype), "store"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_catalog.prototype), "Menu_item"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_catalog.prototype), "Spread"));
+	($mol_mem_key(($.$yuf_sj_jammer_task_catalog.prototype), "Status"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_task_catalog extends $.$yuf_sj_jammer_task_catalog {
+            spread_ids_filtered() {
+                const drafts = this.store().draft_ids();
+                return [...drafts, ...super.spread_ids_filtered().filter(id => !drafts.includes(id))];
+            }
+            task_add_event(e) {
+                const draft_id = this.store().draft_id();
+                this.spread(draft_id);
+            }
+            task_submitted(id, next) {
+                if (!next)
+                    return null;
+                const created_id = this.store().by_id(id).server_created_id();
+                created_id && this.store().id_add(created_id);
+                if (this.spread() === id)
+                    this.spread('');
+                return next;
+            }
+            spread_title(id) {
+                const task = this.task(id);
+                return `${task.title()}, ${this.status_text(id)} ${task.comment()}`;
+            }
+            add_content() {
+                return this.sdr().master() ? super.add_content() : [];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_jammer_task_catalog.prototype, "spread_ids_filtered", null);
+        $$.$yuf_sj_jammer_task_catalog = $yuf_sj_jammer_task_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_task_catalog, {
+            Menu: {
+                flex: {
+                    grow: 0,
+                    shrink: 1,
+                    basis: $yuf_sj_ui_theme_gap.page_l,
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_delete) = class $mol_icon_delete extends ($.$mol_icon) {
+		path(){
+			return "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_delete_forever) = class $mol_icon_delete_forever extends ($.$mol_icon) {
+		path(){
+			return "M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8.46,11.88L9.87,10.47L12,12.59L14.12,10.47L15.53,11.88L13.41,14L15.53,16.12L14.12,17.53L12,15.41L9.88,17.53L8.47,16.12L10.59,14L8.46,11.88M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_button_remove_all) = class $yuf_button_remove_all extends ($.$mol_button_minor) {
+		Icon(){
+			const obj = new this.$.$mol_icon_delete_forever();
+			return obj;
+		}
+		hint(){
+			return (this.$.$mol_locale.text("$yuf_button_remove_all_hint"));
+		}
+		sub(){
+			return [(this.Icon())];
+		}
+	};
+	($mol_mem(($.$yuf_button_remove_all.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_hand) = class $mol_icon_hand extends ($.$mol_icon) {
+		path(){
+			return "M6.58,19H14.58V22H6.58V19M19.74,11.6C19.55,11.4 19.29,11.28 19,11.28L18.78,11.31L15.58,13V11.83L16.09,2.9C16.12,2.35 15.7,1.87 15.15,1.84C14.6,1.81 14.12,2.23 14.09,2.78L13.82,7.47H13.58L12.54,7.58V2C12.54,1.45 12.09,1 11.54,1C11,1 10.54,1.45 10.54,2V8.41L9.72,8.78L9.03,3.32C8.96,2.77 8.46,2.38 7.91,2.45C7.36,2.5 6.97,3 7.04,3.57L7.81,9.63L7.43,9.8C7.3,9.85 7.18,9.93 7.07,10L5.97,6.11C5.81,5.54 5.25,5.2 4.71,5.34C4.18,5.5 3.88,6.08 4.04,6.65L6.61,15.77C6.61,15.8 6.63,15.84 6.64,15.87L6.67,16H6.68C6.9,16.57 7.47,17 8.08,17H14.58C14.97,17 15.32,16.84 15.58,16.57L20.5,12.37L19.74,11.6Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_hand_back_left) = class $mol_icon_hand_back_left extends ($.$mol_icon) {
+		path(){
+			return "M3 16V5.75C3 5.06 3.56 4.5 4.25 4.5S5.5 5.06 5.5 5.75V12H6.5V2.75C6.5 2.06 7.06 1.5 7.75 1.5C8.44 1.5 9 2.06 9 2.75V12H10V1.25C10 .56 10.56 0 11.25 0S12.5 .56 12.5 1.25V12H13.5V3.25C13.5 2.56 14.06 2 14.75 2S16 2.56 16 3.25V15H16.75L18.16 11.47C18.38 10.92 18.84 10.5 19.4 10.31L20.19 10.05C21 9.79 21.74 10.58 21.43 11.37L18.4 19C17.19 22 14.26 24 11 24C6.58 24 3 20.42 3 16Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_sj_jammer_rule_icon) = class $yuf_sj_jammer_rule_icon extends ($.$mol_icon_hand_back_left) {
+		Allow_icon(){
+			const obj = new this.$.$mol_icon_check();
+			return obj;
+		}
+		Deny_icon(){
+			const obj = new this.$.$mol_icon_hand_back_left();
+			return obj;
+		}
+		status(){
+			return "deny";
+		}
+		status_icon(){
+			return {"allow": (this.Allow_icon()), "deny": (this.Deny_icon())};
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_rule_icon.prototype), "Allow_icon"));
+	($mol_mem(($.$yuf_sj_jammer_rule_icon.prototype), "Deny_icon"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_icon extends $.$yuf_sj_jammer_rule_icon {
+            path() {
+                return this.status_icon()[this.status()]?.path() ?? super.path();
+            }
+        }
+        $$.$yuf_sj_jammer_rule_icon = $yuf_sj_jammer_rule_icon;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    /**
+     * Checks for value of given enum and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_enum_demo
+     */
+    function $mol_data_enum(name, dict) {
+        const index = {};
+        for (let key in dict) {
+            if (Number.isNaN(Number(key))) {
+                index[dict[key]] = key;
+            }
+        }
+        return $mol_data_setup((value) => {
+            if (typeof index[value] !== 'string') {
+                return $mol_fail(new $mol_data_error(`${value} is not value of ${name} enum`));
+            }
+            return value;
+        }, { name, dict });
+    }
+    $.$mol_data_enum = $mol_data_enum;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const rec = $mol_data_record;
+    const num = $mol_data_number;
+    const str = $mol_data_string;
+    const opt = $mol_data_optional;
+    const nul = $mol_data_nullable;
+    const vr = $mol_data_variant;
+    const cnst = $mol_data_const;
+    const arr = $mol_data_array;
+    const enm = $mol_data_enum;
+    $.$yuf_sj_jammer_rule_model_status_dto = enm('yuf_sj_jammer_rule_model_status_dto', {
+        deny: 'deny',
+        allow: 'allow',
+    });
+    $.$yuf_sj_jammer_rule_model_dto = rec({
+        id: str,
+        freqs: opt(nul(arr(num))),
+        bind_uuid: opt(nul(str)),
+        freq_range: arr(num),
+        spread_factors: opt(nul(arr(str))),
+        comment: opt(str),
+        time: str, // ISO 8601,
+        access: $.$yuf_sj_jammer_rule_model_status_dto
+    });
+    class $yuf_sj_jammer_rule_model extends $yuf_ws_entity {
+        type() { return 'rule'; }
+        defaults(raw) {
+            return $.$yuf_sj_jammer_rule_model_dto({
+                id: this.id() || '1',
+                freqs: null,
+                freq_range: [],
+                spread_factors: [],
+                bind_uuid: null,
+                access: $.$yuf_sj_jammer_rule_model_status_dto.config.dict.allow,
+                time: new $mol_time_moment().toString('YYYY-MM-DDThh:mm:ssZ'),
+                comment: '',
+                ...raw,
+            });
+        }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        title() {
+            return [
+                this.created_at().toString('DD.MM.YY hh:mm:ss.sss'),
+                this.comment()
+            ].filter(Boolean).join(' | ');
+        }
+        bind_uuid_required() { return this.bind_uuid() !== null; }
+        bind_uuid(next) { return this.value('bind_uuid', next) ?? null; }
+        access(next) { return this.value('access', next) ?? 'deny'; }
+        comment(next) { return this.value('comment', next) ?? ''; }
+        time_raw(next) { return this.value('time', next) || ''; }
+        freq_range(next) {
+            return this.value('freq_range', next) ?? [];
+        }
+        freq_min(next) {
+            const draft = next === undefined ? next : this.draft()?.freq_range;
+            const [, max = 0] = draft ?? this.freq_range();
+            return this.freq_range(next === undefined ? next : [next, max])?.[0] ?? null;
+        }
+        freq_max(next) {
+            const draft = next === undefined ? next : this.draft()?.freq_range;
+            const [min = 0,] = draft ?? this.freq_range();
+            return this.freq_range(next === undefined ? next : [min, next])?.[1] ?? null;
+        }
+        spreads(next) { return this.value('spread_factors', next) ?? []; }
+        freqs(next) { return this.value('freqs', next) ?? []; }
+        freqs_str(next) {
+            let arr = [];
+            const freqs = this.freqs(next?.split(',').map(val => Number(val.trim().replace(/_/g, ''))));
+            if (freqs.length)
+                arr = [...freqs];
+            return arr.join(', ');
+        }
+        created_at(next) {
+            const str = this.time_raw(next?.toString());
+            return new $mol_time_moment(str);
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_rule_model.prototype, "title", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_rule_model.prototype, "created_at", null);
+    $.$yuf_sj_jammer_rule_model = $yuf_sj_jammer_rule_model;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_rule_link) = class $yuf_sj_jammer_rule_link extends ($.$yuf_link) {
+		theme_normal(){
+			return "";
+		}
+		card_theme(){
+			return (this.theme_normal());
+		}
+		comment(){
+			return (this.model().comment());
+		}
+		access(){
+			return (this.model().access());
+		}
+		freq_min(){
+			return (this.model().freq_min());
+		}
+		freq_max(){
+			return (this.model().freq_max());
+		}
+		spreads(){
+			return (this.model().spreads());
+		}
+		created_at_formatted(){
+			return "DD.MM.YY  / hh:mm:ss.sss";
+		}
+		Time(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.haystack) = () => ((this.created_at_formatted()));
+			return obj;
+		}
+		bind_uuid(){
+			return "";
+		}
+		Uuid(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.haystack) = () => ((this.bind_uuid()));
+			return obj;
+		}
+		bind_uuid_content(){
+			return [(this.Uuid())];
+		}
+		Access(){
+			const obj = new this.$.$yuf_sj_jammer_rule_icon();
+			(obj.status) = () => ((this.access()));
+			return obj;
+		}
+		Time_row(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([
+				(this.Time()), 
+				...(this.bind_uuid_content()), 
+				(this.Access())
+			]);
+			return obj;
+		}
+		freq_range_formatted(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_link_freq_range_formatted"));
+		}
+		freqs(){
+			return (this.freq_range_formatted());
+		}
+		Freqs(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.freqs())]);
+			return obj;
+		}
+		spreads_formatted(){
+			return "";
+		}
+		Spreads(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.spreads_formatted())]);
+			return obj;
+		}
+		menu_filter(){
+			return "";
+		}
+		Comment(){
+			const obj = new this.$.$mol_dimmer();
+			(obj.needle) = () => ((this.menu_filter()));
+			(obj.haystack) = () => ((this.comment()));
+			return obj;
+		}
+		theme_selected(){
+			return "$mol_theme_current";
+		}
+		attr(){
+			return {...(super.attr()), "mol_theme": (this.card_theme())};
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_rule_model();
+			return obj;
+		}
+		minimal_height(){
+			return 112;
+		}
+		sub(){
+			return [
+				(this.Time_row()), 
+				(this.Freqs()), 
+				(this.Spreads()), 
+				(this.Comment())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Time"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Uuid"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Access"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Time_row"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Freqs"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Spreads"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "Comment"));
+	($mol_mem(($.$yuf_sj_jammer_rule_link.prototype), "model"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_link extends $.$yuf_sj_jammer_rule_link {
+            card_theme() {
+                if (this.current())
+                    return this.theme_selected();
+                return this.theme_normal();
+            }
+            created_at_formatted() {
+                return this.model().created_at().toString(super.created_at_formatted());
+            }
+            bind_uuid_content() {
+                return this.model().bind_uuid_required() ? super.bind_uuid_content() : [];
+            }
+            bind_uuid() {
+                return this.model().bind_uuid() ?? '';
+            }
+            spreads_formatted() {
+                return this.spreads().join(', ');
+            }
+            freqs() {
+                return this.freq_range_formatted()
+                    .replace('{freq_min}', this.freq_min()?.toFixed(0) ?? '')
+                    .replace('{freq_max}', this.freq_max()?.toFixed(0) ?? '');
+            }
+        }
+        $$.$yuf_sj_jammer_rule_link = $yuf_sj_jammer_rule_link;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_rule_link, {
+            flex: {
+                direction: 'column',
+                shrink: 1,
+                grow: 0,
+                basis: '7rem'
+            },
+            gap: $mol_gap.space,
+            minHeight: '5.5rem',
+            Time_row: {
+                justifyContent: 'space-between',
+            },
+            Uuid: {
+                color: $mol_theme.shade,
+                font: {
+                    size: '.9rem'
+                },
+                flex: {
+                    grow: 0,
+                    wrap: 'nowrap',
+                },
+                maxWidth: '8rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+            },
+            Freqs: {
+                color: $mol_theme.shade,
+                font: {
+                    size: '.9rem'
+                },
+                minHeight: '1.25rem',
+                flex: {
+                    grow: 0,
+                    wrap: 'nowrap',
+                },
+                display: 'block',
+                maxWidth: '24rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+            },
+            Spreads: {
+                color: $mol_theme.shade,
+                font: {
+                    size: '.9rem'
+                },
+                minHeight: '1.25rem',
+                flex: {
+                    grow: 0,
+                    wrap: 'nowrap',
+                },
+                display: 'block',
+                maxWidth: '24rem',
+            },
+            Comment: {
+                color: $mol_theme.text,
+                minHeight: '1rem',
+                flex: {
+                    wrap: 'wrap',
+                },
+                font: {
+                    size: '1rem'
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_rule_store extends $yuf_ws_entity_store {
+        type() { return 'rules'; }
+        query() {
+            return {
+                access: this.access_type()
+            };
+        }
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({});
+        }
+        access_type() {
+            return 'allow';
+        }
+        id_add(id) {
+            if (this.by_id(id).access() === this.access_type()) {
+                super.id_add(id);
+            }
+        }
+        by_id(id) {
+            return this.$.$yuf_sj_jammer_rule_model.make({
+                _id: id,
+                ws: () => this.ws(),
+                sdr: () => this.sdr(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_rule_store.prototype, "query", null);
+    __decorate([
+        $mol_action
+    ], $yuf_sj_jammer_rule_store.prototype, "id_add", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_rule_store.prototype, "by_id", null);
+    $.$yuf_sj_jammer_rule_store = $yuf_sj_jammer_rule_store;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_rule_switch) = class $yuf_sj_jammer_rule_switch extends ($.$mol_switch) {
+		access_allow(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_switch_access_allow"));
+		}
+		access_deny(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_switch_access_deny"));
+		}
+		icon_status(id){
+			return "deny";
+		}
+		options(){
+			return {"allow": (this.access_allow()), "deny": (this.access_deny())};
+		}
+		Icon(id){
+			const obj = new this.$.$yuf_sj_jammer_rule_icon();
+			(obj.status) = () => ((this.icon_status(id)));
+			return obj;
+		}
+		option_label(id){
+			return [(this.Icon(id)), (this.option_title(id))];
+		}
+	};
+	($mol_mem_key(($.$yuf_sj_jammer_rule_switch.prototype), "Icon"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_switch extends $.$yuf_sj_jammer_rule_switch {
+            icon_status(id) {
+                return id;
+            }
+        }
+        $$.$yuf_sj_jammer_rule_switch = $yuf_sj_jammer_rule_switch;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_check_group) = class $mol_check_group extends ($.$mol_check_box) {
+		checks(){
+			return [];
+		}
+		full(){
+			return true;
+		}
+	};
+
+
+;
+	($.$mol_icon_check_all) = class $mol_icon_check_all extends ($.$mol_icon) {
+		path(){
+			return "M0.41,13.41L6,19L7.41,17.58L1.83,12M22.24,5.58L11.66,16.17L7.5,12L6.07,13.41L11.66,19L23.66,7M18,7L16.59,5.58L10.24,11.93L11.66,13.34L18,7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * Checkbox for group of check boxes.
+         * @see https://mol.hyoo.ru/#!section=demos/demo=mol_check_group_demo
+         */
+        class $mol_check_group extends $.$mol_check_group {
+            checked(next) {
+                if (next !== undefined) {
+                    for (const check of this.checks()) {
+                        check.checked(next);
+                    }
+                    return next;
+                }
+                return this.checks().some(check => check.checked());
+            }
+            full() {
+                return this.checks().every(check => check.checked());
+            }
+            Icon() {
+                return this.full() ? new $mol_icon_check_all : new $mol_icon_tick;
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_check_group.prototype, "checked", null);
+        __decorate([
+            $mol_mem
+        ], $mol_check_group.prototype, "full", null);
+        __decorate([
+            $mol_mem
+        ], $mol_check_group.prototype, "Icon", null);
+        $$.$mol_check_group = $mol_check_group;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_check_list) = class $yuf_check_list extends ($.$mol_view) {
+		All(){
+			const obj = new this.$.$mol_check_group();
+			(obj.title) = () => ((this.$.$mol_locale.text("$yuf_check_list_All_title")));
+			(obj.checks) = () => ((this.checks()));
+			return obj;
+		}
+		item_checked(id, next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		item_title(id){
+			return "";
+		}
+		Item(id){
+			const obj = new this.$.$mol_check_box();
+			(obj.checked) = (next) => ((this.item_checked(id, next)));
+			(obj.title) = () => ((this.item_title(id)));
+			return obj;
+		}
+		checks(){
+			return [(this.Item("0"))];
+		}
+		value(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		options(){
+			return [];
+		}
+		dictionary(){
+			return {};
+		}
+		sub(){
+			return [(this.All()), ...(this.checks())];
+		}
+	};
+	($mol_mem(($.$yuf_check_list.prototype), "All"));
+	($mol_mem_key(($.$yuf_check_list.prototype), "item_checked"));
+	($mol_mem_key(($.$yuf_check_list.prototype), "Item"));
+	($mol_mem(($.$yuf_check_list.prototype), "value"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_check_list extends $.$yuf_check_list {
+            checks() {
+                return this.options().map(id => this.Item(id));
+            }
+            item_title(id) {
+                return this.dictionary()[id] || id;
+            }
+            item_checked(id, next) {
+                let next_arr;
+                if (next !== undefined) {
+                    next_arr = this.value().filter(src => src !== id);
+                    if (next)
+                        next_arr.push(id);
+                }
+                return this.value(next_arr).includes(id);
+            }
+        }
+        __decorate([
+            $mol_mem_key
+        ], $yuf_check_list.prototype, "item_checked", null);
+        $$.$yuf_check_list = $yuf_check_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_check_list, {
+            flex: {
+                wrap: 'wrap',
+                shrink: 1,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_rule_form) = class $yuf_sj_jammer_rule_form extends ($.$yuf_sj_ui_form_draft) {
+		bind_uuid_required(){
+			return (this.model().bind_uuid_required());
+		}
+		sdr(){
+			return (this.model().sdr());
+		}
+		bands(){
+			return (this.sdr().bands());
+		}
+		spreads_available(){
+			return (this.sdr().spreads_available());
+		}
+		required(id){
+			return (this.Bid().required(id));
+		}
+		rule_allowed(){
+			return false;
+		}
+		rule_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		rule_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_rule_title"));
+		}
+		Whitelist(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.enabled) = () => ((this.rule_allowed()));
+			(obj.click) = (next) => ((this.rule_event(next)));
+			(obj.title) = () => ((this.rule_title()));
+			return obj;
+		}
+		rule_content(){
+			return [(this.Whitelist())];
+		}
+		buttons_extra(){
+			return [...(this.rule_content())];
+		}
+		bind_uuid_required_bid(){
+			return (this.required("bind_uuid"));
+		}
+		numbers_check(id){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_numbers_check"));
+		}
+		bind_uuid_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_bind_uuid_name"));
+		}
+		bind_uuid_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_bind_uuid_hint"));
+		}
+		Bind_uuid(){
+			const obj = new this.$.$mol_string();
+			(obj.hint) = () => ((this.bind_uuid_hint()));
+			(obj.length_max) = () => (80);
+			(obj.value) = (next) => ((this.value_str("bind_uuid", next)));
+			(obj.submit) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		Bind_uuid_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.bids) = () => ([(this.bind_uuid_required_bid()), (this.numbers_check("bind_uuid"))]);
+			(obj.name) = () => ((this.bind_uuid_name()));
+			(obj.control) = () => ((this.Bind_uuid()));
+			return obj;
+		}
+		bind_uuid_content(){
+			return [(this.Bind_uuid_field())];
+		}
+		access_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_access_name"));
+		}
+		Access(){
+			const obj = new this.$.$yuf_sj_jammer_rule_switch();
+			(obj.value) = (next) => ((this.value_str("access", next)));
+			return obj;
+		}
+		Access_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.access_name()));
+			(obj.control) = () => ((this.Access()));
+			return obj;
+		}
+		comment_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_comment_name"));
+		}
+		Comment(){
+			const obj = new this.$.$yuf_sj_ui_textarea();
+			(obj.length_max) = () => (128);
+			(obj.value) = (next) => ((this.value_str("comment", next)));
+			(obj.submit) = (next) => ((this.submit(next)));
+			return obj;
+		}
+		Comment_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.comment_name()));
+			(obj.control) = () => ((this.Comment()));
+			return obj;
+		}
+		freq_value(id, next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		Freq_range(){
+			const obj = new this.$.$yuf_sj_ui_freq_range();
+			(obj.bands) = () => ((this.bands()));
+			(obj.value) = (id, next) => ((this.freq_value(id, next)));
+			return obj;
+		}
+		spreads_name(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_form_spreads_name"));
+		}
+		Spreads(){
+			const obj = new this.$.$yuf_check_list();
+			(obj.value) = (next) => ((this.list_string("spreads", next)));
+			(obj.options) = () => ((this.spreads_available()));
+			return obj;
+		}
+		Spreads_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.spreads_name()));
+			(obj.control) = () => ((this.Spreads()));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_rule_model();
+			return obj;
+		}
+		done(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Bid(){
+			const obj = new this.$.$yuf_form_bid();
+			(obj.value) = (id) => ((this.value_str(id)));
+			return obj;
+		}
+		buttons(){
+			return [...(super.buttons()), ...(this.buttons_extra())];
+		}
+		body(){
+			return [
+				...(this.bind_uuid_content()), 
+				(this.Access_field()), 
+				(this.Comment_field()), 
+				(this.Freq_range()), 
+				(this.Spreads_field())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "rule_event"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Whitelist"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Bind_uuid"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Bind_uuid_field"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Access"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Access_field"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Comment"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Comment_field"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_form.prototype), "freq_value"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Freq_range"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Spreads"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Spreads_field"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "model"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "done"));
+	($mol_mem(($.$yuf_sj_jammer_rule_form.prototype), "Bid"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_form extends $.$yuf_sj_jammer_rule_form {
+            freq_value(key, next) {
+                return this.value_number(key === 'min' ? 'freq_min' : 'freq_max', next);
+            }
+            numbers_check(key) {
+                const val = this.value_str(key);
+                if (!val)
+                    return '';
+                if (val.match(/^[\d_\,\-\.\s]+$/))
+                    return '';
+                return super.numbers_check(key);
+            }
+            bind_uuid_required_bid() {
+                if (!this.bind_uuid_required())
+                    return '';
+                return super.bind_uuid_required_bid();
+            }
+            bind_uuid_content() {
+                if (!this.bind_uuid_required())
+                    return [];
+                return super.bind_uuid_content();
+            }
+            access(next) {
+                return this.value_str('access', next);
+            }
+            rule_content() {
+                if (this.access() !== 'd')
+                    return [];
+                return super.rule_content();
+            }
+            rule_allowed() {
+                return !this.changed() || this.submit_allowed();
+            }
+            rule_event(next) {
+                this.access('a');
+                if (this.submit_allowed())
+                    this.submit(next);
+            }
+            submit(e) {
+                const res = super.submit(e);
+                if (res)
+                    this.done(true);
+                return res;
+            }
+        }
+        $$.$yuf_sj_jammer_rule_form = $yuf_sj_jammer_rule_form;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_sj_jammer_rule_form, {});
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_rule_page) = class $yuf_sj_jammer_rule_page extends ($.$mol_page) {
+		remove_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_page_remove_hint"));
+		}
+		Delete_icon(){
+			const obj = new this.$.$mol_icon_trash_can_outline();
+			return obj;
+		}
+		remove_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Remove(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.remove_hint()));
+			(obj.sub) = () => ([(this.Delete_icon())]);
+			(obj.click) = (next) => ((this.remove_event(next)));
+			return obj;
+		}
+		remove_content(){
+			return [(this.Remove())];
+		}
+		Close(){
+			return null;
+		}
+		done(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Form(){
+			const obj = new this.$.$yuf_sj_jammer_rule_form();
+			(obj.model) = () => ((this.model()));
+			(obj.done) = (next) => ((this.done(next)));
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_rule_model();
+			return obj;
+		}
+		tools(){
+			return [...(this.remove_content()), (this.Close())];
+		}
+		body(){
+			return [(this.Form())];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "Delete_icon"));
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "remove_event"));
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "Remove"));
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "done"));
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "Form"));
+	($mol_mem(($.$yuf_sj_jammer_rule_page.prototype), "model"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_page extends $.$yuf_sj_jammer_rule_page {
+            title() {
+                const model = this.model();
+                return [
+                    '#' + model.id(),
+                    model.access(),
+                    model.created_at().toString('DD.MM.YY hh:mm:ss'),
+                ].join(' | ');
+            }
+            remove_content() {
+                return this.model().sdr().master() ? super.remove_content() : [];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_jammer_rule_page.prototype, "title", null);
+        $$.$yuf_sj_jammer_rule_page = $yuf_sj_jammer_rule_page;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { calc, hsla, vary, steps } = $mol_style_func;
+        $mol_style_define($yuf_sj_jammer_rule_page, {
+            flex: {
+                basis: $yuf_sj_ui_theme_gap.page_l,
+                grow: 0,
+                shrink: 0,
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_rule_catalog) = class $yuf_sj_jammer_rule_catalog extends ($.$yuf_catalog) {
+		rule(id){
+			return (this.store().by_id(id));
+		}
+		spread_ids(){
+			return (this.store().ids());
+		}
+		access_type(){
+			return (this.store().access_type());
+		}
+		sdr(){
+			return (this.store().sdr());
+		}
+		master(){
+			return (this.sdr().master());
+		}
+		add_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Add(){
+			const obj = new this.$.$yuf_button_add();
+			(obj.click) = (next) => ((this.add_event(next)));
+			return obj;
+		}
+		add_content(){
+			return [(this.Add())];
+		}
+		remove_all_event(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Remove_all(){
+			const obj = new this.$.$yuf_button_remove_all();
+			(obj.click) = (next) => ((this.remove_all_event(next)));
+			return obj;
+		}
+		remove_content(){
+			return [(this.Remove_all())];
+		}
+		Close(){
+			return null;
+		}
+		menu_filter_hint(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_catalog_menu_filter_hint"));
+		}
+		remove_event(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		done(id, next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Menu_link(id){
+			const obj = new this.$.$yuf_sj_jammer_rule_link();
+			(obj.arg) = () => ((this.arg(id)));
+			(obj.model) = () => ((this.rule(id)));
+			(obj.menu_filter) = () => ((this.menu_filter()));
+			return obj;
+		}
+		menu_item_content(id){
+			return [(this.Menu_link(id))];
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_catalog_menu_title"));
+		}
+		menu_title_blacklist(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_rule_catalog_menu_title_blacklist"));
+		}
+		param_suffix(){
+			return "rule";
+		}
+		store(){
+			const obj = new this.$.$yuf_sj_jammer_rule_store();
+			return obj;
+		}
+		menu_tools(){
+			return [
+				...(this.add_content()), 
+				...(this.remove_content()), 
+				(this.Close())
+			];
+		}
+		menu_head(){
+			return [(this.Menu_filter()), (this.Menu_tools())];
+		}
+		menu_body(){
+			return [(this.Menu_links())];
+		}
+		Menu_filter(){
+			const obj = new this.$.$mol_search();
+			(obj.hint) = () => ((this.menu_filter_hint()));
+			(obj.query) = (next) => ((this.menu_filter(next)));
+			return obj;
+		}
+		Spread(id){
+			const obj = new this.$.$yuf_sj_jammer_rule_page();
+			(obj.model) = () => ((this.rule(id)));
+			(obj.remove_event) = (next) => ((this.remove_event(id, next)));
+			(obj.done) = (next) => ((this.done(id, next)));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Menu_item(id){
+			const obj = new this.$.$mol_view();
+			(obj.minimal_height) = () => (60);
+			(obj.sub) = () => ((this.menu_item_content(id)));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "add_event"));
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "Add"));
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "remove_all_event"));
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "Remove_all"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_catalog.prototype), "remove_event"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_catalog.prototype), "done"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_catalog.prototype), "Menu_link"));
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "store"));
+	($mol_mem(($.$yuf_sj_jammer_rule_catalog.prototype), "Menu_filter"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_catalog.prototype), "Spread"));
+	($mol_mem_key(($.$yuf_sj_jammer_rule_catalog.prototype), "Menu_item"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_rule_catalog extends $.$yuf_sj_jammer_rule_catalog {
+            menu_title() {
+                return this.access_type() === $yuf_sj_jammer_rule_model_status_dto.config.dict.allow
+                    ? super.menu_title()
+                    : this.menu_title_blacklist();
+            }
+            menu_filter_hint() {
+                return super.menu_filter_hint().replace('{type}', this.menu_title());
+            }
+            spread_ids_filtered() {
+                const ids = this.store().draft_ids();
+                return [...ids, ...super.spread_ids_filtered().filter(id => !ids.includes(id))];
+            }
+            spread_title(id) {
+                const rule = this.rule(id);
+                return rule.title();
+            }
+            rule(id) { return this.store().by_id(id); }
+            remove_event(id, e) {
+                const store = this.store();
+                store.by_id(id).remove();
+                store.id_remove(id);
+                this.spread('');
+            }
+            done(id, next) {
+                if (!next)
+                    return false;
+                const store = this.store();
+                store.by_id(id).server_created_id();
+                store.id_add(id);
+                this.spread('');
+                return false;
+            }
+            add_content() {
+                return this.master() ? super.add_content() : [];
+            }
+            remove_content() {
+                return this.master() ? super.remove_content() : [];
+            }
+            add_event(next) {
+                const access = this.access_type();
+                const id = this.store().draft_id();
+                const draft = this.store().by_id(id);
+                draft.draft({ access });
+                this.spread(id);
+            }
+            remove_all_event(e) {
+                this.spread('');
+                this.store().remove();
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_sj_jammer_rule_catalog.prototype, "spread_ids_filtered", null);
+        $$.$yuf_sj_jammer_rule_catalog = $yuf_sj_jammer_rule_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        const { calc, hsla, vary, steps } = $mol_style_func;
+        $mol_style_define($yuf_sj_jammer_rule_catalog, {
+            Menu: {
+                flex: {
+                    basis: $yuf_sj_ui_theme_gap.page_l,
+                    grow: 0,
+                    shrink: 0,
+                },
+                Head: {
+                    justifyContent: 'space-between',
+                }
+            },
+            Menu_item: {
+                minHeight: '3.75rem',
+                padding: { top: $mol_gap.space, bottom: $mol_gap.space },
+                flex: {
+                    direction: 'row',
+                },
+                border: {
+                    radius: $mol_gap.round,
+                },
+            },
+            Menu_link: {
+                padding: { top: $mol_gap.space, bottom: $mol_gap.space },
+                background: {
+                    color: $mol_theme.card,
+                },
+                flex: {
+                    grow: 11,
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_icon_rocket) = class $mol_icon_rocket extends ($.$mol_icon) {
+		path(){
+			return "M20 22L16.14 20.45C16.84 18.92 17.34 17.34 17.65 15.73L20 22M7.86 20.45L4 22L6.35 15.73C6.66 17.34 7.16 18.92 7.86 20.45M12 2C12 2 17 4 17 12C17 15.1 16.25 17.75 15.33 19.83C15 20.55 14.29 21 13.5 21H10.5C9.71 21 9 20.55 8.67 19.83C7.76 17.75 7 15.1 7 12C7 4 12 2 12 2M12 12C13.1 12 14 11.1 14 10C14 8.9 13.1 8 12 8C10.9 8 10 8.9 10 10C10 11.1 10.9 12 12 12Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_rocket_launch) = class $mol_icon_rocket_launch extends ($.$mol_icon) {
+		path(){
+			return "M13.13 22.19L11.5 18.36C13.07 17.78 14.54 17 15.9 16.09L13.13 22.19M5.64 12.5L1.81 10.87L7.91 8.1C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39C21.61 2.39 16.66 .269 11 5.93C8.81 8.12 7.5 10.53 6.65 12.64C6.37 13.39 6.56 14.21 7.11 14.77L9.24 16.89C9.79 17.45 10.61 17.63 11.36 17.35C13.5 16.53 15.88 15.19 18.07 13C23.73 7.34 21.61 2.39 21.61 2.39M14.54 9.46C13.76 8.68 13.76 7.41 14.54 6.63S16.59 5.85 17.37 6.63C18.14 7.41 18.15 8.68 17.37 9.46C16.59 10.24 15.32 10.24 14.54 9.46M8.88 16.53L7.47 15.12L8.88 16.53M6.24 22L9.88 18.36C9.54 18.27 9.21 18.12 8.91 17.91L4.83 22H6.24M2 22H3.41L8.18 17.24L6.76 15.83L2 20.59V22M2 19.17L6.09 15.09C5.88 14.79 5.73 14.47 5.64 14.12L2 17.76V19.17Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_model extends $yuf_sj_ui_device_model {
+        sdr() {
+            return this.$.$yuf_sj_jammer_sdr_model.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+            });
+        }
+        auto() {
+            if (!this.session().logged())
+                return [];
+            return $mol_wire_race(() => super.auto(), () => this.sdr().band_limit_hard(), () => this.sdr().bands(), () => this.tasks().ids(), () => this.devices().ids());
+        }
+        tasks() {
+            return this.$.$yuf_sj_jammer_task_store.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+                sdr: () => this.sdr(),
+            });
+        }
+        rules(access_type) {
+            return this.$.$yuf_sj_jammer_rule_store.make({
+                access_type: $mol_const(access_type),
+                ws: () => this.ws(),
+                id: () => this.id(),
+                sdr: () => this.sdr(),
+            });
+        }
+        routes() {
+            return this.$.$yuf_sj_ui_network_route_store.make({
+                ws: () => this.ws(),
+                id: () => this.id(),
+                sdr: () => this.sdr(),
+            });
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_model.prototype, "sdr", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_model.prototype, "tasks", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_jammer_model.prototype, "rules", null);
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_jammer_model.prototype, "routes", null);
+    $.$yuf_sj_jammer_model = $yuf_sj_jammer_model;
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_app) = class $yuf_sj_jammer_app extends ($.$yuf_sj_ui_app) {
+		ws(){
+			return (this.model().ws());
+		}
+		sdr(){
+			return (this.model().sdr());
+		}
+		tasks(){
+			return (this.model().tasks());
+		}
+		rules(id){
+			return (this.model().rules(id));
+		}
+		routes(){
+			return (this.model().routes());
+		}
+		devices(){
+			return (this.model().devices());
+		}
+		Routes(){
+			const obj = new this.$.$yuf_sj_ui_network_route_list();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.routes) = () => ((this.routes()));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Settings(){
+			const obj = new this.$.$yuf_sj_jammer_sdr_book();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.model) = () => ((this.sdr()));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Task(){
+			const obj = new this.$.$yuf_sj_jammer_task_catalog();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.sdr) = () => ((this.sdr()));
+			(obj.store) = () => ((this.tasks()));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Blacklist(){
+			const obj = new this.$.$yuf_sj_jammer_rule_catalog();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.store) = () => ((this.rules("deny")));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		Devices(){
+			const obj = new this.$.$yuf_sj_ui_device_catalog();
+			(obj.param_prefix) = () => ((this.param()));
+			(obj.store) = () => ((this.devices()));
+			(obj.Close) = () => ((this.Spread_close()));
+			return obj;
+		}
+		menu_title(){
+			return (this.$.$mol_locale.text("$yuf_sj_jammer_app_menu_title"));
+		}
+		Menu_logo(){
+			const obj = new this.$.$mol_icon_rocket_launch();
+			return obj;
+		}
+		model(){
+			const obj = new this.$.$yuf_sj_jammer_model();
+			return obj;
+		}
+		spreads_mid(){
+			return {
+				"routes": (this.Routes()), 
+				"settings": (this.Settings()), 
+				"task": (this.Task()), 
+				"blacklist": (this.Blacklist()), 
+				"devices": (this.Devices())
+			};
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Routes"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Settings"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Task"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Blacklist"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Devices"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "Menu_logo"));
+	($mol_mem(($.$yuf_sj_jammer_app.prototype), "model"));
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$yuf_sj_jammer_version = "0.0.1-8e45233";
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_app extends $.$yuf_sj_jammer_app {
+            version() {
+                return $yuf_sj_jammer_version;
+            }
+        }
+        $$.$yuf_sj_jammer_app = $yuf_sj_jammer_app;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_app_mocked) = class $yuf_sj_jammer_app_mocked extends ($.$yuf_sj_jammer_app) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_login_model_mock extends $yuf_sj_ui_login_model {
+        mock(next) {
+            if (next?.password && next.password !== 'root') {
+                throw new Error('AUTH_FAILED', {
+                    cause: { message: 'Error password, use root' }
+                });
+            }
+            const token = (next?.login && next.password) || this.session().token()
+                ? '1234567890'
+                : next?.token ?? null;
+            const login = next?.login ?? (token ? $mol_stub_person_name() : null);
+            return this.defaults({ login, token, password: null });
+        }
+    }
+    $.$yuf_sj_ui_login_model_mock = $yuf_sj_ui_login_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_network_model_mock extends $yuf_sj_ui_network_model {
+        prev = null;
+        mock(next) {
+            const network_type = next?.network_type ?? 'dhcp';
+            if (network_type === 'dhcp')
+                next = null;
+            const prev = this.prev;
+            if (prev && next) {
+                // timeout if settings changed
+                if (!$mol_compare_deep(prev, next))
+                    return null;
+            }
+            return this.prev = {
+                network_type,
+                ip: next?.ip ?? (network_type === 'dhcp' ? '192.168.10.15/24' : '192.168.10.10/24'),
+                gateway: next?.gateway ?? '192.168.1.1',
+                dns: next?.dns ?? '192.168.1.1',
+                dns2: next?.dns2 ?? '',
+            };
+        }
+    }
+    $.$yuf_sj_ui_network_model_mock = $yuf_sj_ui_network_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_device_reboot_model_mock extends $yuf_sj_ui_device_reboot_model {
+        mock(next) {
+            if (next?.password_old && next?.password_old !== '123') {
+                throw new Error('Old password is wrong, right: 123');
+            }
+            return {
+                ...next,
+            };
+        }
+    }
+    $.$yuf_sj_ui_device_reboot_model_mock = $yuf_sj_ui_device_reboot_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_device_updater_model_mock extends $yuf_sj_ui_device_updater_model {
+        mock_periodically() {
+            return true;
+        }
+        mock(next) {
+            let progress = next?.progress ?? null;
+            if (progress !== null) {
+                progress += 50;
+                if (progress >= 100)
+                    progress = 100;
+            }
+            if (next?.data)
+                progress = 0;
+            return {
+                ...next,
+                data: null,
+                progress,
+            };
+        }
+    }
+    $.$yuf_sj_ui_device_updater_model_mock = $yuf_sj_ui_device_updater_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_device_store_mock extends $yuf_sj_ui_device_store {
+        mock(next) {
+            return next ?? [
+                '8437587m', '45675456m', '85768345s'
+            ];
+        }
+    }
+    $.$yuf_sj_ui_device_store_mock = $yuf_sj_ui_device_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function pick_status(exclude) {
+        return $mol_array_lottery($yuf_sj_ui_device_type_status.config.map(item => item.config)
+            .filter(item => !exclude.includes(item)));
+    }
+    class $yuf_sj_ui_device_info_model_mock extends $yuf_sj_ui_device_info_model {
+        booted_at = Date.now();
+        mock_periodically() { return true; }
+        mock(next) {
+            const status_updated_at = Date.now() - this.booted_at;
+            let status;
+            const id_part = this.id().at(-1);
+            const type = id_part === 'm' ? 'JAMMER_MODULE' : id_part === 's' ? 'SDR' : 'JAMMER';
+            if (next?.status === 'reset-planned') {
+                status = 'resetting';
+            }
+            else {
+                status = pick_status(['resetting', 'reset-planned']);
+            }
+            const serial_number = next?.serial_number ?? `${$mol_stub_code()}-${$mol_stub_code()}-${$mol_stub_code()}-${$mol_stub_code()}`;
+            return {
+                ...next,
+                firmware_version: next?.firmware_version ?? this.pick_version_type(type),
+                type: next?.type ?? type,
+                serial_number,
+                uptime: (3 * 24 * 60 * 60 + 2 * 60 * 60 + 5 * 60 + 30) * 1000 + status_updated_at,
+                status,
+                status_updated_at,
+            };
+        }
+        pick_version_type(type) {
+            const version_suffix = $mol_guid(10).toLocaleUpperCase();
+            const version_prefix = type === 'JAMMER' ? '1.0.0' : '0.0.2';
+            return `${version_prefix}-${version_suffix}`;
+        }
+        version_latest(key) {
+            this.$.$mol_wait_timeout(1000);
+            return key === 'JAMMER' ? '1.0.1' : '0.0.5';
+        }
+    }
+    __decorate([
+        $mol_mem_key
+    ], $yuf_sj_ui_device_info_model_mock.prototype, "version_latest", null);
+    $.$yuf_sj_ui_device_info_model_mock = $yuf_sj_ui_device_info_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_description_model_mock extends $yuf_sj_ui_description_model {
+        mock(next) {
+            if (next)
+                return undefined;
+            return {
+                name: ('dev-' + $mol_stub_code()),
+                description: $mol_stub_message(300),
+            };
+        }
+    }
+    $.$yuf_sj_ui_description_model_mock = $yuf_sj_ui_description_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    const levels = $yuf_sj_ui_log_model_level_dto.config.map(key => key.config);
+    function $yuf_sj_ui_log_model_mock_line({ max_line_length = 200, time = Date.now(), max_level = 'trace' }) {
+        const level = $mol_array_lottery(levels.slice(0, levels.indexOf(max_level) + 1));
+        const date = new Date(time);
+        const time_str = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`;
+        const message = $mol_stub_message(100 + Math.ceil(max_line_length * Math.random()));
+        return `[${time_str}] [${level}] ${message}`;
+    }
+    function $yuf_sj_ui_log_model_mock_lines_create({ max_lines = 1000, max_line_length = 200, time_delta = 500, max_level = 'trace', time = Date.now() }) {
+        const result = [];
+        time = time - max_lines * time_delta;
+        for (let i = 0; i < max_lines; i++) {
+            result.push($yuf_sj_ui_log_model_mock_line({ max_line_length, time, max_level }));
+            time += time_delta;
+        }
+        return result;
+    }
+    class $yuf_sj_ui_log_model_mock extends $yuf_sj_ui_log_model {
+        mock(next) {
+            return next ?? this.defaults();
+        }
+    }
+    __decorate([
+        $mol_mem
+    ], $yuf_sj_ui_log_model_mock.prototype, "mock", null);
+    $.$yuf_sj_ui_log_model_mock = $yuf_sj_ui_log_model_mock;
+    class $yuf_sj_ui_log_model_mock_lines extends $yuf_sj_ui_log_model_lines {
+        mock_periodically() {
+            return true;
+        }
+        line_parameters() {
+            return {
+                max_lines: this.limit(),
+                max_line_length: 500,
+                max_level: this.level() || 'error',
+            };
+        }
+        mock(next) {
+            const params = this.line_parameters();
+            const max_lines = !next ? 30 : 1;
+            return $yuf_sj_ui_log_model_mock_lines_create({ ...params, max_lines });
+        }
+    }
+    $.$yuf_sj_ui_log_model_mock_lines = $yuf_sj_ui_log_model_mock_lines;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $yuf_sj_ui_device_mock_context() {
+        return {
+            $yuf_ws_socket: this.$yuf_ws_statefull_socket_mock,
+            $yuf_sj_ui_login_model: this.$yuf_sj_ui_login_model_mock,
+            $yuf_sj_ui_network_model: this.$yuf_sj_ui_network_model_mock,
+            $yuf_sj_ui_device_reboot_model: this.$yuf_sj_ui_device_reboot_model_mock,
+            $yuf_sj_ui_device_updater_model: this.$yuf_sj_ui_device_updater_model_mock,
+            $yuf_sj_ui_device_store: this.$yuf_sj_ui_device_store_mock,
+            $yuf_sj_ui_device_info_model: this.$yuf_sj_ui_device_info_model_mock,
+            $yuf_sj_ui_description_model: $yuf_sj_ui_description_model_mock,
+            $yuf_sj_ui_log_model: this.$yuf_sj_ui_log_model_mock,
+            $yuf_sj_ui_log_model_lines: this.$yuf_sj_ui_log_model_mock_lines,
+        };
+    }
+    $.$yuf_sj_ui_device_mock_context = $yuf_sj_ui_device_mock_context;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_rule_store_mock extends $yuf_sj_jammer_rule_store {
+        max_rules() { return 20; }
+        pick_ids() {
+            const result = [];
+            const at = this.access_type().at(0) ?? '';
+            for (let i = 0; i < this.max_rules(); i++) {
+                result.push(at + (i + 1));
+            }
+            return result;
+        }
+        mock(next) {
+            if (next === null)
+                return [];
+            return next ?? this.pick_ids();
+        }
+    }
+    $.$yuf_sj_jammer_rule_store_mock = $yuf_sj_jammer_rule_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_rule_model_mock extends $yuf_sj_jammer_rule_model {
+        pick_freqs() {
+            const freqs = [];
+            const freqs_max = 3 + Math.floor(Math.random() * 130);
+            for (let i = 0; i < freqs_max; i++) {
+                freqs.push(Math.floor(100 * Math.random() + 5));
+            }
+            return freqs;
+        }
+        mock(next) {
+            if (next) {
+                return { ...next };
+            }
+            const id = this.id();
+            let index = Number(id.slice(1) || 0);
+            if (Number.isNaN(index))
+                index = 0;
+            const access = id.at(0) === 'a' ? 'allow' : 'deny';
+            const bind_uuid = null;
+            const diff = 1500;
+            let time = new Date().getTime() - index * diff;
+            const comment = Math.random() > .5 ? $mol_stub_message(100).trim() : '';
+            const freqs = bind_uuid ? [] : this.pick_freqs();
+            const limits = new this.$.$yuf_sj_jammer_sdr_model_limits().defaults();
+            const bands = limits.bands;
+            const band_index = '1';
+            const [freq_min, freq_max] = bands[band_index];
+            const freq_range = [
+                freq_min + Math.floor(3 + Math.random() * 10),
+                freq_max - Math.floor(3 + Math.random() * 100)
+            ];
+            return $yuf_sj_jammer_rule_model_dto({
+                id,
+                bind_uuid,
+                freq_range,
+                freqs,
+                comment,
+                access,
+                time: new Date(time).toISOString()
+            });
+        }
+    }
+    $.$yuf_sj_jammer_rule_model_mock = $yuf_sj_jammer_rule_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_ui_network_route_store_mock extends $yuf_sj_ui_network_route_store {
+        mock(next) {
+            const mock = next ?? [
+                {
+                    destination: '192.168.0.0/24',
+                    gateway: '192.168.10.10',
+                },
+                {
+                    destination: '192.168.1.1/24',
+                    gateway: '192.168.10.10',
+                },
+            ];
+            return mock;
+        }
+    }
+    $.$yuf_sj_ui_network_route_store_mock = $yuf_sj_ui_network_route_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_slave_store_mock extends $yuf_sj_jammer_slave_store {
+        mock(next) {
+            const mock = next ?? [
+                {
+                    uri: 'admin:admin@192.168.1.5:53445',
+                },
+                {
+                    uri: 'admin:admin@192.168.1.1:53445',
+                },
+            ];
+            return mock;
+        }
+    }
+    $.$yuf_sj_jammer_slave_store_mock = $yuf_sj_jammer_slave_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_sdr_model_mock_limits extends $yuf_sj_jammer_sdr_model_limits {
+        mock(next) {
+            return next ?? this.defaults();
+        }
+    }
+    $.$yuf_sj_jammer_sdr_model_mock_limits = $yuf_sj_jammer_sdr_model_mock_limits;
+    class $yuf_sj_jammer_sdr_model_mock extends $yuf_sj_jammer_sdr_model {
+        mock(next) {
+            if (next)
+                return next;
+            const bands = this.hard_limits().defaults().bands;
+            const data = {
+                bands: { '1': bands[1], '2': bands[2] },
+                mode: 'auto',
+                master: false,
+            };
+            return data;
+        }
+    }
+    $.$yuf_sj_jammer_sdr_model_mock = $yuf_sj_jammer_sdr_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_task_model_mock extends $yuf_sj_jammer_task_model {
+        pick_status() {
+            return $mol_array_lottery($yuf_sj_jammer_task_model_status_dto.config.map(rec => rec.config).filter(str => str !== 'confirmed' && str !== 'waiting' && str !== 'cancelled'));
+        }
+        mock_periodically() { return true; }
+        mock(next) {
+            const status = next?.status === 'waiting'
+                ? 'waiting' :
+                next?.status === 'confirmed' ? 'jamming' :
+                    next?.status === 'cancelled' ? 'idle' :
+                        Math.random() > .8 ? 'waiting' :
+                            this.pick_status();
+            let id = this.id();
+            if (next && this.is_draft()) {
+                return undefined;
+                // id = id + '-server'
+            }
+            if (next)
+                return { ...next, id, status };
+            const auto = Math.random() > .6;
+            const comment = $mol_stub_message(100);
+            const bands = new this.$.$yuf_sj_jammer_sdr_model_limits().defaults().bands;
+            const band_index = '1';
+            const [freq_min, freq_max] = bands[band_index];
+            const freq_range = [
+                freq_min + Math.floor(3 + Math.random() * 10),
+                freq_max - Math.floor(3 + Math.random() * 100)
+            ];
+            return {
+                id,
+                status,
+                auto,
+                freq_range,
+                comment,
+            };
+        }
+    }
+    $.$yuf_sj_jammer_task_model_mock = $yuf_sj_jammer_task_model_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sj_jammer_task_store_mock extends $yuf_sj_jammer_task_store {
+        tasks_count() { return 10; }
+        mock(next) {
+            if (next)
+                return next;
+            const res = [];
+            for (let i = 0; i < this.tasks_count(); i++) {
+                res.push('' + (i + 1));
+            }
+            return res;
+        }
+        draft_ids(next) {
+            if (next === undefined)
+                return super.draft_ids();
+            const min = this.ids().length + 1;
+            return super.draft_ids(next.map((id, i) => id || String(min + i)));
+        }
+    }
+    $.$yuf_sj_jammer_task_store_mock = $yuf_sj_jammer_task_store_mock;
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_sj_jammer_app_mocked extends $.$yuf_sj_jammer_app_mocked {
+            get $() {
+                return super.$.$mol_ambient({
+                    ...super.$.$yuf_sj_ui_device_mock_context(),
+                    $yuf_sj_jammer_rule_store: $yuf_sj_jammer_rule_store_mock,
+                    $yuf_sj_jammer_rule_model: $yuf_sj_jammer_rule_model_mock,
+                    $yuf_sj_ui_network_route_store: $yuf_sj_ui_network_route_store_mock,
+                    $yuf_sj_jammer_slave_store: $yuf_sj_jammer_slave_store_mock,
+                    $yuf_sj_jammer_sdr_model: $yuf_sj_jammer_sdr_model_mock,
+                    $yuf_sj_jammer_sdr_model_limits: $yuf_sj_jammer_sdr_model_mock_limits,
+                    $yuf_sj_jammer_task_model: $yuf_sj_jammer_task_model_mock,
+                    $yuf_sj_jammer_task_store: $yuf_sj_jammer_task_store_mock,
+                });
+            }
+        }
+        __decorate([
+            $mol_memo.field
+        ], $yuf_sj_jammer_app_mocked.prototype, "$", null);
+        $$.$yuf_sj_jammer_app_mocked = $yuf_sj_jammer_app_mocked;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_sj_jammer_app_demo) = class $yuf_sj_jammer_app_demo extends ($.$mol_example_large) {
+		Jammer(){
+			const obj = new this.$.$yuf_sj_jammer_app_mocked();
+			return obj;
+		}
+		title(){
+			return "Jammer";
+		}
+		sub(){
+			return [(this.Jammer())];
+		}
+		tags(){
+			return [
+				"websocket", 
+				"crud", 
+				"rest", 
+				"harp"
+			];
+		}
+		aspects(){
+			return ["Application"];
+		}
+	};
+	($mol_mem(($.$yuf_sj_jammer_app_demo.prototype), "Jammer"));
+
+
+;
+"use strict";
+
+
 
 export default $
 //# sourceMappingURL=web.js.map

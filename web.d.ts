@@ -4661,7 +4661,7 @@ declare namespace $.$$ {
         col_head_content(colId: string): readonly string[];
         rows(): readonly $mol_view[];
         cells(row_id: string[]): readonly $mol_view[];
-        col_type(col_id: string): "number" | "text" | "branch";
+        col_type(col_id: string): "text" | "number" | "branch";
         Cell(id: {
             row: string[];
             col: string;
@@ -14325,5 +14325,6311 @@ declare namespace $.$$ {
 declare namespace $.$$ {
 }
 
+declare namespace $ {
+
+	type __yuf_sj_ui_login_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_login_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_login_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_sj_ui_login_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_login_form['min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_login_form['Bid'] >['min'] >[0]
+	>
+	type __yuf_sj_ui_login_form_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_login_form['max'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_login_form['Bid'] >['max'] >[0]
+	>
+	type $mol_string__value_yuf_sj_ui_login_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['login'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_login_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_login_form_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_login_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['login_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_login_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['Login'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_password__value_yuf_sj_ui_login_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['password'] >
+		,
+		ReturnType< $yuf_password['value'] >
+	>
+	type $yuf_password__submit_yuf_sj_ui_login_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['submit_activate_fork'] >
+		,
+		ReturnType< $yuf_password['submit'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_login_form_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_login_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['password_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_login_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['Password'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_ui_login_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_login_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_ui_login_form extends $mol_form {
+		login_error( ): string
+		error_token_empty( ): string
+		value_str( id: any, next?: string ): string
+		required( id: any): ReturnType< ReturnType< $yuf_sj_ui_login_form['Bid'] >['required'] >
+		min( id: any): ReturnType< ReturnType< $yuf_sj_ui_login_form['Bid'] >['min'] >
+		max( id: any): ReturnType< ReturnType< $yuf_sj_ui_login_form['Bid'] >['max'] >
+		login_label( ): string
+		login( next?: string ): string
+		submit_activate_fork( next?: ReturnType< $yuf_sj_ui_login_form['submit_activate'] > ): ReturnType< $yuf_sj_ui_login_form['submit_activate'] >
+		Login( ): $mol_string
+		Login_field( ): $mol_form_field
+		password_label( ): string
+		password( next?: string ): string
+		Password( ): $yuf_password
+		Password_field( ): $mol_form_field
+		form_fields_end( ): readonly($mol_view)[]
+		unknown_error( ): string
+		enter( next?: any ): any
+		errors( ): Record<string, string> & ReturnType< $mol_form['errors'] >
+		Bid( ): $yuf_form_bid
+		form_fields( ): readonly(any)[]
+		submit_title( ): string
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_login_form extends $.$yuf_sj_ui_login_form {
+        value_str(field: 'login' | 'password'): string;
+        protected login_focus(): void;
+        auto(): any;
+        submit_activate_fork(e: Event): any;
+        result(next?: string | Error): string;
+        save(next?: Event): any;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_view__dom_name_yuf_sj_ui_dash_card_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_view['dom_name'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_dash_card_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_link__arg_yuf_sj_ui_dash_card_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_dash_card['arg'] >
+		,
+		ReturnType< $yuf_link['arg'] >
+	>
+	type $yuf_link__sub_yuf_sj_ui_dash_card_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_link['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_dash_card_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_dash_card['content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_dash_card extends $mol_view {
+		arg( ): Record<string, any>
+		title( ): string
+		Title( ): $mol_view
+		Link( ): $yuf_link
+		content( ): readonly(any)[]
+		Content( ): $mol_view
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=card.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    /**
+     * Checks for number and returns number type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_number_demo
+     */
+    let $mol_data_number: (val: number) => number;
+}
+
+declare namespace $ {
+    /**
+     * Checks for undefined or passing given runtype.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_optional_demo
+     */
+    function $mol_data_optional<Sub extends $mol_data_value, Fallback extends undefined | (() => ReturnType<Sub>)>(sub: Sub, fallback?: Fallback): ((val: Parameters<Sub>[0] | undefined) => ReturnType<Sub> | (Fallback extends undefined ? undefined : ReturnType<Extract<Fallback, () => any>>)) & {
+        config: {
+            sub: Sub;
+            fallback: Fallback | undefined;
+        };
+        Value: ReturnType<Sub> | (Fallback extends undefined ? undefined : ReturnType<Extract<Fallback, () => any>>);
+    };
+}
+
+declare namespace $ {
+    /**
+     * Checks for null or passing given runtype.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_nullable_demo
+     */
+    function $mol_data_nullable<Sub extends $mol_data_value>(sub: Sub): ((val: Parameters<Sub>[0] | null) => ReturnType<Sub> | null) & {
+        config: Sub;
+        Value: ReturnType<Sub> | null;
+    };
+}
+
+declare namespace $ {
+    /**
+     * Checks for some of given runtype or throws error.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_variant_demo
+     */
+    function $mol_data_variant<Sub extends $mol_data_value[]>(...sub: Sub): ((val: Parameters<Sub[number]>[0]) => ReturnType<Sub[number]>) & {
+        config: Sub;
+        Value: ReturnType<Sub[number]>;
+    };
+}
+
+declare namespace $ {
+    /**
+     * Checks for equality to given value and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_const_demo
+     */
+    function $mol_data_const<const Val>(ref: Val): ((val: Val) => Val) & {
+        config: Val;
+        Value: Val;
+    };
+}
+
+declare namespace $ {
+    /**
+     * Checks for array of given runtype and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_array_demo
+     */
+    function $mol_data_array<Sub extends $mol_data_value>(sub: Sub): ((val: readonly Parameters<Sub>[0][]) => readonly ReturnType<Sub>[]) & {
+        config: Sub;
+        Value: readonly ReturnType<Sub>[];
+    };
+}
+
+declare namespace $ {
+    const $yuf_sj_ui_description_model_dto: ((val: {
+        name?: string | undefined;
+        description?: string | undefined;
+    }) => Readonly<{
+        name?: string | undefined;
+        description?: string | undefined;
+    }>) & {
+        config: {
+            name: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+            description: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+        };
+        Value: Readonly<{
+            name?: string | undefined;
+            description?: string | undefined;
+        }>;
+    };
+    class $yuf_sj_ui_description_model extends $yuf_ws_entity<typeof $yuf_sj_ui_description_model_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            name?: string | undefined;
+            description?: string | undefined;
+        }>;
+        name(next?: string): string | undefined;
+        description(next?: string): string | undefined;
+    }
+}
+
+declare namespace $ {
+    const $yuf_sj_ui_device_type: ((val: "JAMMER" | "SDR" | "JAMMER_MODULE") => "JAMMER" | "SDR" | "JAMMER_MODULE") & {
+        config: [((val: "SDR") => "SDR") & {
+            config: "SDR";
+            Value: "SDR";
+        }, ((val: "JAMMER") => "JAMMER") & {
+            config: "JAMMER";
+            Value: "JAMMER";
+        }, ((val: "JAMMER_MODULE") => "JAMMER_MODULE") & {
+            config: "JAMMER_MODULE";
+            Value: "JAMMER_MODULE";
+        }];
+        Value: "JAMMER" | "SDR" | "JAMMER_MODULE";
+    };
+    const $yuf_sj_ui_device_type_status: ((val: "ok" | "err" | "na" | "reset-planned" | "resetting") => "ok" | "err" | "na" | "reset-planned" | "resetting") & {
+        config: [((val: "ok") => "ok") & {
+            config: "ok";
+            Value: "ok";
+        }, ((val: "err") => "err") & {
+            config: "err";
+            Value: "err";
+        }, ((val: "na") => "na") & {
+            config: "na";
+            Value: "na";
+        }, ((val: "reset-planned") => "reset-planned") & {
+            config: "reset-planned";
+            Value: "reset-planned";
+        }, ((val: "resetting") => "resetting") & {
+            config: "resetting";
+            Value: "resetting";
+        }];
+        Value: "ok" | "err" | "na" | "reset-planned" | "resetting";
+    };
+}
+
+declare namespace $ {
+    function $mol_base64_encode(src: Uint8Array<ArrayBuffer>): string;
+}
+
+declare namespace $ {
+    function $mol_base64_encode_web(str: Uint8Array<ArrayBuffer>): string;
+}
+
+declare namespace $ {
+    const $yuf_sj_ui_device_updater_model_dto: ((val: {
+        data?: string | null | undefined;
+        progress?: number | null | undefined;
+        type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+    }) => Readonly<{
+        data?: string | null | undefined;
+        progress?: number | null | undefined;
+        type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+    }>) & {
+        config: {
+            type: ((val: "JAMMER" | "SDR" | "JAMMER_MODULE") => "JAMMER" | "SDR" | "JAMMER_MODULE") & {
+                config: [((val: "SDR") => "SDR") & {
+                    config: "SDR";
+                    Value: "SDR";
+                }, ((val: "JAMMER") => "JAMMER") & {
+                    config: "JAMMER";
+                    Value: "JAMMER";
+                }, ((val: "JAMMER_MODULE") => "JAMMER_MODULE") & {
+                    config: "JAMMER_MODULE";
+                    Value: "JAMMER_MODULE";
+                }];
+                Value: "JAMMER" | "SDR" | "JAMMER_MODULE";
+            };
+            data: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+            progress: ((val: number | null | undefined) => number | null | undefined) & {
+                config: {
+                    sub: ((val: number | null) => number | null) & {
+                        config: (val: number) => number;
+                        Value: number | null;
+                    };
+                    fallback: (() => number | null) | undefined;
+                };
+                Value: number | null | undefined;
+            };
+        };
+        Value: Readonly<{
+            data?: string | null | undefined;
+            progress?: number | null | undefined;
+            type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+        }>;
+    };
+    class $yuf_sj_ui_device_updater_model extends $yuf_ws_entity<typeof $yuf_sj_ui_device_updater_model_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            data?: string | null | undefined;
+            progress?: number | null | undefined;
+            type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+        }>;
+        protected file_buffer(file: File): Uint8Array<ArrayBuffer>;
+        update(data: ReturnType<this['defaults']> & {
+            file?: File;
+        }): void;
+        device_type(): "JAMMER" | "SDR" | "JAMMER_MODULE";
+        draft_mem_only(): boolean;
+        progress(next?: number | null): number | null;
+        supported_options(): Record<"JAMMER" | "SDR" | "JAMMER_MODULE", string>;
+    }
+}
+
+declare namespace $ {
+    const password_dto: ((val: {
+        password_old: string;
+        password_new: string;
+    }) => Readonly<{
+        password_old: string;
+        password_new: string;
+    }>) & {
+        config: {
+            password_old: (val: string) => string;
+            password_new: (val: string) => string;
+        };
+        Value: Readonly<{
+            password_old: string;
+            password_new: string;
+        }>;
+    };
+    export class $yuf_sj_ui_device_reboot_model extends $yuf_ws_entity<typeof password_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            password_old: string;
+            password_new: string;
+        }>;
+    }
+    export {};
+}
+
+declare namespace $ {
+    const $yuf_sj_ui_device_info_model_dto: ((val: {
+        status?: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined;
+        type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+        firmware_version: string;
+        serial_number: string;
+        uptime: number;
+        status_updated_at: number;
+    }) => Readonly<{
+        status?: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined;
+        type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+        firmware_version: string;
+        serial_number: string;
+        uptime: number;
+        status_updated_at: number;
+    }>) & {
+        config: {
+            type: ((val: "JAMMER" | "SDR" | "JAMMER_MODULE") => "JAMMER" | "SDR" | "JAMMER_MODULE") & {
+                config: [((val: "SDR") => "SDR") & {
+                    config: "SDR";
+                    Value: "SDR";
+                }, ((val: "JAMMER") => "JAMMER") & {
+                    config: "JAMMER";
+                    Value: "JAMMER";
+                }, ((val: "JAMMER_MODULE") => "JAMMER_MODULE") & {
+                    config: "JAMMER_MODULE";
+                    Value: "JAMMER_MODULE";
+                }];
+                Value: "JAMMER" | "SDR" | "JAMMER_MODULE";
+            };
+            firmware_version: (val: string) => string;
+            serial_number: (val: string) => string;
+            uptime: (val: number) => number;
+            status: ((val: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined) => "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined) & {
+                config: {
+                    sub: ((val: "ok" | "err" | "na" | "reset-planned" | "resetting" | null) => "ok" | "err" | "na" | "reset-planned" | "resetting" | null) & {
+                        config: ((val: "ok" | "err" | "na" | "reset-planned" | "resetting") => "ok" | "err" | "na" | "reset-planned" | "resetting") & {
+                            config: [((val: "ok") => "ok") & {
+                                config: "ok";
+                                Value: "ok";
+                            }, ((val: "err") => "err") & {
+                                config: "err";
+                                Value: "err";
+                            }, ((val: "na") => "na") & {
+                                config: "na";
+                                Value: "na";
+                            }, ((val: "reset-planned") => "reset-planned") & {
+                                config: "reset-planned";
+                                Value: "reset-planned";
+                            }, ((val: "resetting") => "resetting") & {
+                                config: "resetting";
+                                Value: "resetting";
+                            }];
+                            Value: "ok" | "err" | "na" | "reset-planned" | "resetting";
+                        };
+                        Value: "ok" | "err" | "na" | "reset-planned" | "resetting" | null;
+                    };
+                    fallback: (() => "ok" | "err" | "na" | "reset-planned" | "resetting" | null) | undefined;
+                };
+                Value: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined;
+            };
+            status_updated_at: (val: number) => number;
+        };
+        Value: Readonly<{
+            status?: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined;
+            type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+            firmware_version: string;
+            serial_number: string;
+            uptime: number;
+            status_updated_at: number;
+        }>;
+    };
+    class $yuf_sj_ui_device_info_model extends $yuf_ws_entity<typeof $yuf_sj_ui_device_info_model_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            status?: "ok" | "err" | "na" | "reset-planned" | "resetting" | null | undefined;
+            type: "JAMMER" | "SDR" | "JAMMER_MODULE";
+            firmware_version: string;
+            serial_number: string;
+            uptime: number;
+            status_updated_at: number;
+        }>;
+        uptime(): $mol_time_moment;
+        uptime_dur(): $mol_time_duration;
+        device_status(next?: 'reset-planned' | null): "ok" | "err" | "na" | "reset-planned" | "resetting" | null;
+        device_status_updated_at(): $mol_time_moment;
+        reboot_enabled(): boolean;
+        reboot(): void;
+        session(): $yuf_session;
+        logout_supported(): boolean;
+        logout(): void;
+        serial(): string;
+        device_type(): "JAMMER" | "SDR" | "JAMMER_MODULE";
+        version_check_url(): string;
+        version_latest(type: typeof $yuf_sj_ui_device_type.Value): string;
+        protected firmware(): $yuf_sj_ui_device_updater_model;
+        firmware_version(): string;
+        protected password_model(): $yuf_sj_ui_device_reboot_model;
+        password(next?: {
+            password_old: string;
+            password_new: string;
+        }): null;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_ui_form_draft extends $mol_form_draft {
+		submit_activate_fork( next?: any ): any
+		changed_message( ): string
+	}
+	
+}
+
+//# sourceMappingURL=draft.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_form_draft extends $.$yuf_sj_ui_form_draft {
+        submit_activate_fork(e?: Event): void;
+        result(next?: string | null): any;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_ui_textarea extends $mol_textarea {
+		spellcheck( ): boolean
+	}
+	
+}
+
+//# sourceMappingURL=textarea.view.tree.d.ts.map
+declare namespace $.$$ {
+    const dummy_template: $mol_syntax2<{
+        'brace-open': RegExp;
+        'brace-close': RegExp;
+        placeholder: RegExp;
+    }>;
+    class $yuf_sj_ui_textarea extends $.$yuf_sj_ui_textarea {
+        syntax(): $mol_syntax2<{
+            'brace-open': RegExp;
+            'brace-close': RegExp;
+            placeholder: RegExp;
+        }>;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_description_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_description_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_description_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_sj_ui_description_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_description_form['min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_description_form['Bid'] >['min'] >[0]
+	>
+	type __yuf_sj_ui_description_form_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_description_form['ip4'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_description_form['Bid'] >['ip4'] >[0]
+	>
+	type __yuf_sj_ui_description_form_4 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_description_form['latin_digits_alpha'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_description_form['Bid'] >['latin_digits_alpha'] >[0]
+	>
+	type $mol_string__value_yuf_sj_ui_description_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_description_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_description_form_7 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_description_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['device_id_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_description_form_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_description_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['Device_id'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_sj_ui_textarea__length_max_yuf_sj_ui_description_form_11 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_textarea['length_max'] >
+	>
+	type $yuf_sj_ui_textarea__value_yuf_sj_ui_description_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['value_str'] >
+		,
+		ReturnType< $yuf_sj_ui_textarea['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_description_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['description_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_description_form_14 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_description_form_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['Description'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_ui_description_form_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_ui_description_form extends $yuf_sj_ui_form_draft {
+		required( id: any): ReturnType< ReturnType< $yuf_sj_ui_description_form['Bid'] >['required'] >
+		min( id: any): ReturnType< ReturnType< $yuf_sj_ui_description_form['Bid'] >['min'] >
+		ip4( id: any): ReturnType< ReturnType< $yuf_sj_ui_description_form['Bid'] >['ip4'] >
+		latin_digits_alpha( id: any): ReturnType< ReturnType< $yuf_sj_ui_description_form['Bid'] >['latin_digits_alpha'] >
+		device_id_name( ): string
+		submit_activate_fork( next?: any ): any
+		Device_id( ): $mol_string
+		Device_id_field( ): $mol_form_field
+		description_name( ): string
+		Description( ): $yuf_sj_ui_textarea
+		Description_field( ): $mol_form_field
+		model( ): $yuf_sj_ui_description_model
+		Bid( ): $yuf_form_bid
+		form_fields( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_description_form extends $.$yuf_sj_ui_description_form {
+    }
+}
+
+declare namespace $ {
+    let $yuf_sj_ui_theme_gap: Record<"page_s" | "page_m" | "page_l" | "page_xl", $mol_style_func<"var", unknown>>;
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_description_form__model_yuf_sj_ui_description_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_page['model'] >
+		,
+		ReturnType< $yuf_sj_ui_description_form['model'] >
+	>
+	export class $yuf_sj_ui_description_page extends $mol_page {
+		Close( ): any
+		model( ): $yuf_sj_ui_description_model
+		Form( ): $yuf_sj_ui_description_form
+		title( ): string
+		param_prefix( ): string
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_labeler__title_yuf_sj_ui_description_card_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_card['device_id_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_description_card_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_description_card_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_description_card['description_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_description_card_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	export class $yuf_sj_ui_description_card extends $yuf_sj_ui_dash_card {
+		name( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['model'] >['name'] >
+		description( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['model'] >['description'] >
+		device_type( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['info_model'] >['device_type'] >
+		device_id_name( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['Description_form'] >['device_id_name'] >
+		description_name( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['Description_form'] >['description_name'] >
+		description_title( ): ReturnType< ReturnType< $yuf_sj_ui_description_card['Description_page'] >['title'] >
+		Name( ): $mol_labeler
+		Description( ): $mol_labeler
+		model( ): $yuf_sj_ui_description_model
+		info_model( ): $yuf_sj_ui_device_info_model
+		Description_form( ): $yuf_sj_ui_description_form
+		Description_page( ): $yuf_sj_ui_description_page
+		title( ): ReturnType< $yuf_sj_ui_description_card['description_title'] >
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=card.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    export const $yuf_sj_ui_network_model_type_dto: ((val: "dhcp" | "static") => "dhcp" | "static") & {
+        config: [((val: "static") => "static") & {
+            config: "static";
+            Value: "static";
+        }, ((val: "dhcp") => "dhcp") & {
+            config: "dhcp";
+            Value: "dhcp";
+        }];
+        Value: "dhcp" | "static";
+    };
+    const network_settings_dto: ((val: {
+        gateway?: string | undefined;
+        ip?: string | undefined;
+        dns?: string | undefined;
+        dns2?: string | undefined;
+        network_type: "dhcp" | "static";
+    }) => Readonly<{
+        gateway?: string | undefined;
+        ip?: string | undefined;
+        dns?: string | undefined;
+        dns2?: string | undefined;
+        network_type: "dhcp" | "static";
+    }>) & {
+        config: {
+            network_type: ((val: "dhcp" | "static") => "dhcp" | "static") & {
+                config: [((val: "static") => "static") & {
+                    config: "static";
+                    Value: "static";
+                }, ((val: "dhcp") => "dhcp") & {
+                    config: "dhcp";
+                    Value: "dhcp";
+                }];
+                Value: "dhcp" | "static";
+            };
+            ip: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+            gateway: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+            dns: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+            dns2: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+        };
+        Value: Readonly<{
+            gateway?: string | undefined;
+            ip?: string | undefined;
+            dns?: string | undefined;
+            dns2?: string | undefined;
+            network_type: "dhcp" | "static";
+        }>;
+    };
+    export class $yuf_sj_ui_network_model extends $yuf_ws_entity<typeof network_settings_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            gateway?: string | undefined;
+            ip?: string | undefined;
+            dns?: string | undefined;
+            dns2?: string | undefined;
+            network_type: "dhcp" | "static";
+        }>;
+        ip_type(next?: typeof $yuf_sj_ui_network_model_type_dto.Value): "dhcp" | "static";
+        ip(next?: string): string | undefined;
+        gateway(next?: string): string | undefined;
+        dns(next?: string): string | undefined;
+        dns2(next?: string): string | undefined;
+    }
+    export {};
+}
+
+declare namespace $ {
+
+	type $mol_check__checked_mol_check_list_1 = $mol_type_enforce<
+		ReturnType< $mol_check_list['option_checked'] >
+		,
+		ReturnType< $mol_check['checked'] >
+	>
+	type $mol_check__label_mol_check_list_2 = $mol_type_enforce<
+		ReturnType< $mol_check_list['option_label'] >
+		,
+		ReturnType< $mol_check['label'] >
+	>
+	type $mol_check__enabled_mol_check_list_3 = $mol_type_enforce<
+		ReturnType< $mol_check_list['option_enabled'] >
+		,
+		ReturnType< $mol_check['enabled'] >
+	>
+	type $mol_check__hint_mol_check_list_4 = $mol_type_enforce<
+		ReturnType< $mol_check_list['option_hint'] >
+		,
+		ReturnType< $mol_check['hint'] >
+	>
+	type $mol_check__minimal_height_mol_check_list_5 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_check['minimal_height'] >
+	>
+	export class $mol_check_list extends $mol_view {
+		option_checked( id: any, next?: boolean ): boolean
+		option_title( id: any): string
+		option_label( id: any): readonly(any)[]
+		enabled( ): boolean
+		option_enabled( id: any): ReturnType< $mol_check_list['enabled'] >
+		option_hint( id: any): string
+		items( ): readonly($mol_check)[]
+		dictionary( ): Record<string, any>
+		Option( id: any): $mol_check
+		options( ): Record<string, any>
+		keys( ): readonly(string)[]
+		sub( ): ReturnType< $mol_check_list['items'] >
+	}
+	
+}
+
+//# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * List of checkboxes
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_check_list_demo
+     */
+    class $mol_check_list extends $.$mol_check_list {
+        options(): {
+            [key: string]: string;
+        };
+        dictionary(next?: Record<string, boolean>): Record<string, boolean>;
+        option_checked(id: string, next?: boolean | null): boolean;
+        keys(): readonly string[];
+        items(): $.$mol_check[];
+        option_title(key: string): string;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_switch extends $mol_check_list {
+		value( next?: string ): string
+	}
+	
+}
+
+//# sourceMappingURL=switch.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * Buttons which switching the state
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_switch_demo
+     */
+    class $mol_switch extends $.$mol_switch {
+        value(next?: string): string;
+        option_checked(key: string, next?: boolean): boolean;
+    }
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_network_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_sj_ui_network_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_form['min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_form['Bid'] >['min'] >[0]
+	>
+	type __yuf_sj_ui_network_form_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_form['max'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_form['Bid'] >['max'] >[0]
+	>
+	type __yuf_sj_ui_network_form_4 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_form['ip4'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_form['Bid'] >['ip4'] >[0]
+	>
+	type __yuf_sj_ui_network_form_5 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_form['ip4_mask_required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_form['Bid'] >['ip4_mask_required'] >[0]
+	>
+	type $mol_switch__value_yuf_sj_ui_network_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_type'] >
+		,
+		ReturnType< $mol_switch['value'] >
+	>
+	type $mol_switch__options_yuf_sj_ui_network_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_type_options'] >
+		,
+		ReturnType< $mol_switch['options'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_network_form_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_type_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_sj_ui_network_form_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_form_11 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__hint_yuf_sj_ui_network_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_mask_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__enabled_yuf_sj_ui_network_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_edit_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_form_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_form_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_form_17 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_network_form_18 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['Ip'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_form_19 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__hint_yuf_sj_ui_network_form_20 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_form_21 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__enabled_yuf_sj_ui_network_form_22 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_edit_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_form_23 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_form_24 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['gateway_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_form_25 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_network_form_26 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['Gateway'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_form_27 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__hint_yuf_sj_ui_network_form_28 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_form_29 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__enabled_yuf_sj_ui_network_form_30 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_edit_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_form_31 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_form_32 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['dns_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_form_33 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_network_form_34 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['Dns'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_form_35 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__hint_yuf_sj_ui_network_form_36 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_form_37 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__enabled_yuf_sj_ui_network_form_38 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_edit_enabled'] >
+		,
+		ReturnType< $mol_string['enabled'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_form_39 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_form_40 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['dns2_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_form_41 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_network_form_42 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['Dns2'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_network_form_43 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['ip_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_ui_network_form_44 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_ui_network_form extends $yuf_sj_ui_form_draft {
+		required( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_form['Bid'] >['required'] >
+		min( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_form['Bid'] >['min'] >
+		max( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_form['Bid'] >['max'] >
+		ip4( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_form['Bid'] >['ip4'] >
+		ip4_mask_required( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_form['Bid'] >['ip4_mask_required'] >
+		message_timeout( ): string
+		ip_type_name( ): string
+		ip_type( next?: string ): string
+		static_title( ): string
+		dhcp_title( ): string
+		ip_type_options( ): ({ 
+			'static': ReturnType< $yuf_sj_ui_network_form['static_title'] >,
+			'dhcp': ReturnType< $yuf_sj_ui_network_form['dhcp_title'] >,
+		}) 
+		Ip_type( ): $mol_switch
+		no_actual_ip_text( ): string
+		No_actual_ip( ): $mol_view
+		dhcp_actualize_content( ): readonly(any)[]
+		Ip_type_field( ): $mol_form_field
+		ip_name( ): string
+		required_dhcp( id: any): string
+		ip_mask_hint( ): string
+		submit_activate_fork( next?: any ): any
+		ip_edit_enabled( ): boolean
+		Ip( ): $mol_string
+		Ip_field( ): $mol_form_field
+		gateway_name( ): string
+		ip_hint( ): string
+		Gateway( ): $mol_string
+		Gateway_field( ): $mol_form_field
+		dns_name( ): string
+		Dns( ): $mol_string
+		Dns_field( ): $mol_form_field
+		dns2_name( ): string
+		Dns2( ): $mol_string
+		Dns2_field( ): $mol_form_field
+		ip_content( ): readonly($mol_form_field)[]
+		Ip_content( ): $mol_view
+		model( ): $yuf_sj_ui_network_model
+		Bid( ): $yuf_form_bid
+		errors( ): Record<string, string> & ReturnType< $yuf_sj_ui_form_draft['errors'] >
+		body( ): readonly($mol_form_field)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_network_form extends $.$yuf_sj_ui_network_form {
+        ip_edit_enabled(): boolean;
+        required_dhcp(key: string): string;
+        need_actualize(): boolean;
+        ip_content(): readonly $.$mol_form_field[];
+        dhcp_actualize_content(): readonly any[];
+        submit_activate_fork(e: Event): void;
+        ip_type(next?: string): string;
+        reset_dhcp_fields(): void;
+        save(e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_network_form__model_yuf_sj_ui_network_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_page['model'] >
+		,
+		ReturnType< $yuf_sj_ui_network_form['model'] >
+	>
+	export class $yuf_sj_ui_network_page extends $mol_page {
+		Close( ): any
+		Network_form( ): $yuf_sj_ui_network_form
+		title( ): string
+		param_prefix( ): string
+		model( ): $yuf_sj_ui_network_model
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_labeler__title_yuf_sj_ui_network_card_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_card['ip_type_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_network_card_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_network_card_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_card['ip_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_network_card_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_network_card_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_card['gateway_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_network_card_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_network_card_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_card['dns_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_network_card_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_network_card_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_card['dns2_name'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_network_card_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	export class $yuf_sj_ui_network_card extends $yuf_sj_ui_dash_card {
+		ip_type( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['model'] >['ip_type'] >
+		ip( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['model'] >['ip'] >
+		gateway( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['model'] >['gateway'] >
+		dns( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['model'] >['dns'] >
+		dns2( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['model'] >['dns2'] >
+		network_title( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_page'] >['title'] >
+		ip_type_name( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['ip_type_name'] >
+		ip_type_options( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['ip_type_options'] >
+		ip_name( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['ip_name'] >
+		gateway_name( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['gateway_name'] >
+		dns_name( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['dns_name'] >
+		dns2_name( ): ReturnType< ReturnType< $yuf_sj_ui_network_card['Network_form'] >['dns2_name'] >
+		Ip_type( ): $mol_labeler
+		Ip( ): $mol_labeler
+		Gateway( ): $mol_labeler
+		Dns( ): $mol_labeler
+		Dns2( ): $mol_labeler
+		network_content( ): readonly($mol_view)[]
+		model( ): $yuf_sj_ui_network_model
+		Network_page( ): $yuf_sj_ui_network_page
+		Network_form( ): $yuf_sj_ui_network_form
+		title( ): ReturnType< $yuf_sj_ui_network_card['network_title'] >
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=card.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_sj_ui_device_updater_version extends $mol_labeler {
+		version( ): string
+		title( ): string
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=version.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_time_duration_template__1 = $mol_type_enforce<
+		`year`
+		,
+		string
+	>
+	type $yuf_time_duration_template__2 = $mol_type_enforce<
+		`month`
+		,
+		string
+	>
+	type $yuf_time_duration_template__3 = $mol_type_enforce<
+		`day`
+		,
+		string
+	>
+	type $yuf_time_duration_template__4 = $mol_type_enforce<
+		`hour`
+		,
+		string
+	>
+	type $yuf_time_duration_template__5 = $mol_type_enforce<
+		`minute`
+		,
+		string
+	>
+	type $yuf_time_duration_template__6 = $mol_type_enforce<
+		`second`
+		,
+		string
+	>
+	export class $yuf_time_duration extends $mol_view {
+		value( ): $mol_time_duration
+		formatted( ): string
+		normalized( ): ReturnType< $yuf_time_duration['value'] >
+		show_minus( ): boolean
+		template( ): readonly(string)[]
+		year( ): string
+		month( ): string
+		day( ): string
+		hour( ): string
+		minute( ): string
+		second( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=duration.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_time_duration extends $.$yuf_time_duration {
+        normalized(): $mol_time_duration;
+        part(key: string, index: number): string | null;
+        formatted(): string;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_time_card extends $mol_view {
+		hint( ): string
+		formatted_date( ): string
+		format( ): string
+		formats( ): Record<string, string>
+		local( ): boolean
+		moment( ): $mol_time_moment|null
+		attr( ): ({ 
+			'title': ReturnType< $yuf_time_card['hint'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=card.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_time_card extends $.$yuf_time_card {
+        protected current(): $mol_time_moment | null | undefined;
+        protected format_value(): string;
+        formatted_date(): string;
+        hint(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_time_duration__value_yuf_sj_ui_uptime_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_uptime['uptime_dur'] >
+		,
+		ReturnType< $yuf_time_duration['value'] >
+	>
+	type $yuf_time_card__format_yuf_sj_ui_uptime_2 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_time_card['format'] >
+	>
+	type $yuf_time_card__moment_yuf_sj_ui_uptime_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_uptime['uptime'] >
+		,
+		ReturnType< $yuf_time_card['moment'] >
+	>
+	export class $yuf_sj_ui_uptime extends $mol_labeler {
+		uptime_label( ): string
+		uptime( ): $mol_time_moment
+		formatted_date( ): ReturnType< ReturnType< $yuf_sj_ui_uptime['Uptime'] >['formatted_date'] >
+		uptime_dur( ): $mol_time_duration
+		Uptime_dur( ): $yuf_time_duration
+		title( ): ReturnType< $yuf_sj_ui_uptime['uptime_label'] >
+		Uptime( ): $yuf_time_card
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=uptime.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $.$$ {
+    class $yuf_sj_ui_uptime extends $.$yuf_sj_ui_uptime {
+        title(): string;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_ui_device_status extends $mol_view {
+		mode_attr( ): string
+		text_pending( ): string
+		text( ): ReturnType< $yuf_sj_ui_device_status['text_pending'] >
+		attr( ): ({ 
+			'yuf_sj_ui_device_status_mode': ReturnType< $yuf_sj_ui_device_status['mode_attr'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		value( ): any
+		dict( ): Record<string, string>
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=status.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_status extends $.$yuf_sj_ui_device_status {
+        text(): any;
+        mode_attr(): any;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_device_status__value_yuf_sj_ui_device_status_label_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_status_label['device_status'] >
+		,
+		ReturnType< $yuf_sj_ui_device_status['value'] >
+	>
+	export class $yuf_sj_ui_device_status_label extends $mol_labeler {
+		device_status( ): any
+		Status( ): $yuf_sj_ui_device_status
+		title( ): string
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=label.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_device_reboot_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_reboot_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_reboot_form['Bid'] >['required'] >[0]
+	>
+	type $yuf_password__value_yuf_sj_ui_device_reboot_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['value_str'] >
+		,
+		ReturnType< $yuf_password['value'] >
+	>
+	type $yuf_password__submit_yuf_sj_ui_device_reboot_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['submit_activate'] >
+		,
+		ReturnType< $yuf_password['submit'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_device_reboot_form_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_device_reboot_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['password_new_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_device_reboot_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['Password_new'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_password__value_yuf_sj_ui_device_reboot_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['value_str'] >
+		,
+		ReturnType< $yuf_password['value'] >
+	>
+	type $yuf_password__submit_yuf_sj_ui_device_reboot_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['submit_activate_fork'] >
+		,
+		ReturnType< $yuf_password['submit'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_device_reboot_form_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_device_reboot_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['password_new2_label'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_ui_device_reboot_form_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['Password_new2'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_ui_device_reboot_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_ui_device_reboot_form extends $mol_form {
+		value_str( id: any, next?: string ): string
+		required( id: any): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_form['Bid'] >['required'] >
+		password_new_label( ): string
+		Password_new( ): $yuf_password
+		Password_new_field( ): $mol_form_field
+		new_password_equal( id: any): string
+		password_new2_label( ): string
+		submit_activate_fork( next?: ReturnType< $yuf_sj_ui_device_reboot_form['submit_activate'] > ): ReturnType< $yuf_sj_ui_device_reboot_form['submit_activate'] >
+		Password_new2( ): $yuf_password
+		Password_new2_field( ): $mol_form_field
+		password_old( next?: string ): string
+		password_new( next?: string ): string
+		password_new2( next?: string ): string
+		reset( next?: any ): any
+		Bid( ): $yuf_form_bid
+		form_fields( ): readonly(any)[]
+		submit_title( ): string
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_reboot_form extends $.$yuf_sj_ui_device_reboot_form {
+        new_password_equal(field: string): string;
+        value_str(id: string, next?: string): string;
+        reset(): void;
+        submit_activate_fork(e: Event): any;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_uptime__uptime_dur_yuf_sj_ui_device_reboot_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['uptime_dur'] >
+		,
+		ReturnType< $yuf_sj_ui_uptime['uptime_dur'] >
+	>
+	type $yuf_sj_ui_uptime__uptime_yuf_sj_ui_device_reboot_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['uptime'] >
+		,
+		ReturnType< $yuf_sj_ui_uptime['uptime'] >
+	>
+	type $yuf_sj_ui_device_status_label__device_status_yuf_sj_ui_device_reboot_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['device_status'] >
+		,
+		ReturnType< $yuf_sj_ui_device_status_label['device_status'] >
+	>
+	type $mol_button_major__enabled_yuf_sj_ui_device_reboot_page_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['reboot_enabled'] >
+		,
+		ReturnType< $mol_button_major['enabled'] >
+	>
+	type $mol_button_major__sub_yuf_sj_ui_device_reboot_page_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_major['sub'] >
+	>
+	type $mol_button_major__click_yuf_sj_ui_device_reboot_page_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['reboot'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_reboot_page_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_reboot_page_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type __yuf_sj_ui_device_reboot_page_9 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_reboot_page['password_new'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_new'] >[0]
+	>
+	type __yuf_sj_ui_device_reboot_page_10 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_reboot_page['password_old'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_old'] >[0]
+	>
+	type $yuf_sj_ui_device_reboot_form__save_yuf_sj_ui_device_reboot_page_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_page['save_password'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_form['save'] >
+	>
+	export class $yuf_sj_ui_device_reboot_page extends $mol_page {
+		Close( ): any
+		uptime( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['model'] >['uptime'] >
+		uptime_dur( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['model'] >['uptime_dur'] >
+		reboot_enabled( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['model'] >['reboot_enabled'] >
+		device_status( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['model'] >['device_status'] >
+		Uptime_label( ): $yuf_sj_ui_uptime
+		Status_label( ): $yuf_sj_ui_device_status_label
+		reboot_label( ): string
+		reboot( next?: any ): any
+		Reboot( ): $mol_button_major
+		Reboot_block( ): $mol_view
+		Top( ): $mol_view
+		save_password( next?: any ): any
+		password_new( next?: ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_new'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_new'] >
+		password_old( next?: ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_old'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['password_old'] >
+		reset( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_page['Admin_form'] >['reset'] >
+		Admin_form( ): $yuf_sj_ui_device_reboot_form
+		title( ): string
+		param_prefix( ): string
+		tools( ): readonly(any)[]
+		model( ): $yuf_sj_ui_device_info_model
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_reboot_page extends $.$yuf_sj_ui_device_reboot_page {
+        save_password(e?: Event): void;
+        reboot(e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_device_updater_version__version_yuf_sj_ui_device_reboot_card_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_card['firmware_version'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_version['version'] >
+	>
+	type $yuf_sj_ui_uptime__uptime_yuf_sj_ui_device_reboot_card_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_card['uptime'] >
+		,
+		ReturnType< $yuf_sj_ui_uptime['uptime'] >
+	>
+	type $yuf_sj_ui_uptime__uptime_dur_yuf_sj_ui_device_reboot_card_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_reboot_card['uptime_dur'] >
+		,
+		ReturnType< $yuf_sj_ui_uptime['uptime_dur'] >
+	>
+	export class $yuf_sj_ui_device_reboot_card extends $yuf_sj_ui_dash_card {
+		uptime( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_card['model'] >['uptime'] >
+		uptime_dur( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_card['model'] >['uptime_dur'] >
+		firmware_version( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_card['model'] >['firmware_version'] >
+		admin_title( ): ReturnType< ReturnType< $yuf_sj_ui_device_reboot_card['Admin_page'] >['title'] >
+		Version( ): $yuf_sj_ui_device_updater_version
+		Uptime( ): $yuf_sj_ui_uptime
+		model( ): $yuf_sj_ui_device_info_model
+		Admin_page( ): $yuf_sj_ui_device_reboot_page
+		title( ): ReturnType< $yuf_sj_ui_device_reboot_card['admin_title'] >
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=card.view.tree.d.ts.map
+declare namespace $ {
+
+	type $yuf_sj_ui_number_string__blur_event_yuf_sj_ui_number_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['blur_event'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['blur_event'] >
+	>
+	type $yuf_sj_ui_number_string__type_yuf_sj_ui_number_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['type'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['type'] >
+	>
+	type $yuf_sj_ui_number_string__value_yuf_sj_ui_number_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['value_string'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['value'] >
+	>
+	type $yuf_sj_ui_number_string__hint_yuf_sj_ui_number_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['hint'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['hint'] >
+	>
+	type $yuf_sj_ui_number_string__enabled_yuf_sj_ui_number_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['string_enabled'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['enabled'] >
+	>
+	type $yuf_sj_ui_number_string__submit_yuf_sj_ui_number_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_number['submit'] >
+		,
+		ReturnType< $yuf_sj_ui_number_string['submit'] >
+	>
+	export class $yuf_sj_ui_number extends $mol_number {
+		blur_event( next?: any ): any
+		String( ): $yuf_sj_ui_number_string
+	}
+	
+	export class $yuf_sj_ui_number_string extends $mol_string {
+		blur_event( next?: any ): any
+		event( ): ({ 
+			blur( next?: ReturnType< $yuf_sj_ui_number_string['blur_event'] > ): ReturnType< $yuf_sj_ui_number_string['blur_event'] >,
+		})  & ReturnType< $mol_string['event'] >
+	}
+	
+}
+
+//# sourceMappingURL=number.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_number extends $.$yuf_sj_ui_number {
+        blur_event(): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_arrow_up extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=up.view.tree.d.ts.map
+declare namespace $ {
+    /**
+     * Checks for boolean and returns boolean type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_boolean_demo
+     */
+    let $mol_data_boolean: (val: boolean) => boolean;
+}
+
+declare namespace $ {
+    export const $yuf_sj_ui_log_model_level_dto: ((val: "error" | "warn" | "info" | "debug" | "trace") => "error" | "warn" | "info" | "debug" | "trace") & {
+        config: [((val: "error") => "error") & {
+            config: "error";
+            Value: "error";
+        }, ((val: "warn") => "warn") & {
+            config: "warn";
+            Value: "warn";
+        }, ((val: "info") => "info") & {
+            config: "info";
+            Value: "info";
+        }, ((val: "debug") => "debug") & {
+            config: "debug";
+            Value: "debug";
+        }, ((val: "trace") => "trace") & {
+            config: "trace";
+            Value: "trace";
+        }];
+        Value: "error" | "warn" | "info" | "debug" | "trace";
+    };
+    const log_settings_dto: ((val: {
+        level: "error" | "warn" | "info" | "debug" | "trace" | null;
+    }) => Readonly<{
+        level: "error" | "warn" | "info" | "debug" | "trace" | null;
+    }>) & {
+        config: {
+            level: ((val: "error" | "warn" | "info" | "debug" | "trace" | null) => "error" | "warn" | "info" | "debug" | "trace" | null) & {
+                config: ((val: "error" | "warn" | "info" | "debug" | "trace") => "error" | "warn" | "info" | "debug" | "trace") & {
+                    config: [((val: "error") => "error") & {
+                        config: "error";
+                        Value: "error";
+                    }, ((val: "warn") => "warn") & {
+                        config: "warn";
+                        Value: "warn";
+                    }, ((val: "info") => "info") & {
+                        config: "info";
+                        Value: "info";
+                    }, ((val: "debug") => "debug") & {
+                        config: "debug";
+                        Value: "debug";
+                    }, ((val: "trace") => "trace") & {
+                        config: "trace";
+                        Value: "trace";
+                    }];
+                    Value: "error" | "warn" | "info" | "debug" | "trace";
+                };
+                Value: "error" | "warn" | "info" | "debug" | "trace" | null;
+            };
+        };
+        Value: Readonly<{
+            level: "error" | "warn" | "info" | "debug" | "trace" | null;
+        }>;
+    };
+    const log_lines_dto: ((val: readonly string[]) => readonly string[]) & {
+        config: (val: string) => string;
+        Value: readonly string[];
+    };
+    export class $yuf_sj_ui_log_model_lines extends $yuf_ws_entity<typeof log_lines_dto.Value> {
+        type(): string;
+        defaults(raw?: typeof log_lines_dto.Value): readonly string[];
+        limit(): number;
+        level(): typeof $yuf_sj_ui_log_model_level_dto.Value | null | "";
+        query(): Record<string, string>;
+    }
+    export class $yuf_sj_ui_log_model extends $yuf_ws_entity<typeof log_settings_dto.Value> {
+        type(): string;
+        defaults(raw?: {}): Readonly<{
+            level: "error" | "warn" | "info" | "debug" | "trace" | null;
+        }>;
+        device(): string[];
+        level(next?: typeof $yuf_sj_ui_log_model_level_dto.Value | null | ''): "" | "error" | "warn" | "info" | "debug" | "trace";
+        levels_available(): Record<string, string>;
+        lines_collected_max(): number;
+        lines_max(next?: number): number;
+        ws_logs_enabled(next?: boolean): boolean;
+        server_logs_available(): boolean;
+        log_enabled(): boolean;
+        protected lines_sub(): $yuf_sj_ui_log_model_lines;
+        lines(reset?: null): readonly string[];
+        search_text(next?: string): string;
+        protected search_text_debounce: null | $mol_after_timeout;
+        search_text_normalized(reset?: null): readonly string[];
+        visible_max(): number;
+        indices(): number[];
+        line(index: number): string;
+    }
+    export {};
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_log_page_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_log_page['log_level'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_log_page['model'] >['level'] >[0]
+	>
+	type __yuf_sj_ui_log_page_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_log_page['lines_max'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_log_page['model'] >['lines_max'] >[0]
+	>
+	type __yuf_sj_ui_log_page_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_log_page['search_text'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_log_page['model'] >['search_text'] >[0]
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_sj_ui_number__Dec_yuf_sj_ui_log_page_5 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $yuf_sj_ui_number['Dec'] >
+	>
+	type $yuf_sj_ui_number__Inc_yuf_sj_ui_log_page_6 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $yuf_sj_ui_number['Inc'] >
+	>
+	type $yuf_sj_ui_number__precision_change_yuf_sj_ui_log_page_7 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_number['precision_change'] >
+	>
+	type $yuf_sj_ui_number__value_min_yuf_sj_ui_log_page_8 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_number['value_min'] >
+	>
+	type $yuf_sj_ui_number__value_max_yuf_sj_ui_log_page_9 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_number['value_max'] >
+	>
+	type $yuf_sj_ui_number__hint_yuf_sj_ui_log_page_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['logs_max_title'] >
+		,
+		ReturnType< $yuf_sj_ui_number['hint'] >
+	>
+	type $yuf_sj_ui_number__value_yuf_sj_ui_log_page_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['lines_max'] >
+		,
+		ReturnType< $yuf_sj_ui_number['value'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_12 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_13 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_button_minor__hint_yuf_sj_ui_log_page_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['up_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__enabled_yuf_sj_ui_log_page_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['up_enabled'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__sub_yuf_sj_ui_log_page_16 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_yuf_sj_ui_log_page_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['up_event'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_18 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_search__hint_yuf_sj_ui_log_page_19 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['filter_text_hint'] >
+		,
+		ReturnType< $mol_search['hint'] >
+	>
+	type $mol_search__query_yuf_sj_ui_log_page_20 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['search_text'] >
+		,
+		ReturnType< $mol_search['query'] >
+	>
+	type $mol_select__Filter_yuf_sj_ui_log_page_21 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $mol_select['Filter'] >
+	>
+	type $mol_select__trigger_enabled_yuf_sj_ui_log_page_22 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['server_logs_available'] >
+		,
+		ReturnType< $mol_select['trigger_enabled'] >
+	>
+	type $mol_select__dictionary_yuf_sj_ui_log_page_23 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['log_levels_available'] >
+		,
+		ReturnType< $mol_select['dictionary'] >
+	>
+	type $mol_select__hint_yuf_sj_ui_log_page_24 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['log_level_hint'] >
+		,
+		ReturnType< $mol_select['hint'] >
+	>
+	type $mol_select__value_yuf_sj_ui_log_page_25 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['log_level'] >
+		,
+		ReturnType< $mol_select['value'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_26 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_dimmer__minimal_height_yuf_sj_ui_log_page_27 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_dimmer['minimal_height'] >
+	>
+	type $mol_dimmer__needle_yuf_sj_ui_log_page_28 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['search_text'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_ui_log_page_29 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['log_row'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_30 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_log_page['rows'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_log_page_31 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_log_page extends $mol_page {
+		log_level( next?: ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['level'] > ): ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['level'] >
+		lines_max( next?: ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['lines_max'] > ): ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['lines_max'] >
+		search_text( next?: ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['search_text'] > ): ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['search_text'] >
+		log_levels_available( ): ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['levels_available'] >
+		server_logs_available( ): ReturnType< ReturnType< $yuf_sj_ui_log_page['model'] >['server_logs_available'] >
+		Close( ): any
+		Logs_max_number_label( ): $mol_view
+		logs_max_title( ): string
+		Logs_max_number( ): $yuf_sj_ui_number
+		Logs_max_group( ): $mol_view
+		Foot_tools_left( ): $mol_view
+		up_hint( ): string
+		up_enabled( ): boolean
+		Up_icon( ): $mol_icon_arrow_up
+		up_event( next?: any ): any
+		Up( ): $mol_button_minor
+		Foot_tools_right( ): $mol_view
+		filter_text_hint( ): string
+		Filter_text( ): $mol_search
+		log_level_hint( ): string
+		Log_level( ): $mol_select
+		empty_text( ): string
+		Empty_row( ): $mol_view
+		empty_content( ): readonly(any)[]
+		log_row( id: any): string
+		Item( id: any): $mol_dimmer
+		rows( ): readonly(any)[]
+		List_dummy( ): $mol_view
+		log_content( ): readonly(any)[]
+		title( ): string
+		param_prefix( ): string
+		model( ): $yuf_sj_ui_log_model
+		tools( ): readonly(any)[]
+		foot( ): readonly(any)[]
+		Title( ): $mol_view
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_log_page extends $.$yuf_sj_ui_log_page {
+        log_row(index: number): string;
+        rows(): $.$mol_dimmer[];
+        scroll_reset(): null;
+        log_content(): readonly any[];
+        empty_content(): readonly any[];
+        up_enabled(): boolean;
+        up_event(): void;
+        auto(): any;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_meter extends $mol_plugin {
+		zoom( ): number
+		width( next?: number ): number
+		height( next?: number ): number
+		left( next?: number ): number
+		right( next?: number ): number
+		bottom( next?: number ): number
+		top( next?: number ): number
+	}
+	
+}
+
+//# sourceMappingURL=meter.view.tree.d.ts.map
+declare namespace $.$$ {
+    /** @deprecated Use $mol_view..view_rect **/
+    class $mol_meter extends $.$mol_meter {
+        rect(): {
+            left: number;
+            top: number;
+            right: number;
+            bottom: number;
+            width: number;
+            height: number;
+            zoom: number;
+        };
+        top(): number;
+        bottom(): number;
+        left(): number;
+        right(): number;
+        width(): number;
+        height(): number;
+        zoom(): number;
+    }
+}
+
+declare namespace $ {
+    class $mol_vector<Value, Length extends number> extends Array<Value> {
+        get length(): Length;
+        constructor(...values: Value[] & {
+            length: Length;
+        });
+        map<Res>(convert: (value: Value, index: number, array: this) => Res, self?: any): $mol_vector<Res, Length>;
+        merged<Patch>(patches: readonly Patch[] & {
+            length: Length;
+        }, combine: (value: Value, patch: Patch) => Value): this;
+        limited(this: $mol_vector<number, Length>, limits: readonly (readonly [number, number])[] & {
+            length: Length;
+        }): this;
+        added0(this: $mol_vector<number, Length>, diff: number): this;
+        added1(this: $mol_vector<number, Length>, diff: readonly number[] & {
+            length: Length;
+        }): this;
+        substracted1(this: $mol_vector<number, Length>, diff: readonly number[] & {
+            length: Length;
+        }): this;
+        multed0(this: $mol_vector<number, Length>, mult: number): this;
+        multed1(this: $mol_vector<number, Length>, mults: readonly number[] & {
+            length: Length;
+        }): this;
+        divided1(this: $mol_vector<number, Length>, mults: readonly number[] & {
+            length: Length;
+        }): this;
+        powered0(this: $mol_vector<number, Length>, mult: number): this;
+        expanded1(this: $mol_vector<$mol_vector_range<number>, Length>, point: readonly number[] & {
+            length: Length;
+        }): this;
+        expanded2(this: $mol_vector<$mol_vector_range<number>, Length>, point: readonly (readonly [number, number])[] & {
+            length: Length;
+        }): this;
+        center<Item extends $mol_vector<number, number>>(this: $mol_vector<Item, Length>): Item;
+        distance(this: $mol_vector<$mol_vector<number, number>, Length>): number;
+        transponed(this: $mol_vector<$mol_vector<number, number>, Length>): $mol_vector<$mol_vector<number, Length>, typeof this[0]['length']>;
+        get x(): Value;
+        set x(next: Value);
+        get y(): Value;
+        set y(next: Value);
+        get z(): Value;
+        set z(next: Value);
+    }
+    class $mol_vector_1d<Value> extends $mol_vector<Value, 1> {
+    }
+    class $mol_vector_2d<Value> extends $mol_vector<Value, 2> {
+    }
+    class $mol_vector_3d<Value> extends $mol_vector<Value, 3> {
+    }
+    class $mol_vector_range<Value> extends $mol_vector<Value, 2> {
+        0: Value;
+        1: Value;
+        constructor(min: Value, max?: Value);
+        get min(): Value;
+        set min(next: Value);
+        get max(): Value;
+        set max(next: Value);
+        get inversed(): $mol_vector_range<Value>;
+        expanded0(value: Value): $mol_vector_range<Value>;
+    }
+    let $mol_vector_range_full: $mol_vector_range<number>;
+    class $mol_vector_matrix<Width extends number, Height extends number> extends $mol_vector<readonly number[] & {
+        length: Width;
+    }, Height> {
+        added2(diff: readonly (readonly number[] & {
+            length: Width;
+        })[] & {
+            length: Height;
+        }): this;
+        multed2(diff: readonly (readonly number[] & {
+            length: Width;
+        })[] & {
+            length: Height;
+        }): this;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_vector_2d__mol_touch_1 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_2d<number> >
+	>
+	type $mol_vector_2d__mol_touch_2 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_2d<number> >
+	>
+	type $mol_vector_2d__mol_touch_3 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_2d<number> >
+	>
+	export class $mol_touch extends $mol_plugin {
+		event_start( next?: any ): any
+		event_move( next?: any ): any
+		event_end( next?: any ): any
+		event_leave( next?: any ): any
+		event_wheel( next?: any ): any
+		start_zoom( next?: number ): number
+		start_distance( next?: number ): number
+		zoom( next?: number ): number
+		allow_draw( ): boolean
+		allow_pan( ): boolean
+		allow_zoom( ): boolean
+		action_type( next?: string ): string
+		action_point( next?: $mol_vector_2d<number> ): $mol_vector_2d<number>
+		start_pan( next?: readonly(any)[] ): readonly(any)[]
+		pan( next?: $mol_vector_2d<number> ): $mol_vector_2d<number>
+		pointer_center( ): $mol_vector_2d<number>
+		start_pos( next?: any ): any
+		swipe_precision( ): number
+		swipe_right( next?: any ): any
+		swipe_bottom( next?: any ): any
+		swipe_left( next?: any ): any
+		swipe_top( next?: any ): any
+		swipe_from_right( next?: any ): any
+		swipe_from_bottom( next?: any ): any
+		swipe_from_left( next?: any ): any
+		swipe_from_top( next?: any ): any
+		swipe_to_right( next?: any ): any
+		swipe_to_bottom( next?: any ): any
+		swipe_to_left( next?: any ): any
+		swipe_to_top( next?: any ): any
+		draw_start( next?: any ): any
+		draw( next?: any ): any
+		draw_end( next?: any ): any
+		style( ): ({ 
+			'touch-action': string,
+			'overscroll-behavior': string,
+		})  & ReturnType< $mol_plugin['style'] >
+		event( ): ({ 
+			pointerdown( next?: ReturnType< $mol_touch['event_start'] > ): ReturnType< $mol_touch['event_start'] >,
+			pointermove( next?: ReturnType< $mol_touch['event_move'] > ): ReturnType< $mol_touch['event_move'] >,
+			pointerup( next?: ReturnType< $mol_touch['event_end'] > ): ReturnType< $mol_touch['event_end'] >,
+			pointerleave( next?: ReturnType< $mol_touch['event_leave'] > ): ReturnType< $mol_touch['event_leave'] >,
+			wheel( next?: ReturnType< $mol_touch['event_wheel'] > ): ReturnType< $mol_touch['event_wheel'] >,
+		})  & ReturnType< $mol_plugin['event'] >
+	}
+	
+}
+
+//# sourceMappingURL=touch.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * Plugin for touch gestures.
+     * @see [mol_plugin](../plugin/readme.md)
+     */
+    class $mol_touch extends $.$mol_touch {
+        auto(): void;
+        pointer_events(next?: readonly PointerEvent[]): readonly PointerEvent[];
+        pointer_coords(): $mol_vector<$mol_vector_2d<number>, number>;
+        pointer_center(): $mol_vector_2d<number>;
+        event_coords(event: PointerEvent | WheelEvent): $mol_vector_2d<number>;
+        action_point(): $mol_vector_2d<number>;
+        event_eat(event: PointerEvent | WheelEvent): string;
+        event_start(event: PointerEvent): void;
+        event_move(event: PointerEvent): void;
+        event_end(event: PointerEvent): void;
+        event_leave(event: PointerEvent): void;
+        swipe_left(event: PointerEvent): void;
+        swipe_right(event: PointerEvent): void;
+        swipe_top(event: PointerEvent): void;
+        swipe_bottom(event: PointerEvent): void;
+        event_wheel(event: WheelEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_touch__swipe_from_left_mol_book_1 = $mol_type_enforce<
+		ReturnType< $mol_book['event_front_up'] >
+		,
+		ReturnType< $mol_touch['swipe_from_left'] >
+	>
+	type $mol_touch__swipe_to_left_mol_book_2 = $mol_type_enforce<
+		ReturnType< $mol_book['event_front_down'] >
+		,
+		ReturnType< $mol_touch['swipe_to_left'] >
+	>
+	type $mol_book_page__Sub_mol_book_3 = $mol_type_enforce<
+		ReturnType< $mol_book['page'] >
+		,
+		ReturnType< $mol_book_page['Sub'] >
+	>
+	type $mol_book_page__visible_mol_book_4 = $mol_type_enforce<
+		ReturnType< $mol_book['page_visible'] >
+		,
+		ReturnType< $mol_book_page['visible'] >
+	>
+	type $mol_book_placeholder__title_mol_book_5 = $mol_type_enforce<
+		ReturnType< $mol_book['title'] >
+		,
+		ReturnType< $mol_book_placeholder['title'] >
+	>
+	export class $mol_book extends $mol_view {
+		pages_wrapped( ): readonly($mol_view)[]
+		width( ): ReturnType< ReturnType< $mol_book['Meter'] >['width'] >
+		Meter( ): $mol_meter
+		event_front_up( next?: any ): any
+		event_front_down( next?: any ): any
+		Touch( ): $mol_touch
+		page( id: any): any
+		page_visible( id: any): boolean
+		sub( ): ReturnType< $mol_book['pages_wrapped'] >
+		minimal_width( ): number
+		pages( ): readonly($mol_view)[]
+		plugins( ): readonly($mol_plugin)[]
+		Page( id: any): $mol_book_page
+		Placeholder( ): $mol_book_placeholder
+	}
+	
+	export class $mol_book_placeholder extends $mol_view {
+		minimal_width( ): number
+		attr( ): ({ 
+			'tabindex': any,
+		})  & ReturnType< $mol_view['attr'] >
+	}
+	
+	export class $mol_book_page extends $mol_ghost {
+		visible( ): boolean
+		attr_static( ): ({ 
+			'tabindex': number,
+			'mol_book_page_visible': boolean,
+		})  & ReturnType< $mol_ghost['attr_static'] >
+		attr( ): ({ 
+			'mol_book_page_focused': ReturnType< $mol_book_page['focused'] >,
+			'mol_book_page_visible': ReturnType< $mol_book_page['visible'] >,
+		})  & ReturnType< $mol_ghost['attr'] >
+	}
+	
+}
+
+//# sourceMappingURL=book.view.tree.d.ts.map
+declare namespace $.$$ {
+    /** @deprecated Use $mol_book2 **/
+    class $mol_book extends $.$mol_book {
+        pages_extended(): $mol_view[];
+        break_point(): number;
+        page(index: number): $mol_view;
+        page_visible(index: number): boolean;
+        pages_wrapped(): $mol_view[];
+        title(): string;
+        event_front_up(event?: Event): void;
+        event_front_down(event?: Event): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_device_updater_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_form['version_latest'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_form['model'] >['version_latest'] >[0]
+	>
+	type __yuf_sj_ui_device_updater_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_form['progress'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_form['firmware'] >['progress'] >[0]
+	>
+	type $mol_switch__value_yuf_sj_ui_device_updater_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['firmware_type'] >
+		,
+		ReturnType< $mol_switch['value'] >
+	>
+	type $mol_switch__options_yuf_sj_ui_device_updater_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['supported_options'] >
+		,
+		ReturnType< $mol_switch['options'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_device_updater_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['firmware_type_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_device_updater_form_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__content_yuf_sj_ui_device_updater_form_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_form_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_form_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_labeler__title_yuf_sj_ui_device_updater_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['version_title'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_ui_device_updater_form_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_button_open__title_yuf_sj_ui_device_updater_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['file_title'] >
+		,
+		ReturnType< $mol_button_open['title'] >
+	>
+	type $mol_button_open__multiple_yuf_sj_ui_device_updater_form_13 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_button_open['multiple'] >
+	>
+	type $mol_button_open__files_yuf_sj_ui_device_updater_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['selected_files'] >
+		,
+		ReturnType< $mol_button_open['files'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_form_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_device_updater_form_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['file_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_device_updater_form_17 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__content_yuf_sj_ui_device_updater_form_18 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type __yuf_sj_ui_device_updater_form_19 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_form['submit_activate'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_form['Submit'] >['activate'] >[0]
+	>
+	type $mol_button_major__title_yuf_sj_ui_device_updater_form_20 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['submit_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__enabled_yuf_sj_ui_device_updater_form_21 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['submit_allowed'] >
+		,
+		ReturnType< $mol_button_major['enabled'] >
+	>
+	type $mol_button_major__hint_yuf_sj_ui_device_updater_form_22 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['submit_hint'] >
+		,
+		ReturnType< $mol_button_major['hint'] >
+	>
+	type $mol_button_major__click_yuf_sj_ui_device_updater_form_23 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_form['submit'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	export class $yuf_sj_ui_device_updater_form extends $mol_form {
+		version( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['model'] >['firmware_version'] >
+		version_latest( id: any): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['model'] >['version_latest'] >
+		firmware( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['model'] >['firmware'] >
+		supported_options( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['firmware'] >['supported_options'] >
+		progress( next?: ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['firmware'] >['progress'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['firmware'] >['progress'] >
+		firmware_type_name( ): string
+		required_firmware_type( ): string
+		firmware_type( next?: string ): string
+		Firmware_type( ): $mol_switch
+		Firmware_type_field( ): $mol_form_field
+		version_title( ): string
+		version_formatted( ): string
+		Version_actual( ): $mol_view
+		version_latest_formatted( ): string
+		Version_latest( ): $mol_view
+		Version_label( ): $mol_labeler
+		file_name( ): string
+		required_selected_file( ): string
+		file_title( ): string
+		selected_files( next?: readonly(File)[] ): readonly(File)[]
+		File( ): $mol_button_open
+		selected_file_name( ): string
+		Selected_file( ): $mol_view
+		selected_file_content( ): readonly(any)[]
+		File_field( ): $mol_form_field
+		submit_activate( next?: ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['Submit'] >['activate'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_form['Submit'] >['activate'] >
+		selected_file( next?: any ): any
+		version_min( id: any): string
+		firmware_type_select_message( ): string
+		model( ): $yuf_sj_ui_device_info_model
+		body( ): readonly(any)[]
+		submit_title( ): string
+		message_done( ): string
+		message_empty_firmware( ): string
+		message_empty_firmware_type( ): string
+		Submit( ): $mol_button_major
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_updater_form extends $.$yuf_sj_ui_device_updater_form {
+        version_formatted(): string;
+        version_latest_formatted(): string;
+        selected_file(): File;
+        selected_file_name(): string;
+        required_firmware_type(): string;
+        selected_files(next?: readonly File[]): readonly File[];
+        required_selected_file(): string;
+        form_invalid(): string;
+        selected_file_content(): readonly any[];
+        result(next?: string | Error): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_device_updater_page_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_page['progress'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_page['firmware'] >['progress'] >[0]
+	>
+	type __yuf_sj_ui_device_updater_page_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_page['firmware_type'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_page['Updater_form'] >['firmware_type'] >[0]
+	>
+	type $yuf_sj_ui_device_updater_form__model_yuf_sj_ui_device_updater_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['model'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_form['model'] >
+	>
+	type $yuf_sj_ui_device_updater_form__version_min_yuf_sj_ui_device_updater_page_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['version_min'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_form['version_min'] >
+	>
+	type $yuf_sj_ui_device_updater_form__save_yuf_sj_ui_device_updater_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['upload'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_form['save'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_page_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_page_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['progress_status_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_button_major__title_yuf_sj_ui_device_updater_page_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['reset_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__click_yuf_sj_ui_device_updater_page_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['reset'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $yuf_sj_ui_device_updater_page_progress_content__10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['reset_content'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_view__sub_yuf_sj_ui_device_updater_page_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_page['progress_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_device_updater_page extends $mol_page {
+		firmware( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['model'] >['firmware'] >
+		progress( next?: ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['firmware'] >['progress'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['firmware'] >['progress'] >
+		device_type( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['firmware'] >['device_type'] >
+		Close( ): any
+		version_min( id: any): string
+		upload( next?: any ): any
+		firmware_type( next?: ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['Updater_form'] >['firmware_type'] > ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['Updater_form'] >['firmware_type'] >
+		selected_file( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_page['Updater_form'] >['selected_file'] >
+		Updater_form( ): $yuf_sj_ui_device_updater_form
+		form_content( ): readonly($mol_view)[]
+		info( ): string
+		Info( ): $mol_view
+		progress_status_text( ): string
+		success_jammer( ): string
+		success_module( ): string
+		progress_status_content( ): readonly($mol_view_content)[]
+		Progress_status( ): $mol_view
+		reset_title( ): string
+		reset( next?: any ): any
+		Reset( ): $mol_button_major
+		reset_content( ): readonly($mol_view)[]
+		progress_content( ): readonly($mol_view)[]
+		Progress_block( ): $mol_view
+		title( ): string
+		param_prefix( ): string
+		model( ): $yuf_sj_ui_device_info_model
+		tools( ): readonly(any)[]
+		file_name( next?: string ): string
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_updater_page extends $.$yuf_sj_ui_device_updater_page {
+        upload(e?: Event): null | undefined;
+        form_content(): readonly $mol_view[];
+        progress_content(): readonly $mol_view[];
+        reset_content(): readonly $mol_view[];
+        protected success_reboot_task(): $mol_after_timeout;
+        progress_status_content(): string[];
+        info(): string;
+        reset(e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    const auth_dto: ((val: {
+        login?: string | null | undefined;
+        password?: string | null | undefined;
+        token?: string | null | undefined;
+    }) => Readonly<{
+        login?: string | null | undefined;
+        password?: string | null | undefined;
+        token?: string | null | undefined;
+    }>) & {
+        config: {
+            login: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+            password: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+            token: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+        };
+        Value: Readonly<{
+            login?: string | null | undefined;
+            password?: string | null | undefined;
+            token?: string | null | undefined;
+        }>;
+    };
+    export class $yuf_sj_ui_login_model extends $yuf_ws_entity<typeof auth_dto.Value> {
+        type(): string;
+        device(): string[];
+        defaults(raw?: {}): Readonly<{
+            login?: string | null | undefined;
+            password?: string | null | undefined;
+            token?: string | null | undefined;
+        }>;
+        session(): $yuf_session;
+        login(next?: string | null): string | null | undefined;
+        password(next?: string | null): string | null | undefined;
+    }
+    export {};
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_model extends $mol_object {
+        ws(): $yuf_ws_statefull;
+        devices(): $yuf_sj_ui_device_store;
+        ws_url(): string;
+        code_to_error(error: number | string): string;
+        ws_enabled(): boolean;
+        heatbeat_enabled(): boolean;
+        watchdog_enabled(): boolean;
+        id(): string;
+        session(): $yuf_session;
+        auto(): unknown[];
+        info(): $yuf_sj_ui_device_info_model;
+        description(): $yuf_sj_ui_description_model;
+        title(): string;
+        network(): $yuf_sj_ui_network_model;
+        log(): $yuf_sj_ui_log_model;
+        auth(): $yuf_sj_ui_login_model;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_store extends $yuf_ws_entity<readonly string[]> {
+        type(): string;
+        defaults(raw?: []): readonly string[];
+        ids(next?: ReturnType<this['defaults']>): readonly string[];
+        by_id(id: string): $yuf_sj_ui_device_model;
+        version_min(type: typeof $yuf_sj_ui_device_type.Value): string;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_ui_device_page extends $yuf_sj_ui_device_updater_page {
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_view__sub_yuf_sj_ui_device_link_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_sj_ui_device_status__value_yuf_sj_ui_device_link_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['device_status'] >
+		,
+		ReturnType< $yuf_sj_ui_device_status['value'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_link_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_link_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['device_type_label'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['title'] >
+	>
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['content'] >
+	>
+	type $yuf_time_card__moment_yuf_sj_ui_device_link_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['uptime'] >
+		,
+		ReturnType< $yuf_time_card['moment'] >
+	>
+	type $yuf_time_card__hint_yuf_sj_ui_device_link_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['uptime_hint'] >
+		,
+		ReturnType< $yuf_time_card['hint'] >
+	>
+	type $yuf_time_card__format_yuf_sj_ui_device_link_9 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_time_card['format'] >
+	>
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['uptime_label'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['title'] >
+	>
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['content'] >
+	>
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['version_label'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['title'] >
+	>
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_13 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['content'] >
+	>
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link['serial_title'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['title'] >
+	>
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_sj_ui_device_link_label['content'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_link_16 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_device_link extends $yuf_link {
+		id( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['id'] >
+		device_type( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['device_type'] >
+		device_status( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['device_status'] >
+		uptime( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['uptime'] >
+		serial( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['serial'] >
+		version( ): ReturnType< ReturnType< $yuf_sj_ui_device_link['model'] >['firmware_version'] >
+		name_id( ): ReturnType< $yuf_sj_ui_device_link['id'] >
+		Title( ): $mol_view
+		Status( ): $yuf_sj_ui_device_status
+		Status_block( ): $mol_view
+		Description( ): $mol_view
+		device_type_label( ): string
+		device_type_formatted( ): string
+		Device_type_label( ): $yuf_sj_ui_device_link_label
+		uptime_label( ): string
+		uptime_hint( ): string
+		Uptime( ): $yuf_time_card
+		Uptime_label( ): $yuf_sj_ui_device_link_label
+		version_label( ): string
+		Version_label( ): $yuf_sj_ui_device_link_label
+		serial_title( ): string
+		Serial_label( ): $yuf_sj_ui_device_link_label
+		serial_content( ): readonly(any)[]
+		Footer( ): $mol_view
+		name( ): string
+		model( ): $yuf_sj_ui_device_info_model
+		minimal_height( ): number
+		sub( ): readonly(any)[]
+	}
+	
+	type $mol_view__sub_yuf_sj_ui_device_link_label_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_link_label['label'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_device_link_label extends $mol_labeler {
+		Label( ): $mol_view
+	}
+	
+}
+
+//# sourceMappingURL=link.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_link extends $.$yuf_sj_ui_device_link {
+        name_id(): string;
+        serial_content(): readonly any[];
+        device_type_formatted(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_power extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=power.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_button_reset extends $mol_button_minor {
+		Icon( ): $mol_icon_refresh
+		title( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=reset.view.tree.d.ts.map
+declare namespace $ {
+
+	type __yuf_sj_ui_device_catalog_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_catalog['model'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_catalog['store'] >['by_id'] >[0]
+	>
+	type __yuf_sj_ui_device_catalog_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_catalog['info'] >[0]
+		,
+		Parameters< $yuf_sj_ui_device_catalog['model'] >[0]
+	>
+	type $yuf_sj_ui_device_catalog_item__arg_yuf_sj_ui_device_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog['arg'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog_item['arg'] >
+	>
+	type $yuf_sj_ui_device_catalog_item__model_yuf_sj_ui_device_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog['info'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog_item['model'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_catalog_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_sj_ui_device_page__title_yuf_sj_ui_device_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog['spread_title'] >
+		,
+		ReturnType< $yuf_sj_ui_device_page['title'] >
+	>
+	type $yuf_sj_ui_device_page__model_yuf_sj_ui_device_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog['info'] >
+		,
+		ReturnType< $yuf_sj_ui_device_page['model'] >
+	>
+	type $yuf_sj_ui_device_page__Close_yuf_sj_ui_device_catalog_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_device_page['Close'] >
+	>
+	export class $yuf_sj_ui_device_catalog extends $yuf_catalog {
+		Close( ): any
+		model( id: any): ReturnType< ReturnType< $yuf_sj_ui_device_catalog['store'] >['by_id'] >
+		info( id: any): ReturnType< ReturnType< $yuf_sj_ui_device_catalog['model'] >['info'] >
+		spread_ids( ): ReturnType< ReturnType< $yuf_sj_ui_device_catalog['store'] >['ids'] >
+		empty_message( ): string
+		menu_title( ): string
+		param_suffix( ): string
+		menu_tools( ): readonly(any)[]
+		device_type( ): string
+		store( ): $yuf_sj_ui_device_store
+		Menu_item( id: any): $yuf_sj_ui_device_catalog_item
+		Menu_links_empty( ): $mol_view
+		Spread( id: any): $yuf_sj_ui_device_page
+	}
+	
+	type $yuf_sj_ui_device_link__arg_yuf_sj_ui_device_catalog_item_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog_item['arg'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link['arg'] >
+	>
+	type $yuf_sj_ui_device_link__click_yuf_sj_ui_device_catalog_item_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog_item['click'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link['click'] >
+	>
+	type $yuf_sj_ui_device_link__model_yuf_sj_ui_device_catalog_item_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog_item['model'] >
+		,
+		ReturnType< $yuf_sj_ui_device_link['model'] >
+	>
+	type $yuf_button_reset__sub_yuf_sj_ui_device_catalog_item_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $yuf_button_reset['sub'] >
+	>
+	type $yuf_button_reset__hint_yuf_sj_ui_device_catalog_item_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog_item['reset_title'] >
+		,
+		ReturnType< $yuf_button_reset['hint'] >
+	>
+	type $yuf_button_reset__click_yuf_sj_ui_device_catalog_item_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_catalog_item['reset_event'] >
+		,
+		ReturnType< $yuf_button_reset['click'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_device_catalog_item_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_device_catalog_item extends $mol_view {
+		arg( ): Record<string, any>
+		click( next?: any ): any
+		model( ): $yuf_sj_ui_device_info_model
+		Link( ): $yuf_sj_ui_device_link
+		Reset_icon( ): $mol_icon_power
+		reset_title( ): string
+		reset_event( next?: any ): any
+		Reset( ): $yuf_button_reset
+		Buttons( ): $mol_view
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=catalog.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_catalog extends $.$yuf_sj_ui_device_catalog {
+        spread_title(id: string): string;
+        spread_ids_filtered(): readonly string[];
+    }
+    class $yuf_sj_ui_device_catalog_item extends $.$yuf_sj_ui_device_catalog_item {
+        reset_event(e?: Event): void;
+        click(e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_device_updater_page__param_prefix_yuf_sj_ui_device_updater_book_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['param_prefix'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_page['param_prefix'] >
+	>
+	type $yuf_sj_ui_device_updater_page__Close_yuf_sj_ui_device_updater_book_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['Close_main'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_page['Close'] >
+	>
+	type $yuf_sj_ui_device_updater_page__model_yuf_sj_ui_device_updater_book_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['info'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_page['model'] >
+	>
+	type $yuf_sj_ui_device_updater_page__version_min_yuf_sj_ui_device_updater_book_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['version_min'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_page['version_min'] >
+	>
+	type __yuf_sj_ui_device_updater_book_5 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_device_updater_book['version_min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_device_updater_book['devices'] >['version_min'] >[0]
+	>
+	type $yuf_sj_ui_device_catalog__param_prefix_yuf_sj_ui_device_updater_book_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['param_prefix'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['param_prefix'] >
+	>
+	type $yuf_sj_ui_device_catalog__Close_yuf_sj_ui_device_updater_book_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['Close'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['Close'] >
+	>
+	type $yuf_sj_ui_device_catalog__device_type_yuf_sj_ui_device_updater_book_8 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['device_type'] >
+	>
+	type $yuf_sj_ui_device_catalog__store_yuf_sj_ui_device_updater_book_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_device_updater_book['devices'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['store'] >
+	>
+	export class $yuf_sj_ui_device_updater_book extends $mol_book {
+		param_prefix( ): string
+		title( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_book['Main'] >['title'] >
+		firmware_type( ): ReturnType< ReturnType< $yuf_sj_ui_device_updater_book['Main'] >['firmware_type'] >
+		Close( ): any
+		Close_main( ): ReturnType< $yuf_sj_ui_device_updater_book['Close'] >
+		info( ): $yuf_sj_ui_device_info_model
+		Main( ): $yuf_sj_ui_device_updater_page
+		version_min( id: any): ReturnType< ReturnType< $yuf_sj_ui_device_updater_book['devices'] >['version_min'] >
+		devices( ): $yuf_sj_ui_device_store
+		Dev_list( ): $yuf_sj_ui_device_catalog
+		dev_list_content( ): readonly($mol_view)[]
+		pages( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=book.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_device_updater_book extends $.$yuf_sj_ui_device_updater_book {
+        dev_list_content(): readonly $mol_view[];
+        Close_main(): any;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_sj_ui_login_form__enter_yuf_sj_ui_app_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['enter'] >
+		,
+		ReturnType< $yuf_sj_ui_login_form['enter'] >
+	>
+	type $mol_status__message_yuf_sj_ui_app_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['server_offline'] >
+		,
+		ReturnType< $mol_status['message'] >
+	>
+	type $yuf_ws_status__ws_yuf_sj_ui_app_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['ws'] >
+		,
+		ReturnType< $yuf_ws_status['ws'] >
+	>
+	type $yuf_sj_ui_description_card__model_yuf_sj_ui_app_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['description_model'] >
+		,
+		ReturnType< $yuf_sj_ui_description_card['model'] >
+	>
+	type $yuf_sj_ui_description_card__arg_yuf_sj_ui_app_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['menu_link_arg'] >
+		,
+		ReturnType< $yuf_sj_ui_description_card['arg'] >
+	>
+	type $yuf_sj_ui_network_card__model_yuf_sj_ui_app_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['network'] >
+		,
+		ReturnType< $yuf_sj_ui_network_card['model'] >
+	>
+	type $yuf_sj_ui_network_card__arg_yuf_sj_ui_app_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['menu_link_arg'] >
+		,
+		ReturnType< $yuf_sj_ui_network_card['arg'] >
+	>
+	type $yuf_sj_ui_network_card__network_content_yuf_sj_ui_app_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['placeholder_network_content'] >
+		,
+		ReturnType< $yuf_sj_ui_network_card['network_content'] >
+	>
+	type $yuf_sj_ui_device_reboot_card__model_yuf_sj_ui_app_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['info_model'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_card['model'] >
+	>
+	type $yuf_sj_ui_device_reboot_card__arg_yuf_sj_ui_app_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['menu_link_arg'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_card['arg'] >
+	>
+	type $yuf_sj_ui_description_page__param_prefix_yuf_sj_ui_app_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_description_page['param_prefix'] >
+	>
+	type $yuf_sj_ui_description_page__Close_yuf_sj_ui_app_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_description_page['Close'] >
+	>
+	type $yuf_sj_ui_description_page__model_yuf_sj_ui_app_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['description_model'] >
+		,
+		ReturnType< $yuf_sj_ui_description_page['model'] >
+	>
+	type $yuf_sj_ui_network_page__param_prefix_yuf_sj_ui_app_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_network_page['param_prefix'] >
+	>
+	type $yuf_sj_ui_network_page__Close_yuf_sj_ui_app_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_network_page['Close'] >
+	>
+	type $yuf_sj_ui_network_page__model_yuf_sj_ui_app_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['network'] >
+		,
+		ReturnType< $yuf_sj_ui_network_page['model'] >
+	>
+	type $yuf_sj_ui_log_page__param_prefix_yuf_sj_ui_app_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_log_page['param_prefix'] >
+	>
+	type $yuf_sj_ui_log_page__Close_yuf_sj_ui_app_18 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_log_page['Close'] >
+	>
+	type $yuf_sj_ui_log_page__model_yuf_sj_ui_app_19 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['log_model'] >
+		,
+		ReturnType< $yuf_sj_ui_log_page['model'] >
+	>
+	type $yuf_sj_ui_device_updater_book__param_prefix_yuf_sj_ui_app_20 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_book['param_prefix'] >
+	>
+	type $yuf_sj_ui_device_updater_book__Close_yuf_sj_ui_app_21 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_book['Close'] >
+	>
+	type $yuf_sj_ui_device_updater_book__info_yuf_sj_ui_app_22 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['info_model'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_book['info'] >
+	>
+	type $yuf_sj_ui_device_updater_book__devices_yuf_sj_ui_app_23 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['devices'] >
+		,
+		ReturnType< $yuf_sj_ui_device_updater_book['devices'] >
+	>
+	type $yuf_sj_ui_device_reboot_page__param_prefix_yuf_sj_ui_app_24 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_page['param_prefix'] >
+	>
+	type $yuf_sj_ui_device_reboot_page__Close_yuf_sj_ui_app_25 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_page['Close'] >
+	>
+	type $yuf_sj_ui_device_reboot_page__model_yuf_sj_ui_app_26 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['info_model'] >
+		,
+		ReturnType< $yuf_sj_ui_device_reboot_page['model'] >
+	>
+	type $mol_page__title_yuf_sj_ui_app_27 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_app['placeholder_title'] >
+		,
+		ReturnType< $mol_page['title'] >
+	>
+	type $mol_page__body_yuf_sj_ui_app_28 = $mol_type_enforce<
+		readonly($mol_view)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	export class $yuf_sj_ui_app extends $yuf_catalog_app {
+		enter( next?: any ): any
+		login( ): ReturnType< ReturnType< $yuf_sj_ui_app['Login_form'] >['login'] >
+		password( ): ReturnType< ReturnType< $yuf_sj_ui_app['Login_form'] >['password'] >
+		Login_form( ): $yuf_sj_ui_login_form
+		server_offline( ): string
+		Server_offline( ): $mol_status
+		Ws_status( ): $yuf_ws_status
+		ws( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['ws'] >
+		session( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['session'] >
+		logged( ): ReturnType< ReturnType< $yuf_sj_ui_app['session'] >['logged'] >
+		model_auto( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['auto'] >
+		auth( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['auth'] >
+		log_model( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['log'] >
+		devices( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['devices'] >
+		network( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['network'] >
+		description_model( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['description'] >
+		info_model( ): ReturnType< ReturnType< $yuf_sj_ui_app['model'] >['info'] >
+		version( ): ReturnType< ReturnType< $yuf_sj_ui_app['info_model'] >['firmware_version'] >
+		placeholder_title( ): string
+		Description_block( ): $yuf_sj_ui_description_card
+		placeholder_network_content( ): readonly($mol_view)[]
+		Network_block( ): $yuf_sj_ui_network_card
+		Admin_block( ): $yuf_sj_ui_device_reboot_card
+		Description( ): $yuf_sj_ui_description_page
+		Network( ): $yuf_sj_ui_network_page
+		spreads_mid( ): Record<string, any>
+		Logging( ): $yuf_sj_ui_log_page
+		Updater( ): $yuf_sj_ui_device_updater_book
+		Admin( ): $yuf_sj_ui_device_reboot_page
+		login_body( ): readonly(any)[]
+		foot_second_post( ): readonly(any)[]
+		model( ): $yuf_sj_ui_device_model
+		auto( ): readonly(any)[]
+		Placeholder( ): $mol_page
+		param( ): string
+		spreads( ): ({ 
+			'description': ReturnType< $yuf_sj_ui_app['Description'] >,
+			'network': ReturnType< $yuf_sj_ui_app['Network'] >,
+			'logging': ReturnType< $yuf_sj_ui_app['Logging'] >,
+			'updater': ReturnType< $yuf_sj_ui_app['Updater'] >,
+			'admin': ReturnType< $yuf_sj_ui_app['Admin'] >,
+		})  & ReturnType< $yuf_sj_ui_app['spreads_mid'] >
+	}
+	
+}
+
+//# sourceMappingURL=app.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_app extends $.$yuf_sj_ui_app {
+        get $(): typeof $$;
+        logout(e?: Event): void;
+        server_offline(): string;
+        enter(): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_list__item_width_min_yuf_sj_ui_book_list_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_list['item_width_min'] >
+		,
+		ReturnType< $mol_list['item_width_min'] >
+	>
+	type $mol_list__item_height_min_yuf_sj_ui_book_list_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_list['item_height_min'] >
+		,
+		ReturnType< $mol_list['item_height_min'] >
+	>
+	type $mol_list__rows_yuf_sj_ui_book_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_list['rows'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_book_list_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_list['draft_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_book_list extends $mol_page {
+		Close( ): any
+		tools_foot( ): readonly(any)[]
+		item_width_min( ): number
+		item_height_min( ): number
+		Row( id: any): $mol_view
+		rows( ): readonly(any)[]
+		Rows( ): $mol_list
+		Row_draft( id: any): $mol_view
+		draft_content( ): readonly(any)[]
+		Draft_label( ): $mol_view
+		draft_id( next?: string ): string
+		param_prefix( ): string
+		ids( ): readonly(string)[]
+		tools( ): readonly(any)[]
+		max_rows( ): number
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_book_list extends $.$yuf_sj_ui_book_list {
+        rows(): $mol_view[];
+        draft_id(next?: string): string;
+        draft_content(): $mol_view[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    function $yuf_sj_ui_range_expanded(bands: Record<string, readonly number[]>): $mol_vector_range<number>;
+}
+
+declare namespace $ {
+    const $yuf_sj_jammer_slave_model_dto: ((val: {
+        uri: string;
+    }) => Readonly<{
+        uri: string;
+    }>) & {
+        config: {
+            uri: (val: string) => string;
+        };
+        Value: Readonly<{
+            uri: string;
+        }>;
+    };
+    class $yuf_sj_jammer_slave_model extends $yuf_ws_entity<typeof $yuf_sj_jammer_slave_model_dto.Value> {
+        defaults(raw?: {}): Readonly<{
+            uri: string;
+        }>;
+        uri(next?: string): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_entity2_store_fake<Item extends {}> extends $yuf_entity2_store<Item> {
+        protected data_normalized(next?: null | Record<string, Partial<Item> | null>, cache?: 'cache'): Record<string, Item | null> | null;
+        item_id(item: Item): string;
+        ids(): string[];
+        protected row_data(id: string, patch?: Partial<Item> | null, cache?: 'cache'): Item | null;
+    }
+}
+
+declare namespace $ {
+    class $yuf_ws_entity_store_fake<Item extends {}> extends $yuf_entity2_store_fake<Item> {
+        type(): string;
+        query(): Record<string, string | null>;
+        device(): string[];
+        signature(): {
+            type: string;
+            id: string | undefined;
+            query: Record<string, string | null> | undefined;
+            device: string[] | undefined;
+        };
+        ws(): $yuf_ws_statefull;
+        actual(next?: Partial<ReturnType<this['defaults']>> | null, refresh?: 'refresh'): Partial<ReturnType<this["defaults"]>> | null;
+        toString(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_slave_store extends $yuf_ws_entity_store_fake<typeof $yuf_sj_jammer_slave_model_dto.Value> {
+        type(): string;
+        defaults(raw?: []): readonly Readonly<{
+            uri: string;
+        }>[];
+        by_id(id: string): $yuf_sj_jammer_slave_model;
+    }
+}
+
+declare namespace $ {
+    const sdr_limits_dto: ((val: {
+        spread_factors?: readonly string[] | null | undefined;
+        bands: Readonly<Record<string, readonly number[]>>;
+    }) => Readonly<{
+        spread_factors?: readonly string[] | null | undefined;
+        bands: Readonly<Record<string, readonly number[]>>;
+    }>) & {
+        config: {
+            bands: ((val: Readonly<Record<string, readonly number[]>>) => Readonly<Record<string, readonly number[]>>) & {
+                config: ((val: readonly number[]) => readonly number[]) & {
+                    config: (val: number) => number;
+                    Value: readonly number[];
+                };
+                Value: Readonly<Record<string, readonly number[]>>;
+            };
+            spread_factors: ((val: readonly string[] | null | undefined) => readonly string[] | null | undefined) & {
+                config: {
+                    sub: ((val: readonly string[] | null) => readonly string[] | null) & {
+                        config: ((val: readonly string[]) => readonly string[]) & {
+                            config: (val: string) => string;
+                            Value: readonly string[];
+                        };
+                        Value: readonly string[] | null;
+                    };
+                    fallback: (() => readonly string[] | null) | undefined;
+                };
+                Value: readonly string[] | null | undefined;
+            };
+        };
+        Value: Readonly<{
+            spread_factors?: readonly string[] | null | undefined;
+            bands: Readonly<Record<string, readonly number[]>>;
+        }>;
+    };
+    const mode_dto: ((val: "auto" | "manual") => "auto" | "manual") & {
+        config: [((val: "auto") => "auto") & {
+            config: "auto";
+            Value: "auto";
+        }, ((val: "manual") => "manual") & {
+            config: "manual";
+            Value: "manual";
+        }];
+        Value: "auto" | "manual";
+    };
+    export const $yuf_sj_jammer_sdr_model_dto: ((val: {
+        mode: "auto" | "manual";
+        bands: Readonly<Record<string, readonly number[]>>;
+        master: boolean;
+    }) => Readonly<{
+        mode: "auto" | "manual";
+        bands: Readonly<Record<string, readonly number[]>>;
+        master: boolean;
+    }>) & {
+        config: {
+            bands: ((val: Readonly<Record<string, readonly number[]>>) => Readonly<Record<string, readonly number[]>>) & {
+                config: ((val: readonly number[]) => readonly number[]) & {
+                    config: (val: number) => number;
+                    Value: readonly number[];
+                };
+                Value: Readonly<Record<string, readonly number[]>>;
+            };
+            mode: ((val: "auto" | "manual") => "auto" | "manual") & {
+                config: [((val: "auto") => "auto") & {
+                    config: "auto";
+                    Value: "auto";
+                }, ((val: "manual") => "manual") & {
+                    config: "manual";
+                    Value: "manual";
+                }];
+                Value: "auto" | "manual";
+            };
+            master: (val: boolean) => boolean;
+        };
+        Value: Readonly<{
+            mode: "auto" | "manual";
+            bands: Readonly<Record<string, readonly number[]>>;
+            master: boolean;
+        }>;
+    };
+    export class $yuf_sj_jammer_sdr_model_limits extends $yuf_ws_entity<typeof sdr_limits_dto.Value> {
+        type(): string;
+        defaults(raw?: {}): Readonly<{
+            spread_factors?: readonly string[] | null | undefined;
+            bands: Readonly<Record<string, readonly number[]>>;
+        }>;
+        bands(next?: Record<string, readonly [number, number]>): Readonly<Record<string, readonly number[]>>;
+        spread_factors(next?: readonly string[]): readonly string[];
+        band_limit(): $mol_vector_range<number>;
+    }
+    export class $yuf_sj_jammer_sdr_model_range extends $yuf_ws_entity<{
+        min: number;
+        max: number;
+    }> {
+        defaults(raw?: {}): {
+            min: number;
+            max: number;
+        };
+        min(next?: number): number;
+        max(next?: number): number;
+    }
+    export class $yuf_sj_jammer_sdr_model extends $yuf_ws_entity<typeof $yuf_sj_jammer_sdr_model_dto.Value> {
+        defaults(raw?: {}): Readonly<{
+            mode: "auto" | "manual";
+            bands: Readonly<Record<string, readonly number[]>>;
+            master: boolean;
+        }>;
+        type(): string;
+        master(next?: boolean): boolean;
+        slaves(): $yuf_sj_jammer_slave_store;
+        mode(next?: typeof mode_dto.Value): "auto" | "manual";
+        bands(next?: Record<string, readonly number[]>): Readonly<Record<string, readonly number[]>>;
+        range_ids(): string[];
+        protected range_data(id: string, next?: Partial<{
+            min: number;
+            max: number;
+        }> | null): {
+            min: number;
+            max: number;
+        } | null;
+        range_by_id(id: string): $yuf_sj_jammer_sdr_model_range;
+        protected hard_limits(): $yuf_sj_jammer_sdr_model_limits;
+        band_limit_hard(): $mol_vector_range<number>;
+        spreads_available(): readonly string[];
+    }
+    export {};
+}
+
+declare namespace $ {
+    const $yuf_sj_ui_network_route_model_dto: ((val: {
+        dev?: string | null | undefined;
+        destination: string;
+        gateway: string;
+    }) => Readonly<{
+        dev?: string | null | undefined;
+        destination: string;
+        gateway: string;
+    }>) & {
+        config: {
+            destination: (val: string) => string;
+            gateway: (val: string) => string;
+            dev: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+        };
+        Value: Readonly<{
+            dev?: string | null | undefined;
+            destination: string;
+            gateway: string;
+        }>;
+    };
+    class $yuf_sj_ui_network_route_model extends $yuf_ws_entity<typeof $yuf_sj_ui_network_route_model_dto.Value> {
+        defaults(raw?: {}): Readonly<{
+            dev?: string | null | undefined;
+            destination: string;
+            gateway: string;
+        }>;
+        sdr(): $yuf_sj_jammer_sdr_model;
+        master(): boolean;
+        destination(next?: string): string;
+        gateway(next?: string): string;
+        dev(next?: string): string | null | undefined;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_network_route_store extends $yuf_ws_entity_store_fake<typeof $yuf_sj_ui_network_route_model_dto.Value> {
+        type(): string;
+        defaults(raw?: []): readonly Readonly<{
+            dev?: string | null | undefined;
+            destination: string;
+            gateway: string;
+        }>[];
+        sdr(): $yuf_sj_jammer_sdr_model;
+        by_id(id: string): $yuf_sj_ui_network_route_model;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_button_add extends $mol_button_minor {
+		Icon( ): $mol_icon_plus
+		hint( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=add.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_button_save extends $mol_button_minor {
+		Icon( ): $mol_icon_content_save
+		hint( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=save.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_button_remove extends $mol_button_minor {
+		Icon( ): $mol_icon_trash_can_outline
+		hint( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=remove.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_view__sub_yuf_sj_ui_book_form_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_book_form_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_button_add__enabled_yuf_sj_ui_book_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['submit_allowed_and_changed'] >
+		,
+		ReturnType< $yuf_button_add['enabled'] >
+	>
+	type $yuf_button_add__click_yuf_sj_ui_book_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['submit'] >
+		,
+		ReturnType< $yuf_button_add['click'] >
+	>
+	type __yuf_sj_ui_book_form_5 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_book_form['submit_activate'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_book_form['Save'] >['activate'] >[0]
+	>
+	type $yuf_button_save__hint_yuf_sj_ui_book_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['submit_hint'] >
+		,
+		ReturnType< $yuf_button_save['hint'] >
+	>
+	type $yuf_button_save__enabled_yuf_sj_ui_book_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['submit_allowed_and_changed'] >
+		,
+		ReturnType< $yuf_button_save['enabled'] >
+	>
+	type $yuf_button_save__click_yuf_sj_ui_book_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['submit'] >
+		,
+		ReturnType< $yuf_button_save['click'] >
+	>
+	type $yuf_button_remove__click_yuf_sj_ui_book_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_form['remove_event'] >
+		,
+		ReturnType< $yuf_button_remove['click'] >
+	>
+	export class $yuf_sj_ui_book_form extends $yuf_sj_ui_form_draft {
+		First( ): $mol_view
+		reset_content( ): readonly(any)[]
+		Second( ): $mol_view
+		submit_allowed_and_changed( ): ReturnType< $yuf_sj_ui_book_form['submit_allowed'] >
+		Add( ): $yuf_button_add
+		add_content( ): readonly(any)[]
+		submit_activate( next?: ReturnType< ReturnType< $yuf_sj_ui_book_form['Save'] >['activate'] > ): ReturnType< ReturnType< $yuf_sj_ui_book_form['Save'] >['activate'] >
+		Save( ): $yuf_button_save
+		save_content( ): readonly(any)[]
+		remove_event( next?: any ): any
+		Remove( ): $yuf_button_remove
+		remove_content( ): readonly(any)[]
+		draft( ): boolean
+		item_height_min( ): number
+		rows( ): readonly(any)[]
+		buttons( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_book_form extends $.$yuf_sj_ui_book_form {
+        remove_content(): readonly any[];
+        save_content(): readonly any[];
+        add_content(): readonly any[];
+        submit_allowed_and_changed(): boolean;
+        reset_content(): readonly any[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_network_route_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_route_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_sj_ui_network_route_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_route_form['ip4'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['ip4'] >[0]
+	>
+	type __yuf_sj_ui_network_route_form_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_route_form['ip4_mask'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['ip4_mask'] >[0]
+	>
+	type $mol_string__hint_yuf_sj_ui_network_route_form_4 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_route_form_5 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_route_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_route_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_route_form_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_route_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['destination_hint'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__Content_yuf_sj_ui_network_route_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['Destination'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $mol_string__hint_yuf_sj_ui_network_route_form_11 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__length_max_yuf_sj_ui_network_route_form_12 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__submit_yuf_sj_ui_network_route_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__value_yuf_sj_ui_network_route_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_network_route_form_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_network_route_form_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['gateway_hint'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__Content_yuf_sj_ui_network_route_form_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['Gateway'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_ui_network_route_form_18 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_ui_network_route_form extends $yuf_sj_ui_book_form {
+		required( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['required'] >
+		ip4( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['ip4'] >
+		ip4_mask( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_route_form['Bid'] >['ip4_mask'] >
+		destination_hint( ): string
+		Destination( ): $mol_string
+		Destination_label( ): $mol_form_field
+		gateway_hint( ): string
+		Gateway( ): $mol_string
+		Gateway_label( ): $mol_form_field
+		model( ): $yuf_sj_ui_network_route_model
+		Bid( ): $yuf_form_bid
+		message_timeout( ): string
+		timeout_success( next?: boolean ): boolean
+		form_fields( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_network_route_form extends $.$yuf_sj_ui_network_route_form {
+        save(e?: Event): boolean | undefined;
+        result(next?: string | Error): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_ui_network_route_list_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_ui_network_route_list['by_id'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_ui_network_route_list['routes'] >['by_id'] >[0]
+	>
+	type $yuf_sj_ui_network_route_form__model_yuf_sj_ui_network_route_list_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_list['by_id'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_form['model'] >
+	>
+	type $yuf_sj_ui_network_route_form__remove_event_yuf_sj_ui_network_route_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_list['remove_event'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_form['remove_event'] >
+	>
+	type $yuf_sj_ui_network_route_form__draft_yuf_sj_ui_network_route_list_4 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $yuf_sj_ui_network_route_form['draft'] >
+	>
+	type $yuf_sj_ui_network_route_form__model_yuf_sj_ui_network_route_list_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_list['by_id'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_form['model'] >
+	>
+	type $yuf_sj_ui_network_route_form__remove_event_yuf_sj_ui_network_route_list_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_network_route_list['remove_event'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_form['remove_event'] >
+	>
+	export class $yuf_sj_ui_network_route_list extends $yuf_sj_ui_book_list {
+		Close( ): any
+		tools_foot( ): readonly(any)[]
+		ids( ): ReturnType< ReturnType< $yuf_sj_ui_network_route_list['routes'] >['ids'] >
+		by_id( id: any): ReturnType< ReturnType< $yuf_sj_ui_network_route_list['routes'] >['by_id'] >
+		remove_event( id: any, next?: any ): any
+		title( ): string
+		tools( ): readonly(any)[]
+		routes( ): $yuf_sj_ui_network_route_store
+		Row( id: any): $yuf_sj_ui_network_route_form
+		Row_draft( id: any): $yuf_sj_ui_network_route_form
+	}
+	
+}
+
+//# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_network_route_list extends $.$yuf_sj_ui_network_route_list {
+        remove_event(id: string, event?: Event): void;
+        draft_id(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_number__value_yuf_sj_ui_range_group_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['value'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_number__enabled_yuf_sj_ui_range_group_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+		,
+		ReturnType< $mol_number['enabled'] >
+	>
+	type $mol_number__submit_yuf_sj_ui_range_group_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['submit'] >
+		,
+		ReturnType< $mol_number['submit'] >
+	>
+	type $mol_number__Dec_yuf_sj_ui_range_group_4 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $mol_number['Dec'] >
+	>
+	type $mol_number__Inc_yuf_sj_ui_range_group_5 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $mol_number['Inc'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_range_group_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['min_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_range_group_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__Content_yuf_sj_ui_range_group_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['Min'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $mol_number__submit_yuf_sj_ui_range_group_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['submit'] >
+		,
+		ReturnType< $mol_number['submit'] >
+	>
+	type $mol_number__value_yuf_sj_ui_range_group_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['value'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_number__enabled_yuf_sj_ui_range_group_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+		,
+		ReturnType< $mol_number['enabled'] >
+	>
+	type $mol_number__Dec_yuf_sj_ui_range_group_12 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $mol_number['Dec'] >
+	>
+	type $mol_number__Inc_yuf_sj_ui_range_group_13 = $mol_type_enforce<
+		any
+		,
+		ReturnType< $mol_number['Inc'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_range_group_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['max_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_ui_range_group_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__Content_yuf_sj_ui_range_group_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_range_group['Max'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $mol_vector_range__yuf_sj_ui_range_group_17 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_range<number> >
+	>
+	export class $yuf_sj_ui_range_group extends $mol_labeler {
+		min_name( ): string
+		required_msg( ): string
+		required_num( id: any): ReturnType< $yuf_sj_ui_range_group['required_msg'] >
+		limit_msg( id: any): string
+		enabled( ): boolean
+		submit( next?: any ): any
+		Min( ): $mol_number
+		Min_field( ): $mol_form_field
+		max_name( ): string
+		greater_min_message( ): string
+		greater_min( id: any): ReturnType< $yuf_sj_ui_range_group['greater_min_message'] >
+		Max( ): $mol_number
+		Max_field( ): $mol_form_field
+		limit( ): $mol_vector_range<number>
+		value( id: any, next?: number ): number
+		content( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=group.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_range_group extends $.$yuf_sj_ui_range_group {
+        required_num(key: string): string;
+        limit_msg(key: string): string;
+        greater_min(key: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_vector_range__yuf_sj_jammer_sdr_form_1 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_range<number> >
+	>
+	type $yuf_sj_jammer_sdr_form_ranges__submit_yuf_sj_jammer_sdr_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_form['submit_activate_fork'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form_ranges['submit'] >
+	>
+	type $yuf_sj_jammer_sdr_form_ranges__limit_yuf_sj_jammer_sdr_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_form['limit'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form_ranges['limit'] >
+	>
+	type $yuf_sj_jammer_sdr_form_ranges__value_yuf_sj_jammer_sdr_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_form['value_number'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form_ranges['value'] >
+	>
+	export class $yuf_sj_jammer_sdr_form extends $yuf_sj_ui_book_form {
+		limit( ): $mol_vector_range<number>
+		Freq_range_min_field( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_form['Freq_range_fields'] >['Min_field'] >
+		Freq_range_max_field( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_form['Freq_range_fields'] >['Max_field'] >
+		Freq_range_fields( ): $yuf_sj_jammer_sdr_form_ranges
+		model( ): $yuf_sj_jammer_sdr_model_range
+		body( ): readonly(any)[]
+	}
+	
+	export class $yuf_sj_jammer_sdr_form_ranges extends $yuf_sj_ui_range_group {
+		rows( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_sdr_form extends $.$yuf_sj_jammer_sdr_form {
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_sdr_page_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_sdr_page['mode'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['mode'] >[0]
+	>
+	type __yuf_sj_jammer_sdr_page_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_sdr_page['master'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['master'] >[0]
+	>
+	type __yuf_sj_jammer_sdr_page_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_sdr_page['range_by_id'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['range_by_id'] >[0]
+	>
+	type $mol_check_box__checked_yuf_sj_jammer_sdr_page_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['master'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_check_box__title_yuf_sj_jammer_sdr_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['master_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_sj_jammer_sdr_page_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['confirm_checked'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_check_box__hint_yuf_sj_jammer_sdr_page_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['mode_hint'] >
+		,
+		ReturnType< $mol_check_box['hint'] >
+	>
+	type $mol_check_box__title_yuf_sj_jammer_sdr_page_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['mode_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_sdr_page_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['mode_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_sj_jammer_sdr_page_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_labeler__title_yuf_sj_jammer_sdr_page_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['frequency_range_title'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_sj_jammer_sdr_page_12 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $yuf_sj_jammer_sdr_form__model_yuf_sj_jammer_sdr_page_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['range_by_id'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['model'] >
+	>
+	type $yuf_sj_jammer_sdr_form__limit_yuf_sj_jammer_sdr_page_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['band_limit_hard'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['limit'] >
+	>
+	type $yuf_sj_jammer_sdr_form__remove_event_yuf_sj_jammer_sdr_page_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['remove_event'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['remove_event'] >
+	>
+	type $yuf_sj_jammer_sdr_form__draft_yuf_sj_jammer_sdr_page_16 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['draft'] >
+	>
+	type $yuf_sj_jammer_sdr_form__model_yuf_sj_jammer_sdr_page_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['range_by_id'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['model'] >
+	>
+	type $yuf_sj_jammer_sdr_form__limit_yuf_sj_jammer_sdr_page_18 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['band_limit_hard'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['limit'] >
+	>
+	type $yuf_sj_jammer_sdr_form__remove_event_yuf_sj_jammer_sdr_page_19 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_page['remove_event'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_form['remove_event'] >
+	>
+	export class $yuf_sj_jammer_sdr_page extends $yuf_sj_ui_book_list {
+		ids( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['range_ids'] >
+		mode( next?: ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['mode'] > ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['mode'] >
+		master( next?: ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['master'] > ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['master'] >
+		band_limit_hard( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['band_limit_hard'] >
+		range_by_id( id: any): ReturnType< ReturnType< $yuf_sj_jammer_sdr_page['model'] >['range_by_id'] >
+		remove_event( id: any, next?: any ): any
+		mode_name( ): string
+		master_title( ): string
+		Master( ): $mol_check_box
+		confirm_checked( next?: boolean ): boolean
+		mode_hint( ): string
+		mode_title( ): string
+		Mode( ): $mol_check_box
+		mode_content( ): readonly($mol_view)[]
+		Mode_field( ): $mol_form_field
+		frequency_range_title( ): string
+		Rows_block( ): $mol_labeler
+		freq_content( ): readonly($mol_view)[]
+		title( ): string
+		model( ): $yuf_sj_jammer_sdr_model
+		max_rows( ): number
+		Row( id: any): $yuf_sj_jammer_sdr_form
+		Row_draft( id: any): $yuf_sj_jammer_sdr_form
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_sdr_page extends $.$yuf_sj_jammer_sdr_page {
+        remove_event(id: string, e?: Event): void;
+        confirm_checked(next?: boolean): boolean;
+        mode_content(): readonly $mol_view[];
+        freq_content(): readonly $mol_view[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_slave_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_slave_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_slave_form['Bid'] >['required'] >[0]
+	>
+	type $mol_string__hint_yuf_sj_jammer_slave_form_2 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__length_max_yuf_sj_jammer_slave_form_3 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__submit_yuf_sj_jammer_slave_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_form['submit_activate_fork'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_string__value_yuf_sj_jammer_slave_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_form_field__bids_yuf_sj_jammer_slave_form_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_slave_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_form['uri_hint'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__Content_yuf_sj_jammer_slave_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_form['Uri'] >
+		,
+		ReturnType< $mol_form_field['Content'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_jammer_slave_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_jammer_slave_form extends $yuf_sj_ui_book_form {
+		required( id: any): ReturnType< ReturnType< $yuf_sj_jammer_slave_form['Bid'] >['required'] >
+		uri_hint( ): string
+		Uri( ): $mol_string
+		Uri_label( ): $mol_form_field
+		model( ): $yuf_sj_jammer_slave_model
+		Bid( ): $yuf_form_bid
+		form_fields( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_slave_form extends $.$yuf_sj_jammer_slave_form {
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_slave_page_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_slave_page['slave_by_id'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_slave_page['model'] >['by_id'] >[0]
+	>
+	type $yuf_sj_jammer_slave_form__model_yuf_sj_jammer_slave_page_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_page['slave_by_id'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_form['model'] >
+	>
+	type $yuf_sj_jammer_slave_form__remove_event_yuf_sj_jammer_slave_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_page['remove_event'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_form['remove_event'] >
+	>
+	type $yuf_sj_jammer_slave_form__draft_yuf_sj_jammer_slave_page_4 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $yuf_sj_jammer_slave_form['draft'] >
+	>
+	type $yuf_sj_jammer_slave_form__model_yuf_sj_jammer_slave_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_page['slave_by_id'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_form['model'] >
+	>
+	type $yuf_sj_jammer_slave_form__remove_event_yuf_sj_jammer_slave_page_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_slave_page['remove_event'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_form['remove_event'] >
+	>
+	export class $yuf_sj_jammer_slave_page extends $yuf_sj_ui_book_list {
+		ids( ): ReturnType< ReturnType< $yuf_sj_jammer_slave_page['model'] >['ids'] >
+		slave_by_id( id: any): ReturnType< ReturnType< $yuf_sj_jammer_slave_page['model'] >['by_id'] >
+		remove_event( id: any, next?: any ): any
+		title( ): string
+		model( ): $yuf_sj_jammer_slave_store
+		max_rows( ): number
+		Row( id: any): $yuf_sj_jammer_slave_form
+		Row_draft( id: any): $yuf_sj_jammer_slave_form
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_slave_page extends $.$yuf_sj_jammer_slave_page {
+        remove_event(id: string, e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_jammer_sdr_page__param_prefix_yuf_sj_jammer_sdr_book_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_book['param_prefix'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_page['param_prefix'] >
+	>
+	type $yuf_sj_jammer_sdr_page__model_yuf_sj_jammer_sdr_book_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_book['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_page['model'] >
+	>
+	type $yuf_sj_jammer_sdr_page__Close_yuf_sj_jammer_sdr_book_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_book['Close'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_page['Close'] >
+	>
+	type $yuf_sj_jammer_slave_page__param_prefix_yuf_sj_jammer_sdr_book_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_book['param_prefix'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_page['param_prefix'] >
+	>
+	type $yuf_sj_jammer_slave_page__model_yuf_sj_jammer_sdr_book_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_sdr_book['slaves_model'] >
+		,
+		ReturnType< $yuf_sj_jammer_slave_page['model'] >
+	>
+	export class $yuf_sj_jammer_sdr_book extends $yuf_catalog {
+		title( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_book['Main'] >['title'] >
+		param_prefix( ): string
+		slaves_model( ): ReturnType< ReturnType< $yuf_sj_jammer_sdr_book['model'] >['slaves'] >
+		model( ): $yuf_sj_jammer_sdr_model
+		Close( ): any
+		Main( ): $yuf_sj_jammer_sdr_page
+		Slaves( ): $yuf_sj_jammer_slave_page
+		slave_content( ): readonly($mol_view)[]
+		pages( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=book.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_sdr_book extends $.$yuf_sj_jammer_sdr_book {
+        slave_content(): readonly $mol_view[];
+    }
+}
+
+declare namespace $ {
+    const $yuf_sj_jammer_task_model_status_dto: ((val: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled") => "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled") & {
+        config: [((val: "idle") => "idle") & {
+            config: "idle";
+            Value: "idle";
+        }, ((val: "scanning") => "scanning") & {
+            config: "scanning";
+            Value: "scanning";
+        }, ((val: "receiving") => "receiving") & {
+            config: "receiving";
+            Value: "receiving";
+        }, ((val: "jamming") => "jamming") & {
+            config: "jamming";
+            Value: "jamming";
+        }, ((val: "waiting") => "waiting") & {
+            config: "waiting";
+            Value: "waiting";
+        }, ((val: "confirmed") => "confirmed") & {
+            config: "confirmed";
+            Value: "confirmed";
+        }, ((val: "cancelled") => "cancelled") & {
+            config: "cancelled";
+            Value: "cancelled";
+        }];
+        Value: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled";
+    };
+    const $yuf_sj_jammer_task_model_dto: ((val: {
+        status?: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined;
+        auto?: boolean | null | undefined;
+        comment?: string | null | undefined;
+        id: string;
+        freq_range: readonly number[];
+    }) => Readonly<{
+        status?: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined;
+        auto?: boolean | null | undefined;
+        comment?: string | null | undefined;
+        id: string;
+        freq_range: readonly number[];
+    }>) & {
+        config: {
+            id: (val: string) => string;
+            status: ((val: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined) => "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined) & {
+                config: {
+                    sub: ((val: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null) => "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null) & {
+                        config: ((val: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled") => "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled") & {
+                            config: [((val: "idle") => "idle") & {
+                                config: "idle";
+                                Value: "idle";
+                            }, ((val: "scanning") => "scanning") & {
+                                config: "scanning";
+                                Value: "scanning";
+                            }, ((val: "receiving") => "receiving") & {
+                                config: "receiving";
+                                Value: "receiving";
+                            }, ((val: "jamming") => "jamming") & {
+                                config: "jamming";
+                                Value: "jamming";
+                            }, ((val: "waiting") => "waiting") & {
+                                config: "waiting";
+                                Value: "waiting";
+                            }, ((val: "confirmed") => "confirmed") & {
+                                config: "confirmed";
+                                Value: "confirmed";
+                            }, ((val: "cancelled") => "cancelled") & {
+                                config: "cancelled";
+                                Value: "cancelled";
+                            }];
+                            Value: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled";
+                        };
+                        Value: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null;
+                    };
+                    fallback: (() => "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null) | undefined;
+                };
+                Value: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined;
+            };
+            freq_range: ((val: readonly number[]) => readonly number[]) & {
+                config: (val: number) => number;
+                Value: readonly number[];
+            };
+            comment: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+            auto: ((val: boolean | null | undefined) => boolean | null | undefined) & {
+                config: {
+                    sub: ((val: boolean | null) => boolean | null) & {
+                        config: (val: boolean) => boolean;
+                        Value: boolean | null;
+                    };
+                    fallback: (() => boolean | null) | undefined;
+                };
+                Value: boolean | null | undefined;
+            };
+        };
+        Value: Readonly<{
+            status?: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined;
+            auto?: boolean | null | undefined;
+            comment?: string | null | undefined;
+            id: string;
+            freq_range: readonly number[];
+        }>;
+    };
+    class $yuf_sj_jammer_task_model extends $yuf_ws_entity<typeof $yuf_sj_jammer_task_model_dto.Value> {
+        type(): string;
+        defaults(raw?: {}): Readonly<{
+            status?: "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null | undefined;
+            auto?: boolean | null | undefined;
+            comment?: string | null | undefined;
+            id: string;
+            freq_range: readonly number[];
+        }>;
+        sdr(): $yuf_sj_jammer_sdr_model;
+        status(next?: typeof $yuf_sj_jammer_task_model_status_dto.Value): "idle" | "scanning" | "receiving" | "jamming" | "waiting" | "confirmed" | "cancelled" | null;
+        freq_range(next?: readonly number[]): readonly number[];
+        freq_min(next?: number): number | null;
+        freq_max(next?: number): number | null;
+        comment(next?: string): string;
+        auto(next?: boolean): boolean;
+        master(): boolean;
+        title(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_task_store extends $yuf_ws_entity_store {
+        type(): string;
+        sdr(): $yuf_sj_jammer_sdr_model;
+        by_id(id: string): $yuf_sj_jammer_task_model;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_link__arg_yuf_sj_ui_book_item_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_item['arg'] >
+		,
+		ReturnType< $yuf_link['arg'] >
+	>
+	type $mol_view__minimal_width_yuf_sj_ui_book_item_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_item['buttons_minimal_width'] >
+		,
+		ReturnType< $mol_view['minimal_width'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_book_item_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_book_item['buttons'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_ui_book_item extends $mol_view {
+		arg( ): Record<string, any>
+		Link( ): $yuf_link
+		buttons_minimal_width( ): number
+		buttons( ): readonly($mol_view)[]
+		Buttons( ): $mol_view
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=item.view.tree.d.ts.map
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_jammer_task_status extends $mol_view {
+		mode_attr( ): string
+		text_pending( ): string
+		text( ): ReturnType< $yuf_sj_jammer_task_status['text_pending'] >
+		attr( ): ({ 
+			'yuf_sj_jammer_task_status_mode': ReturnType< $yuf_sj_jammer_task_status['mode_attr'] >,
+		})  & ReturnType< $mol_view['attr'] >
+		status( ): any
+		dict( ): Record<string, string>
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=status.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_status extends $.$yuf_sj_jammer_task_status {
+        text(): any;
+        mode_attr(): any;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_account extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=account.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_sj_jammer_task_icon_auto extends $mol_icon_account {
+	}
+	
+}
+
+//# sourceMappingURL=icon.view.tree.d.ts.map
+declare namespace $ {
+
+	type $yuf_sj_jammer_task_status__status_yuf_sj_jammer_task_link_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_link['status'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_status['status'] >
+	>
+	type $mol_dimmer__needle_yuf_sj_jammer_task_link_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_link['needle'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_jammer_task_link_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_link['freq_range_formatted'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_task_link_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_task_link_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_dimmer__needle_yuf_sj_jammer_task_link_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_link['needle'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_jammer_task_link_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_link['comment'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	export class $yuf_sj_jammer_task_link extends $yuf_link {
+		comment( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['comment'] >
+		status( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['status'] >
+		task_auto( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['auto'] >
+		freq_min( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['freq_min'] >
+		freq_max( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['freq_max'] >
+		id( ): ReturnType< ReturnType< $yuf_sj_jammer_task_link['model'] >['id'] >
+		Status( ): $yuf_sj_jammer_task_status
+		freq_range_formatted( ): string
+		Title( ): $mol_dimmer
+		User_icon( ): $yuf_sj_jammer_task_icon_auto
+		user_content( ): readonly(any)[]
+		Status_block( ): $mol_view
+		Description( ): $mol_view
+		needle( ): string
+		Comment( ): $mol_dimmer
+		model( ): $yuf_sj_jammer_task_model
+		minimal_height( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=link.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_link extends $.$yuf_sj_jammer_task_link {
+        user_content(): readonly any[];
+        freq_range_formatted(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_access_point extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=point.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_sleep extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=sleep.view.tree.d.ts.map
+declare namespace $ {
+
+	type $yuf_button_remove__click_yuf_sj_jammer_task_controls_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_controls['remove'] >
+		,
+		ReturnType< $yuf_button_remove['click'] >
+	>
+	type $mol_button_minor__sub_yuf_sj_jammer_task_controls_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__hint_yuf_sj_jammer_task_controls_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_controls['confirm_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_yuf_sj_jammer_task_controls_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_controls['click_status'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_button_minor__sub_yuf_sj_jammer_task_controls_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__hint_yuf_sj_jammer_task_controls_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_controls['decline_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_yuf_sj_jammer_task_controls_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_controls['click_status'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	export class $yuf_sj_jammer_task_controls extends $mol_view {
+		remove( next?: any ): any
+		Remove( ): $yuf_button_remove
+		remove_content( ): readonly(any)[]
+		Confirm_icon( ): $mol_icon_access_point
+		confirm_hint( ): string
+		click_status( id: any, next?: any ): any
+		Confirm( ): $mol_button_minor
+		Decline_icon( ): $mol_icon_sleep
+		decline_hint( ): string
+		Decline( ): $mol_button_minor
+		confirm_content( ): readonly(any)[]
+		model( ): $yuf_sj_jammer_task_model
+		submitted( next?: any ): any
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=controls.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_controls extends $.$yuf_sj_jammer_task_controls {
+        confirm_content(): readonly any[];
+        click_status(key: 'confirmed' | 'cancelled', e?: Event): void;
+        remove(next?: Event): void;
+        remove_content(): readonly any[];
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_sj_jammer_task_link__arg_yuf_sj_jammer_task_item_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['arg'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_link['arg'] >
+	>
+	type $yuf_sj_jammer_task_link__needle_yuf_sj_jammer_task_item_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['needle'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_link['needle'] >
+	>
+	type $yuf_sj_jammer_task_link__model_yuf_sj_jammer_task_item_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_link['model'] >
+	>
+	type $yuf_sj_jammer_task_controls__model_yuf_sj_jammer_task_item_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_controls['model'] >
+	>
+	type $yuf_sj_jammer_task_controls__submitted_yuf_sj_jammer_task_item_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['submitted'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_controls['submitted'] >
+	>
+	type $yuf_sj_jammer_task_controls__minimal_width_yuf_sj_jammer_task_item_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_item['buttons_minimal_width'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_controls['minimal_width'] >
+	>
+	export class $yuf_sj_jammer_task_item extends $yuf_sj_ui_book_item {
+		needle( ): string
+		model( ): $yuf_sj_jammer_task_model
+		submitted( next?: any ): any
+		buttons_minimal_width( ): number
+		minimal_height( ): number
+		Link( ): $yuf_sj_jammer_task_link
+		Buttons( ): $yuf_sj_jammer_task_controls
+	}
+	
+}
+
+//# sourceMappingURL=item.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_item extends $.$yuf_sj_jammer_task_item {
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_vector_range__yuf_sj_ui_freq_range_1 = $mol_type_enforce<
+		[ number, number ]
+		,
+		ConstructorParameters< typeof $mol_vector_range<number> >
+	>
+	type $yuf_sj_ui_range_group__title_yuf_sj_ui_freq_range_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_freq_range['freq_range_title'] >
+		,
+		ReturnType< $yuf_sj_ui_range_group['title'] >
+	>
+	type $yuf_sj_ui_range_group__limit_yuf_sj_ui_freq_range_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_freq_range['limit'] >
+		,
+		ReturnType< $yuf_sj_ui_range_group['limit'] >
+	>
+	type $yuf_sj_ui_range_group__enabled_yuf_sj_ui_freq_range_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_freq_range['enabled'] >
+		,
+		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+	>
+	type $yuf_sj_ui_range_group__value_yuf_sj_ui_freq_range_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_freq_range['value'] >
+		,
+		ReturnType< $yuf_sj_ui_range_group['value'] >
+	>
+	type $mol_view__sub_yuf_sj_ui_freq_range_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_form_field__name_yuf_sj_ui_freq_range_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_ui_freq_range['freq_range_help_available'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_sj_ui_freq_range_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	export class $yuf_sj_ui_freq_range extends $mol_view {
+		freq_range_title( ): string
+		limit( ): $mol_vector_range<number>
+		enabled( ): boolean
+		value( id: any, next?: number ): number
+		Freq_range_fields( ): $yuf_sj_ui_range_group
+		freq_range_help_available( ): string
+		help_message( ): string
+		Freq_range_help( ): $mol_view
+		Freq_range_help_field( ): $mol_form_field
+		bands( ): Record<string, readonly(number)[]>
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=range.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_ui_freq_range extends $.$yuf_sj_ui_freq_range {
+        protected bands_values(): (readonly number[])[];
+        help_message(): string;
+        limit(): $mol_vector_range<number>;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_form_group extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=group.view.tree.d.ts.map
+declare namespace $ {
+
+	type __yuf_sj_jammer_task_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_task_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_task_form['Bid'] >['required'] >[0]
+	>
+	type __yuf_sj_jammer_task_form_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_task_form['min'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_task_form['Bid'] >['min'] >[0]
+	>
+	type $yuf_sj_ui_textarea__length_max_yuf_sj_jammer_task_form_3 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_textarea['length_max'] >
+	>
+	type $yuf_sj_ui_textarea__value_yuf_sj_jammer_task_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['value_str'] >
+		,
+		ReturnType< $yuf_sj_ui_textarea['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_task_form_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['comment_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__bids_yuf_sj_jammer_task_form_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__control_yuf_sj_jammer_task_form_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['Comment'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_sj_ui_freq_range__bands_yuf_sj_jammer_task_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['bands'] >
+		,
+		ReturnType< $yuf_sj_ui_freq_range['bands'] >
+	>
+	type $yuf_sj_ui_freq_range__enabled_yuf_sj_jammer_task_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['freq_range_edit_enabled'] >
+		,
+		ReturnType< $yuf_sj_ui_freq_range['enabled'] >
+	>
+	type $yuf_sj_ui_freq_range__value_yuf_sj_jammer_task_form_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['freq_value'] >
+		,
+		ReturnType< $yuf_sj_ui_freq_range['value'] >
+	>
+	type $mol_form_group__sub_yuf_sj_jammer_task_form_11 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_group['sub'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_jammer_task_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_jammer_task_form extends $yuf_sj_ui_form_draft {
+		bands( ): ReturnType< ReturnType< $yuf_sj_jammer_task_form['sdr'] >['bands'] >
+		required_msg( ): ReturnType< ReturnType< $yuf_sj_jammer_task_form['Bid'] >['required_msg'] >
+		required( id: any): ReturnType< ReturnType< $yuf_sj_jammer_task_form['Bid'] >['required'] >
+		min( id: any): ReturnType< ReturnType< $yuf_sj_jammer_task_form['Bid'] >['min'] >
+		buttons_foot( ): readonly($mol_view)[]
+		comment_name( ): string
+		Comment( ): $yuf_sj_ui_textarea
+		Comment_field( ): $mol_form_field
+		freq_range_edit_enabled( ): boolean
+		freq_value( id: any, next?: number ): number
+		Freq_range_fields( ): $yuf_sj_ui_freq_range
+		freq_range_content( ): readonly(any)[]
+		Freq_group( ): $mol_form_group
+		model( ): $yuf_sj_jammer_task_model
+		submitted( next?: any ): any
+		sdr( ): $yuf_sj_jammer_sdr_model
+		Bid( ): $yuf_form_bid
+		buttons( ): readonly(any)[]
+		submit_title_run( ): string
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_form extends $.$yuf_sj_jammer_task_form {
+        value_number(field: string, next?: number | null): number;
+        freq_value(key: 'min' | 'max', next?: number): number;
+        freq_range_content(): readonly any[];
+        freq_range_edit_enabled(): boolean;
+        submit(e?: Event): any;
+        submit_title(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_sj_jammer_task_status__status_yuf_sj_jammer_task_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['status'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_status['status'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_task_page_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_sj_jammer_task_form__submitted_yuf_sj_jammer_task_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['submitted'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_form['submitted'] >
+	>
+	type $yuf_sj_jammer_task_form__model_yuf_sj_jammer_task_page_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_form['model'] >
+	>
+	type $yuf_sj_jammer_task_form__sdr_yuf_sj_jammer_task_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['sdr'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_form['sdr'] >
+	>
+	type $yuf_sj_jammer_task_controls__model_yuf_sj_jammer_task_page_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_controls['model'] >
+	>
+	type $yuf_sj_jammer_task_controls__submitted_yuf_sj_jammer_task_page_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_page['submitted'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_controls['submitted'] >
+	>
+	export class $yuf_sj_jammer_task_page extends $mol_page {
+		remove_content( ): ReturnType< ReturnType< $yuf_sj_jammer_task_page['Buttons'] >['remove_content'] >
+		submitted( next?: any ): any
+		Status( ): $yuf_sj_jammer_task_status
+		User_icon( ): $yuf_sj_jammer_task_icon_auto
+		User( ): $mol_view
+		user_content( ): readonly(any)[]
+		Close( ): any
+		title( ): ReturnType< ReturnType< $yuf_sj_jammer_task_page['model'] >['title'] >
+		status( ): ReturnType< ReturnType< $yuf_sj_jammer_task_page['model'] >['status'] >
+		task_auto( ): ReturnType< ReturnType< $yuf_sj_jammer_task_page['model'] >['auto'] >
+		model( ): $yuf_sj_jammer_task_model
+		sdr( ): $yuf_sj_jammer_sdr_model
+		Form( ): $yuf_sj_jammer_task_form
+		Buttons( ): $yuf_sj_jammer_task_controls
+		title_content( ): readonly(any)[]
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_page extends $.$yuf_sj_jammer_task_page {
+        user_content(): readonly any[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_button_add__click_yuf_sj_jammer_task_catalog_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['task_add_event'] >
+		,
+		ReturnType< $yuf_button_add['click'] >
+	>
+	type __yuf_sj_jammer_task_catalog_2 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_task_catalog['task'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_task_catalog['store'] >['by_id'] >[0]
+	>
+	type __yuf_sj_jammer_task_catalog_3 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_task_catalog['status'] >[0]
+		,
+		Parameters< $yuf_sj_jammer_task_catalog['task'] >[0]
+	>
+	type __yuf_sj_jammer_task_catalog_4 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_task_catalog['status_text'] >[0]
+		,
+		Parameters< $yuf_sj_jammer_task_catalog['Status'] >[0]
+	>
+	type $yuf_sj_jammer_task_item__arg_yuf_sj_jammer_task_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['arg'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_item['arg'] >
+	>
+	type $yuf_sj_jammer_task_item__model_yuf_sj_jammer_task_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['task'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_item['model'] >
+	>
+	type $yuf_sj_jammer_task_item__needle_yuf_sj_jammer_task_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['menu_filter'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_item['needle'] >
+	>
+	type $yuf_sj_jammer_task_item__submitted_yuf_sj_jammer_task_catalog_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['task_submitted'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_item['submitted'] >
+	>
+	type $yuf_sj_jammer_task_page__model_yuf_sj_jammer_task_catalog_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['task'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_page['model'] >
+	>
+	type $yuf_sj_jammer_task_page__sdr_yuf_sj_jammer_task_catalog_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['sdr'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_page['sdr'] >
+	>
+	type $yuf_sj_jammer_task_page__submitted_yuf_sj_jammer_task_catalog_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['task_submitted'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_page['submitted'] >
+	>
+	type $yuf_sj_jammer_task_page__Close_yuf_sj_jammer_task_catalog_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_page['Close'] >
+	>
+	type $yuf_sj_jammer_task_status__status_yuf_sj_jammer_task_catalog_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_task_catalog['status'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_status['status'] >
+	>
+	export class $yuf_sj_jammer_task_catalog extends $yuf_catalog {
+		task_add_event( next?: any ): any
+		Add( ): $yuf_button_add
+		add_content( ): readonly($mol_view)[]
+		Close( ): any
+		task( id: any): ReturnType< ReturnType< $yuf_sj_jammer_task_catalog['store'] >['by_id'] >
+		status( id: any): ReturnType< ReturnType< $yuf_sj_jammer_task_catalog['task'] >['status'] >
+		spread_ids( ): ReturnType< ReturnType< $yuf_sj_jammer_task_catalog['store'] >['ids'] >
+		task_submitted( id: any, next?: any ): any
+		sdr( ): $yuf_sj_jammer_sdr_model
+		status_text( id: any): ReturnType< ReturnType< $yuf_sj_jammer_task_catalog['Status'] >['text'] >
+		menu_title( ): string
+		param_suffix( ): string
+		addon_tools( ): readonly(any)[]
+		store( ): $yuf_sj_jammer_task_store
+		Menu_item( id: any): $yuf_sj_jammer_task_item
+		Spread( id: any): $yuf_sj_jammer_task_page
+		Status( id: any): $yuf_sj_jammer_task_status
+	}
+	
+}
+
+//# sourceMappingURL=catalog.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_task_catalog extends $.$yuf_sj_jammer_task_catalog {
+        spread_ids_filtered(): string[];
+        task_add_event(e?: Event): void;
+        task_submitted(id: string, next?: Event | null): Event | null;
+        spread_title(id: string): string;
+        add_content(): readonly $mol_view[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_delete extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=delete.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_delete_forever extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=forever.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_button_remove_all extends $mol_button_minor {
+		Icon( ): $mol_icon_delete_forever
+		hint( ): string
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=remove.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_hand extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=hand.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_hand_back_left extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=left.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $yuf_sj_jammer_rule_icon extends $mol_icon_hand_back_left {
+		Allow_icon( ): $mol_icon_check
+		Deny_icon( ): $mol_icon_hand_back_left
+		status( ): string
+		status_icon( ): Record<string, $mol_icon>
+	}
+	
+}
+
+//# sourceMappingURL=icon.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_icon extends $.$yuf_sj_jammer_rule_icon {
+        path(): string;
+    }
+}
+
+declare namespace $ {
+    /**
+     * Checks for value of given enum and returns expected type.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_data_enum_demo
+     */
+    function $mol_data_enum<Dict extends Record<number | string, number | string>>(name: string, dict: Dict): ((value: Dict[keyof Dict]) => Dict[keyof Dict]) & {
+        config: {
+            name: string;
+            dict: Dict;
+        };
+        Value: Dict[keyof Dict];
+    };
+}
+
+declare namespace $ {
+    const $yuf_sj_jammer_rule_model_status_dto: ((value: "allow" | "deny") => "allow" | "deny") & {
+        config: {
+            name: string;
+            dict: {
+                readonly deny: "deny";
+                readonly allow: "allow";
+            };
+        };
+        Value: "allow" | "deny";
+    };
+    const $yuf_sj_jammer_rule_model_dto: ((val: {
+        comment?: string | undefined;
+        freqs?: readonly number[] | null | undefined;
+        bind_uuid?: string | null | undefined;
+        spread_factors?: readonly string[] | null | undefined;
+        id: string;
+        freq_range: readonly number[];
+        time: string;
+        access: "allow" | "deny";
+    }) => Readonly<{
+        comment?: string | undefined;
+        freqs?: readonly number[] | null | undefined;
+        bind_uuid?: string | null | undefined;
+        spread_factors?: readonly string[] | null | undefined;
+        id: string;
+        freq_range: readonly number[];
+        time: string;
+        access: "allow" | "deny";
+    }>) & {
+        config: {
+            id: (val: string) => string;
+            freqs: ((val: readonly number[] | null | undefined) => readonly number[] | null | undefined) & {
+                config: {
+                    sub: ((val: readonly number[] | null) => readonly number[] | null) & {
+                        config: ((val: readonly number[]) => readonly number[]) & {
+                            config: (val: number) => number;
+                            Value: readonly number[];
+                        };
+                        Value: readonly number[] | null;
+                    };
+                    fallback: (() => readonly number[] | null) | undefined;
+                };
+                Value: readonly number[] | null | undefined;
+            };
+            bind_uuid: ((val: string | null | undefined) => string | null | undefined) & {
+                config: {
+                    sub: ((val: string | null) => string | null) & {
+                        config: (val: string) => string;
+                        Value: string | null;
+                    };
+                    fallback: (() => string | null) | undefined;
+                };
+                Value: string | null | undefined;
+            };
+            freq_range: ((val: readonly number[]) => readonly number[]) & {
+                config: (val: number) => number;
+                Value: readonly number[];
+            };
+            spread_factors: ((val: readonly string[] | null | undefined) => readonly string[] | null | undefined) & {
+                config: {
+                    sub: ((val: readonly string[] | null) => readonly string[] | null) & {
+                        config: ((val: readonly string[]) => readonly string[]) & {
+                            config: (val: string) => string;
+                            Value: readonly string[];
+                        };
+                        Value: readonly string[] | null;
+                    };
+                    fallback: (() => readonly string[] | null) | undefined;
+                };
+                Value: readonly string[] | null | undefined;
+            };
+            comment: ((val: string | undefined) => string | undefined) & {
+                config: {
+                    sub: (val: string) => string;
+                    fallback: (() => string) | undefined;
+                };
+                Value: string | undefined;
+            };
+            time: (val: string) => string;
+            access: ((value: "allow" | "deny") => "allow" | "deny") & {
+                config: {
+                    name: string;
+                    dict: {
+                        readonly deny: "deny";
+                        readonly allow: "allow";
+                    };
+                };
+                Value: "allow" | "deny";
+            };
+        };
+        Value: Readonly<{
+            comment?: string | undefined;
+            freqs?: readonly number[] | null | undefined;
+            bind_uuid?: string | null | undefined;
+            spread_factors?: readonly string[] | null | undefined;
+            id: string;
+            freq_range: readonly number[];
+            time: string;
+            access: "allow" | "deny";
+        }>;
+    };
+    class $yuf_sj_jammer_rule_model extends $yuf_ws_entity<typeof $yuf_sj_jammer_rule_model_dto.Value> {
+        type(): string;
+        defaults(raw?: {}): Readonly<{
+            comment?: string | undefined;
+            freqs?: readonly number[] | null | undefined;
+            bind_uuid?: string | null | undefined;
+            spread_factors?: readonly string[] | null | undefined;
+            id: string;
+            freq_range: readonly number[];
+            time: string;
+            access: "allow" | "deny";
+        }>;
+        sdr(): $yuf_sj_jammer_sdr_model;
+        title(): string;
+        bind_uuid_required(): boolean;
+        bind_uuid(next?: string | null): string | null;
+        access(next?: ReturnType<typeof this.defaults>['access']): "allow" | "deny";
+        comment(next?: string): string;
+        time_raw(next?: string): string;
+        freq_range(next?: readonly number[]): readonly number[];
+        freq_min(next?: number): number | null;
+        freq_max(next?: number): number | null;
+        spreads(next?: readonly string[]): readonly string[];
+        freqs(next?: readonly number[]): readonly number[];
+        freqs_str(next?: string): string;
+        created_at(next?: $mol_time_moment): $mol_time_moment;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_dimmer__needle_yuf_sj_jammer_rule_link_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['menu_filter'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_jammer_rule_link_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['created_at_formatted'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	type $mol_dimmer__needle_yuf_sj_jammer_rule_link_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['menu_filter'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_jammer_rule_link_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['bind_uuid'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	type $yuf_sj_jammer_rule_icon__status_yuf_sj_jammer_rule_link_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['access'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_icon['status'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_rule_link_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_rule_link_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_rule_link_8 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_dimmer__needle_yuf_sj_jammer_rule_link_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['menu_filter'] >
+		,
+		ReturnType< $mol_dimmer['needle'] >
+	>
+	type $mol_dimmer__haystack_yuf_sj_jammer_rule_link_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_link['comment'] >
+		,
+		ReturnType< $mol_dimmer['haystack'] >
+	>
+	export class $yuf_sj_jammer_rule_link extends $yuf_link {
+		theme_normal( ): string
+		card_theme( ): ReturnType< $yuf_sj_jammer_rule_link['theme_normal'] >
+		comment( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_link['model'] >['comment'] >
+		access( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_link['model'] >['access'] >
+		freq_min( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_link['model'] >['freq_min'] >
+		freq_max( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_link['model'] >['freq_max'] >
+		spreads( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_link['model'] >['spreads'] >
+		created_at_formatted( ): string
+		Time( ): $mol_dimmer
+		bind_uuid( ): string
+		Uuid( ): $mol_dimmer
+		bind_uuid_content( ): readonly($mol_view)[]
+		Access( ): $yuf_sj_jammer_rule_icon
+		Time_row( ): $mol_view
+		freq_range_formatted( ): string
+		freqs( ): ReturnType< $yuf_sj_jammer_rule_link['freq_range_formatted'] >
+		Freqs( ): $mol_view
+		spreads_formatted( ): string
+		Spreads( ): $mol_view
+		menu_filter( ): string
+		Comment( ): $mol_dimmer
+		theme_selected( ): string
+		attr( ): ({ 
+			'mol_theme': ReturnType< $yuf_sj_jammer_rule_link['card_theme'] >,
+		})  & ReturnType< $yuf_link['attr'] >
+		model( ): $yuf_sj_jammer_rule_model
+		minimal_height( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=link.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_link extends $.$yuf_sj_jammer_rule_link {
+        card_theme(): string;
+        created_at_formatted(): string;
+        bind_uuid_content(): readonly $mol_view[];
+        bind_uuid(): string;
+        spreads_formatted(): string;
+        freqs(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_rule_store extends $yuf_ws_entity_store {
+        type(): string;
+        query(): {
+            access: "allow" | "deny";
+        };
+        sdr(): $yuf_sj_jammer_sdr_model;
+        access_type(): typeof $yuf_sj_jammer_rule_model_status_dto.Value;
+        id_add(id: string): void;
+        by_id(id: string): $yuf_sj_jammer_rule_model;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_sj_jammer_rule_icon__status_yuf_sj_jammer_rule_switch_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_switch['icon_status'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_icon['status'] >
+	>
+	export class $yuf_sj_jammer_rule_switch extends $mol_switch {
+		access_allow( ): string
+		access_deny( ): string
+		icon_status( id: any): string
+		options( ): ({ 
+			'allow': ReturnType< $yuf_sj_jammer_rule_switch['access_allow'] >,
+			'deny': ReturnType< $yuf_sj_jammer_rule_switch['access_deny'] >,
+		}) 
+		Icon( id: any): $yuf_sj_jammer_rule_icon
+		option_label( id: any): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=switch.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_switch extends $.$yuf_sj_jammer_rule_switch {
+        icon_status(id: 'allow' | 'deny'): "allow" | "deny";
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_icon_check_all extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=all.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_check_group extends $mol_check_box {
+		checks( ): readonly($mol_check)[]
+		full( ): boolean
+	}
+	
+}
+
+//# sourceMappingURL=group.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * Checkbox for group of check boxes.
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_check_group_demo
+     */
+    class $mol_check_group extends $.$mol_check_group {
+        checked(next?: boolean): boolean;
+        full(): boolean;
+        Icon(): $mol_icon_tick | $mol_icon_check_all;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_check_group__title_yuf_check_list_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_check_group['title'] >
+	>
+	type $mol_check_group__checks_yuf_check_list_2 = $mol_type_enforce<
+		ReturnType< $yuf_check_list['checks'] >
+		,
+		ReturnType< $mol_check_group['checks'] >
+	>
+	type $mol_check_box__checked_yuf_check_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_check_list['item_checked'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_check_box__title_yuf_check_list_4 = $mol_type_enforce<
+		ReturnType< $yuf_check_list['item_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	export class $yuf_check_list extends $mol_view {
+		All( ): $mol_check_group
+		item_checked( id: any, next?: boolean ): boolean
+		item_title( id: any): string
+		Item( id: any): $mol_check_box
+		checks( ): readonly($mol_check)[]
+		value( next?: readonly(string)[] ): readonly(string)[]
+		options( ): readonly(string)[]
+		dictionary( ): Record<string, string>
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_check_list extends $.$yuf_check_list {
+        checks(): $mol_check_box[];
+        item_title(id: string): string;
+        item_checked(id: string, next?: boolean): boolean;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_rule_form_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_rule_form['required'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_rule_form['Bid'] >['required'] >[0]
+	>
+	type $mol_button_minor__enabled_yuf_sj_jammer_rule_form_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['rule_allowed'] >
+		,
+		ReturnType< $mol_button_minor['enabled'] >
+	>
+	type $mol_button_minor__click_yuf_sj_jammer_rule_form_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['rule_event'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_button_minor__title_yuf_sj_jammer_rule_form_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['rule_title'] >
+		,
+		ReturnType< $mol_button_minor['title'] >
+	>
+	type $yuf_sj_jammer_rule_form_buttons_extra__5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['rule_content'] >[number]
+		,
+		$mol_view
+	>
+	type $mol_string__hint_yuf_sj_jammer_rule_form_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['bind_uuid_hint'] >
+		,
+		ReturnType< $mol_string['hint'] >
+	>
+	type $mol_string__length_max_yuf_sj_jammer_rule_form_7 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_string['length_max'] >
+	>
+	type $mol_string__value_yuf_sj_jammer_rule_form_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['value_str'] >
+		,
+		ReturnType< $mol_string['value'] >
+	>
+	type $mol_string__submit_yuf_sj_jammer_rule_form_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['submit'] >
+		,
+		ReturnType< $mol_string['submit'] >
+	>
+	type $mol_form_field__bids_yuf_sj_jammer_rule_form_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['bids'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_rule_form_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['bind_uuid_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_jammer_rule_form_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['Bind_uuid'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_sj_jammer_rule_switch__value_yuf_sj_jammer_rule_form_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['value_str'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_switch['value'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_rule_form_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['access_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_jammer_rule_form_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['Access'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_sj_ui_textarea__length_max_yuf_sj_jammer_rule_form_16 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $yuf_sj_ui_textarea['length_max'] >
+	>
+	type $yuf_sj_ui_textarea__value_yuf_sj_jammer_rule_form_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['value_str'] >
+		,
+		ReturnType< $yuf_sj_ui_textarea['value'] >
+	>
+	type $yuf_sj_ui_textarea__submit_yuf_sj_jammer_rule_form_18 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['submit'] >
+		,
+		ReturnType< $yuf_sj_ui_textarea['submit'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_rule_form_19 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['comment_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_jammer_rule_form_20 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['Comment'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_sj_ui_freq_range__bands_yuf_sj_jammer_rule_form_21 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['bands'] >
+		,
+		ReturnType< $yuf_sj_ui_freq_range['bands'] >
+	>
+	type $yuf_sj_ui_freq_range__value_yuf_sj_jammer_rule_form_22 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['freq_value'] >
+		,
+		ReturnType< $yuf_sj_ui_freq_range['value'] >
+	>
+	type $yuf_check_list__value_yuf_sj_jammer_rule_form_23 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['list_string'] >
+		,
+		ReturnType< $yuf_check_list['value'] >
+	>
+	type $yuf_check_list__options_yuf_sj_jammer_rule_form_24 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['spreads_available'] >
+		,
+		ReturnType< $yuf_check_list['options'] >
+	>
+	type $mol_form_field__name_yuf_sj_jammer_rule_form_25 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['spreads_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__control_yuf_sj_jammer_rule_form_26 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['Spreads'] >
+		,
+		ReturnType< $mol_form_field['control'] >
+	>
+	type $yuf_form_bid__value_yuf_sj_jammer_rule_form_27 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_form['value_str'] >
+		,
+		ReturnType< $yuf_form_bid['value'] >
+	>
+	export class $yuf_sj_jammer_rule_form extends $yuf_sj_ui_form_draft {
+		bind_uuid_required( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_form['model'] >['bind_uuid_required'] >
+		sdr( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_form['model'] >['sdr'] >
+		bands( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_form['sdr'] >['bands'] >
+		spreads_available( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_form['sdr'] >['spreads_available'] >
+		required( id: any): ReturnType< ReturnType< $yuf_sj_jammer_rule_form['Bid'] >['required'] >
+		rule_allowed( ): boolean
+		rule_event( next?: any ): any
+		rule_title( ): string
+		Whitelist( ): $mol_button_minor
+		rule_content( ): readonly($mol_view)[]
+		buttons_extra( ): readonly($mol_view)[]
+		bind_uuid_required_bid( ): ReturnType< $yuf_sj_jammer_rule_form['required'] >
+		numbers_check( id: any): string
+		bind_uuid_name( ): string
+		bind_uuid_hint( ): string
+		Bind_uuid( ): $mol_string
+		Bind_uuid_field( ): $mol_form_field
+		bind_uuid_content( ): readonly($mol_view)[]
+		access_name( ): string
+		Access( ): $yuf_sj_jammer_rule_switch
+		Access_field( ): $mol_form_field
+		comment_name( ): string
+		Comment( ): $yuf_sj_ui_textarea
+		Comment_field( ): $mol_form_field
+		freq_value( id: any, next?: number ): number
+		Freq_range( ): $yuf_sj_ui_freq_range
+		spreads_name( ): string
+		Spreads( ): $yuf_check_list
+		Spreads_field( ): $mol_form_field
+		model( ): $yuf_sj_jammer_rule_model
+		done( next?: boolean ): boolean
+		Bid( ): $yuf_form_bid
+		buttons( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=form.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_form extends $.$yuf_sj_jammer_rule_form {
+        freq_value(key: 'min' | 'max', next?: number): number;
+        numbers_check(key: string): string;
+        bind_uuid_required_bid(): string;
+        bind_uuid_content(): readonly $mol_view[];
+        access(next?: 'a' | 'd'): "a" | "d";
+        rule_content(): readonly $mol_view[];
+        rule_allowed(): boolean;
+        rule_event(next?: Event): void;
+        submit(e?: Event): any;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $mol_button_minor__hint_yuf_sj_jammer_rule_page_1 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_page['remove_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__sub_yuf_sj_jammer_rule_page_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_button_minor__click_yuf_sj_jammer_rule_page_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_page['remove_event'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $yuf_sj_jammer_rule_form__model_yuf_sj_jammer_rule_page_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_page['model'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_form['model'] >
+	>
+	type $yuf_sj_jammer_rule_form__done_yuf_sj_jammer_rule_page_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_page['done'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_form['done'] >
+	>
+	export class $yuf_sj_jammer_rule_page extends $mol_page {
+		remove_hint( ): string
+		Delete_icon( ): $mol_icon_trash_can_outline
+		remove_event( next?: any ): any
+		Remove( ): $mol_button_minor
+		remove_content( ): readonly($mol_view)[]
+		Close( ): any
+		done( next?: boolean ): boolean
+		Form( ): $yuf_sj_jammer_rule_form
+		model( ): $yuf_sj_jammer_rule_model
+		tools( ): readonly(any)[]
+		body( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=page.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_page extends $.$yuf_sj_jammer_rule_page {
+        title(): string;
+        remove_content(): readonly $mol_view[];
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_rule_catalog_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_rule_catalog['rule'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_rule_catalog['store'] >['by_id'] >[0]
+	>
+	type $yuf_button_add__click_yuf_sj_jammer_rule_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['add_event'] >
+		,
+		ReturnType< $yuf_button_add['click'] >
+	>
+	type $yuf_button_remove_all__click_yuf_sj_jammer_rule_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['remove_all_event'] >
+		,
+		ReturnType< $yuf_button_remove_all['click'] >
+	>
+	type $yuf_sj_jammer_rule_link__arg_yuf_sj_jammer_rule_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['arg'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_link['arg'] >
+	>
+	type $yuf_sj_jammer_rule_link__model_yuf_sj_jammer_rule_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['rule'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_link['model'] >
+	>
+	type $yuf_sj_jammer_rule_link__menu_filter_yuf_sj_jammer_rule_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['menu_filter'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_link['menu_filter'] >
+	>
+	type $yuf_sj_jammer_rule_catalog_menu_tools__7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['add_content'] >[number]
+		,
+		$mol_view_content
+	>
+	type $yuf_sj_jammer_rule_catalog_menu_tools__8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['remove_content'] >[number]
+		,
+		$mol_view_content
+	>
+	type $mol_search__hint_yuf_sj_jammer_rule_catalog_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['menu_filter_hint'] >
+		,
+		ReturnType< $mol_search['hint'] >
+	>
+	type $mol_search__query_yuf_sj_jammer_rule_catalog_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['menu_filter'] >
+		,
+		ReturnType< $mol_search['query'] >
+	>
+	type $yuf_sj_jammer_rule_page__model_yuf_sj_jammer_rule_catalog_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['rule'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_page['model'] >
+	>
+	type $yuf_sj_jammer_rule_page__remove_event_yuf_sj_jammer_rule_catalog_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['remove_event'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_page['remove_event'] >
+	>
+	type $yuf_sj_jammer_rule_page__done_yuf_sj_jammer_rule_catalog_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['done'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_page['done'] >
+	>
+	type $yuf_sj_jammer_rule_page__Close_yuf_sj_jammer_rule_catalog_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_page['Close'] >
+	>
+	type $mol_view__minimal_height_yuf_sj_jammer_rule_catalog_15 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_view['minimal_height'] >
+	>
+	type $mol_view__sub_yuf_sj_jammer_rule_catalog_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_rule_catalog['menu_item_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_sj_jammer_rule_catalog extends $yuf_catalog {
+		rule( id: any): ReturnType< ReturnType< $yuf_sj_jammer_rule_catalog['store'] >['by_id'] >
+		spread_ids( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_catalog['store'] >['ids'] >
+		access_type( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_catalog['store'] >['access_type'] >
+		sdr( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_catalog['store'] >['sdr'] >
+		master( ): ReturnType< ReturnType< $yuf_sj_jammer_rule_catalog['sdr'] >['master'] >
+		add_event( next?: any ): any
+		Add( ): $yuf_button_add
+		add_content( ): readonly($mol_view)[]
+		remove_all_event( next?: any ): any
+		Remove_all( ): $yuf_button_remove_all
+		remove_content( ): readonly($mol_view)[]
+		Close( ): any
+		menu_filter_hint( ): string
+		remove_event( id: any, next?: any ): any
+		done( id: any, next?: boolean ): boolean
+		Menu_link( id: any): $yuf_sj_jammer_rule_link
+		menu_item_content( id: any): readonly(any)[]
+		menu_title( ): string
+		menu_title_blacklist( ): string
+		param_suffix( ): string
+		store( ): $yuf_sj_jammer_rule_store
+		menu_tools( ): readonly($mol_view_content)[]
+		menu_head( ): readonly(any)[]
+		menu_body( ): readonly(any)[]
+		Menu_filter( ): $mol_search
+		Spread( id: any): $yuf_sj_jammer_rule_page
+		Menu_item( id: any): $mol_view
+	}
+	
+}
+
+//# sourceMappingURL=catalog.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_rule_catalog extends $.$yuf_sj_jammer_rule_catalog {
+        menu_title(): string;
+        menu_filter_hint(): string;
+        spread_ids_filtered(): string[];
+        spread_title(id: string): string;
+        rule(id: string): $yuf_sj_jammer_rule_model;
+        remove_event(id: string, e?: Event): void;
+        done(id: string, next?: boolean): boolean;
+        add_content(): readonly $mol_view[];
+        remove_content(): readonly $mol_view[];
+        add_event(next?: Event): void;
+        remove_all_event(e?: Event): void;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_icon_rocket extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=rocket.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_icon_rocket_launch extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=launch.view.tree.d.ts.map
+declare namespace $ {
+    class $yuf_sj_jammer_model extends $yuf_sj_ui_device_model {
+        sdr(): $yuf_sj_jammer_sdr_model;
+        auto(): unknown[];
+        tasks(): $yuf_sj_jammer_task_store;
+        rules(access_type: 'allow' | 'deny'): $yuf_sj_jammer_rule_store;
+        routes(): $yuf_sj_ui_network_route_store;
+    }
+}
+
+declare namespace $ {
+    let $yuf_sj_jammer_version: string;
+}
+
+declare namespace $ {
+
+	type __yuf_sj_jammer_app_1 = $mol_type_enforce<
+		Parameters< $yuf_sj_jammer_app['rules'] >[0]
+		,
+		Parameters< ReturnType< $yuf_sj_jammer_app['model'] >['rules'] >[0]
+	>
+	type $yuf_sj_ui_network_route_list__param_prefix_yuf_sj_jammer_app_2 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_list['param_prefix'] >
+	>
+	type $yuf_sj_ui_network_route_list__routes_yuf_sj_jammer_app_3 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['routes'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_list['routes'] >
+	>
+	type $yuf_sj_ui_network_route_list__Close_yuf_sj_jammer_app_4 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_network_route_list['Close'] >
+	>
+	type $yuf_sj_jammer_sdr_book__param_prefix_yuf_sj_jammer_app_5 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['param'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_book['param_prefix'] >
+	>
+	type $yuf_sj_jammer_sdr_book__model_yuf_sj_jammer_app_6 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['sdr'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_book['model'] >
+	>
+	type $yuf_sj_jammer_sdr_book__Close_yuf_sj_jammer_app_7 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_jammer_sdr_book['Close'] >
+	>
+	type $yuf_sj_jammer_task_catalog__param_prefix_yuf_sj_jammer_app_8 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['param'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_catalog['param_prefix'] >
+	>
+	type $yuf_sj_jammer_task_catalog__sdr_yuf_sj_jammer_app_9 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['sdr'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_catalog['sdr'] >
+	>
+	type $yuf_sj_jammer_task_catalog__store_yuf_sj_jammer_app_10 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['tasks'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_catalog['store'] >
+	>
+	type $yuf_sj_jammer_task_catalog__Close_yuf_sj_jammer_app_11 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_jammer_task_catalog['Close'] >
+	>
+	type $yuf_sj_jammer_rule_catalog__param_prefix_yuf_sj_jammer_app_12 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['param'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_catalog['param_prefix'] >
+	>
+	type $yuf_sj_jammer_rule_catalog__store_yuf_sj_jammer_app_13 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['rules'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_catalog['store'] >
+	>
+	type $yuf_sj_jammer_rule_catalog__Close_yuf_sj_jammer_app_14 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_jammer_rule_catalog['Close'] >
+	>
+	type $yuf_sj_ui_device_catalog__param_prefix_yuf_sj_jammer_app_15 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['param'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['param_prefix'] >
+	>
+	type $yuf_sj_ui_device_catalog__store_yuf_sj_jammer_app_16 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['devices'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['store'] >
+	>
+	type $yuf_sj_ui_device_catalog__Close_yuf_sj_jammer_app_17 = $mol_type_enforce<
+		ReturnType< $yuf_sj_jammer_app['Spread_close'] >
+		,
+		ReturnType< $yuf_sj_ui_device_catalog['Close'] >
+	>
+	export class $yuf_sj_jammer_app extends $yuf_sj_ui_app {
+		ws( ): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['ws'] >
+		sdr( ): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['sdr'] >
+		tasks( ): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['tasks'] >
+		rules( id: any): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['rules'] >
+		routes( ): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['routes'] >
+		devices( ): ReturnType< ReturnType< $yuf_sj_jammer_app['model'] >['devices'] >
+		Routes( ): $yuf_sj_ui_network_route_list
+		Settings( ): $yuf_sj_jammer_sdr_book
+		Task( ): $yuf_sj_jammer_task_catalog
+		Blacklist( ): $yuf_sj_jammer_rule_catalog
+		Devices( ): $yuf_sj_ui_device_catalog
+		menu_title( ): string
+		Menu_logo( ): $mol_icon_rocket_launch
+		model( ): $yuf_sj_jammer_model
+		spreads_mid( ): ({ 
+			'routes': ReturnType< $yuf_sj_jammer_app['Routes'] >,
+			'settings': ReturnType< $yuf_sj_jammer_app['Settings'] >,
+			'task': ReturnType< $yuf_sj_jammer_app['Task'] >,
+			'blacklist': ReturnType< $yuf_sj_jammer_app['Blacklist'] >,
+			'devices': ReturnType< $yuf_sj_jammer_app['Devices'] >,
+		}) 
+	}
+	
+}
+
+//# sourceMappingURL=app.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_app extends $.$yuf_sj_jammer_app {
+        version(): string;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_login_model_mock extends $yuf_sj_ui_login_model {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_network_model_mock extends $yuf_sj_ui_network_model {
+        protected prev: ReturnType<typeof this.defaults> | null;
+        mock(next?: ReturnType<typeof this.defaults> | null): {
+            network_type: "dhcp" | "static";
+            ip: string;
+            gateway: string;
+            dns: string;
+            dns2: string;
+        } | null;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_reboot_model_mock extends $yuf_sj_ui_device_reboot_model {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_updater_model_mock extends $yuf_sj_ui_device_updater_model {
+        mock_periodically(): boolean;
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_store_mock extends $yuf_sj_ui_device_store {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_device_info_model_mock extends $yuf_sj_ui_device_info_model {
+        protected booted_at: number;
+        mock_periodically(): boolean;
+        mock(next?: ReturnType<this['defaults']>): ReturnType<this["defaults"]>;
+        protected pick_version_type(type: typeof $yuf_sj_ui_device_type.Value): string;
+        version_latest(key: typeof $yuf_sj_ui_device_type.Value): "1.0.1" | "0.0.5";
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_description_model_mock extends $yuf_sj_ui_description_model {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]> | undefined;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_log_model_mock extends $yuf_sj_ui_log_model {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+    class $yuf_sj_ui_log_model_mock_lines extends $yuf_sj_ui_log_model_lines {
+        mock_periodically(): boolean;
+        line_parameters(): {
+            max_lines: number;
+            max_line_length: number;
+            max_level: "error" | "warn" | "info" | "debug" | "trace";
+        };
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    function $yuf_sj_ui_device_mock_context(this: $): {
+        $yuf_ws_socket: typeof $yuf_ws_statefull_socket_mock;
+        $yuf_sj_ui_login_model: typeof $yuf_sj_ui_login_model_mock;
+        $yuf_sj_ui_network_model: typeof $yuf_sj_ui_network_model_mock;
+        $yuf_sj_ui_device_reboot_model: typeof $yuf_sj_ui_device_reboot_model_mock;
+        $yuf_sj_ui_device_updater_model: typeof $yuf_sj_ui_device_updater_model_mock;
+        $yuf_sj_ui_device_store: typeof $yuf_sj_ui_device_store_mock;
+        $yuf_sj_ui_device_info_model: typeof $yuf_sj_ui_device_info_model_mock;
+        $yuf_sj_ui_description_model: typeof $yuf_sj_ui_description_model_mock;
+        $yuf_sj_ui_log_model: typeof $yuf_sj_ui_log_model_mock;
+        $yuf_sj_ui_log_model_lines: typeof $yuf_sj_ui_log_model_mock_lines;
+    };
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_rule_store_mock extends $yuf_sj_jammer_rule_store {
+        max_rules(): number;
+        pick_ids(): ReturnType<this["defaults"]>;
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_rule_model_mock extends $yuf_sj_jammer_rule_model {
+        pick_freqs(): number[];
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_ui_network_route_store_mock extends $yuf_sj_ui_network_route_store {
+        mock(next?: ReturnType<this['defaults']>): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_slave_store_mock extends $yuf_sj_jammer_slave_store {
+        mock(next?: ReturnType<this['defaults']>): ReturnType<this["defaults"]>;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_sdr_model_mock_limits extends $yuf_sj_jammer_sdr_model_limits {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this['defaults']> | null;
+    }
+    class $yuf_sj_jammer_sdr_model_mock extends $yuf_sj_jammer_sdr_model {
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this['defaults']> | null;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_task_model_mock extends $yuf_sj_jammer_task_model {
+        pick_status(): "idle" | "scanning" | "receiving" | "jamming";
+        mock_periodically(): boolean;
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]> | undefined;
+    }
+}
+
+declare namespace $ {
+    class $yuf_sj_jammer_task_store_mock extends $yuf_sj_jammer_task_store {
+        tasks_count(): number;
+        mock(next?: ReturnType<this['defaults']> | null): ReturnType<this["defaults"]>;
+        draft_ids(next?: readonly string[]): string[];
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_jammer_app_mocked extends $yuf_sj_jammer_app {
+	}
+	
+}
+
+//# sourceMappingURL=mocked.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_sj_jammer_app_mocked extends $.$yuf_sj_jammer_app_mocked {
+        get $(): typeof $$;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_sj_jammer_app_demo extends $mol_example_large {
+		Jammer( ): $yuf_sj_jammer_app_mocked
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
 export = $;
 //# sourceMappingURL=web.d.ts.map

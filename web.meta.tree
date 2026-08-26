@@ -30,6 +30,8 @@
 \/yuf/karaoke/model/mock
 	deploy \/yuf/karaoke/model/mock/2.mp3
 	deploy \/yuf/karaoke/model/mock/2.mkv
+\/yuf/sj/jammer/version
+	build $yuf_sj_jammer_version \node ../../.scripts/version.mjs
 \/yuf/docs
 	deploy \/mol/logo/logo.svg
 	deploy \/mol/app/docs/manifest.json
@@ -47,3 +49,4 @@
 	include \/yuf/localizer/demo
 	include \/yuf/karaoke/demo
 	include \/yuf/list/slicer/demo
+	include \/yuf/sj/jammer/app/demo
