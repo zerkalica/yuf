@@ -39540,7 +39540,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-3acadc5";
+    $.$yuf_sj_jammer_version = "0.0.1-15b7b5a";
 })($ || ($ = {}));
 
 ;
