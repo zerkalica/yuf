@@ -122,7 +122,7 @@ export class YufLocalizerMerge {
 			for (const key of Object.keys(locale)) {
 				const module_path = await this.key_directory(key)
 				if (! module_path ) continue
-				const module_locale_name = `${basename(module_path)}.locale=${lang}.json`
+				const module_locale_name = `${basename(module_path)}.view.locale=${lang}.json`
 				const locale_file = join(module_path, module_locale_name)
 
 				const module_locale = await this.locale(locale_file)
