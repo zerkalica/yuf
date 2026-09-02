@@ -1,0 +1,8 @@
+{
+  "$yuf_localizer_settings_form_app_url_hint": "روابط التطبيق",
+  "$yuf_localizer_settings_form_app_url_name": "روابط التطبيق، مفصولة بمسافة/علامة تبويب",
+  "$yuf_localizer_settings_form_langs_hint": "ru, ar",
+  "$yuf_localizer_settings_form_langs_name": "اللغات المتاحة، مفصولة بفاصلة/مسافة",
+  "$yuf_localizer_settings_form_locales_data_hint": "ضع JSON الخام هنا { \"lang\": { \"key\": \"val\" } }",
+  "$yuf_localizer_settings_form_locales_data_name": "جميع بيانات JSON للغات المعدلة"
+}

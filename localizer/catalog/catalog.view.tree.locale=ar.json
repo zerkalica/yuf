@@ -1,0 +1,22 @@
+{
+  "$yuf_localizer_catalog_Save_hint": "انقر لعرض قائمة الحفظ",
+  "$yuf_localizer_catalog_all_msg": "جميع المفاتيح",
+  "$yuf_localizer_catalog_changed_msg": "☑️ تم التغيير",
+  "$yuf_localizer_catalog_description": "## الإعداد\nانقر على زر الإعدادات في أسفل القائمة، انسخ والصق روابط المشروع ورموز اللغة في النموذج.\n## التنقل\nاستخدم أسهم لوحة المفاتيح للتنقل بين المفاتيح في القائمة.\n## علامات التصفية\n❓ مفاتيح للترجمة، موجودة فقط في المصادر كـ en locale\n☑️ مفاتيح تم تغييرها ولكن لم يتم الالتزام بها، موجودة فقط في التخزين المحلي للمتصفح\n⚠️ مفاتيح قديمة موجودة فقط في localStorage ولكن ليس في مصادر المشروع المحدد (قد تكون محذوفة أو معاد تسميتها في المشروع)\n## الاستيراد إلى الوحدات\nالطريقة الأفضل هي دمج التغييرات في جميع وحدات mam ومشاركة locales بين المشاريع.\n* التزم بالتغييرات في مشاريعك\n* قم ببناء المشروع للتأكد من تحميل جميع التبعيات\n* قم بتنزيل أو نسخ ولصق **جميع التغييرات** في جذر mam عبر زر القرص في رأس القائمة\n* قم بتشغيل \"node yuf/localizer/import/cli.mjs\"\n* قم بعمل pull requests من النطاقات المتأثرة التي يعيدها cli\n## التجاوز في التطبيق\nاستخدم إذا لم تتمكن من الالتزام ببعض المفاتيح في نظام mol البيئي.\n* قم بتنزيل أو نسخ ولصق اللغة المحددة عبر زر القرص في رأس القائمة\n* ضعها في دليل مصادر التطبيق المبني كـ app.locale=ru.json\n* التزم باللغة في مشروع تطبيقك",
+  "$yuf_localizer_catalog_description_title": "اقرأني",
+  "$yuf_localizer_catalog_dupes_hint": "المكررات فقط",
+  "$yuf_localizer_catalog_empty_msg": "❓ فارغ",
+  "$yuf_localizer_catalog_is_new_msg": "❓+☑️ جاري الترجمة",
+  "$yuf_localizer_catalog_is_not_used_msg": "⚠️ قديم",
+  "$yuf_localizer_catalog_key_filter_hint": "تصفية مفاتيح اللغة",
+  "$yuf_localizer_catalog_locale_copypaste_all_hint": "نسخ ولصق جميع التغييرات",
+  "$yuf_localizer_catalog_locale_copypaste_hint": "نسخ ولصق اللغة",
+  "$yuf_localizer_catalog_locale_file_all_hint": "تنزيل جميع التغييرات",
+  "$yuf_localizer_catalog_locale_file_whole_hint": "تنزيل اللغة",
+  "$yuf_localizer_catalog_menu_title": "المترجم المحلي",
+  "$yuf_localizer_catalog_not_found_keys": "لم يتم العثور على مفاتيح للترجمة",
+  "$yuf_localizer_catalog_selected_lang_hint": "اختر ملف اللغة",
+  "$yuf_localizer_catalog_selected_project_hint": "اختر المشروع",
+  "$yuf_localizer_catalog_settings_check_hint": "الإعدادات",
+  "$yuf_localizer_catalog_setup_needed": "لم يتم تحديد لغة، قم بتعيين رابط التطبيق في الإعدادات"
+}

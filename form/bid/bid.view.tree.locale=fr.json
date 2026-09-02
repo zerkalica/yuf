@@ -1,0 +1,20 @@
+{
+  "$yuf_form_bid_date_max_msg": "Jusqu'à {max_date_val}",
+  "$yuf_form_bid_date_min_msg": "À partir de {min_date_val}",
+  "$yuf_form_bid_field_name_msg": "{field_name} : {message}",
+  "$yuf_form_bid_ip4_mask_msg": "IPv4/masque non valide",
+  "$yuf_form_bid_ip4_msg": "IPv4 non valide",
+  "$yuf_form_bid_json_invalid_msg": "{json_error}",
+  "$yuf_form_bid_latin_digits_msg": "Uniquement lettres latines et chiffres",
+  "$yuf_form_bid_list_max_msg": "Jusqu'à {max_val} éléments",
+  "$yuf_form_bid_list_min_msg": "À partir de {min_val} éléments",
+  "$yuf_form_bid_max_msg": "Jusqu'à {max_val}",
+  "$yuf_form_bid_min_msg": "À partir de {min_val}",
+  "$yuf_form_bid_pattern_not_match_msg": "Masque {mask}",
+  "$yuf_form_bid_required_msg": "*",
+  "$yuf_form_bid_rows_max_msg": "Jusqu'à {max_val} lignes",
+  "$yuf_form_bid_str_max_msg": "Jusqu'à {max_val} caractères",
+  "$yuf_form_bid_str_min_msg": "À partir de {min_val} caractères",
+  "$yuf_form_bid_url_msg": "URL non valide",
+  "$yuf_form_bid_value_in_range_msg": "{range}"
+}

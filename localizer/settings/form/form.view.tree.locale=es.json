@@ -1,0 +1,8 @@
+{
+  "$yuf_localizer_settings_form_app_url_hint": "URLs de la aplicación",
+  "$yuf_localizer_settings_form_app_url_name": "URLs de la aplicación, separadas por espacio o tab",
+  "$yuf_localizer_settings_form_langs_hint": "ru, ar",
+  "$yuf_localizer_settings_form_langs_name": "Idiomas disponibles, separados por coma o espacio",
+  "$yuf_localizer_settings_form_locales_data_hint": "Coloque JSON sin formato aquí { \"lang\": { \"key\": \"val\" } }",
+  "$yuf_localizer_settings_form_locales_data_name": "Todos los datos JSON de locales cambiados"
+}

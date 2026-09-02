@@ -1,0 +1,20 @@
+{
+  "$yuf_form_bid_date_max_msg": "Hasta {max_date_val}",
+  "$yuf_form_bid_date_min_msg": "Desde {min_date_val}",
+  "$yuf_form_bid_field_name_msg": "{field_name}: {message}",
+  "$yuf_form_bid_ip4_mask_msg": "IPv4/máscara no válida",
+  "$yuf_form_bid_ip4_msg": "IPv4 no válida",
+  "$yuf_form_bid_json_invalid_msg": "{json_error}",
+  "$yuf_form_bid_latin_digits_msg": "Solo letras latinas y dígitos",
+  "$yuf_form_bid_list_max_msg": "Hasta {max_val} elementos",
+  "$yuf_form_bid_list_min_msg": "Desde {min_val} elementos",
+  "$yuf_form_bid_max_msg": "Hasta {max_val}",
+  "$yuf_form_bid_min_msg": "Desde {min_val}",
+  "$yuf_form_bid_pattern_not_match_msg": "Máscara {mask}",
+  "$yuf_form_bid_required_msg": "*",
+  "$yuf_form_bid_rows_max_msg": "Hasta {max_val} filas",
+  "$yuf_form_bid_str_max_msg": "Hasta {max_val} caracteres",
+  "$yuf_form_bid_str_min_msg": "Desde {min_val} caracteres",
+  "$yuf_form_bid_url_msg": "URL no válida",
+  "$yuf_form_bid_value_in_range_msg": "{range}"
+}

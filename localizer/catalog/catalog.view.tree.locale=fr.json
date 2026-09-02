@@ -1,0 +1,22 @@
+{
+  "$yuf_localizer_catalog_Save_hint": "Cliquez pour afficher le menu d'enregistrement",
+  "$yuf_localizer_catalog_all_msg": "Toutes les clés",
+  "$yuf_localizer_catalog_changed_msg": "☑️ Modifié",
+  "$yuf_localizer_catalog_description": "## Configuration\nCliquez sur le bouton de configuration en bas du menu, copiez-collez les URL du projet et les codes de langue dans le formulaire.\n## Navigation\nUtilisez les flèches du clavier pour naviguer entre les clés dans la liste.\n## Marques de filtre\n❓ Clés à traduire, existent uniquement dans les sources en tant que locale en\n☑️ Clés modifiées mais non validées, existent uniquement dans le stockage local du navigateur\n⚠️ Clés obsolètes qui existent uniquement dans localStorage mais pas dans les sources du projet sélectionné (peuvent avoir été supprimées ou renommées dans le projet)\n## Importation dans les modules\nLa meilleure façon est de fusionner les modifications dans tous les modules mam et de partager les locales entre projets.\n* validez les modifications dans vos projets\n* construisez le projet pour vous assurer que toutes les dépendances sont téléchargées\n* téléchargez ou copiez-collez **toutes les modifications** dans la racine mam via le bouton disquette dans l'en-tête du menu\n* exécutez \"node yuf/localizer/import/cli.mjs\"\n* faites des pull requests des namespaces affectés, que le cli retourne\n## Surcharge dans l'application\nUtilisez si vous ne pouvez pas valider certaines clés dans l'écosystème mol.\n* téléchargez ou copiez-collez la locale sélectionnée via le bouton disquette dans l'en-tête du menu\n* placez-la dans le répertoire source de l'application compilée en tant que app.locale=ru.json\n* validez la locale dans votre projet d'application",
+  "$yuf_localizer_catalog_description_title": "Lisez-moi",
+  "$yuf_localizer_catalog_dupes_hint": "Doublons uniquement",
+  "$yuf_localizer_catalog_empty_msg": "❓ Vide",
+  "$yuf_localizer_catalog_is_new_msg": "❓+☑️ En traduction",
+  "$yuf_localizer_catalog_is_not_used_msg": "⚠️ Obsolète",
+  "$yuf_localizer_catalog_key_filter_hint": "Filtrer les clés de locale",
+  "$yuf_localizer_catalog_locale_copypaste_all_hint": "Copier-coller toutes les modifications",
+  "$yuf_localizer_catalog_locale_copypaste_hint": "Copier-coller la locale",
+  "$yuf_localizer_catalog_locale_file_all_hint": "Télécharger toutes les modifications",
+  "$yuf_localizer_catalog_locale_file_whole_hint": "Télécharger la locale",
+  "$yuf_localizer_catalog_menu_title": "Localisateur",
+  "$yuf_localizer_catalog_not_found_keys": "Aucune clé à traduire trouvée",
+  "$yuf_localizer_catalog_selected_lang_hint": "Sélectionner le fichier de langue",
+  "$yuf_localizer_catalog_selected_project_hint": "Sélectionner le projet",
+  "$yuf_localizer_catalog_settings_check_hint": "Paramètres",
+  "$yuf_localizer_catalog_setup_needed": "Aucune locale sélectionnée, définissez l'URL de l'application dans les paramètres"
+}

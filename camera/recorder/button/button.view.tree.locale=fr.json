@@ -1,0 +1,5 @@
+{
+  "$yuf_camera_recorder_button_status_message_inactive": "Inactif",
+  "$yuf_camera_recorder_button_status_message_paused": "En pause",
+  "$yuf_camera_recorder_button_status_message_recording": "Enregistrement"
+}

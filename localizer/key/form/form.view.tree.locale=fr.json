@@ -1,0 +1,5 @@
+{
+  "$yuf_localizer_key_form_is_new_text": "nouveau",
+  "$yuf_localizer_key_form_is_not_used_text": "non utilisé",
+  "$yuf_localizer_key_form_reset_hint": "Réinitialiser à {prev}"
+}

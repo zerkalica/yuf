@@ -1,0 +1,22 @@
+{
+  "$yuf_localizer_catalog_Save_hint": "Haga clic para mostrar el menú de guardado",
+  "$yuf_localizer_catalog_all_msg": "Todas las claves",
+  "$yuf_localizer_catalog_changed_msg": "☑️ Cambiado",
+  "$yuf_localizer_catalog_description": "## Configuración\nHaga clic en el botón de configuración en la parte inferior del menú, copie y pegue las URLs del proyecto y los códigos de idioma en el formulario.\n## Navegación\nUse las flechas del teclado para navegar entre las claves en la lista.\n## Marcas de filtro\n❓ Claves para traducir, existen solo en las fuentes como locale en\n☑️ Claves cambiadas pero no confirmadas, existen solo en el almacenamiento local del navegador\n⚠️ Claves obsoletas que existen solo en localStorage pero no en las fuentes del proyecto seleccionado (pueden haber sido eliminadas o renombradas en el proyecto)\n## Importación en módulos\nLa mejor manera es fusionar los cambios en todos los módulos mam y compartir locales entre proyectos.\n* confirme los cambios en sus proyectos\n* construya el proyecto para asegurar que todas las dependencias se descargaron\n* descargue o copie y pegue **todos los cambios** en mam root a través del botón de disco en el encabezado del menú\n* ejecute \"node yuf/localizer/import/cli.mjs\"\n* haga pull requests de los namespaces afectados, que el cli devuelve\n## Sobrescritura en la aplicación\nUse si no puede confirmar algunas claves en el ecosistema mol.\n* descargue o copie y pegue la locale seleccionada a través del botón de disco en el encabezado del menú\n* colóquela en el directorio de fuentes de la aplicación compilada como app.locale=ru.json\n* confirme la locale en su proyecto de aplicación",
+  "$yuf_localizer_catalog_description_title": "Léame",
+  "$yuf_localizer_catalog_dupes_hint": "Solo duplicados",
+  "$yuf_localizer_catalog_empty_msg": "❓ Vacío",
+  "$yuf_localizer_catalog_is_new_msg": "❓+☑️ Traduciendo",
+  "$yuf_localizer_catalog_is_not_used_msg": "⚠️ Obsoleto",
+  "$yuf_localizer_catalog_key_filter_hint": "Filtrar claves de locale",
+  "$yuf_localizer_catalog_locale_copypaste_all_hint": "Copiar y pegar todos los cambios",
+  "$yuf_localizer_catalog_locale_copypaste_hint": "Copiar y pegar locale",
+  "$yuf_localizer_catalog_locale_file_all_hint": "Descargar todos los cambios",
+  "$yuf_localizer_catalog_locale_file_whole_hint": "Descargar locale",
+  "$yuf_localizer_catalog_menu_title": "Localizador",
+  "$yuf_localizer_catalog_not_found_keys": "No se encontraron claves para traducir",
+  "$yuf_localizer_catalog_selected_lang_hint": "Seleccionar archivo de idioma",
+  "$yuf_localizer_catalog_selected_project_hint": "Seleccionar proyecto",
+  "$yuf_localizer_catalog_settings_check_hint": "Configuración",
+  "$yuf_localizer_catalog_setup_needed": "No hay locale seleccionada, configure la URL de la aplicación en ajustes"
+}

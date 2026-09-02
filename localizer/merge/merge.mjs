@@ -51,9 +51,14 @@ export class YufLocalizerMerge {
 		}
 		const raw = await readFile(file)
 		/** @type Record<string, string> */
-		const data = JSON.parse(raw.toString())
-		this._cached[file] = data
-		return data
+		try {
+			const data = JSON.parse(raw.toString())
+			this._cached[file] = data
+			return data
+		} catch (e) {
+			e.message += ', ' + file
+			throw e
+		}
 	}
 
 	main_locale_code() { return 'en' }
@@ -122,7 +127,7 @@ export class YufLocalizerMerge {
 			for (const key of Object.keys(locale)) {
 				const module_path = await this.key_directory(key)
 				if (! module_path ) continue
-				const module_locale_name = `${basename(module_path)}.view.locale=${lang}.json`
+				const module_locale_name = `${basename(module_path)}.view.tree.locale=${lang}.json`
 				const locale_file = join(module_path, module_locale_name)
 
 				const module_locale = await this.locale(locale_file)
