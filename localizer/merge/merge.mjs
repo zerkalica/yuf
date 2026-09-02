@@ -1,6 +1,6 @@
 // @ts-check
 
-import { basename, join } from 'node:path'
+import { basename, dirname, join } from 'node:path'
 import { stat, writeFile, unlink, readFile, readdir } from 'node:fs/promises'
 
 /**
@@ -56,20 +56,34 @@ export class YufLocalizerMerge {
 		return data
 	}
 
+	main_locale_code() { return 'en' }
+
+	/**
+	 * @param {string} module_path
+	 */
+	main_locale_path(module_path) {
+		const name = `${basename(module_path)}.view.tree.locale=${this.main_locale_code()}.json`
+		return join(this.root(), module_path, '-view.tree', name)
+	}
+
+	/**
+	 * @param {string} module_path
+	 */
+	main_locale(module_path) {
+		return this.locale(this.main_locale_path(module_path))
+	}
+
 	/**
 	 * @param {string} key
 	 */
 	async key_directory_int(key, prefix = false) {
-		const root = this.root()
 		const parts = key.slice(1).split('_')
 
 		for (let i = parts.length - 1; i >= 0; i--) {
 			let path = join(...parts.slice(0, i))
-			const name = basename(path)
-			if (prefix) path = join(path, name)
+			if (prefix) path = join(path, basename(path))
 
-			const full = join(root, path, '-view.tree', `${name}.view.tree.locale=en.json`)
-			let locale = await this.locale(full)
+			const locale = await this.main_locale(path)
 
 			if (locale?.[key]) return path
 		}
@@ -106,15 +120,15 @@ export class YufLocalizerMerge {
 			if (! locale) continue
 
 			for (const key of Object.keys(locale)) {
-				const module_dir = await this.key_directory(key)
-				if (! module_dir ) continue
-				const module_locale_name = `${basename(module_dir)}.locale=${lang}.json`
-				const locale_file = join(module_dir, module_locale_name)
+				const module_path = await this.key_directory(key)
+				if (! module_path ) continue
+				const module_locale_name = `${basename(module_path)}.locale=${lang}.json`
+				const locale_file = join(module_path, module_locale_name)
 
-				const old_locale = await this.locale(locale_file)
+				const module_locale = await this.locale(locale_file)
 
-				if (old_locale?.[key] === locale[key]) continue
-				if (! overwrite && old_locale?.[key]) continue
+				if (module_locale?.[key] === locale[key]) continue
+				if (! overwrite && module_locale?.[key]) continue
 
 				if (! patch[src_file]) patch[src_file] = {}
 				if (! patch[src_file][locale_file]) patch[src_file][locale_file] = {}
@@ -126,6 +140,10 @@ export class YufLocalizerMerge {
 		return patch
 	}
 
+	all_locales_module() {
+		return 'app'
+	}
+
 	/**
      * @param {string} path
 	 * @param {{exclude?: RegExp | null, include?: RegExp | null, update?: boolean, overwrite?: boolean }} options
@@ -135,52 +153,72 @@ export class YufLocalizerMerge {
 
 		/** @type Record<string, Record<string, number>> | undefined */
 		let success = undefined
-		/** @type Record<string, string[]> | undefined */
+		/** @type Record<string, Record<string, Record<string, string>>> | undefined */
 		let errors = undefined
 
 		/** @type Record<string, string[]> | undefined */
 		let excluded = undefined
 
-		for (const src_file of Object.keys(patches)) {
-			const group = patches[src_file]
+		const main_locale = await this.locale(join(this.root(), path, this.all_locales_module(), '-', `web.locale=${this.main_locale_code()}.json`))
 
-			const src_data = { ... (await this.locale(src_file)) }
+		for (const patch_file of Object.keys(patches)) {
+			const patch_group = patches[patch_file]
 
-			for (const locale_file of Object.keys(group)) {
+			/**
+			 * @type {typeof main_locale | undefined}
+			 */
+			let main_locale_dict = undefined
 
-				const patch = group[locale_file]
+			const patch_data = { ... (await this.locale(patch_file)) }
+
+			for (const module_file of Object.keys(patch_group)) {
+
+				const patch = patch_group[module_file]
 				const patch_keys = Object.keys(patch)
 
 				if (
-					(exclude && locale_file.match(exclude))
-					|| (include && ! locale_file.match(include))
+					(exclude && module_file.match(exclude))
+					|| (include && ! module_file.match(include))
 				) {
 					if (! excluded) excluded = {}
-					if (! excluded[src_file]) excluded[src_file] = []
-					excluded[src_file].push(locale_file)
+					if (! excluded[patch_file]) excluded[patch_file] = []
+					excluded[patch_file].push(module_file)
 					continue
 				}
-				for (const key of patch_keys) delete src_data[key]
+
+				for (const key of patch_keys) delete patch_data[key]
 
 				if (! success ) success = {}
-				if (! success[src_file] ) success[src_file] = {}
-				success[src_file][locale_file] = patch_keys.length
+				if (! success[patch_file] ) success[patch_file] = {}
+				success[patch_file][module_file] = patch_keys.length
 
-				const old_locale = await this.locale(locale_file)
-				const next = {  ... old_locale, ... patch }
+				const module_locale = await this.locale(module_file)
+				const next = {  ... module_locale, ... patch }
 
-				if (update) await this.locale(locale_file, next)
+				for (const key of Object.keys(next)) {
+					if (! main_locale_dict) main_locale_dict = { ... main_locale }
+					delete main_locale_dict[key]
+				}
+
+				if (update) await this.locale(module_file, next)
 			}
 
-			const src_data_keys = Object.keys(src_data)
-				.filter(key => ! excluded?.[src_file].includes(key))
+			const src_data_keys = Object.keys(patch_data)
+				.filter(key => ! excluded?.[patch_file].includes(key))
 
 			if (src_data_keys.length) {
 				if (! errors ) errors = {}
-				errors[src_file] = src_data_keys
+				if (! errors.need_to_remove) errors.need_to_remove = {}
+				errors.need_to_remove[patch_file] = patch_data
 			}
 
-			if (update) this.locale(src_file, src_data_keys.length === 0 ? null : src_data)
+			if (Object.keys(main_locale_dict ?? {}).length) {
+				if (! errors ) errors = {}
+				if (! errors.need_to_add) errors.need_to_add = {}
+				errors.need_to_add[patch_file] = main_locale_dict ?? {}
+			}
+
+			if (update) this.locale(patch_file, src_data_keys.length === 0 ? null : patch_data)
 		}
 
 		const has_success = success && Object.keys(success).length > 0

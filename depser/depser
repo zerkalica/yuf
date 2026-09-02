@@ -1,7 +1,7 @@
 #!/bin/sh
 
 : "${SRC_PATH:=$(pwd)}"
-
+: "${BUILD_TARGET:="app"}"
 : "${GITHUB_BASE='https://github.com'}"
 
 # Do not link this dirs from .ci/* to mam root
@@ -76,14 +76,14 @@ depser_init() {
 }
 
 depser_app_path() {
-  test -e "${SRC_PATH}/app/app.view.tree" || {
-    echo "Required entry point component: ${SRC_PATH}/app/app.view.tree"
+  test -e "${SRC_PATH}/${BUILD_TARGET}/${BUILD_TARGET}.view.tree" || {
+    echo "Required entry point component: ${SRC_PATH}/${BUILD_TARGET}/${BUILD_TARGET}.view.tree"
     exit 1
   }
 
-  local app_path="$(cat "${SRC_PATH}/app/app.view.tree" | sed -n 's/^\$\([^ ]*\).*/\1/p' | sed 's/_/\//g')"
+  local app_path="$(cat "${SRC_PATH}/${BUILD_TARGET}/${BUILD_TARGET}.view.tree" | sed -n 's/^\$\([^ ]*\).*/\1/p' | sed 's/_/\//g')"
   test -z "$app_path" && {
-    echo "Required a valid fqn app name in ${SRC_PATH}/app/app.view.tree"
+    echo "Required a valid fqn app name in ${SRC_PATH}/${BUILD_TARGET}/${BUILD_TARGET}.view.tree"
     exit 1
   }
   echo "$(dirname "$app_path")"
@@ -162,8 +162,8 @@ depser_dirs_unlink() {
 }
 
 depser_check_app() {
-  if [ ! -e "$SRC_PATH/app/app.view.tree" ] ; then
-    echo "ERROR: $PROJECT_NAME not a mam application, not found $SRC_PATH/app/app.view.tree"
+  if [ ! -e "$SRC_PATH/${BUILD_TARGET}/${BUILD_TARGET}.view.tree" ] ; then
+    echo "ERROR: $PROJECT_NAME not a mam application, not found $SRC_PATH/${BUILD_TARGET}/${BUILD_TARGET}.view.tree"
     exit 1
   fi
 }
@@ -182,19 +182,19 @@ depser_make() {
 	&& echo "Step 1. install npm" \
 	&& npm config list \
 	&& npm config get registry \
-	&& npm clean-install --ignore-scripts || {
+	&& npm ci --ignore-scripts --timing --prefer-offline || {
 		depser_dirs_unlink
 		echo "ERROR: Step 1"
 		exit 1
 	}
 
-  echo "Step 2. Build app ${SRC_PATH}/.ci/mam/${APP_PATH}/app" \
-    && MAM_PULL_DISABLED=1 npm exec mam "${APP_PATH}/app" || {
+  echo "Step 2. Build app ${SRC_PATH}/.ci/mam/${APP_PATH}/${BUILD_TARGET}" \
+    && MAM_PULL_DISABLED=1 npm exec mam "${APP_PATH}/${BUILD_TARGET}" || {
       depser_dirs_unlink
       echo "ERROR: Step 2"
       exit 1
     }
-  echo "SUCCESS. Build in ${SRC_PATH}/app/-"
+  echo "SUCCESS. Build in ${SRC_PATH}/${BUILD_TARGET}/-"
 }
 
 debser_build() {
@@ -206,7 +206,7 @@ depser_help() {
   echo "Versioning submodule deps system for mam"
   echo ""
   echo "Run it from some/project directory, not a mam root, project directory must inside mam root"
-  echo "Project must include app/app.view.tree entry point module"
+  echo "Project must include ${BUILD_TARGET}/${BUILD_TARGET}.view.tree entry point module"
   echo "Use $(basename "$0") <command>, where command:"
   echo ""
   echo "init - init base git submodules in .ci"
