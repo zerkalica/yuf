@@ -2,11 +2,16 @@ namespace $ {
 	let errors = [] as unknown[]
 
 	function report(event: Event | string, url?: string, line?: number, col?: number, error?: Error) {
-		const time = new Date()
 		const target = typeof event === 'string'
-			? { event, error }
-			: 'error' in event && event.error ? event.error : event
+		? { event, error }
+		: 'error' in event && event.error ? event.error : event
+		
+		const ignore = $.$yuf_report_fallback_ignore
+		const message = target && typeof target === 'object' && 'event' in target ? String(target.event) : error?.message ?? ''
 
+		if (ignore && message.match(ignore)) return null
+
+		const time = new Date()
 		let data, stack
 
 		try {
