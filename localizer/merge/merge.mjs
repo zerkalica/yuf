@@ -56,7 +56,7 @@ export class YufLocalizerMerge {
 			this._cached[file] = data
 			return data
 		} catch (e) {
-			e.message += ', ' + file
+			if (e instanceof Error) e.message += ', ' + file
 			throw e
 		}
 	}
@@ -107,38 +107,56 @@ export class YufLocalizerMerge {
 	}
 
 	/**
-     * @param {string} path
-	 * @param {{overwrite?: boolean}} options
+     * @param {string} app_module_dir
      */
-	async locales_patch(path, { overwrite }) {
+	async imported_files(app_module_dir) {
+		/**
+		 * @type (readonly [string, string])[]
+		 */
+		const result = []
+
+		do {
+			const names = await readdir(app_module_dir)
+			for (const name of names) {
+				const [ _, lang_code ] = name.match(/\.view\.tree\.locale=(\w+)\.json$/) ?? []
+				if (! lang_code) continue
+				const imported_file = join(app_module_dir, name)
+				result.push([imported_file, lang_code])
+			}
+
+			app_module_dir = dirname(app_module_dir)
+		} while (app_module_dir)
+
+		return result
+	}
+
+	/**
+     * @param {string} app_module_dir
+     */
+	async imported_data(app_module_dir) {
        /** @type Record<string, Record<string, Record<string, string>>> */
 		const patch = {}
 
-		const list = await readdir(path)
+		const imported_files = await this.imported_files(app_module_dir)
 
-		for (const name of list) {
-			const [ _, lang ] = name.match(/\.locale=(\w+)\.json$/) ?? []
-			if (! lang) continue
+		for (const [imported_file, lang] of imported_files) {
+			const imported_locale = await this.locale(imported_file)
+			if (! imported_locale) continue
 
-			const src_file = join(path, name)
-			const locale = await this.locale(src_file)
-			if (! locale) continue
-
-			for (const key of Object.keys(locale)) {
+			for (const key of Object.keys(imported_locale)) {
 				const module_path = await this.key_directory(key)
 				if (! module_path ) continue
-				const module_locale_name = `${basename(module_path)}.view.tree.locale=${lang}.json`
-				const locale_file = join(module_path, module_locale_name)
+				const module_file = join(module_path, `${basename(module_path)}.view.tree.locale=${lang}.json`)
 
-				const module_locale = await this.locale(locale_file)
+				const module_locale = await this.locale(module_file)
 
-				if (module_locale?.[key] === locale[key]) continue
-				if (! overwrite && module_locale?.[key]) continue
+				if (module_locale?.[key] === imported_locale[key]) continue
+				if (module_locale?.[key]) continue
 
-				if (! patch[src_file]) patch[src_file] = {}
-				if (! patch[src_file][locale_file]) patch[src_file][locale_file] = {}
+				if (! patch[imported_file]) patch[imported_file] = {}
+				if (! patch[imported_file][module_file]) patch[imported_file][module_file] = {}
 
-				patch[src_file][locale_file][key] = locale[key]
+				patch[imported_file][module_file][key] = imported_locale[key]
 			}
 		}
 
@@ -150,11 +168,11 @@ export class YufLocalizerMerge {
 	}
 
 	/**
-     * @param {string} path
+     * @param {string} app_module_dir
 	 * @param {{exclude?: RegExp | null, include?: RegExp | null, update?: boolean, overwrite?: boolean }} options
      */
-	async update(path, { exclude, include, update, overwrite }) {
-		const patches = await this.locales_patch(path, { overwrite })
+	async update(app_module_dir, { exclude, include, update, overwrite }) {
+		const patches = await this.imported_data(app_module_dir)
 
 		/** @type Record<string, Record<string, number>> | undefined */
 		let success = undefined
@@ -164,7 +182,7 @@ export class YufLocalizerMerge {
 		/** @type Record<string, string[]> | undefined */
 		let excluded = undefined
 
-		const main_locale = await this.locale(join(this.root(), path, this.all_locales_module(), '-', `web.locale=${this.main_locale_code()}.json`))
+		const main_locale = await this.locale(join(this.root(), app_module_dir, this.all_locales_module(), '-', `web.locale=${this.main_locale_code()}.json`))
 
 		for (const patch_file of Object.keys(patches)) {
 			const patch_group = patches[patch_file]

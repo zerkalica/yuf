@@ -139,7 +139,7 @@ namespace $ {
 		@ $mol_mem
 		protected config() {
 			$mol_wire_solid()
-			const response = this.response(`${this.realm_url()}/.well-known/openid-configuration`)
+			const response = this.request(`${this.realm_url()}/.well-known/openid-configuration`).success()
 
 			return Config_response(response)
 		}
@@ -439,13 +439,18 @@ namespace $ {
 			return this.endpoint('logout') + '?' + this.logout_params()
 		}
 
-		response(url: string, params?: RequestInit) {
+		@ $mol_action
+		protected request(url: string, params?: RequestInit) {
 			const headers = { ... params?.headers } as Record<string, string>
 			if (params?.body instanceof URLSearchParams) {
 				headers['Content-type'] = 'application/x-www-form-urlencoded'
 			}
 
-			return this.$.$mol_fetch.response(url, { ...params, method: params?.method ?? (params?.body ? 'POST' : 'GET'), headers })
+			return this.$.$mol_fetch.request(url, {
+				...params,
+				method: params?.method ?? (params?.body ? 'POST' : 'GET'),
+				headers
+			})
 		}
 
 		@ $mol_action
@@ -461,7 +466,7 @@ namespace $ {
 					...init?.headers,
 				}
 
-				const response = this.response(url, { ...init, headers })
+				const response = this.request(url, { ...init, headers }).response()
 				const code = response.code()
 	
 				if (code !== 403 && code !== 401) return response
@@ -544,7 +549,7 @@ namespace $ {
 					code_verifier,
 				})
 
-				const response = this.response(url, { credentials: 'include', body })
+				const response = this.request(url, { credentials: 'include', body }).success()
 
 				result = Update_response(response)
 			}
