@@ -41,12 +41,12 @@ namespace $ {
 			do {
 				let auth_token = token_second ?? init?.auth_token
 				if (auth_token === undefined) auth_token = session.token_grab()
-	
+
 				const response = this.request(path, { ...init, auth_token, client_id }).response()
 				const code = response.code()
-	
+
 				if (auth_token === null || init?.auth_token) return response
-				if (code !== 403 && code !== 401) return response
+				if ( code !== 403 && code !== 401 ) return response
 				if (token_second) return response
 				token_second = session.token_grab(null)
 				if (! token_second) return response

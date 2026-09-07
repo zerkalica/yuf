@@ -455,27 +455,15 @@ namespace $ {
 
 		@ $mol_action
 		response_authorized(url: string, init?: RequestInit) {
-			let token_second: undefined | string | null
-
-			do {
-				const token = token_second ?? this.token_grab()
-	
-				const headers = {
+			return this.$.$yuf_transport_retry(
+				token => this.$.$mol_fetch.request(url, { ...init, headers: {
 					Accept: 'application/json',
 					Authorization: 'bearer ' + token,
 					...init?.headers,
-				}
+				} }).response(),
 
-				const response = this.request(url, { ...init, headers }).response()
-				const code = response.code()
-	
-				if (code !== 403 && code !== 401) return response
-				if (token_second) return response
-
-				token_second = this.token_grab(null)
-
-				if (! token_second) return response
-			} while(true)
+				reset => this.token_grab(reset)
+			)
 		}
 
 		logout_use_post() { return true }
