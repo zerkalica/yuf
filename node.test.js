@@ -20595,9 +20595,9 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_icon_chevron_left) = class $mol_icon_chevron_left extends ($.$mol_icon) {
+	($.$mol_icon_menu) = class $mol_icon_menu extends ($.$mol_icon) {
 		path(){
-			return "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z";
+			return "M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z";
 		}
 	};
 
@@ -20607,9 +20607,45 @@ var $;
 
 
 ;
-	($.$mol_icon_chevron_right) = class $mol_icon_chevron_right extends ($.$mol_icon) {
+	($.$mol_icon_menu_down) = class $mol_icon_menu_down extends ($.$mol_icon) {
 		path(){
-			return "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z";
+			return "M7,10L12,15L17,10H7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_menu_down_outline) = class $mol_icon_menu_down_outline extends ($.$mol_icon) {
+		path(){
+			return "M18,9V10.5L12,16.5L6,10.5V9H18M12,13.67L14.67,11H9.33L12,13.67Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_menu_up) = class $mol_icon_menu_up extends ($.$mol_icon) {
+		path(){
+			return "M7,15L12,10L17,15H7Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_menu_up_outline) = class $mol_icon_menu_up_outline extends ($.$mol_icon) {
+		path(){
+			return "M18,16V14.5L12,8.5L6,14.5V16H18M12,11.33L14.67,14H9.33L12,11.33Z";
 		}
 	};
 
@@ -20621,7 +20657,7 @@ var $;
 ;
 	($.$mol_number) = class $mol_number extends ($.$mol_view) {
 		precision(){
-			return 1;
+			return 0;
 		}
 		event_dec(next){
 			if(next !== undefined) return next;
@@ -20649,20 +20685,6 @@ var $;
 			});
 			return obj;
 		}
-		dec_enabled(){
-			return (this.enabled());
-		}
-		dec_icon(){
-			const obj = new this.$.$mol_icon_chevron_left();
-			return obj;
-		}
-		Dec(){
-			const obj = new this.$.$mol_button_minor();
-			(obj.event_click) = (next) => ((this.event_dec(next)));
-			(obj.enabled) = () => ((this.dec_enabled()));
-			(obj.sub) = () => ([(this.dec_icon())]);
-			return obj;
-		}
 		type(){
 			return "text";
 		}
@@ -20680,6 +20702,10 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		selection(next){
+			if(next !== undefined) return next;
+			return [];
+		}
 		String(){
 			const obj = new this.$.$mol_string();
 			(obj.type) = () => ((this.type()));
@@ -20688,13 +20714,28 @@ var $;
 			(obj.hint) = () => ((this.hint()));
 			(obj.enabled) = () => ((this.string_enabled()));
 			(obj.submit) = (next) => ((this.submit(next)));
+			(obj.selection) = (next) => ((this.selection(next)));
+			return obj;
+		}
+		dec_enabled(){
+			return (this.enabled());
+		}
+		dec_icon(){
+			const obj = new this.$.$mol_icon_menu_down_outline();
+			return obj;
+		}
+		Dec(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.event_click) = (next) => ((this.event_dec(next)));
+			(obj.enabled) = () => ((this.dec_enabled()));
+			(obj.sub) = () => ([(this.dec_icon())]);
 			return obj;
 		}
 		inc_enabled(){
 			return (this.enabled());
 		}
 		inc_icon(){
-			const obj = new this.$.$mol_icon_chevron_right();
+			const obj = new this.$.$mol_icon_menu_up_outline();
 			return obj;
 		}
 		Inc(){
@@ -20731,8 +20772,8 @@ var $;
 		}
 		sub(){
 			return [
-				(this.Dec()), 
 				(this.String()), 
+				(this.Dec()), 
 				(this.Inc())
 			];
 		}
@@ -20742,11 +20783,12 @@ var $;
 	($mol_mem(($.$mol_number.prototype), "event_dec_boost"));
 	($mol_mem(($.$mol_number.prototype), "event_inc_boost"));
 	($mol_mem(($.$mol_number.prototype), "Hotkey"));
-	($mol_mem(($.$mol_number.prototype), "dec_icon"));
-	($mol_mem(($.$mol_number.prototype), "Dec"));
 	($mol_mem(($.$mol_number.prototype), "value_string"));
 	($mol_mem(($.$mol_number.prototype), "submit"));
+	($mol_mem(($.$mol_number.prototype), "selection"));
 	($mol_mem(($.$mol_number.prototype), "String"));
+	($mol_mem(($.$mol_number.prototype), "dec_icon"));
+	($mol_mem(($.$mol_number.prototype), "Dec"));
 	($mol_mem(($.$mol_number.prototype), "inc_icon"));
 	($mol_mem(($.$mol_number.prototype), "Inc"));
 	($mol_mem(($.$mol_number.prototype), "value"));
@@ -20774,6 +20816,13 @@ var $;
          * @see https://mol.hyoo.ru/#!section=demos/demo=mol_number_demo
          */
         class $mol_number extends $.$mol_number {
+            sub() {
+                return [
+                    this.String(),
+                    ...this.dec_enabled() ? [this.Dec()] : [],
+                    ...this.inc_enabled() ? [this.Inc()] : [],
+                ];
+            }
             value_limited(val) {
                 if (Number.isNaN(val))
                     return this.value(val);
@@ -20790,6 +20839,9 @@ var $;
             event_dec(next) {
                 this.value_limited((this.value_limited() || 0) - this.precision_change());
                 next?.preventDefault();
+            }
+            precision_change() {
+                return this.precision() || 1;
             }
             event_inc(next) {
                 this.value_limited((this.value_limited() || 0) + this.precision_change());
@@ -20811,8 +20863,8 @@ var $;
                 if (!val)
                     return '';
                 const precision_view = this.precision_view();
-                if (!precision_view)
-                    return val.toFixed();
+                if (precision_view === 0)
+                    return String(val);
                 if (precision_view >= 1) {
                     return (val / precision_view).toFixed();
                 }
@@ -20829,7 +20881,7 @@ var $;
                     return current;
                 const precision = this.precision_view();
                 // Точку в конце поставить нельзя, если precision_view целое число > 0
-                if (precision - Math.floor(precision) === 0)
+                if (precision > 0 && precision - Math.floor(precision) === 0)
                     next = next.replace(/[.,]/g, '');
                 // Запятые меняем на точки, удаляем не-цифры и не-точки и лишние ноли в начале целой части.
                 // Минус получится ввести только в начале.
@@ -20868,6 +20920,9 @@ var $;
                 return this.enabled() && (!((this.value() || 0) >= this.value_max()));
             }
         }
+        __decorate([
+            $mol_mem
+        ], $mol_number.prototype, "sub", null);
         __decorate([
             $mol_mem
         ], $mol_number.prototype, "value_string", null);
@@ -22319,6 +22374,30 @@ var $;
 	($.$mol_icon_chevron_double_left) = class $mol_icon_chevron_double_left extends ($.$mol_icon) {
 		path(){
 			return "M18.41,7.41L17,6L11,12L17,18L18.41,16.59L13.83,12L18.41,7.41M12.41,7.41L11,6L5,12L11,18L12.41,16.59L7.83,12L12.41,7.41Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_chevron_left) = class $mol_icon_chevron_left extends ($.$mol_icon) {
+		path(){
+			return "M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_chevron_right) = class $mol_icon_chevron_right extends ($.$mol_icon) {
+		path(){
+			return "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z";
 		}
 	};
 
@@ -25330,6 +25409,9 @@ var $;
 			(obj.checked) = (next) => ((this.dupes_only(next)));
 			return obj;
 		}
+		save_hint(){
+			return (this.$.$mol_locale.text("$yuf_localizer_catalog_save_hint"));
+		}
 		Save_trigger_icon(){
 			const obj = new this.$.$mol_icon_content_save_all();
 			return obj;
@@ -25407,7 +25489,7 @@ var $;
 		}
 		Save(){
 			const obj = new this.$.$mol_pick();
-			(obj.hint) = () => ((this.$.$mol_locale.text("$yuf_localizer_catalog_Save_hint")));
+			(obj.hint) = () => ((this.save_hint()));
 			(obj.trigger_content) = () => ([(this.Save_trigger_icon())]);
 			(obj.bubble_content) = () => ([(this.Save_content())]);
 			return obj;
@@ -39556,7 +39638,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-ec589ee";
+    $.$yuf_sj_jammer_version = "0.0.1-269ae51";
 })($ || ($ = {}));
 
 ;
