@@ -9,5 +9,5 @@ $yuf_attach2 $mol_view
 			Icon <= Add_icon $mol_icon_attachment
 		<= Camera_pick $yuf_camera_pick
 			files? <=> files?
-			align <= align \center
+			align <= align \bottom_end
 			hint <= camera_hint @ \Attach image or video from camera

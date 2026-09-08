@@ -16,6 +16,7 @@ $yuf_svg_video $mol_svg_image
 			duration => duration
 			playing? => playing?
 			volume? => volume?
+			fullscreen? => fullscreen?
 			preload <= preload \metadata
 			time? => time?
 			click_event? <=> click_event? null
@@ -24,6 +25,7 @@ $yuf_svg_video $mol_svg_image
 				144
 
 $yuf_svg_video_player $mol_video_player
+	fullscreen? false
 	attr *
 		^
 		xmlns \http://www.w3.org/1999/xhtml

@@ -1,0 +1,30 @@
+$yuf_svg_poly $mol_svg_path
+	Marker_start null $yuf_svg_marker
+	Marker_mid null $yuf_svg_marker
+	Marker_end null $yuf_svg_marker
+	attr *
+		^
+		yuf_svg_poly_selected <= selected false
+		marker-start <= marker*start null
+		marker-mid <= marker*mid
+		marker-end <= marker*end
+	style *
+		^
+		color <= border_color \
+		fill <= fill_color null
+	event *
+		^
+		pointerdown? <=> polygon_click? null
+		dblclick? <=> dblclick? null
+	sub /
+		^ animate /$mol_view
+			<= Animation $yuf_svg_poly_animate
+
+$yuf_svg_poly_animate $mol_svg
+	dom_name \animate
+	attr *
+		^
+		attributeName <= attribute \stroke-dashoffset
+		values <= values \0;1000;0
+		dur <= duration \100s
+		repeatCount <= repeat \indefinite

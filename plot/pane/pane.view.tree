@@ -1,0 +1,38 @@
+$yuf_plot_pane $mol_plot_pane
+	style *
+		^
+		filter <= filter \brightness({brightness}%) contrast({contrast}%)
+	shift_default $mol_vector_2d<number> /
+		0
+		0
+	gap_hor 40
+	gap_vert 0
+	center? null
+	allow_draw false
+	-
+	zoom_limit $mol_vector_range<number> /
+		<= zoom_min .8
+		<= zoom_max 12
+	zoom_reset? null
+	zoom_default_factory 1
+	zoom_relative? <=> zoom?
+	-
+	size <= image_size_safe <= image_size $mol_vector_2d<number> /
+		0
+		0
+	-
+	rotation? 0
+	brightness? 0
+	contrast? 0
+	-
+	sub /
+		^
+		^ defs_content /$mol_view <= Defs $mol_svg
+			dom_name \defs
+			sub <= defs /$mol_svg
+	graphs /$mol_plot_graph
+		<= Tiles $yuf_plot_tiles
+			level 0
+			tile_type* <= tile_type* <= type \image
+			tile_uri_actual* <= tile_uri* <= url \
+			image_size <= image_size_safe

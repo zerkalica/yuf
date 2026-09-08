@@ -1,0 +1,26 @@
+$yuf_plot_note $mol_plot_graph
+	attr *
+		^
+		transform <= transform \translate({x}, {y})
+	sub /$mol_svg
+		^ polygons /$mol_svg
+			<= Polygon*0 $yuf_svg_poly
+				selected <= selected* false
+				Marker_end <= Marker_end* <= Arrow null $yuf_svg_marker
+				polygon_click? <=> polygon_click*? null
+				dblclick? <=> polygon_dbl_click*? null
+				geometry <= note_geometry* \
+				border_color <= note_border_color* \red
+				fill_color <= note_fill_color* null
+		^ texts /$mol_svg
+		^ draggable_marks /$mol_svg
+			<= Mark*0 $yuf_svg_drag
+				outer_radius <= outer_radius \20
+				selected <= point_selected* false
+				event *
+					pointerdown? <=> point_select_event*? null
+					dblclick? <=> point_remove_event*? null
+				pos <= mark_pos* /
+					0
+					0
+

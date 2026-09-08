@@ -1,0 +1,40 @@
+$yuf_svg_text $mol_svg_group
+	theme \$mol_theme_accent
+	selected false
+	text \
+	tags /string
+	font_size 16
+	line_height 20
+	points /[number,number]
+	event *
+		pointerdown? <=> note_click? null
+	label_pos $mol_vector_2d<number> /
+		0
+		0
+	gap $mol_vector_2d<number> /
+		4
+		4
+	tag_prefix \ • 
+	max_length 30
+	tag_path_separator \↪ 
+	box_size $mol_vector_2d<number> /
+		100
+		50
+	sub /$mol_svg
+		<= Back $mol_svg_rect
+			width <= box_size_x \0.5rem
+			height <= box_size_y \1rem
+			pos_x <= box_pos_x \0
+			pos_y <= box_pos_y \0
+		^ lines /$mol_svg
+			<= Text* $mol_svg_text
+				align <= align \start
+				pos_x <= chunk_pos_x* \0
+				pos_y <= chunk_pos_y* \0
+				sub <= text_content* /string|$mol_svg
+	Tag_emphasis* $mol_svg
+		dom_name \tspan
+		sub / <= tag* \
+	Tag_bullet* $mol_svg
+		dom_name \tspan
+		sub / <= tag*

@@ -17,7 +17,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		size(key: Key): $mol_vector_2d<number> {
+		size(key: Key, reset?: null): $mol_vector_2d<number> {
 			return this.media_size(key)
 		}
 	}

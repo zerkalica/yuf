@@ -1,0 +1,12 @@
+$yuf_svg_drag $mol_svg_group
+	theme \$mol_theme_accent
+	selected false
+	sub /
+		<= Inner $mol_svg_circle
+			pos <= pos /
+				0
+				0
+			radius <= inner_radius \4
+		<= Outer $mol_svg_circle
+			pos <= pos
+			radius <= outer_radius \20

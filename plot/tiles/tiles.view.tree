@@ -1,0 +1,38 @@
+$yuf_plot_tiles $mol_plot_map_tiles
+	tile_empty_url* <= empty_url \yuf/plot/tiles/image/empty.png
+	-
+	tile_error_url* <= error_url \yuf/plot/tiles/image/error.png
+	tile_error*? <= error? /Error
+	tile_error_ids? /[number,number,number]
+	-
+	rotation? 0
+	style *
+		^
+		transform <= transform \scale({sc_x}, {sc_y}) translate({tr_x}px, {tr_y}px) rotate({rotation}deg)
+	tile_type* \image
+	tile_uri_actual* \
+	flipped_hor false
+	flipped_vert false
+	tile_main_id /number
+		0
+		0
+		0
+	image_size $mol_vector_2d<number> /
+		0
+		0
+	Active_video $yuf_svg_video
+		time? => time?
+		duration => duration
+		playing? => playing?
+		fullscreen? => fullscreen?
+	Tile_video* $yuf_svg_video
+		controls <= tile_controls* <= controls false
+		loop <= tile_loop* <= loop true
+		uri <= tile_uri*
+		click_event? <=> click_event*? null
+		pos /
+			0
+			0
+		size <= tile_dims_real <= image_size
+		style *
+			transform <= tile_transform*

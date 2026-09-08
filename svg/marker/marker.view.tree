@@ -1,0 +1,20 @@
+$yuf_svg_marker $mol_icon
+	dom_name \marker
+	attr *
+		^
+		fill <= fill \context-fill
+		stroke <= stroke \context-stroke
+		refX <= ref_x \0
+		refY <= ref_y \0
+		markerWidth <= size_x \16
+		markerHeight <= size_y \16
+		markerUnits <= unit \strokeWidth
+		orient <= orient \auto-start-reverse
+	size $mol_vector_2d<number> /
+		16
+		16
+	ref /(number|'left'|'center'|'right')
+		12
+		12
+	Icon $mol_icon
+		path => path
