@@ -2,6 +2,5 @@ $yuf_avatar_pane $yuf_plot_pane
 	crop_points? /[number,number]
 	graphs /$mol_plot_graph
 		^
-		^ crop_content /$mol_view <= Crop $yuf_plot_note
-			point_index_selected? <=> point_index_selected? -1
+		^ crop_content / <= Crop $yuf_plot_note
 			note_geometry* <= crop_geometry \
