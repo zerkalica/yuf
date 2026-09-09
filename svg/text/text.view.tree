@@ -5,7 +5,7 @@ $yuf_svg_text $mol_svg_group
 	tags /string
 	font_size 16
 	line_height 20
-	points /[number,number]
+	points /readonly[number,number]
 	event *
 		pointerdown? <=> note_click? null
 	label_pos $mol_vector_2d<number> /
