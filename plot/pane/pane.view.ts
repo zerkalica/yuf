@@ -153,5 +153,97 @@ namespace $.$$ {
 		override tile_uri([l, x, y]: [number, number, number]) {
 			return x !== 0 || y !== 0 ? '' : this.url()
 		}
+
+		@ $mol_action
+		override cursor_grab() {
+			// cursor distance from center
+			const cursor = this.action_point()
+			if ( Number.isNaN(cursor.x) ) return null
+
+			const half_size = this.size().multed0(.5)
+
+			return cursor.added1(half_size)
+		}
+
+		protected points_at_start = null as null | readonly (readonly [number, number])[]
+		protected cursor_at_start = null as null | $mol_vector_2d<number>
+
+		override draw_start(event: Event) {
+			super.draw_start(event)
+
+			const note_id = this.note_id_selected()
+			this.cursor_at_start = this.cursor_grab()
+			this.points_at_start = note_id !== null ? this.points(note_id) : null
+		}
+
+		override draw_end( next?: Event ) {
+			this.cursor_at_start = null
+			this.points_at_start = null
+
+			super.draw_end(next)
+		}
+
+		override point(
+			key: readonly [note_id: string, point_index: number],
+			next?: readonly [number, number] | null,
+			shift_press = false
+		) {
+			return super.point(key, next)
+		}
+
+		override draw(e?: Event & { shiftKey?: boolean }) {
+			if (! e ) return null
+
+			const event = $mol_dom_event.wrap(e)
+			if (event.prevented()) return null
+			event.prevented(true)
+
+			const action = this.action_type()
+			if (action !== 'draw') return null
+
+			const cursor = this.cursor_grab()
+			if (! cursor) return null
+
+			const note_id = this.note_id_selected()
+			if (! note_id) return null
+			const key = this.selected_key()
+
+			if ( ! key || key[1] < 0) {
+				const delta = ! cursor || ! this.cursor_at_start
+					? null
+					: cursor.substracted1(this.cursor_at_start)
+
+				const next = ! delta || ! this.points_at_start
+					? []
+					: this.points_at_start.map(p => [ p[0] + delta.x, p[1] + delta.y ] as const)
+
+				this.points(note_id, next)
+
+				return null
+			}
+
+			const shift_press = this.shift_press(event.native)
+			this.point(key, [cursor.x, cursor.y], shift_press)
+
+			return null
+		}
+
+		@ $mol_action
+		protected shift_press(e: Event & { shiftKey?: boolean }) {
+			return e.shiftKey ?? false
+		}
+
+		@ $mol_mem
+		override visible_center() {
+			const shift = this.shift()
+			const scale = this.scale()
+			const pane_halfsize = this.size_real().multed0(.5)
+
+			return (pane_halfsize.substracted1(shift)).divided1(scale)
+		}
+
+		override note_id_selected(note_id?: string | null) {
+			return this.selected_key(note_id === null || note_id === undefined ? note_id : [note_id, -1])?.[0] ?? ''
+		}
 	}
 }

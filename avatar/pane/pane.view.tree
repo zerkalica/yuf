@@ -1,6 +1,8 @@
 $yuf_avatar_pane $yuf_plot_pane
-	crop_points? /[number,number]
+	allow_draw <= crop_enabled? false
 	graphs /$mol_plot_graph
 		^
-		^ crop_content / <= Crop $yuf_plot_note
-			note_geometry* <= crop_geometry \
+		<= Crop $yuf_plot_note
+			selected_key? <=> selected_key? null readonly[note_id:string,point_index:number]
+			note_ids <= note_ids /string
+			note_points* <= note_points* <= points*

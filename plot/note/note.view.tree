@@ -1,16 +1,23 @@
 $yuf_plot_note $mol_plot_graph
+	selected_key? null readonly[note_id:string,point_index:number]
+	note_id_selected? null string
+	-
+	note_ids_visible <= note_ids /string
+	note_points* /readonly[number,number]
+	note_shape* \Rectangle
+	-
 	attr *
 		^
 		transform <= transform \translate({x}, {y})
 	sub /$mol_svg
 		^ polygons /$mol_svg
 			<= Polygon*0 $yuf_svg_poly
-				selected <= selected* false
+				selected <= polygon_selected* false
 				Marker_end <= Marker_end* <= Arrow null $yuf_svg_marker
 				polygon_click? <=> polygon_click*? null
 				dblclick? <=> polygon_dbl_click*? null
 				geometry <= note_geometry* \
-				border_color <= note_border_color* \red
+				border_color <= note_border_color* \gray
 				fill_color <= note_fill_color* null
 		^ texts /$mol_svg
 		^ draggable_marks /$mol_svg
@@ -20,7 +27,6 @@ $yuf_plot_note $mol_plot_graph
 				event *
 					pointerdown? <=> point_select_event*? null
 					dblclick? <=> point_remove_event*? null
-				pos <= mark_pos* /
+				pos <= point_pos* /
 					0
 					0
-

@@ -1,0 +1,26 @@
+$yuf_avatar_editor $mol_view
+	url \
+	attach_url null string
+	sub /$mol_view
+		<= Toolbar $mol_toolbar items /
+			<= Upload $yuf_attach2
+				files? <=> files? /File
+				accept <= accept \.png, .jpg, .jpeg
+			<= Crop_enabled $mol_check_icon
+				Icon <= Crop_icon $mol_icon_crop
+				enabled <= url_exists false
+				checked? <=> crop_enabled?
+				hint <= crop_hint @ \Crop
+			<= Undo $mol_button_minor
+				hint <= undo_hint @ \Undo
+				enabled <= op_enabled*undo false
+				sub / <= Undo_icon $mol_icon_undo
+				click? <=> op*undo? null
+			<= Redo $mol_button_minor
+				hint <= redo_hint @ \Redo
+				enabled <= op_enabled*redo false
+				sub / <= Redo_icon $mol_icon_redo
+				click? <=> op*redo? null
+		^ pane_content /$mol_view <= Pane $yuf_avatar_pane
+			url <= current_url \
+			crop_enabled? => crop_enabled?

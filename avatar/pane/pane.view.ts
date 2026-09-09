@@ -1,14 +1,68 @@
 namespace $.$$ {
 	export class $yuf_avatar_pane extends $.$yuf_avatar_pane {
-		@ $mol_mem
-		override crop_geometry() {
-			let points = this.crop_points()
-			if( points.length === 0 ) return ''
+		@ $mol_action
+		protected pick_box() {
+			const half_size = this.image_size().multed0(.5)
+			const center = this.visible_center().added1(half_size)
+			const box_half_size = this.size().multed0(.25)
 
-			const [ ax, ay ] = points[0]
-			const [ bx, by ] = points[1]
-			const f = (a: number, b: number) => `${a.toFixed(3)},${b.toFixed(3)}`
-			return `M ${f(ax, ay)} L ${f(bx, ay)} ${f(bx, by)} ${f(ax, by)} Z`
+			const lt = center.substracted1(box_half_size)
+			const rb = center.added1(box_half_size)
+
+			return [
+				[lt.x, lt.y],
+				[rb.x, rb.y]
+			] as const
+		}
+
+		override note_ids() {
+			const id = this.note_id_selected()
+			return id ? [ id ] : []
+		}
+
+		override crop_enabled(next?: boolean) {
+			return this.note_id_selected(next ? 'crop' : next === false ? '' : undefined) === 'crop'
+		}
+
+		@ $mol_mem_key
+		override points(note_id: string, next?: readonly (readonly [number, number])[]) {
+			if (next) return next
+
+			return this.pick_box()
+		}
+
+		override point(
+			[note_id, point_index]: [note_id: string, point_index: number],
+			next?: readonly [number, number] | null,
+			shift_press = false
+		) {
+			const points = this.points(note_id)
+			if (next === undefined) return points[point_index]
+
+			if (next) {
+				const opposite = points[point_index === 0 ? 1 : 0]
+				const dx = next[0] - opposite[0]
+				next = [ next[0], dx + opposite[1] ]
+			}
+
+			const next_points = next === null
+				? points.filter((p, index) => point_index !== index)
+				: points.map((p, index) => index === point_index ? next : p)
+
+			return this.points(note_id, next_points)[point_index]
+		}
+
+		@ $mol_mem_key
+		override note_points(note_id: string): readonly ([number, number])[] {
+			const [ scale_x, scale_y ] = this.scale()
+			const half_size = this.image_size().multed0(.5)
+			
+			const points = this.points(note_id) ?? []
+
+			return points.map( ([ x, y ]) => [
+				(x - half_size.x) * scale_x,
+				(y - half_size.y) * scale_y,
+			] as [number, number] )
 		}
 	}
 }
