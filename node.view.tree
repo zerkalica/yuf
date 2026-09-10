@@ -1487,9 +1487,10 @@ $yuf_camera_pane $mol_view
 		stream <= stream
 		status => recorder_status
 		error => recorder_error
-	canvas $yuf_canvas_image
+	canvas $yuf_canvas_blob
 		image_type <= image_type \image/jpeg
 		node <= camera_node
+		blob* => canvas_blob*
 	canvas_file null File
 	files? /File
 	status? /
@@ -1517,7 +1518,7 @@ $yuf_camera_pane $mol_view
 						click? <=> close_click? null
 
 $yuf_camera_pane_video $mol_video_camera
-	dom_safe <= dom_node
+	dom_safe HTMLVideoElement
 	event *
 		^
 		click? <=> click? null

@@ -7706,65 +7706,56 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    type Constructor = new (...args: any) => any;
-    export const factory_caches: WeakMap<typeof $, WeakMap<Constructor, Constructor>>;
-    export let $mol_static: typeof $ & (<Value extends Constructor>(constructor: Value) => Value);
-    export {};
-}
-
-declare namespace $ {
-    type Instances<Obj> = {
-        [K in keyof Obj]: Obj[K] extends new (...args: any) => infer Instance ? Instance : Obj[K];
-    };
-    export let $mol_one: Instances<$> & (<Instance>(constructor: new (...args: any) => Instance) => Instance);
-    export {};
-}
-
-declare namespace $ {
-    class $yuf_canvas_host extends $mol_object {
-        native(): OffscreenCanvas;
-        context2D(): OffscreenCanvasRenderingContext2D;
-        protected _render_task: null | Promise<Blob>;
-        render_task(next?: Promise<Blob>): Promise<Blob> | null;
+    type Context<Id extends OffscreenRenderingContextId> = Id extends '2d' ? OffscreenCanvasRenderingContext2D : Id extends 'bitmaprenderer' ? ImageBitmapRenderingContext : Id extends 'webgl' ? WebGLRenderingContext : Id extends 'webgl2' ? WebGL2RenderingContext : never;
+    export class $yuf_canvas_context extends $mol_object {
+        readonly native: OffscreenCanvas;
+        static from_size(size: readonly [number, number]): $yuf_canvas_context;
+        context<Id extends OffscreenRenderingContextId>(type: Id): Context<Id>;
+        size(next?: readonly [number, number]): readonly [number, number];
+        get d2(): OffscreenCanvasRenderingContext2D;
+        get bitmaprenderer(): ImageBitmapRenderingContext;
+        get webgl(): WebGLRenderingContext;
+        get webgl2(): WebGL2RenderingContext;
+        get webgpu(): never;
     }
+    export {};
 }
 
 declare namespace $ {
+    function $yuf_media_size(image: CanvasImageSource): readonly [x: number, y: number];
+}
+
+declare namespace $ {
+    type $yuf_canvas_blob_op<Src, Keys extends string> = {
+        [Key in Keys]?: Key extends keyof Src ? Src[Key] extends (arg: infer Param) => any ? Param : never : never;
+    };
     class $yuf_canvas_blob extends $mol_object {
-        host(): $yuf_canvas_host;
-        context(): OffscreenCanvasRenderingContext2D;
+        protected _canvas: null | $yuf_canvas_context;
+        canvas(): $yuf_canvas_context;
+        canvas_make(size: readonly [number, number]): $yuf_canvas_context;
         protected cancel: null | (() => void);
+        protected _render_task: null | Promise<Blob>;
         render_task(next?: Promise<Blob>): Promise<Blob> | null;
         image_type(): string;
         quality(): number;
-        render_options(): {
-            context: OffscreenCanvasRenderingContext2D;
-            canvas: OffscreenCanvas;
-            type: string;
-            quality: number;
-        };
-        draw(opts: ReturnType<typeof this.render_options>): Promise<void>;
-        snapshot(opts: ReturnType<typeof this.render_options>): Promise<Blob>;
-        blob_async(opts: ReturnType<typeof this.render_options>): Promise<Blob>;
+        protected apply_transforms(transforms: readonly (Record<string, unknown>)[]): void;
+        protected apply_transforms_task: ((transforms: readonly Record<string, unknown>[]) => Promise<void>) & {};
+        snapshot(transforms: readonly (Record<string, unknown>)[]): Promise<Blob>;
+        blob_async(transforms: readonly (Record<string, unknown>)[]): Promise<Blob>;
         protected dead: boolean;
-        blob(): Blob;
-        object_url(): string;
+        protected deps(): void;
         destructor(): void;
-    }
-}
-
-declare namespace $ {
-    class $yuf_canvas_image extends $yuf_canvas_blob {
-        node(): null | Element;
-        static sizes(image: Exclude<CanvasImageSource, VideoFrame>): number[];
-        render_options(): {
-            node: HTMLVideoElement | OffscreenCanvas | HTMLCanvasElement | HTMLOrSVGImageElement | ImageBitmap;
-            context: OffscreenCanvasRenderingContext2D;
-            canvas: OffscreenCanvas;
-            type: string;
-            quality: number;
-        };
-        draw({ context, canvas, node }: ReturnType<typeof this.render_options>): Promise<void>;
+        node(): CanvasImageSource;
+        image_url(): string;
+        crop({ lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }: {
+            lt: readonly [number, number];
+            rb: readonly [number, number];
+        }): void;
+        resize({ new_size }: {
+            new_size: readonly [number, number];
+        }): void;
+        protected prepare(): void;
+        blob(transforms: (readonly ($yuf_canvas_blob_op<this, 'crop' | 'resize'>)[]) | null): Blob;
     }
 }
 
@@ -8038,90 +8029,96 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type $yuf_camera_pane_video__facing_yuf_camera_pane_1 = $mol_type_enforce<
+	type __yuf_camera_pane_1 = $mol_type_enforce<
+		Parameters< $yuf_camera_pane['canvas_blob'] >[0]
+		,
+		Parameters< ReturnType< $yuf_camera_pane['canvas'] >['blob'] >[0]
+	>
+	type $yuf_camera_pane_video__facing_yuf_camera_pane_2 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['facing'] >
 		,
 		ReturnType< $yuf_camera_pane_video['facing'] >
 	>
-	type $yuf_camera_pane_video__width_yuf_camera_pane_2 = $mol_type_enforce<
+	type $yuf_camera_pane_video__width_yuf_camera_pane_3 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['desirable_width'] >
 		,
 		ReturnType< $yuf_camera_pane_video['width'] >
 	>
-	type $yuf_camera_pane_video__height_yuf_camera_pane_3 = $mol_type_enforce<
+	type $yuf_camera_pane_video__height_yuf_camera_pane_4 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['desirable_height'] >
 		,
 		ReturnType< $yuf_camera_pane_video['height'] >
 	>
-	type $yuf_camera_pane_video__click_yuf_camera_pane_4 = $mol_type_enforce<
+	type $yuf_camera_pane_video__click_yuf_camera_pane_5 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['camera_click'] >
 		,
 		ReturnType< $yuf_camera_pane_video['click'] >
 	>
-	type $mol_view__sub_yuf_camera_pane_5 = $mol_type_enforce<
+	type $mol_view__sub_yuf_camera_pane_6 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_camera_recorder_button__recorder_yuf_camera_pane_6 = $mol_type_enforce<
+	type $yuf_camera_recorder_button__recorder_yuf_camera_pane_7 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['recorder'] >
 		,
 		ReturnType< $yuf_camera_recorder_button['recorder'] >
 	>
-	type $mol_button_minor__hint_yuf_camera_pane_7 = $mol_type_enforce<
+	type $mol_button_minor__hint_yuf_camera_pane_8 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_hint'] >
 		,
 		ReturnType< $mol_button_minor['hint'] >
 	>
-	type $mol_button_minor__sub_yuf_camera_pane_8 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_camera_pane_9 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
 	>
-	type $mol_button_minor__click_yuf_camera_pane_9 = $mol_type_enforce<
+	type $mol_button_minor__click_yuf_camera_pane_10 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_click'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $yuf_camera_pane_controls__10 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__11 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_main'] >[number]
 		,
 		$mol_view_content
 	>
-	type $yuf_camera_pane_controls__11 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__12 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['video_controls'] >[number]
 		,
 		$mol_view_content
 	>
-	type $yuf_camera_pane_controls__12 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__13 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_close'] >[number]
 		,
 		$mol_view_content
 	>
-	type $mol_view__sub_yuf_camera_pane_13 = $mol_type_enforce<
+	type $mol_view__sub_yuf_camera_pane_14 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_camera_recorder__stream_yuf_camera_pane_14 = $mol_type_enforce<
+	type $yuf_camera_recorder__stream_yuf_camera_pane_15 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['stream'] >
 		,
 		ReturnType< $yuf_camera_recorder['stream'] >
 	>
-	type $yuf_canvas_image__image_type_yuf_camera_pane_15 = $mol_type_enforce<
+	type $yuf_canvas_blob__image_type_yuf_camera_pane_16 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['image_type'] >
 		,
-		ReturnType< $yuf_canvas_image['image_type'] >
+		ReturnType< $yuf_canvas_blob['image_type'] >
 	>
-	type $yuf_canvas_image__node_yuf_camera_pane_16 = $mol_type_enforce<
+	type $yuf_canvas_blob__node_yuf_camera_pane_17 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['camera_node'] >
 		,
-		ReturnType< $yuf_canvas_image['node'] >
+		ReturnType< $yuf_canvas_blob['node'] >
 	>
 	export class $yuf_camera_pane extends $mol_view {
 		recorder_status( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['status'] >
 		recorder_error( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['error'] >
 		image_type( ): string
+		canvas_blob( id: any): ReturnType< ReturnType< $yuf_camera_pane['canvas'] >['blob'] >
 		camera_node( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['dom_safe'] >
 		stream( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['stream'] >
 		facing( ): string
@@ -8145,7 +8142,7 @@ declare namespace $ {
 		video_acceptable( ): boolean
 		file_name_template( ): string
 		recorder( ): $yuf_camera_recorder
-		canvas( ): $yuf_canvas_image
+		canvas( ): $yuf_canvas_blob
 		canvas_file( ): File | null
 		files( next?: readonly(File)[] ): readonly(File)[]
 		status( next?: readonly(any)[] ): readonly(any)[]
@@ -8155,7 +8152,7 @@ declare namespace $ {
 	
 	export class $yuf_camera_pane_video extends $mol_video_camera {
 		click( next?: any ): any
-		dom_safe( ): ReturnType< $yuf_camera_pane_video['dom_node'] >
+		dom_safe( ): HTMLVideoElement
 		event( ): ({ 
 			click( next?: ReturnType< $yuf_camera_pane_video['click'] > ): ReturnType< $yuf_camera_pane_video['click'] >,
 		})  & ReturnType< $mol_video_camera['event'] >
@@ -8174,7 +8171,7 @@ declare namespace $.$$ {
         status_text(): string;
     }
     class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
-        dom_safe(): Element;
+        dom_safe(): HTMLVideoElement;
     }
 }
 
@@ -11859,6 +11856,13 @@ declare namespace $ {
 }
 
 declare namespace $ {
+    type Constructor = new (...args: any) => any;
+    export const factory_caches: WeakMap<typeof $, WeakMap<Constructor, Constructor>>;
+    export let $mol_static: typeof $ & (<Value extends Constructor>(constructor: Value) => Value);
+    export {};
+}
+
+declare namespace $ {
     class $yuf_localizer_key_model extends $mol_object {
         id(): string;
         text_actual(): null | string;
@@ -12800,6 +12804,14 @@ declare namespace $ {
         ready(): boolean;
         error_message(): string;
     }
+}
+
+declare namespace $ {
+    type Instances<Obj> = {
+        [K in keyof Obj]: Obj[K] extends new (...args: any) => infer Instance ? Instance : Obj[K];
+    };
+    export let $mol_one: Instances<$> & (<Instance>(constructor: new (...args: any) => Instance) => Instance);
+    export {};
 }
 
 declare namespace $ {

@@ -17189,96 +17189,61 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.factory_caches = new WeakMap();
-    function contexted(Factory) {
-        let cache = $.factory_caches.get(this);
-        if (!cache) {
-            cache = new WeakMap();
-            $.factory_caches.set(this, cache);
-        }
-        let Contexted = cache.get(Factory);
-        if (Contexted)
-            return Contexted;
-        const t = this;
-        Contexted = $mol_func_name_from(class extends Factory {
-            static $ = t;
-        }, Factory);
-        cache.set(Factory, Contexted);
-        return Contexted;
-    }
-    $.$mol_static = contexted;
-    Object.defineProperty($, '$mol_static', {
-        get() {
-            const t = this;
-            return new Proxy(contexted, {
-                get(self, k) {
-                    const val = t[k];
-                    if (typeof val !== 'function' || t === $)
-                        return val;
-                    return contexted.call(t, val);
-                },
+    class $yuf_canvas_context extends $mol_object {
+        native;
+        static from_size(size) {
+            return this.$.$yuf_canvas_context.make({
+                native: new this.$.$mol_dom_context.OffscreenCanvas(size[0], size[1])
             });
         }
-    });
+        context(type) {
+            const ctx = this.native.getContext(type);
+            if (!ctx)
+                throw new Error('Can\'t get context from canvas', { cause: { type } });
+            return ctx;
+        }
+        size(next) {
+            if (next) {
+                this.native.width = next[0];
+                this.native.height = next[1];
+            }
+            return [this.native.width, this.native.height];
+        }
+        get d2() { return this.context('2d'); }
+        get bitmaprenderer() { return this.context('bitmaprenderer'); }
+        get webgl() { return this.context('webgl'); }
+        get webgl2() { return this.context('webgl2'); }
+        get webgpu() { return this.context('webgpu'); }
+    }
+    $.$yuf_canvas_context = $yuf_canvas_context;
 })($ || ($ = {}));
 
 ;
 "use strict";
 var $;
 (function ($) {
-    $.$mol_one = {};
-    const cache = new WeakMap();
-    function singletone(Origin) {
-        const Contexted = this.$mol_static(Origin);
-        let instance = cache.get(Contexted);
-        if (instance)
-            return instance;
-        instance = new Contexted();
-        instance[$mol_ambient_ref] = this;
-        cache.set(Contexted, instance);
-        return instance;
+    function $yuf_media_size(image) {
+        if (image instanceof VideoFrame)
+            return [
+                image.displayWidth,
+                image.displayHeight
+            ];
+        if (image instanceof HTMLVideoElement)
+            return [
+                image.videoWidth,
+                image.videoHeight,
+            ];
+        if (image instanceof SVGImageElement)
+            return [
+                image.width.baseVal.value,
+                image.height.baseVal.value,
+            ];
+        return [
+            image.width,
+            image.height,
+        ];
     }
-    Object.defineProperty($, '$mol_one', {
-        get() {
-            const t = this;
-            return new Proxy(singletone, {
-                get(self, k) {
-                    const val = t[k];
-                    if (typeof val !== 'function')
-                        return val;
-                    return singletone.call(t, val);
-                }
-            });
-        }
-    });
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $yuf_canvas_host extends $mol_object {
-        native() {
-            const ctx = this.$.$mol_dom_context;
-            return new ctx.OffscreenCanvas(4096, 4096);
-        }
-        context2D() {
-            const context = this.native().getContext('2d');
-            if (!context)
-                throw new Error('Can\'t create canvas context');
-            return context;
-        }
-        _render_task = null;
-        render_task(next) {
-            if (next)
-                this._render_task = next;
-            return this._render_task;
-        }
-    }
-    __decorate([
-        $mol_mem
-    ], $yuf_canvas_host.prototype, "native", null);
-    $.$yuf_canvas_host = $yuf_canvas_host;
+    $.$yuf_media_size = $yuf_media_size;
 })($ || ($ = {}));
 
 ;
@@ -17286,39 +17251,51 @@ var $;
 var $;
 (function ($) {
     class $yuf_canvas_blob extends $mol_object {
-        host() { return this.$.$mol_one.$yuf_canvas_host; }
-        context() { return this.host().context2D(); }
+        _canvas = null;
+        canvas() { return this._canvas ?? (this._canvas = this.canvas_make([4096, 4096])); }
+        canvas_make(size) {
+            return this.$.$yuf_canvas_context.from_size(size);
+        }
         cancel = null;
-        render_task(next) { return this.host().render_task(next); }
+        _render_task = null;
+        render_task(next) {
+            if (next)
+                this._render_task = next;
+            return this._render_task;
+        }
         image_type() { return 'image/png'; }
         quality() { return .99; }
-        render_options() {
-            const context = this.context();
-            return {
-                context,
-                canvas: context.canvas,
-                type: this.image_type(),
-                quality: this.quality(),
-            };
+        apply_transforms(transforms) {
+            this.prepare();
+            for (const transform of transforms) {
+                for (const method of Object.keys(transform)) {
+                    if (!transform[method] || !(method in this) || typeof this[method] !== 'function') {
+                        throw new Error('Method not found in canvas pipe', { cause: { method, transform } });
+                    }
+                    this[method](transform[method]);
+                }
+            }
         }
-        async draw(opts) { }
-        async snapshot(opts) {
-            const { context, canvas, quality, type } = opts;
+        apply_transforms_task = $mol_wire_async(function (transforms) { return this.apply_transforms(transforms); });
+        async snapshot(transforms) {
+            const quality = this.quality();
+            const canvas = this.canvas();
+            const type = this.image_type();
             if (this.dead)
                 return new Blob();
-            context.save();
+            canvas.d2.save();
             try {
-                await this.draw(opts);
-                const blob = this.dead ? new Blob() : await canvas.convertToBlob({ type, quality });
-                context.restore();
+                await this.apply_transforms_task(transforms);
+                const blob = this.dead ? new Blob() : await canvas.native.convertToBlob({ type, quality });
+                canvas.d2.restore();
                 return blob;
             }
             catch (e) {
-                context.restore();
+                canvas.d2.restore();
                 $mol_fail_hidden(e);
             }
         }
-        async blob_async(opts) {
+        async blob_async(transforms) {
             let task;
             this.dead = false;
             this.cancel?.();
@@ -17333,78 +17310,82 @@ var $;
                 if (this.dead)
                     return new Blob();
             } while (task !== this.render_task());
-            const promise = this.snapshot(opts);
+            const promise = this.snapshot(transforms);
             this.render_task(promise);
             return promise;
         }
         dead = false;
-        blob() {
-            return $mol_wire_sync(this).blob_async(this.render_options());
-        }
-        object_url() {
-            return URL.createObjectURL(this.blob());
+        deps() {
+            // pull data and wait async ops to prevent clears while blob_async working
+            this.node();
+            this.canvas();
+            this.quality();
+            this.image_type();
         }
         destructor() {
             this.dead = true;
-            const url = $mol_wire_probe(() => this.object_url());
-            if (url)
-                URL.revokeObjectURL(url);
             this.cancel?.();
         }
-    }
-    __decorate([
-        $mol_mem
-    ], $yuf_canvas_blob.prototype, "blob", null);
-    __decorate([
-        $mol_mem
-    ], $yuf_canvas_blob.prototype, "object_url", null);
-    $.$yuf_canvas_blob = $yuf_canvas_blob;
-})($ || ($ = {}));
-
-;
-"use strict";
-var $;
-(function ($) {
-    class $yuf_canvas_image extends $yuf_canvas_blob {
         node() {
-            return null;
+            const url = this.image_url();
+            if (!url)
+                throw new Error('Require setup CanvasImageSource DOM node');
+            const image = new Image();
+            image.src = url;
+            return image;
         }
-        static sizes(image) {
-            if (image instanceof HTMLVideoElement)
-                return [
-                    image.videoWidth,
-                    image.videoHeight,
-                ];
-            if (image instanceof SVGImageElement)
-                return [
-                    image.width.baseVal.value,
-                    image.height.baseVal.value,
-                ];
-            return [
-                image.width,
-                image.height,
-            ];
+        image_url() { return ''; }
+        crop({ lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }) {
+            const canvas = this.canvas();
+            const width = right_bottom_x - left_top_x;
+            const height = right_bottom_y - left_top_y;
+            const tmp = this.canvas_make(canvas.size());
+            tmp.d2.drawImage(canvas.native, 0, 0);
+            canvas.size([width, height]);
+            canvas.d2.drawImage(tmp.native, left_top_x, left_top_y, width, height, 0, 0, width, height);
         }
-        render_options() {
+        resize({ new_size }) {
+            const canvas = this.canvas();
+            const size = canvas.size();
+            if (size[0] <= new_size[0] && size[1] <= new_size[1])
+                return;
+            const tmp = this.canvas_make(canvas.size());
+            tmp.d2.drawImage(canvas.native, 0, 0);
+            canvas.size(new_size);
+            canvas.d2.drawImage(tmp.native, 0, 0, new_size[0], new_size[1]);
+        }
+        prepare() {
+            const canvas = this.canvas();
             const node = this.node();
-            const [w, h] = $yuf_canvas_image.sizes(node);
-            if (!w || !h)
-                throw new Error('Camera window is zero size', { cause: { node } });
-            return {
-                ...super.render_options(),
-                node,
-            };
+            const [w, h] = $yuf_media_size(this.node());
+            canvas.size([w, h]);
+            canvas.d2.fillStyle = 'rgb(255, 255, 255)';
+            canvas.d2.fillRect(0, 0, w, h);
+            canvas.d2.drawImage(node, 0, 0, w, h);
         }
-        async draw({ context, canvas, node }) {
-            const [w, h] = $yuf_canvas_image.sizes(node);
-            canvas.width = w;
-            canvas.height = h;
-            context.fillStyle = 'rgb(255, 255, 255)';
-            context.fillRect(0, 0, w, h);
-            context.drawImage(node, 0, 0, w, h);
+        blob(transforms) {
+            this.deps();
+            if (!transforms)
+                transforms = [{ copy: {} }];
+            return $mol_wire_sync(this).blob_async(transforms);
         }
     }
-    $.$yuf_canvas_image = $yuf_canvas_image;
+    __decorate([
+        $mol_action
+    ], $yuf_canvas_blob.prototype, "canvas_make", null);
+    __decorate([
+        $mol_action
+    ], $yuf_canvas_blob.prototype, "crop", null);
+    __decorate([
+        $mol_action
+    ], $yuf_canvas_blob.prototype, "resize", null);
+    __decorate([
+        $mol_action
+    ], $yuf_canvas_blob.prototype, "prepare", null);
+    __decorate([
+        $mol_mem_key
+    ], $yuf_canvas_blob.prototype, "blob", null);
+    $.$yuf_canvas_blob = $yuf_canvas_blob;
 })($ || ($ = {}));
 
 ;
@@ -17737,6 +17718,9 @@ var $;
 		image_type(){
 			return "image/jpeg";
 		}
+		canvas_blob(id){
+			return (this.canvas().blob(id));
+		}
 		camera_node(){
 			return (this.Camera().dom_safe());
 		}
@@ -17833,7 +17817,7 @@ var $;
 			return obj;
 		}
 		canvas(){
-			const obj = new this.$.$yuf_canvas_image();
+			const obj = new this.$.$yuf_canvas_blob();
 			(obj.image_type) = () => ((this.image_type()));
 			(obj.node) = () => ((this.camera_node()));
 			return obj;
@@ -17875,13 +17859,15 @@ var $;
 			return null;
 		}
 		dom_safe(){
-			return (this.dom_node());
+			const obj = new this.$.HTMLVideoElement();
+			return obj;
 		}
 		event(){
 			return {...(super.event()), "click": (next) => (this.click(next))};
 		}
 	};
 	($mol_mem(($.$yuf_camera_pane_video.prototype), "click"));
+	($mol_mem(($.$yuf_camera_pane_video.prototype), "dom_safe"));
 
 
 ;
@@ -18583,7 +18569,7 @@ var $;
                     return null;
                 const video = this.video_enabled();
                 const recorder = video ? this.recorder() : null;
-                const chunks = recorder?.flush() ?? [this.canvas().blob()];
+                const chunks = recorder?.flush() ?? [this.canvas_blob([])];
                 const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type();
                 if (!chunks.length || !chunks[0].size) {
                     throw new Error('No image recorded');
@@ -18651,7 +18637,7 @@ var $;
         $$.$yuf_camera_pane = $yuf_camera_pane;
         class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
             dom_safe() {
-                return this.dom_final() || this.dom_node();
+                return (this.dom_final() || this.dom_node());
             }
         }
         $$.$yuf_camera_pane_video = $yuf_camera_pane_video;
@@ -24642,6 +24628,43 @@ var $;
 "use strict";
 var $;
 (function ($) {
+    $.factory_caches = new WeakMap();
+    function contexted(Factory) {
+        let cache = $.factory_caches.get(this);
+        if (!cache) {
+            cache = new WeakMap();
+            $.factory_caches.set(this, cache);
+        }
+        let Contexted = cache.get(Factory);
+        if (Contexted)
+            return Contexted;
+        const t = this;
+        Contexted = $mol_func_name_from(class extends Factory {
+            static $ = t;
+        }, Factory);
+        cache.set(Factory, Contexted);
+        return Contexted;
+    }
+    $.$mol_static = contexted;
+    Object.defineProperty($, '$mol_static', {
+        get() {
+            const t = this;
+            return new Proxy(contexted, {
+                get(self, k) {
+                    const val = t[k];
+                    if (typeof val !== 'function' || t === $)
+                        return val;
+                    return contexted.call(t, val);
+                },
+            });
+        }
+    });
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
     class $yuf_localizer_key_model extends $mol_object {
         id() { return ''; }
         text_actual() {
@@ -26504,6 +26527,37 @@ var $;
         $mol_mem
     ], $yuf_ws_host.prototype, "error_message", null);
     $.$yuf_ws_host = $yuf_ws_host;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $.$mol_one = {};
+    const cache = new WeakMap();
+    function singletone(Origin) {
+        const Contexted = this.$mol_static(Origin);
+        let instance = cache.get(Contexted);
+        if (instance)
+            return instance;
+        instance = new Contexted();
+        instance[$mol_ambient_ref] = this;
+        cache.set(Contexted, instance);
+        return instance;
+    }
+    Object.defineProperty($, '$mol_one', {
+        get() {
+            const t = this;
+            return new Proxy(singletone, {
+                get(self, k) {
+                    const val = t[k];
+                    if (typeof val !== 'function')
+                        return val;
+                    return singletone.call(t, val);
+                }
+            });
+        }
+    });
 })($ || ($ = {}));
 
 ;
@@ -39568,7 +39622,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-33db521";
+    $.$yuf_sj_jammer_version = "0.0.1-44d93e0";
 })($ || ($ = {}));
 
 ;
