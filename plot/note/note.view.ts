@@ -14,7 +14,6 @@ namespace $.$$ {
 
 		override polygon_click(note_id: string, e?: Event) {
 			this.selected_key([note_id, -1])
-			this.note_id_selected(note_id)
 		}
 
 		override point_selected([note_id, point_index]: [note_id: string, point_index: number]) {
@@ -76,5 +75,6 @@ namespace $.$$ {
 		override polygon_selected(note_id: string) {
 			return this.note_id_selected() === note_id
 		}
+		
 	}
 }

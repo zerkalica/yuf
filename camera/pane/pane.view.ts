@@ -8,7 +8,7 @@ namespace $.$$ {
 			const video = this.video_enabled()
 
 			const recorder = video ? this.recorder() : null
-			const chunks = recorder?.flush() ?? [ this.canvas().blob() ]
+			const chunks = recorder?.flush() ?? [ this.canvas_blob([]) ]
 			const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type()
 
 			if (! chunks.length || ! chunks[0].size) {
@@ -79,7 +79,7 @@ namespace $.$$ {
 
 	export class $yuf_camera_pane_video extends $.$yuf_camera_pane_video {
 		override dom_safe() {
-			return this.dom_final() || this.dom_node()
+			return (this.dom_final() || this.dom_node()) as HTMLVideoElement
 		}
 	}
 }

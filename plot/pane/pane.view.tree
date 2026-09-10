@@ -1,12 +1,16 @@
 $yuf_plot_pane $mol_plot_pane
-	cursor_grab null $mol_vector_2d<number>
-	points*? /readonly[number,number]
-	point*? null readonly[number,number]
-	-
 	selected_key? null readonly[note_id:string,point_index:number]
 	note_id_selected? \
 	-
+	points*? /readonly[number,number]
+	point*? null readonly[number,number]
+	-
+	action_point_normalized null $mol_vector_2d<number>
+	action_point_delta null $mol_vector_2d<number>
+	points_move? null 'start'|'move'|'shift'
+	-
 	visible_center $mol_vector_2d<number>
+	-
 	event *
 		^
 		pointerup? <=> outside_click_event? null
@@ -43,7 +47,7 @@ $yuf_plot_pane $mol_plot_pane
 			sub <= defs /$mol_svg
 	graphs /$mol_plot_graph
 		<= Tiles $yuf_plot_tiles
-			level 0
+			level_override 0
 			tile_type* <= tile_type* <= type \image
 			tile_uri_actual* <= tile_uri* <= url \
 			image_size <= image_size_safe

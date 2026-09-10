@@ -1,4 +1,5 @@
 $yuf_plot_tiles $mol_plot_map_tiles
+	level_override null number
 	tile_empty_url* <= empty_url \yuf/plot/tiles/image/empty.png
 	-
 	tile_error_url* <= error_url \yuf/plot/tiles/image/error.png

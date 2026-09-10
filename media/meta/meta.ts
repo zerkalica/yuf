@@ -2,23 +2,18 @@ namespace $ {
 	type Key = [ type: string, url: string ]
 
 	export class $yuf_media_meta extends $mol_object {
-		protected media_size([ type, url ]: Key) {
-			if (type === 'video') {
-				const vid = this.$.$yuf_video_load(url)
-				return new $mol_vector_2d(vid.videoWidth, vid.videoHeight)
-			}
+		protected media_size([ type, url ]: Key)  {
+			let el
+			if (type === 'video') el = this.$.$yuf_video_load(url)
+			if (type === 'image') el = this.$.$yuf_picture_load(url)
+			const pnt = ! el ? null : $yuf_media_size(el)
 
-			if (type === 'image') {
-				const pic = this.$.$yuf_picture_load(url)
-				return new $mol_vector_2d(pic.width, pic.height)
-			}
+			if (! pnt ) throw new Error('Getting media size not supported', { cause : { type, url }})
 
-			throw new Error('Getting media size not supported', { cause : { type, url }})
+			return new $mol_vector_2d(pnt[0], pnt[1])
 		}
 
 		@ $mol_mem_key
-		size(key: Key, reset?: null): $mol_vector_2d<number> {
-			return this.media_size(key)
-		}
+		size(key: Key, reset?: null) { return this.media_size(key) }
 	}
 }

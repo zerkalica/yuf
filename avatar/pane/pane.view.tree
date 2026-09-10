@@ -1,8 +1,9 @@
 $yuf_avatar_pane $yuf_plot_pane
-	allow_draw <= crop_enabled? false
+	zoom_min 1
+	gap_hor 0
 	graphs /$mol_plot_graph
 		^
-		<= Crop $yuf_plot_note
-			selected_key? <=> selected_key? null readonly[note_id:string,point_index:number]
+		^ selection_content /$mol_plot_graph <= Selection $yuf_plot_note
+			selected_key? <=> selected_key?
 			note_ids <= note_ids /string
 			note_points* <= note_points* <= points*

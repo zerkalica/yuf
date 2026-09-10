@@ -4,10 +4,11 @@ namespace $.$$ {
 		protected pick_box() {
 			const half_size = this.image_size().multed0(.5)
 			const center = this.visible_center().added1(half_size)
-			const box_half_size = this.size().multed0(.25)
 
-			const lt = center.substracted1(box_half_size)
-			const rb = center.added1(box_half_size)
+			const box_size = this.size_real().divided1(this.scale()).multed0(.25)
+
+			const lt = center.substracted1(box_size)
+			const rb = center.added1(box_size)
 
 			return [
 				[lt.x, lt.y],
@@ -15,13 +16,13 @@ namespace $.$$ {
 			] as const
 		}
 
+		override allow_draw() {
+			return Boolean(this.note_id_selected())
+		}
+
 		override note_ids() {
 			const id = this.note_id_selected()
 			return id ? [ id ] : []
-		}
-
-		override crop_enabled(next?: boolean) {
-			return this.note_id_selected(next ? 'crop' : next === false ? '' : undefined) === 'crop'
 		}
 
 		@ $mol_mem_key
@@ -31,15 +32,20 @@ namespace $.$$ {
 			return this.pick_box()
 		}
 
+		override selection_content() {
+			return this.note_id_selected() ? super.selection_content() : []
+		}
+
+		@ $mol_mem_key
 		override point(
-			[note_id, point_index]: [note_id: string, point_index: number],
+			[note_id, point_index]: readonly [note_id: string, point_index: number],
 			next?: readonly [number, number] | null,
 			shift_press = false
 		) {
 			const points = this.points(note_id)
 			if (next === undefined) return points[point_index]
 
-			if (next) {
+			if (next && ! shift_press) {
 				const opposite = points[point_index === 0 ? 1 : 0]
 				const dx = next[0] - opposite[0]
 				next = [ next[0], dx + opposite[1] ]

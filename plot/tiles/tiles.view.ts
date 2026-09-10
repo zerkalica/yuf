@@ -4,6 +4,10 @@ namespace $.$$ {
 			return this.tile_type(id) === 'video' ? this.Tile_video(id) : super.Tile(id)
 		}
 
+		override level() {
+			return this.level_override() ?? super.level()
+		}
+
 		override transform() {
 			const flip_h = this.flipped_hor()
 			const flip_v = this.flipped_vert()

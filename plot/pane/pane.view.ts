@@ -155,40 +155,31 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		override cursor_grab() {
+		override action_point_normalized() {
 			// cursor distance from center
 			const cursor = this.action_point()
-			if ( Number.isNaN(cursor.x) ) return null
-
-			const half_size = this.size().multed0(.5)
-
-			return cursor.added1(half_size)
+			return ! cursor || Number.isNaN(cursor.x) ? null : cursor.added1(this.size().multed0(.5))
 		}
 
-		protected points_at_start = null as null | readonly (readonly [number, number])[]
 		protected cursor_at_start = null as null | $mol_vector_2d<number>
 
 		override draw_start(event: Event) {
 			super.draw_start(event)
-
-			const note_id = this.note_id_selected()
-			this.cursor_at_start = this.cursor_grab()
-			this.points_at_start = note_id !== null ? this.points(note_id) : null
+			this.cursor_at_start = this.action_point()
+			this.points_move('start')
 		}
 
 		override draw_end( next?: Event ) {
 			this.cursor_at_start = null
-			this.points_at_start = null
-
+			this.points_move(null)
 			super.draw_end(next)
 		}
 
-		override point(
-			key: readonly [note_id: string, point_index: number],
-			next?: readonly [number, number] | null,
-			shift_press = false
-		) {
-			return super.point(key, next)
+		override action_point_delta() {
+			const cursor = this.action_point()
+			return ! this.cursor_at_start || ! cursor || Number.isNaN(cursor.x)
+				? null
+				: cursor.substracted1(this.cursor_at_start)
 		}
 
 		override draw(e?: Event & { shiftKey?: boolean }) {
@@ -201,30 +192,11 @@ namespace $.$$ {
 			const action = this.action_type()
 			if (action !== 'draw') return null
 
-			const cursor = this.cursor_grab()
+			if ( ! this.cursor_at_start ) return null
+			const cursor = this.action_point()
 			if (! cursor) return null
-
-			const note_id = this.note_id_selected()
-			if (! note_id) return null
-			const key = this.selected_key()
-
-			if ( ! key || key[1] < 0) {
-				const delta = ! cursor || ! this.cursor_at_start
-					? null
-					: cursor.substracted1(this.cursor_at_start)
-
-				const next = ! delta || ! this.points_at_start
-					? []
-					: this.points_at_start.map(p => [ p[0] + delta.x, p[1] + delta.y ] as const)
-
-				this.points(note_id, next)
-
-				return null
-			}
-
 			const shift_press = this.shift_press(event.native)
-			this.point(key, [cursor.x, cursor.y], shift_press)
-
+			this.points_move(shift_press ? 'shift' : 'move')
 			return null
 		}
 
@@ -242,8 +214,47 @@ namespace $.$$ {
 			return (pane_halfsize.substracted1(shift)).divided1(scale)
 		}
 
-		override note_id_selected(note_id?: string | null) {
-			return this.selected_key(note_id === null || note_id === undefined ? note_id : [note_id, -1])?.[0] ?? ''
+		@ $mol_mem
+		override selected_key(next?: readonly[note_id:string,point_index:number] | null) {
+			const note_id = this.note_id_selected(next?.[0])
+			return ! note_id ? null : [ note_id, next?.[1] ?? -1 ] as const
 		}
+
+		override point(
+			key: readonly [note_id: string, point_index: number],
+			next?: readonly [number, number] | null,
+			shift_press = false
+		) {
+			return super.point(key, next)
+		}
+
+		protected points_at_start = null as null | readonly (readonly [number, number])[]
+
+		@ $mol_mem
+		override points_move(next?: 'start' | 'shift' | 'move' | null) {
+			const id = this.note_id_selected()
+			if (! id ) return null
+
+			if (next === null) this.points_at_start = null
+			if (next === 'start') this.points_at_start = this.points(id)
+
+			if (! next || next === 'start') return null
+
+			const key = this.selected_key()
+			const point_index = key?.[1] ?? -1
+			if ( point_index < 0 ) {
+				const delta = this.action_point_delta()
+				if (! delta ) return next
+				const next_points = this.points_at_start?.map(p => [ p[0] + delta.x, p[1] + delta.y ] as const) ?? []
+				this.points(id, next_points)
+				return next
+			}
+
+			const cursor = this.action_point_normalized()
+			if (! key || ! cursor ) return next
+			this.point(key, [cursor.x, cursor.y], next === 'shift')
+			return next
+		}
+
 	}
 }
