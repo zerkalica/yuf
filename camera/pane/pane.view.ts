@@ -3,12 +3,12 @@ namespace $.$$ {
 		
 		@ $mol_action
 		override canvas_file() {
-			this.camera_node()
+			const src = this.camera_node()
 			if (! this.visible() ) return null
 			const video = this.video_enabled()
 
 			const recorder = video ? this.recorder() : null
-			const chunks = recorder?.flush() ?? [ this.canvas_blob([]) ]
+			const chunks = recorder?.flush() ?? [ this.canvas().blob(src) ]
 			const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type()
 
 			if (! chunks.length || ! chunks[0].size) {

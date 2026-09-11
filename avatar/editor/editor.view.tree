@@ -1,9 +1,12 @@
 $yuf_avatar_editor $mol_view
 	value_data_url? \
 	value_blob? null Blob
-	canvas $yuf_canvas_blob
+	size_max /number
+		<= size_max_x 512
+		<= size_max_y 512
+	canvas $yuf_canvas_pipe
+		quality .8
 		image_type <= image_type \image/jpeg
-		image_url <= current_url
 	sub /$mol_view
 		<= Toolbar $mol_toolbar items /
 			<= Upload $yuf_attach2

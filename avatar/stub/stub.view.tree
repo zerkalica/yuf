@@ -1,0 +1,11 @@
+$yuf_avatar_stub $mol_view
+	style *
+		^
+		backgroundColor <= bg_color <= bg_color_tpl \hsl({hue}, 60%, 50%)
+	sub /
+		^ image_content /$mol_view
+			<= Pop $mol_pick
+				trigger_content / <= Image $mol_image uri <= url \
+				bubble_content / <= Image_big $mol_image uri <= url
+		<= Text $mol_view
+			sub / <= letters <= name \

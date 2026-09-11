@@ -18,8 +18,14 @@ namespace $.$$ {
 
 		@ $mol_mem
 		override blobs(next?: readonly Blob[]): readonly Blob[] {
-			const initial = this.value_blob()
-			if (next?.length) this.value_blob(next[0])
+			const initial = this.value_cut()
+			const src = next?.at(-1)
+			if (src) {
+				const blob = this.canvas().blob(src, [
+					{ resize: { max: this.size_max() as [ number, number ]} },
+				])
+				this.value_blob(blob)
+			}
 
 			return initial ? [initial, ...next ?? [] ] : next ?? []
 		}
@@ -59,10 +65,10 @@ namespace $.$$ {
 			if (! lt || ! rb ) return
 
 			if (id === 'crop') {
-				const canvas = this.canvas()
-				const blob = canvas.blob([
+				const src = this.current_url()
+
+				const blob = this.canvas().blob(src, [
 					{ crop: { lt, rb } },
-					{ resize: { new_size: [ 512, 512 ] } },
 				])
 
 				this.blobs([ ... this.blobs(), blob ])
