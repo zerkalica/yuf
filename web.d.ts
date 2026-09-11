@@ -7706,19 +7706,7 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-    type Context<Id extends OffscreenRenderingContextId> = Id extends '2d' ? OffscreenCanvasRenderingContext2D : Id extends 'bitmaprenderer' ? ImageBitmapRenderingContext : Id extends 'webgl' ? WebGLRenderingContext : Id extends 'webgl2' ? WebGL2RenderingContext : never;
-    export class $yuf_canvas_context extends $mol_object {
-        readonly native: OffscreenCanvas;
-        static from_size(size: readonly [number, number]): $yuf_canvas_context;
-        context<Id extends OffscreenRenderingContextId>(type: Id): Context<Id>;
-        size(next?: readonly [number, number]): readonly [number, number];
-        get d2(): OffscreenCanvasRenderingContext2D;
-        get bitmaprenderer(): ImageBitmapRenderingContext;
-        get webgl(): WebGLRenderingContext;
-        get webgl2(): WebGL2RenderingContext;
-        get webgpu(): never;
-    }
-    export {};
+    function $yuf_canvas_normalize(this: $, src: Exclude<ImageBitmapSource, ImageData> | string): CanvasImageSource;
 }
 
 declare namespace $ {
@@ -7726,37 +7714,62 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    type $yuf_canvas_blob_op<Src, Keys extends string> = {
-        [Key in Keys]?: Key extends keyof Src ? Src[Key] extends (arg: infer Param) => any ? Param : never : never;
-    };
-    class $yuf_canvas_blob extends $mol_object {
-        protected _canvas: null | $yuf_canvas_context;
-        canvas(): $yuf_canvas_context;
-        canvas_make(size: readonly [number, number]): $yuf_canvas_context;
+    type Context<Id extends OffscreenRenderingContextId> = Id extends '2d' ? OffscreenCanvasRenderingContext2D : Id extends 'bitmaprenderer' ? ImageBitmapRenderingContext : Id extends 'webgl' ? WebGLRenderingContext : Id extends 'webgl2' ? WebGL2RenderingContext : never;
+    export type $yuf_canvas_host_source = Exclude<ImageBitmapSource, ImageData> | string;
+    export class $yuf_canvas_host extends $mol_object {
+        readonly native: OffscreenCanvas;
+        static from_source(src?: $yuf_canvas_host_source | readonly [number, number], prev?: $yuf_canvas_host | null): $yuf_canvas_host;
+        context<Id extends OffscreenRenderingContextId>(type: Id): Context<Id>;
+        size(next?: readonly [number, number]): readonly [number, number];
+        get d2(): OffscreenCanvasRenderingContext2D;
+        get bitmaprenderer(): ImageBitmapRenderingContext;
+        get webgl(): WebGLRenderingContext;
+        get webgl2(): WebGL2RenderingContext;
+        get webgpu(): never;
+        blob(opts?: ImageEncodeOptions): Blob;
+        clone(): $yuf_canvas_host;
+    }
+    export {};
+}
+
+declare namespace $ {
+    class $yuf_sequence<Result, Params extends unknown[]> extends $mol_object {
         protected cancel: null | (() => void);
-        protected _render_task: null | Promise<Blob>;
-        render_task(next?: Promise<Blob>): Promise<Blob> | null;
-        image_type(): string;
-        quality(): number;
-        protected apply_transforms(transforms: readonly (Record<string, unknown>)[]): void;
-        protected apply_transforms_task: ((transforms: readonly Record<string, unknown>[]) => Promise<void>) & {};
-        snapshot(transforms: readonly (Record<string, unknown>)[]): Promise<Blob>;
-        blob_async(transforms: readonly (Record<string, unknown>)[]): Promise<Blob>;
+        protected render_task: null | Promise<any>;
         protected dead: boolean;
-        protected deps(): void;
+        task(...args: Params): Result;
+        task_async(...args: Parameters<typeof this.task>): Promise<Result | null>;
+        result(...args: Parameters<typeof this.task>): Awaited<Result> | null;
         destructor(): void;
-        node(): CanvasImageSource;
-        image_url(): string;
-        crop({ lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }: {
+    }
+}
+
+declare namespace $ {
+    type Transform_names<T> = {
+        [K in keyof T]: T[K] extends (ctx: $yuf_canvas_host, param: infer Param) => any ? Param extends {} ? K : never : never;
+    }[keyof T];
+    export type $yuf_canvas_pipe_transform<Src> = {
+        [Key in Transform_names<Src>]?: Key extends keyof Src ? Src[Key] extends (ctx: $yuf_canvas_host, param: infer Param) => any ? Param : never : never;
+    };
+    export type $yuf_canvas_pipe_transforms<Src> = readonly $yuf_canvas_pipe_transform<Src>[];
+    export class $yuf_canvas_pipe extends $mol_object {
+        crop(canvas: $yuf_canvas_host, { lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }: {
             lt: readonly [number, number];
             rb: readonly [number, number];
         }): void;
-        resize({ new_size }: {
-            new_size: readonly [number, number];
+        resize(canvas: $yuf_canvas_host, { max }: {
+            max: readonly [number, number];
         }): void;
-        protected prepare(): void;
-        blob(transforms: (readonly ($yuf_canvas_blob_op<this, 'crop' | 'resize'>)[]) | null): Blob;
+        image_type(): string;
+        quality(): number;
+        protected _seq: null | $yuf_sequence<Blob, Parameters<typeof this.task>>;
+        protected seq(): $yuf_sequence<Blob, [src: $yuf_canvas_host_source, transforms?: $yuf_canvas_pipe_transforms<$yuf_canvas_pipe> | undefined]>;
+        protected _canvas: null | $yuf_canvas_host;
+        protected transform(src: $yuf_canvas_host_source, transforms?: $yuf_canvas_pipe_transforms<$yuf_canvas_pipe>): $yuf_canvas_host;
+        protected task(src: $yuf_canvas_host_source, transforms?: $yuf_canvas_pipe_transforms<$yuf_canvas_pipe>): Blob;
+        blob(...opts: Parameters<typeof this.task>): Blob;
     }
+    export {};
 }
 
 declare namespace $ {
@@ -8029,96 +8042,85 @@ declare namespace $ {
 
 declare namespace $ {
 
-	type __yuf_camera_pane_1 = $mol_type_enforce<
-		Parameters< $yuf_camera_pane['canvas_blob'] >[0]
-		,
-		Parameters< ReturnType< $yuf_camera_pane['canvas'] >['blob'] >[0]
-	>
-	type $yuf_camera_pane_video__facing_yuf_camera_pane_2 = $mol_type_enforce<
+	type $yuf_camera_pane_video__facing_yuf_camera_pane_1 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['facing'] >
 		,
 		ReturnType< $yuf_camera_pane_video['facing'] >
 	>
-	type $yuf_camera_pane_video__width_yuf_camera_pane_3 = $mol_type_enforce<
+	type $yuf_camera_pane_video__width_yuf_camera_pane_2 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['desirable_width'] >
 		,
 		ReturnType< $yuf_camera_pane_video['width'] >
 	>
-	type $yuf_camera_pane_video__height_yuf_camera_pane_4 = $mol_type_enforce<
+	type $yuf_camera_pane_video__height_yuf_camera_pane_3 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['desirable_height'] >
 		,
 		ReturnType< $yuf_camera_pane_video['height'] >
 	>
-	type $yuf_camera_pane_video__click_yuf_camera_pane_5 = $mol_type_enforce<
+	type $yuf_camera_pane_video__click_yuf_camera_pane_4 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['camera_click'] >
 		,
 		ReturnType< $yuf_camera_pane_video['click'] >
 	>
-	type $mol_view__sub_yuf_camera_pane_6 = $mol_type_enforce<
+	type $mol_view__sub_yuf_camera_pane_5 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_camera_recorder_button__recorder_yuf_camera_pane_7 = $mol_type_enforce<
+	type $yuf_camera_recorder_button__recorder_yuf_camera_pane_6 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['recorder'] >
 		,
 		ReturnType< $yuf_camera_recorder_button['recorder'] >
 	>
-	type $mol_button_minor__hint_yuf_camera_pane_8 = $mol_type_enforce<
+	type $mol_button_minor__hint_yuf_camera_pane_7 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_hint'] >
 		,
 		ReturnType< $mol_button_minor['hint'] >
 	>
-	type $mol_button_minor__sub_yuf_camera_pane_9 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_camera_pane_8 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
 	>
-	type $mol_button_minor__click_yuf_camera_pane_10 = $mol_type_enforce<
+	type $mol_button_minor__click_yuf_camera_pane_9 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['close_click'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $yuf_camera_pane_controls__11 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__10 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_main'] >[number]
 		,
 		$mol_view_content
 	>
-	type $yuf_camera_pane_controls__12 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__11 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['video_controls'] >[number]
 		,
 		$mol_view_content
 	>
-	type $yuf_camera_pane_controls__13 = $mol_type_enforce<
+	type $yuf_camera_pane_controls__12 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls_close'] >[number]
 		,
 		$mol_view_content
 	>
-	type $mol_view__sub_yuf_camera_pane_14 = $mol_type_enforce<
+	type $mol_view__sub_yuf_camera_pane_13 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['controls'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_camera_recorder__stream_yuf_camera_pane_15 = $mol_type_enforce<
+	type $yuf_camera_recorder__stream_yuf_camera_pane_14 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['stream'] >
 		,
 		ReturnType< $yuf_camera_recorder['stream'] >
 	>
-	type $yuf_canvas_blob__image_type_yuf_camera_pane_16 = $mol_type_enforce<
+	type $yuf_canvas_pipe__image_type_yuf_camera_pane_15 = $mol_type_enforce<
 		ReturnType< $yuf_camera_pane['image_type'] >
 		,
-		ReturnType< $yuf_canvas_blob['image_type'] >
-	>
-	type $yuf_canvas_blob__node_yuf_camera_pane_17 = $mol_type_enforce<
-		ReturnType< $yuf_camera_pane['camera_node'] >
-		,
-		ReturnType< $yuf_canvas_blob['node'] >
+		ReturnType< $yuf_canvas_pipe['image_type'] >
 	>
 	export class $yuf_camera_pane extends $mol_view {
 		recorder_status( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['status'] >
 		recorder_error( ): ReturnType< ReturnType< $yuf_camera_pane['recorder'] >['error'] >
 		image_type( ): string
-		canvas_blob( id: any): ReturnType< ReturnType< $yuf_camera_pane['canvas'] >['blob'] >
 		camera_node( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['dom_safe'] >
 		stream( ): ReturnType< ReturnType< $yuf_camera_pane['Camera'] >['stream'] >
 		facing( ): string
@@ -8142,7 +8144,7 @@ declare namespace $ {
 		video_acceptable( ): boolean
 		file_name_template( ): string
 		recorder( ): $yuf_camera_recorder
-		canvas( ): $yuf_canvas_blob
+		canvas( ): $yuf_canvas_pipe
 		canvas_file( ): File | null
 		files( next?: readonly(File)[] ): readonly(File)[]
 		status( next?: readonly(any)[] ): readonly(any)[]

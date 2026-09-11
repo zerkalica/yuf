@@ -17267,33 +17267,20 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $yuf_canvas_context extends $mol_object {
-        native;
-        static from_size(size) {
-            return this.$.$yuf_canvas_context.make({
-                native: new this.$.$mol_dom_context.OffscreenCanvas(size[0], size[1])
-            });
+    function $yuf_canvas_normalize(src) {
+        let target;
+        if (typeof src === 'string') {
+            target = new this.$mol_dom_context.Image();
+            target.src = src;
         }
-        context(type) {
-            const ctx = this.native.getContext(type);
-            if (!ctx)
-                throw new Error('Can\'t get context from canvas', { cause: { type } });
-            return ctx;
+        else if (src instanceof Blob) {
+            target = $mol_wire_sync(this.$mol_dom_context).createImageBitmap(src);
         }
-        size(next) {
-            if (next) {
-                this.native.width = next[0];
-                this.native.height = next[1];
-            }
-            return [this.native.width, this.native.height];
-        }
-        get d2() { return this.context('2d'); }
-        get bitmaprenderer() { return this.context('bitmaprenderer'); }
-        get webgl() { return this.context('webgl'); }
-        get webgl2() { return this.context('webgl2'); }
-        get webgpu() { return this.context('webgpu'); }
+        else
+            target = src;
+        return target;
     }
-    $.$yuf_canvas_context = $yuf_canvas_context;
+    $.$yuf_canvas_normalize = $yuf_canvas_normalize;
 })($ || ($ = {}));
 
 ;
@@ -17328,57 +17315,67 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    class $yuf_canvas_blob extends $mol_object {
-        _canvas = null;
-        canvas() { return this._canvas ?? (this._canvas = this.canvas_make([4096, 4096])); }
-        canvas_make(size) {
-            return this.$.$yuf_canvas_context.from_size(size);
+    class $yuf_canvas_host extends $mol_object {
+        native;
+        static from_source(src, prev) {
+            const normalized = !src || src instanceof Array ? null : this.$.$yuf_canvas_normalize(src);
+            const [w, h] = normalized ? this.$.$yuf_media_size(normalized) : (src instanceof Array ? src : [0, 0]);
+            if (prev) {
+                prev.native.width = w;
+                prev.native.height = h;
+            }
+            else {
+                const native = new this.$.$mol_dom_context.OffscreenCanvas(w, h);
+                prev = this.$.$yuf_canvas_host.make({ native });
+            }
+            if (normalized)
+                prev.d2.drawImage(normalized, 0, 0, w, h);
+            return prev;
         }
+        context(type) {
+            const ctx = this.native.getContext(type);
+            if (!ctx)
+                throw new Error('Can\'t get context from canvas', { cause: { type } });
+            return ctx;
+        }
+        size(next) {
+            if (next) {
+                this.native.width = next[0];
+                this.native.height = next[1];
+            }
+            return [this.native.width, this.native.height];
+        }
+        get d2() { return this.context('2d'); }
+        get bitmaprenderer() { return this.context('bitmaprenderer'); }
+        get webgl() { return this.context('webgl'); }
+        get webgl2() { return this.context('webgl2'); }
+        get webgpu() { return this.context('webgpu'); }
+        blob(opts = { quality: .99, type: 'image/jpeg' }) {
+            return $mol_wire_sync(this.native).convertToBlob(opts);
+        }
+        clone() { return this.$.$yuf_canvas_host.from_source(this.native); }
+    }
+    __decorate([
+        $mol_action
+    ], $yuf_canvas_host, "from_source", null);
+    $.$yuf_canvas_host = $yuf_canvas_host;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_sequence extends $mol_object {
         cancel = null;
-        _render_task = null;
-        render_task(next) {
-            if (next)
-                this._render_task = next;
-            return this._render_task;
-        }
-        image_type() { return 'image/png'; }
-        quality() { return .99; }
-        apply_transforms(transforms) {
-            this.prepare();
-            for (const transform of transforms) {
-                for (const method of Object.keys(transform)) {
-                    if (!transform[method] || !(method in this) || typeof this[method] !== 'function') {
-                        throw new Error('Method not found in canvas pipe', { cause: { method, transform } });
-                    }
-                    this[method](transform[method]);
-                }
-            }
-        }
-        apply_transforms_task = $mol_wire_async(function (transforms) { return this.apply_transforms(transforms); });
-        async snapshot(transforms) {
-            const quality = this.quality();
-            const canvas = this.canvas();
-            const type = this.image_type();
-            if (this.dead)
-                return new Blob();
-            canvas.d2.save();
-            try {
-                await this.apply_transforms_task(transforms);
-                const blob = this.dead ? new Blob() : await canvas.native.convertToBlob({ type, quality });
-                canvas.d2.restore();
-                return blob;
-            }
-            catch (e) {
-                canvas.d2.restore();
-                $mol_fail_hidden(e);
-            }
-        }
-        async blob_async(transforms) {
+        render_task = null;
+        dead = false;
+        task(...args) { return null; }
+        async task_async(...args) {
             let task;
             this.dead = false;
             this.cancel?.();
             do {
-                task = this.render_task();
+                task = this.render_task;
                 try {
                     await task;
                 }
@@ -17386,84 +17383,86 @@ var $;
                     //
                 }
                 if (this.dead)
-                    return new Blob();
-            } while (task !== this.render_task());
-            const promise = this.snapshot(transforms);
-            this.render_task(promise);
+                    return null;
+            } while (task !== this.render_task);
+            const promise = $mol_wire_async(this).task(...args);
+            this.render_task = $mol_promise_like(promise) ? promise : null;
             return promise;
         }
-        dead = false;
-        deps() {
-            // pull data and wait async ops to prevent clears while blob_async working
-            this.node();
-            this.canvas();
-            this.quality();
-            this.image_type();
-        }
+        result(...args) { return $mol_wire_sync(this).task_async(...args); }
         destructor() {
             this.dead = true;
             this.cancel?.();
+            this.render_task = null;
         }
-        node() {
-            const url = this.image_url();
-            if (!url)
-                throw new Error('Require setup CanvasImageSource DOM node');
-            const image = new Image();
-            image.src = url;
-            return image;
-        }
-        image_url() { return ''; }
-        crop({ lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }) {
-            const canvas = this.canvas();
+    }
+    $.$yuf_sequence = $yuf_sequence;
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    class $yuf_canvas_pipe extends $mol_object {
+        crop(canvas, { lt: [left_top_x, left_top_y], rb: [right_bottom_x, right_bottom_y] }) {
             const width = right_bottom_x - left_top_x;
             const height = right_bottom_y - left_top_y;
-            const tmp = this.canvas_make(canvas.size());
-            tmp.d2.drawImage(canvas.native, 0, 0);
+            const tmp = canvas.clone();
             canvas.size([width, height]);
             canvas.d2.drawImage(tmp.native, left_top_x, left_top_y, width, height, 0, 0, width, height);
         }
-        resize({ new_size }) {
-            const canvas = this.canvas();
+        resize(canvas, { max }) {
             const size = canvas.size();
-            if (size[0] <= new_size[0] && size[1] <= new_size[1])
+            if (size[0] <= max[0] && size[1] <= max[1])
                 return;
-            const tmp = this.canvas_make(canvas.size());
-            tmp.d2.drawImage(canvas.native, 0, 0);
-            canvas.size(new_size);
-            canvas.d2.drawImage(tmp.native, 0, 0, new_size[0], new_size[1]);
+            const tmp = canvas.clone();
+            canvas.size(max);
+            canvas.d2.drawImage(tmp.native, 0, 0, max[0], max[1]);
         }
-        prepare() {
-            const canvas = this.canvas();
-            const node = this.node();
-            const [w, h] = $yuf_media_size(this.node());
-            canvas.size([w, h]);
-            canvas.d2.fillStyle = 'rgb(255, 255, 255)';
-            canvas.d2.fillRect(0, 0, w, h);
-            canvas.d2.drawImage(node, 0, 0, w, h);
+        image_type() { return 'image/png'; }
+        quality() { return .99; }
+        // Reuse seq without pulling (blobs runs as action)
+        _seq = null;
+        seq() {
+            if (this._seq)
+                return this._seq;
+            return this._seq = this.$.$yuf_sequence.make({
+                task: (a, b) => this.task(a, b),
+            });
         }
-        blob(transforms) {
-            this.deps();
-            if (!transforms)
-                transforms = [{ copy: {} }];
-            return $mol_wire_sync(this).blob_async(transforms);
+        // Reuse canvas, between task runs
+        _canvas = null;
+        transform(src, transforms) {
+            // Reuse canvas
+            let canvas = this._canvas = this.$.$yuf_canvas_host.from_source(src, this._canvas);
+            for (const transform of transforms ?? []) {
+                for (const method of Object.keys(transform)) {
+                    const next = this[method](canvas, transform[method]);
+                    if (next instanceof $yuf_canvas_host)
+                        this._canvas = canvas = next;
+                }
+            }
+            return canvas;
         }
+        // This task runs sequential
+        task(src, transforms) {
+            const quality = this.quality();
+            const type = this.image_type();
+            const canvas = this.transform(src, transforms);
+            return canvas.blob({ type, quality });
+        }
+        blob(...opts) { return this.seq().result(...opts) ?? new Blob(); }
     }
     __decorate([
         $mol_action
-    ], $yuf_canvas_blob.prototype, "canvas_make", null);
+    ], $yuf_canvas_pipe.prototype, "crop", null);
     __decorate([
         $mol_action
-    ], $yuf_canvas_blob.prototype, "crop", null);
+    ], $yuf_canvas_pipe.prototype, "resize", null);
     __decorate([
         $mol_action
-    ], $yuf_canvas_blob.prototype, "resize", null);
-    __decorate([
-        $mol_action
-    ], $yuf_canvas_blob.prototype, "prepare", null);
-    __decorate([
-        $mol_mem_key
-    ], $yuf_canvas_blob.prototype, "blob", null);
-    $.$yuf_canvas_blob = $yuf_canvas_blob;
+    ], $yuf_canvas_pipe.prototype, "transform", null);
+    $.$yuf_canvas_pipe = $yuf_canvas_pipe;
 })($ || ($ = {}));
 
 ;
@@ -17796,9 +17795,6 @@ var $;
 		image_type(){
 			return "image/jpeg";
 		}
-		canvas_blob(id){
-			return (this.canvas().blob(id));
-		}
 		camera_node(){
 			return (this.Camera().dom_safe());
 		}
@@ -17895,9 +17891,8 @@ var $;
 			return obj;
 		}
 		canvas(){
-			const obj = new this.$.$yuf_canvas_blob();
+			const obj = new this.$.$yuf_canvas_pipe();
 			(obj.image_type) = () => ((this.image_type()));
-			(obj.node) = () => ((this.camera_node()));
 			return obj;
 		}
 		canvas_file(){
@@ -18642,12 +18637,12 @@ var $;
     (function ($$) {
         class $yuf_camera_pane extends $.$yuf_camera_pane {
             canvas_file() {
-                this.camera_node();
+                const src = this.camera_node();
                 if (!this.visible())
                     return null;
                 const video = this.video_enabled();
                 const recorder = video ? this.recorder() : null;
-                const chunks = recorder?.flush() ?? [this.canvas_blob([])];
+                const chunks = recorder?.flush() ?? [this.canvas().blob(src)];
                 const type = recorder?.mime_type().split(';')?.[0]?.trim() ?? this.image_type();
                 if (!chunks.length || !chunks[0].size) {
                     throw new Error('No image recorded');
@@ -39692,7 +39687,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-44d93e0";
+    $.$yuf_sj_jammer_version = "0.0.1-9f1f2cc";
 })($ || ($ = {}));
 
 ;
