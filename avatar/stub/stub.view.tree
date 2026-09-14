@@ -6,6 +6,11 @@ $yuf_avatar_stub $mol_view
 		^ image_content /$mol_view
 			<= Pop $mol_pick
 				trigger_content / <= Image $mol_image uri <= url \
-				bubble_content / <= Image_big $mol_image uri <= url
+				bubble_content /
+					<= Image_big $mol_image uri <= big_url <= url
+					<= Name $yuf_avatar_name
+						needle <= needle \
+						login <= login \
+						name <= name \
 		<= Text $mol_view
-			sub / <= letters <= name \
+			sub / <= letters <= name_or_login <= name

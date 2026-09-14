@@ -1,0 +1,10 @@
+$yuf_avatar_name $mol_view
+	name \
+	login \
+	sub /
+		<= Login $mol_dimmer
+			needle <= needle \
+			haystack <= login_formatted <= login_tpl \@{login}
+		<= Name $mol_dimmer
+			needle <= needle
+			haystack <= name_formatted <= name_tpl \{name}

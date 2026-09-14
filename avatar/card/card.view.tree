@@ -1,9 +1,11 @@
 $yuf_avatar_card $mol_view
 	sub /
 		<= Avatar $yuf_avatar_stub
-			name <= name \
+			name <= stub_name <= name \
+			login <= login \
 			url <= url \
-		<= Name $mol_dimmer
-			line_height 16
 			needle <= needle \
-			haystack <= name
+		<= Name $yuf_avatar_name
+			name <= name
+			login <= login
+			needle <= needle
