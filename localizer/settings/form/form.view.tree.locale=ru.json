@@ -1,0 +1,8 @@
+{
+  "$yuf_localizer_settings_form_app_url_name": "URL-адреса приложения, разделённые enter/tab",
+  "$yuf_localizer_settings_form_app_url_hint": "URL-адреса приложения",
+  "$yuf_localizer_settings_form_langs_name": "Доступные языки, разделённые запятой/пробелом",
+  "$yuf_localizer_settings_form_langs_hint": "ru, ar",
+  "$yuf_localizer_settings_form_locales_data_name": "Необработанные JSON-данные всех изменённых локалей",
+  "$yuf_localizer_settings_form_locales_data_hint": "Вставьте необработанный JSON сюда { \"lang\": { \"key\": \"val\" } }"
+}
