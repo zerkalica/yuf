@@ -9,14 +9,75 @@ namespace $ {
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
 
+	/**
+	 * @example
+	 * ```json
+	{
+		"name": "username",
+		"displayName": "Логин",
+		"required": true,
+		"readOnly": true,
+		"annotations": {
+			"description": "Логин пользователя"
+		},
+		"validators": {
+			"multivalued": {
+				"max": "1"
+			},
+			"pattern": {
+				"pattern": "^[a-zA-Z0-9]{1,18}$",
+				"ignore.empty.value": true
+			}
+		},
+		"multivalued": false
+	}
+	```
+	*/
+	const attr_dto = rec({
+		name: opt(nul(str)),
+		displayName: opt(nul(str)),
+		required: opt(nul(bool)),
+		readOnly: opt(nul(bool)),
+
+		annotations: opt(nul(rec({
+			description: opt(nul(str)),
+		}))),
+
+		multivalued: opt(nul(bool)),
+		validators: opt(nul(rec({
+			multivalued: opt(nul(rec({
+				min: opt(nul(str)),
+				max: opt(nul(str)),
+			}))),
+			pattern: opt(nul(rec({
+				pattern: opt(nul(str)),
+				'ignore.empty.value': opt(nul(bool)),
+			}))),
+		}))),
+	})
+
+
+	const group_dto = rec({
+
+	})
+
+	const meta_dto = rec({
+		attributes: opt(nul(arr(attr_dto))),
+		groups: opt(nul(arr(group_dto)))
+	})
+	const Meta_response = $yuf_session_oids_response_data(meta_dto)
+
 	const User_dto = rec({
 		id: str,
 		createdTimestamp: opt(nul(num)),
 		username: opt(nul(str)),
+		firstName: opt(nul(str)),
+		lastName: opt(nul(str)),
 		enabled: opt(nul(bool)),
-		attributes: opt(nul(dict(arr(str)))),
+		attributes: opt(nul(dict(opt(nul(arr(str)))))),
 		emailVerified: opt(nul(bool)),
 		email: opt(nul(str)),
+		userProfileMetadata: opt(nul(meta_dto)),
 	})
 
 	const Users_response = $yuf_session_oids_response_data(arr(User_dto))
@@ -29,17 +90,72 @@ namespace $ {
 		ipAddress: str,
 	})
 
+	type Mutable<T> = {
+		-readonly [K in keyof T]: T[K];
+	}
+
 	const Sessions_response = $yuf_session_oids_response_data(arr(Session_dto))
 
 	const User_response = $yuf_session_oids_response_data(User_dto)
+
+	const User_put_response = $yuf_session_oids_response_data($yuf_data_unknown)
+
+	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
+
+	function attr_normalize(attr: typeof attr_dto.Value) {
+		return {
+			name: attr.displayName || undefined,
+			hint: attr.annotations?.description || undefined,
+			pattern: attr.validators?.pattern?.pattern || undefined,
+			required: attr.required ?? false,
+			readonly: attr.readOnly ?? false,
+			min: parse_num(attr.validators?.multivalued?.min),
+			max: parse_num(attr.validators?.multivalued?.max),
+		}
+	}
+
+	type Attr_type = Partial<{
+		name: string
+		hint: string
+		pattern: string
+		required: boolean
+		readonly: boolean
+		min: number
+		max: number
+	}>
 
 	export class $yuf_session_oids_user_model extends $mol_object {
 		protected static session() { return this.$.$mol_one.$yuf_session_oids }
 		protected static request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
 		protected static admin_url() { return this.session().realm_url('/admin') }
 		protected static users_url() { return this.admin_url() + '/users' }
+		protected static meta_url() { return this.admin_url() + '/users/profile/metadata' }
 
-		protected static current = {} as Record<string, typeof User_dto.Value>
+		protected static current = {} as Record<string, typeof User_dto.Value | null>
+
+		private static attrs = {} as Record<string, Attr_type>
+
+		@ $mol_mem
+		protected static metas() {
+			const res = this.request(this.meta_url())
+			const result = {} as Record<string, Attr_type>
+			const recs = Meta_response(res)
+			for (const attr of recs?.attributes ?? []) {
+				if (! attr.name) continue
+				result[attr.name] = attr_normalize(attr)
+			}
+
+			return result
+		}
+
+		@ $mol_mem_key
+		static attr_meta(key: string) {
+			let attr = this.attrs[key]
+			if (! attr) attr = this.metas()?.[key] ?? null
+			return attr
+		}
+
+		static attr_name(key: string) {return this.attr_meta(key).name }
 
 		@ $mol_mem_key
 		protected static data({ first, max, enabled, search }: { search?: string, first?: 0, max?: 1000, enabled?: boolean }) {
@@ -58,7 +174,17 @@ namespace $ {
 			const res = this.request(url)
 
 			const recs = Users_response(res)
-			recs.forEach(rec => { this.current[rec.id] = rec })
+
+			for (const rec of recs) {
+				for (const attr of rec.userProfileMetadata?.attributes ?? []) {
+					if (! attr.name) continue
+					this.attrs[attr.name] = attr_normalize(attr)
+				}
+
+				delete (rec as Mutable<typeof rec>).userProfileMetadata
+
+				this.current[rec.id] = rec
+			}
 
 			return recs
 		}
@@ -75,19 +201,19 @@ namespace $ {
 			return this.data(params)
 				.filter(rec => is_online === undefined || is_online === null ? true : is_online === this.by_id(rec.id).is_online())
 				.toSorted((a, b) => {
-				if (desc) {
-					let c = a
-					a = b
-					b = c
-				}
+					if (desc) {
+						let c = a
+						a = b
+						b = c
+					}
 
-				if (by_login) return a.username?.localeCompare(b.username ?? '') ?? 0
-				if (by_name) {
-					return a.attributes?.name?.[0]?.localeCompare(b.attributes?.name?.[0] ?? '') ?? 0
-				}
+					if (by_login) return a.username?.localeCompare(b.username ?? '') ?? 0
+					if (by_name) {
+						return a.attributes?.name?.[0]?.localeCompare(b.attributes?.name?.[0] ?? '') ?? 0
+					}
 
-				return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
-			})
+					return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
+				})
 		}
 
 		static ids(params: Parameters<typeof this.sorted>[0]) {
@@ -98,13 +224,18 @@ namespace $ {
 		static by_id(id: string) {
 			return this.$.$yuf_session_oids_user_model.make({
 				id: $mol_const(id),
-				preloaded: (reset?: null) => this.current[id]
+				preloaded: next => this.current_val(id, next)
 			})
+		}
+
+		protected static current_val(id: string, next?: typeof User_dto.Value | null) {
+			if (next !== undefined && this.current[id]) this.current[id] = next
+			return this.current[id]
 		}
 
 		id() { return '' }
 
-		preloaded(reset?: null) {
+		preloaded(reset?: typeof User_dto.Value | null) {
 			return null as null | typeof User_dto.Value
 		}
 
@@ -119,10 +250,123 @@ namespace $ {
 			return Sessions_response(res)
 		}
 
+		protected is_tmp() { return this.id().startsWith('tmp_') }
+
 		@ $mol_mem
-		data(next?: null) {
-			const res = this.request(this.user_url())
-			return User_response(res)
+		data(next?: Partial<typeof User_dto.Value> | null): typeof User_dto.Value {
+			const id = this.id()
+			const prev = $mol_wire_probe(() => this.data()) ?? this.preloaded()
+
+			const pushed = next
+				? {
+					... prev,
+					...next,
+					attributes: { ...prev?.attributes, ...next.attributes }
+				} as typeof User_dto.Value
+				: next
+
+
+			if (next === undefined && prev) return prev
+
+			if (this.is_tmp()) return pushed ?? prev ?? { id }
+
+			const url = this.user_url()
+
+			if (pushed === undefined) {
+				const res = this.request(url)
+				return User_response(res)
+			}
+
+			const res = this.request(url, {
+				method: pushed === null ? 'DELETE' : 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: pushed === null ? undefined : JSON.stringify({
+					...pushed,
+					userProfileMetadata: undefined,
+					createdTimestamp: undefined,
+					totp: undefined,
+					disableableCredentialTypes: undefined,
+					access: undefined,
+					federatedIdentities: undefined,
+					self: undefined,
+				}),
+			})
+
+			User_put_response(res)
+
+			return pushed ?? { id }
+		}
+
+		static create_user(next: {
+			username: string
+			email: string
+			enabled: boolean
+
+			firstName?: string
+			lastName?: string
+			attributes?: Record<string, string | undefined | null>
+
+			password?: {
+				value: string
+				temporary?: boolean
+			}
+
+			otp?: { secret: string, creds: string }
+			webauthn?: { secret: string, creds: string }
+		}) {
+			const url = this.users_url()
+
+			const attributes = ! next.attributes ? undefined
+				: Object.fromEntries(Object.entries(next.attributes).map(([k, v]) => [k, [ v ?? '' ]]))
+
+			const credentials = [
+				! next.password ? null : {
+					type: 'password',
+					value: next.password.value,
+					temporary: next.password.temporary ?? false,
+				},
+				! next.otp ? null : {
+					type: 'otp',
+					secretData: next.otp.secret,
+					credentialData: next.otp.creds,
+				},
+
+				! next.webauthn ? null : {
+					type: 'webauthn',
+					secretData: next.webauthn.secret,
+					credentialData: next.webauthn.creds,
+				}
+			].filter(Boolean)
+
+			if (! credentials.length) throw new Error('Require credentials for creating user', { cause: { body: next }})
+
+			const res = this.request(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					...next,
+					password: undefined,
+					otp: undefined,
+					webauthn: undefined,
+					attributes,
+					credentials,
+				})
+			})
+
+			User_put_response(res)
+
+			const user_id = res.headers().get('Location')?.split('/')?.at(-1) ?? null
+
+			if (! user_id) throw new Error('Can\'t create user', { cause: {
+				url,
+				body: next,
+			}})
+
+			return user_id
 		}
 
 		@ $mol_mem_key
@@ -130,17 +374,43 @@ namespace $ {
 			Field extends keyof ReturnType< typeof this.data >
 		>(
 			field: Field,
-			next?: null,
+			next?: ReturnType< typeof this.data >[Field],
 		) {
-			return this.preloaded(next)?.[field] ?? this.data(next)?.[ field ] ?? null
+			return this.data(next ? { [field]: next } : next === null ? null : undefined)?.[ field ] ?? null
 		}
 
-		protected attr(key: string) { return this.value('attributes')?.[key]?.[0] ?? null }
+		@ $mol_mem
+		attrs(next?: Record<string, string | null>) {
+			let next_raw = next ? {} as Record<string, readonly string[] | undefined> : undefined
+
+			if (next && next_raw) {
+				Object.keys(next ?? {}).forEach(key => {
+					next_raw[key] = next[key] === undefined || next[key] === null ? undefined : [ next[key] ]
+				} )
+			}
+
+			const raw = this.value('attributes', next_raw)
+
+			const result = {} as Record<string, string | null>
+			if (raw) Object.keys(raw).forEach(key => { result[key] = raw[key]?.[0] ?? null } )
+
+			return result
+		}
+
+		@ $mol_mem_key
+		attr(key: string, next?: string) {
+			return this.attrs(next === undefined ? next : { [key]: next })?.[key] ?? null
+		}
 
 		login() { return this.value('username') ?? '' }
+		first_name() { return this.value('firstName') ?? '' }
+		last_name() { return this.value('lastName') ?? '' }
+
 		email() { return this.value('email') ?? '' }
+
 		verified() { return this.value('emailVerified') ?? false }
 		enabled() { return this.value('enabled') ?? false }
+
 		@ $mol_mem
 		created_at() { return new $mol_time_moment(this.value('createdTimestamp') ?? 0) }
 
