@@ -51,11 +51,20 @@ export class YufLocalizerMerge {
 	_cached = {}
 
 	/**
+	 * @param {string} file 
+	 */
+	locale_data_cache(file) {
+		const prev = this._cached[file]
+		if (prev instanceof Promise) return undefined
+		return prev
+	}
+
+	/**
 	 * @param {string} file
-	 * @param {null | Record<string, string | null>} [patch]
+	 * @param {null | Record<string, string | null | undefined>} [patch]
 	 * @returns {Promise<Record<string, string> | null>}
 	 */
-	async locale_data(file, patch, overwrite = false) {
+	async locale_data(file, patch) {
 		file = join(this.root(), file)
 
 		if (patch !== undefined) {
@@ -65,14 +74,15 @@ export class YufLocalizerMerge {
 				return patch
 			}
 
-			let prev = this._cached[file]
-			if (prev instanceof Promise || prev === undefined) prev = await this.locale_data(file)
+			let prev = this.locale_data_cache(file)
+			if (prev === undefined) prev = await this.locale_data(file)
 
 			const next = { ...prev }
 
 			for (const [key, value] of Object.entries(patch)) {
 				if (value === null) delete next[key]
-				if (value) next[key] = overwrite ? value : (prev?.[key] ?? value)
+				else if (value === undefined) continue
+				else next[key] = value
 			}
 
 			await writeFile(file, JSON.stringify(next, null, '  '))
@@ -134,7 +144,8 @@ export class YufLocalizerMerge {
 				if (prefix) maybe_module_dir = join(maybe_module_dir, basename(maybe_module_dir))
 
 				const path = this.builded_module_locale_path(maybe_module_dir, 'en')
-				const locale = await this.locale_data(path)
+				let locale = this.locale_data_cache(path)
+				if (locale === undefined) locale = await this.locale_data(path)
 
 				if (locale?.[key]) {
 					Object.keys(locale ?? {}).forEach(key => {
@@ -191,7 +202,8 @@ export class YufLocalizerMerge {
 
 			for (const [lang_code, paths] of Object.entries(lang_paths)) {
 				for (const path of paths) {
-					const data = await this.locale_data(path)
+					let data = this.locale_data_cache(path)
+					if (data === undefined) data = await this.locale_data(path)
 					if (! data) continue
 					if ( ! patches[lang_code] ) patches[lang_code] = {}
 					patches[lang_code][path] = data
@@ -211,9 +223,9 @@ export class YufLocalizerMerge {
 	/**
 	 * 
 	 * @param {string} app_module_dir
-	 * @param {RegExp | null} exclude
+	 * @param {{langs?: readonly string[], exclude?: RegExp | null}} options
 	 */
-	async app_locale_info(app_module_dir, exclude = null) {
+	async app_locale_info(app_module_dir, { exclude, langs }) {
 		const build_dir = join(app_module_dir, '-')
 		const builded_locales = await this.locale_data_by_code(build_dir, builded_locale_regexp)
 		const en_files = Object.keys(builded_locales.en ?? {})
@@ -221,13 +233,13 @@ export class YufLocalizerMerge {
 		const en_locale = builded_locales.en[en_files[0]]
 		const en_keys_all = Object.keys(en_locale)
 
-			/** @type Record<string, Record<string, string | null> | null> | null */
+		/** @type {Record<string, Record<string, string | null | undefined> | null> | null} */
 		let diff = null
 
 		/**
 		 * @param {string} path
 		 * @param {string} key
-		 * @param {string | null} next
+		 * @param {string | null | undefined} next
 		 */
 		const diff_update = (path, key, next) => {
 			if (! diff) diff = {}
@@ -235,7 +247,7 @@ export class YufLocalizerMerge {
 			diff[path][key] = next
 		}
 
-		/** @type Set<string> */
+		/** @type {Set<string>} */
 		const module_dirs = new Set()
 
 		/** @type {string[] | undefined} */
@@ -253,38 +265,63 @@ export class YufLocalizerMerge {
 
 		const patches = await this.locale_data_by_code(app_module_dir, patch_locale_regexp, 20)
 
-		const lang_codes = Object.keys(builded_locales).filter(code => code !== 'en')
-		for (const lang_code of Object.keys(patches)) {
+		const lang_codes = langs?.length ? [ ... langs ] : Object.keys(builded_locales).filter(code => code !== 'en')
+		/** @type {Record<string, readonly [string, Record<string, string>][]>} */
+		const patch_datas = {}
+		for (const [lang_code, data] of Object.entries(patches)) {
+			patch_datas[lang_code] = Object.entries(data)
 			if (lang_codes.includes(lang_code)) continue
 			lang_codes.push(lang_code)
 		}
 
 		if (! lang_codes.length) throw new Error('Required some non-en locales', { cause: { build_dir } })
 
+		/** @type {Record<string, Record<string, string>> | undefined} */
+		let translate
+
 		for (const module_dir of module_dirs) {
-			if (exclude && module_dir.match(exclude)) continue
+			if (exclude && module_dir.match(exclude)) {
+				continue
+			}
 			const module_en_path = this.builded_module_locale_path(module_dir, 'en')
-			const module_en_data = (await this.locale_data(module_en_path)) ?? {}
+			let module_en_data = this.locale_data_cache(module_en_path)
+			if (module_en_data === undefined) module_en_data = (await this.locale_data(module_en_path)) ?? {}
+			if (! module_en_data) module_en_data = {}
 			const module_en_keys = Object.keys(module_en_data)
 
 			for (const lang_code of lang_codes) {
 				const locale_path = this.module_locale_path(module_dir, lang_code)
 				const locale_data = await this.locale_data(locale_path) ?? {}
 
-				module_en_keys.forEach(key => locale_data[key] ? null : diff_update(locale_path, key, ''))
+				// Add non-existing keys from en locale
+				for (const key of module_en_keys) {
+					let patch_value = locale_data[key]
 
-				for (const [patch_path, patch_data] of Object.entries(patches[lang_code] ?? {})) {
-					for (const [key, patch_value] of Object.entries(patch_data)) {
-						if (locale_data[key] !== patch_value) diff_update(locale_path, key, patch_value)
+					for (const [patch_path, patch_data] of patch_datas[lang_code] ?? [] ) {
+						if (! (key in patch_data) ) continue
+						patch_value = patch_data[key]
+						// remove moved key from locale patch
 						diff_update(patch_path, key, null)
 					}
+
+					if (locale_data[key] !== patch_value) diff_update(locale_path, key, patch_value)
+
+					if (patch_value !== undefined) continue
+
+					if (! translate ) translate = {}
+					if (! translate[lang_code] ) translate[lang_code] = {}
+					if (! translate[lang_code][key]) translate[lang_code][key] = module_en_data[key]
 				}
 
-				Object.keys(locale_data).forEach(key => module_en_data[key] ? null : diff_update(locale_path, key, null))
-
+				for (const key of Object.keys(locale_data)) {
+					if (key in module_en_data) continue
+					// remove non-existing in main en locale keys from module locale
+					diff_update(locale_path, key, null)
+				}
 			}
 		}
 
+		// Remove patch file if all keys removed
 		for (const [lang_code, locale_data_by_file] of Object.entries(patches)) {
 			for (const [patch_path, patch_data] of Object.entries(locale_data_by_file)) {
 
@@ -299,15 +336,15 @@ export class YufLocalizerMerge {
 			}
 		}
 
-		return { keys_not_found, diff }
+		return { keys_not_found, diff, translate }
 	}
 
 	/**
 	 * 
-	 * @param {Record<string, Record<string, string | null> | null> | null} diff
+	 * @param {Record<string, Record<string, string | null | undefined> | null> | null} diff
 	 */
 	diff_format(diff) {
-		/** @type Record<string, '-' | Record<string, '-' | '+' | '!'>> | undefined */
+		/** @type {Record<string, '-' | Record<string, '-' | '+' | 'N'>> | undefined} */
 		let changed
 
 		for (const [path, data] of Object.entries(diff ?? {})) {
@@ -321,7 +358,7 @@ export class YufLocalizerMerge {
 				if (! changed) changed = {}
 				if (typeof changed[path] === 'string') continue
 				if (! changed[path]) changed[path] = {}
-				changed[path][key] = value === null ? '-' : value === '' ? '!' : '+'
+				changed[path][key] = value === null ? '-' : value === undefined ? 'N' : '+'
 			}
 		}
 
@@ -329,27 +366,64 @@ export class YufLocalizerMerge {
 	}
 
 	/**
-     * @param {string} app_module_dir
-	 * @param {{exclude?: RegExp | null, update?: boolean, overwrite?: boolean }} options
+	 * @param {{directories: readonly string[], exclude?: RegExp | null, dry_run?: boolean, langs?: readonly string[], info?: boolean }} options
      */
-	async update(app_module_dir, { exclude, update, overwrite }) {
-		let { keys_not_found, diff } = await this.app_locale_info(app_module_dir, exclude)
+	async update({ directories, exclude, dry_run, info, langs }) {
+		/** @type {Record<string, Record<string, string | null | undefined> | null> | undefined} */
+		let diff_all
 
-		if (update && diff) {
-			for (let [ path, patch ] of Object.entries(diff) ) {
-				await this.locale_data(path, patch, overwrite)
+		/** @type {Record<string, Record<string, string>> | undefined} */
+		let translate_all
+
+		/** @type {Set<string>} */
+		const keys_not_found_all = new Set
+
+		for (const app_module_dir of directories) {
+			let { keys_not_found, diff, translate } = await this.app_locale_info(app_module_dir, { exclude, langs })
+			keys_not_found?.forEach(key => keys_not_found_all.add(key))
+
+			if (! translate_all) translate_all = {}
+			for (const [path, data] of Object.entries(translate ?? {})) {
+				if (! data) translate_all[path] = data
+				else if (! translate_all[path] ) translate_all[path] = { ...data }
+				else Object.assign(translate_all[path], data)
+			}
+
+			if (! diff_all ) diff_all = {}
+			for (const [path, data] of Object.entries(diff ?? {})) {
+				if (! data) diff_all[path] = data
+				else if (! diff_all[path]) diff_all[path] = { ... data }
+				else Object.assign(diff_all[path], data)
 			}
 		}
 
-		const suggest = []
+		if (diff_all && ! dry_run && ! info) {
+			for (let [ path, patch ] of Object.entries(diff_all) ) {
+				await this.locale_data(path, patch)
+			}
+		}
 
-		if (! update) suggest.push(
-			'Add --update to write changes',
-			'--overwrite to rewrite existing locale keys',
-			'--exclude=dir1,dir2 to exclude some paths from update'
-		)
+		/** @type {string[] | undefined} */
+		let suggest
 
-		return { keys_not_found, changes: this.diff_format(diff), suggest }
+		if (! dry_run && ! info) {
+			suggest = []
+			suggest.push(
+				'--dry-run to show file changes without writing',
+				'--info to show translate mock',
+				'--langs=es,fr,ru to add extra langs (detects from patches)',
+				'--exclude=dir1,dir2 to exclude some paths from update'
+			)
+		} else if (! directories ) {
+			suggest = ['No directories provided']
+		}
+
+		const changes = info || ! diff_all ? undefined : this.diff_format(diff_all)
+		const translate_values_from_en_to = info ? translate_all : undefined
+
+		const keys_not_found = ! keys_not_found_all.size ? undefined : [ ... keys_not_found_all ]
+
+		return { changes, translate_values_from_en_to, keys_not_found, suggest }
 	}
 
 	/**
@@ -386,33 +460,19 @@ export class YufLocalizerMerge {
 
 		return {
 			directories: args.filter(arg => ! arg.startsWith('--')),
-			update: this.param_raw('update') !== null,
-			overwrite: this.param_raw('overwrite') !== null,
+			dry_run: this.param_raw('dry-run') !== null,
+			info: this.param_raw('info') !== null,
 			exclude: this.param_regexp('exclude'),
+			langs: this.param_raw('langs')?.split(',').map(code => code.trim()).filter(Boolean)
 		}
     }
 
-	async process() {
-		const options = this.commands()
-		/** @type Record<string, Partial<Awaited<ReturnType<typeof this.update>>>> */
-		let rec = options.directories.length ? {} : { '': {
-			suggest: ['No directories provided'],
-		} }
-
-		for (const path of options.directories) {
-			rec[path] = await this.update(path, options)
-		}
-
-		return rec
-	}
-
 	async run() {
-		const rec = await this.process()
+		const rec = await this.update(this.commands())
 
 		console.log(JSON.stringify(rec, null, ' '))
 
-		const has_error = Object.values(rec).some(item => item.keys_not_found)
-		if (has_error) process.exit(1)
+		if (rec.keys_not_found?.length) process.exit(1)
 
 	}
 
