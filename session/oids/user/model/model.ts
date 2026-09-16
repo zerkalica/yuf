@@ -194,9 +194,8 @@ namespace $ {
 			is_online?: boolean
 			order_by?: `${'created' | 'modified' | 'login' | 'name'}${'' | '_desc'}`
 		}) {
-			const desc = order_by?.endsWith('_desc')
-			const by_login = order_by?.startsWith('order')
-			const by_name = order_by?.startsWith('name')
+			const order_field = order_by?.replace('_desc', '')
+			const desc = (order_by ?? undefined) !== (order_field ?? undefined)
 
 			return this.data(params)
 				.filter(rec => is_online === undefined || is_online === null ? true : is_online === this.by_id(rec.id).is_online())
@@ -207,10 +206,10 @@ namespace $ {
 						b = c
 					}
 
-					if (by_login) return a.username?.localeCompare(b.username ?? '') ?? 0
-					if (by_name) {
-						return a.attributes?.name?.[0]?.localeCompare(b.attributes?.name?.[0] ?? '') ?? 0
-					}
+					if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
+					const aa = a.attributes?.[order_field ?? '']?.[0]
+					const ba = b.attributes?.[order_field ?? '']?.[0]
+					if (aa || ba ) return aa?.localeCompare(ba ?? '') ?? 0
 
 					return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
 				})
