@@ -374,7 +374,7 @@ export class YufLocalizerMerge {
 	}
 
 	/**
-	 * @param {{directories: readonly string[], exclude?: RegExp | null, dry_run?: boolean, langs?: readonly string[], info?: boolean }} options
+	 * @param {{directories: readonly string[], exclude?: RegExp | null, merge?: boolean, langs?: readonly string[], info?: boolean }} options
      */
 	async update({ directories, exclude, merge, info, langs }) {
 		/** @type {Record<string, Record<string, string | null | undefined> | null> | undefined} */
