@@ -206,7 +206,15 @@ export class YufLocalizerMerge {
 					if (data === undefined) data = await this.locale_data(path)
 					if (! data) continue
 					if ( ! patches[lang_code] ) patches[lang_code] = {}
-					patches[lang_code][path] = data
+
+					if (lang_code !== 'all') {
+						patches[lang_code][path] = data
+						continue
+					}
+
+					for (const [lang_code_local, some] of Object.entries(data)) {
+						if (some && typeof some === 'object') patches[lang_code_local][path] = some
+					}
 				}
 			}
 			app_module_dir = dirname(app_module_dir)
@@ -269,7 +277,7 @@ export class YufLocalizerMerge {
 		/** @type {Record<string, readonly [string, Record<string, string>][]>} */
 		const patch_datas = {}
 		for (const [lang_code, data] of Object.entries(patches)) {
-			patch_datas[lang_code] = Object.entries(data)
+			patch_datas[lang_code] = [ ... patch_datas[lang_code] ?? [], ...Object.entries(data) ]
 			if (lang_codes.includes(lang_code)) continue
 			lang_codes.push(lang_code)
 		}
@@ -368,7 +376,7 @@ export class YufLocalizerMerge {
 	/**
 	 * @param {{directories: readonly string[], exclude?: RegExp | null, dry_run?: boolean, langs?: readonly string[], info?: boolean }} options
      */
-	async update({ directories, exclude, dry_run, info, langs }) {
+	async update({ directories, exclude, merge, info, langs }) {
 		/** @type {Record<string, Record<string, string | null | undefined> | null> | undefined} */
 		let diff_all
 
@@ -382,48 +390,64 @@ export class YufLocalizerMerge {
 			let { keys_not_found, diff, translate } = await this.app_locale_info(app_module_dir, { exclude, langs })
 			keys_not_found?.forEach(key => keys_not_found_all.add(key))
 
-			if (! translate_all) translate_all = {}
 			for (const [path, data] of Object.entries(translate ?? {})) {
+				if (! translate_all) translate_all = {}
 				if (! data) translate_all[path] = data
 				else if (! translate_all[path] ) translate_all[path] = { ...data }
 				else Object.assign(translate_all[path], data)
 			}
 
-			if (! diff_all ) diff_all = {}
 			for (const [path, data] of Object.entries(diff ?? {})) {
+				if (! diff_all ) diff_all = {}
 				if (! data) diff_all[path] = data
 				else if (! diff_all[path]) diff_all[path] = { ... data }
 				else Object.assign(diff_all[path], data)
 			}
 		}
 
-		if (diff_all && ! dry_run && ! info) {
+		if (diff_all && merge && ! info) {
 			for (let [ path, patch ] of Object.entries(diff_all) ) {
 				await this.locale_data(path, patch)
 			}
 		}
 
-		/** @type {string[] | undefined} */
-		let suggest
-
-		if (! dry_run && ! info) {
-			suggest = []
-			suggest.push(
-				'--dry-run to show file changes without writing',
-				'--info to show translate mock',
-				'--langs=es,fr,ru to add extra langs (detects from patches)',
-				'--exclude=dir1,dir2 to exclude some paths from update'
-			)
-		} else if (! directories ) {
-			suggest = ['No directories provided']
-		}
-
 		const changes = info || ! diff_all ? undefined : this.diff_format(diff_all)
 		const translate_values_from_en_to = info ? translate_all : undefined
-
 		const keys_not_found = ! keys_not_found_all.size ? undefined : [ ... keys_not_found_all ]
 
-		return { changes, translate_values_from_en_to, keys_not_found, suggest }
+		/** @type {string[] | undefined} */
+		let status
+
+		if ((! merge && ! info) || ! directories.length) {
+			status = status ?? []
+			if (! directories.length ) status.push('No directories provided')
+
+			status.push(
+				'Required --merge or --info',
+				'--merge to write file changes into modules',
+				'--info to show translate mock',
+				'--exclude=dir1,dir2 to exclude some paths from update, optional',
+				'--langs=es,fr,ru to add extra langs, optional (detects from patches)',
+			)
+		} else if (! translate_values_from_en_to && ! changes && ! keys_not_found) {
+			(status = status ?? []).push(
+				'Nothing to translate - all ok'
+			)
+		}
+
+		if (keys_not_found) {
+			(status = status ?? [])?.push(
+				'Add manually some not founded keys'
+			)
+		} else if (translate_values_from_en_to) {
+			(status = status ?? [])?.push(
+				'Translate the values into the last values in the hierarchy of translate_values_from_en_to branch, output them in the same structure and format',
+				'Save it as file `your_app_name.locale=all.json` in your project in target directory or above',
+				'And run with --merge to merge into projects'
+			)
+		}
+
+		return { changes, translate_values_from_en_to, keys_not_found, status }
 	}
 
 	/**
@@ -460,7 +484,7 @@ export class YufLocalizerMerge {
 
 		return {
 			directories: args.filter(arg => ! arg.startsWith('--')),
-			dry_run: this.param_raw('dry-run') !== null,
+			merge: this.param_raw('merge') !== null,
 			info: this.param_raw('info') !== null,
 			exclude: this.param_regexp('exclude'),
 			langs: this.param_raw('langs')?.split(',').map(code => code.trim()).filter(Boolean)
@@ -470,7 +494,7 @@ export class YufLocalizerMerge {
 	async run() {
 		const rec = await this.update(this.commands())
 
-		console.log(JSON.stringify(rec, null, ' '))
+		console.log(JSON.stringify(rec, null, '  '))
 
 		if (rec.keys_not_found?.length) process.exit(1)
 
