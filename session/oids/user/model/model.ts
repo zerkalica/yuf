@@ -102,27 +102,18 @@ namespace $ {
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
 
-	function attr_normalize(attr: typeof attr_dto.Value) {
+	function attr_normalize(attr: typeof attr_dto.Value): $yuf_form_attr_type {
 		return {
-			name: attr.displayName || undefined,
+			type: 'string',
+			name: attr.displayName || '',
 			hint: attr.annotations?.description || undefined,
-			pattern: attr.validators?.pattern?.pattern || undefined,
+			mask: attr.validators?.pattern?.pattern || '',
 			required: attr.required ?? false,
-			readonly: attr.readOnly ?? false,
+			enabled: attr.readOnly ?? false,
 			min: parse_num(attr.validators?.multivalued?.min),
 			max: parse_num(attr.validators?.multivalued?.max),
 		}
 	}
-
-	type Attr_type = Partial<{
-		name: string
-		hint: string
-		pattern: string
-		required: boolean
-		readonly: boolean
-		min: number
-		max: number
-	}>
 
 	export class $yuf_session_oids_user_model extends $mol_object {
 		protected static session() { return this.$.$mol_one.$yuf_session_oids }
@@ -131,14 +122,13 @@ namespace $ {
 		protected static users_url() { return this.admin_url() + '/users' }
 		protected static meta_url() { return this.admin_url() + '/users/profile/metadata' }
 
-		protected static current = {} as Record<string, typeof User_dto.Value | null>
-
-		private static attrs = {} as Record<string, Attr_type>
+		protected static user_data_preloaded = {} as Record<string, typeof User_dto.Value | null>
+		private static attrs_preloaded = {} as Record<string, $yuf_form_attr_type>
 
 		@ $mol_mem
-		protected static metas() {
+		protected static attrs() {
 			const res = this.request(this.meta_url())
-			const result = {} as Record<string, Attr_type>
+			const result = {} as Record<string, $yuf_form_attr_type>
 			const recs = Meta_response(res)
 			for (const attr of recs?.attributes ?? []) {
 				if (! attr.name) continue
@@ -148,14 +138,15 @@ namespace $ {
 			return result
 		}
 
-		@ $mol_mem_key
-		static attr_meta(key: string) {
-			let attr = this.attrs[key]
-			if (! attr) attr = this.metas()?.[key] ?? null
-			return attr
-		}
+		@ $mol_mem
+		static attr_tags() { return Object.keys(this.attrs()) }
 
-		static attr_name(key: string) {return this.attr_meta(key).name }
+		attr_meta(key: string) { return this.factory().attr(key) }
+
+		@ $mol_mem_key
+		static attr(key: string) {
+			return this.$.$yuf_form_attr.make({ data: () => this.attrs()[key] ?? {} })
+		}
 
 		@ $mol_mem_key
 		protected static data({ first, max, enabled, search }: { search?: string, first?: 0, max?: 1000, enabled?: boolean }) {
@@ -178,12 +169,12 @@ namespace $ {
 			for (const rec of recs) {
 				for (const attr of rec.userProfileMetadata?.attributes ?? []) {
 					if (! attr.name) continue
-					this.attrs[attr.name] = attr_normalize(attr)
+					this.attrs_preloaded[attr.name] = attr_normalize(attr)
 				}
 
 				delete (rec as Mutable<typeof rec>).userProfileMetadata
 
-				this.current[rec.id] = rec
+				this.user_data_preloaded[rec.id] = rec
 			}
 
 			return recs
@@ -228,8 +219,8 @@ namespace $ {
 		}
 
 		protected static current_val(id: string, next?: typeof User_dto.Value | null) {
-			if (next !== undefined && this.current[id]) this.current[id] = next
-			return this.current[id]
+			if (next !== undefined && this.user_data_preloaded[id]) this.user_data_preloaded[id] = next
+			return this.user_data_preloaded[id]
 		}
 
 		id() { return '' }
@@ -252,7 +243,7 @@ namespace $ {
 		protected is_tmp() { return this.id().startsWith('tmp_') }
 
 		@ $mol_mem
-		data(next?: Partial<typeof User_dto.Value> | null): typeof User_dto.Value {
+		data(next?: Partial<typeof User_dto.Value> | null, flush?: 'flush'): typeof User_dto.Value {
 			const id = this.id()
 			const prev = $mol_wire_probe(() => this.data()) ?? this.preloaded()
 
@@ -267,7 +258,7 @@ namespace $ {
 
 			if (next === undefined && prev) return prev
 
-			if (this.is_tmp()) return pushed ?? prev ?? { id }
+			if (this.is_tmp() && ! flush) return pushed ?? prev ?? { id }
 
 			const url = this.user_url()
 
@@ -275,6 +266,18 @@ namespace $ {
 				const res = this.request(url)
 				return User_response(res)
 			}
+
+			// if (this.is_tmp() && pushed) {
+			// 	this.factory().create_user({
+			// 		username : pushed.username ?? '',
+			// 		email: pushed.email ?? '',
+			// 		enabled: pushed.enabled ?? true,
+			// 		password: {
+			// 			value: pushed.password,
+			// 			temporary: false,
+			// 		},
+			// 	})
+			// }
 
 			const res = this.request(url, {
 				method: pushed === null ? 'DELETE' : 'PUT',
@@ -305,7 +308,7 @@ namespace $ {
 
 			firstName?: string
 			lastName?: string
-			attributes?: Record<string, string | undefined | null>
+			attributes?: Record<string, string | readonly string[]>
 
 			password?: {
 				value: string
@@ -318,7 +321,7 @@ namespace $ {
 			const url = this.users_url()
 
 			const attributes = ! next.attributes ? undefined
-				: Object.fromEntries(Object.entries(next.attributes).map(([k, v]) => [k, [ v ?? '' ]]))
+				: Object.fromEntries(Object.entries(next.attributes).map(([k, v]) => [k, Array.isArray(v) ? v : [ v ?? '' ]]))
 
 			const credentials = [
 				! next.password ? null : {

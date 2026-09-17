@@ -4,6 +4,7 @@ namespace $.$$ {
 		
 		flex: {
 			wrap: 'wrap',
+			shrink: 1,
 			direction: 'column',
 		},
 		justifyContent: 'center',
