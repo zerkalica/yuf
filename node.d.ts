@@ -1305,7 +1305,7 @@ declare namespace $ {
      * Gap in CSS
      * @see https://page.hyoo.ru/#!=msdb74_bm7nsq
      */
-    let $mol_gap: Record<"text" | "space" | "block" | "blur" | "page" | "round" | "emoji", $mol_style_func<"var", unknown>>;
+    let $mol_gap: Record<"text" | "block" | "blur" | "page" | "space" | "round" | "emoji", $mol_style_func<"var", unknown>>;
 }
 
 declare namespace $ {
@@ -2309,11 +2309,30 @@ declare namespace $ {
 
 declare namespace $ {
 
-	export class $mol_hotkey extends $mol_plugin {
+	export class $mol_hotkey2 extends $mol_plugin {
 		keydown( next?: any ): any
 		event( ): ({ 
-			keydown( next?: ReturnType< $mol_hotkey['keydown'] > ): ReturnType< $mol_hotkey['keydown'] >,
+			keydown( next?: ReturnType< $mol_hotkey2['keydown'] > ): ReturnType< $mol_hotkey2['keydown'] >,
 		})  & ReturnType< $mol_plugin['event'] >
+		action( ): Record<string, any>
+	}
+	
+}
+
+//# sourceMappingURL=hotkey2.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * Plugin which adds handlers for keyboard keys.
+     * @see [mol_keyboard_code](../keyboard/code/code.ts)
+     */
+    class $mol_hotkey2 extends $.$mol_hotkey2 {
+        keydown(event?: KeyboardEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_hotkey extends $mol_hotkey2 {
 		key( ): Record<string, any>
 		mod_ctrl( ): boolean
 		mod_alt( ): boolean
@@ -2326,11 +2345,13 @@ declare namespace $ {
 declare namespace $.$$ {
     /**
      * Plugin which adds handlers for keyboard keys.
+     * @deprecated Use $mol_hotkey2
      * @see [mol_keyboard_code](../keyboard/code/code.ts)
      */
     class $mol_hotkey extends $.$mol_hotkey {
-        key(): { [key in keyof typeof $mol_keyboard_code]?: (event: KeyboardEvent) => void; };
-        keydown(event?: KeyboardEvent): void;
+        action(): {
+            [k: string]: any;
+        };
     }
 }
 
@@ -6073,7 +6094,7 @@ declare namespace $ {
 declare namespace $ {
     const $yuf_chess_fen_default = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
     function $yuf_chess_fen_parts(fen: string): {
-        positions: (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `B${number}` | `K${number}` | `N${number}` | `P${number}` | `Q${number}` | `R${number}` | null)[][];
+        positions: (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `R${number}` | `N${number}` | `Q${number}` | `K${number}` | `B${number}` | `P${number}` | null)[][];
         side: "b" | "w";
         castles: null | readonly $yuf_chess_castles[];
         enpass: null | $yuf_chess_position;
@@ -6095,7 +6116,7 @@ declare namespace $ {
     /**
      * Применяет ход по правилам шахмат к переданному состоянию доски.
      */
-    function $yuf_chess_position_update(positions: ($yuf_chess_piece_id | null)[][], move: $yuf_chess_move): (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `B${number}` | `K${number}` | `N${number}` | `P${number}` | `Q${number}` | `R${number}` | null)[][];
+    function $yuf_chess_position_update(positions: ($yuf_chess_piece_id | null)[][], move: $yuf_chess_move): (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `R${number}` | `N${number}` | `Q${number}` | `K${number}` | `B${number}` | `P${number}` | null)[][];
 }
 
 declare namespace $ {
@@ -6138,13 +6159,13 @@ declare namespace $ {
         /**
          * Актуальное состояние доски
          */
-        positions(): (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `B${number}` | `K${number}` | `N${number}` | `P${number}` | `Q${number}` | `R${number}` | null)[][];
+        positions(): (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `R${number}` | `N${number}` | `Q${number}` | `K${number}` | `B${number}` | `P${number}` | null)[][];
         undo(): void;
         level(next?: string): string;
         levels(): string[];
         tops(): readonly $yuf_chess_move[];
         protected fen_initial_parts(): {
-            positions: (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `B${number}` | `K${number}` | `N${number}` | `P${number}` | `Q${number}` | `R${number}` | null)[][];
+            positions: (`r${number}` | `n${number}` | `b${number}` | `q${number}` | `k${number}` | `p${number}` | `R${number}` | `N${number}` | `Q${number}` | `K${number}` | `B${number}` | `P${number}` | null)[][];
             side: "b" | "w";
             castles: null | readonly $yuf_chess_castles[];
             enpass: null | $yuf_chess_position;
