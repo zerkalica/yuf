@@ -39723,7 +39723,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-4653f57";
+    $.$yuf_sj_jammer_version = "0.0.1-ea885b9";
 })($ || ($ = {}));
 
 ;
