@@ -8804,6 +8804,7 @@ var $;
         ol: {},
         li: {},
         details: {},
+        section: {},
         summary: {},
         hr: {},
         table: {},
@@ -39653,7 +39654,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-ea885b9";
+    $.$yuf_sj_jammer_version = "0.0.1-86cce61";
 })($ || ($ = {}));
 
 ;
