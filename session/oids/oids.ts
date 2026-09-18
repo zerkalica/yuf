@@ -63,26 +63,6 @@ namespace $ {
 		resource_access: opt(nul(dict(Roles_dto))),
 	})
 
-	const unk = (v: unknown) => v
-
-	const User_profile_dto = rec({
-		id: opt(nul(str)),
-		username: opt(nul(str)),
-		email: opt(nul(str)),
-		firstName: opt(nul(str)),
-		lastName: opt(nul(str)),
-		enabled: opt(nul(bool)),
-		emailVerified: opt(nul(bool)),
-		totp: opt(nul(bool)),
-		createdTimestamp: opt(nul(num)),
-		attributes: opt(nul(dict(unk)))
-	})
-
-	const User_profile_response = $yuf_session_oids_response_data(User_profile_dto)
-
-	const User_info_dto = dict(unk)
-	const User_info_response = $yuf_session_oids_response_data(User_info_dto)
-
 	/**
 	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
 	 */
@@ -255,6 +235,8 @@ namespace $ {
 			return token ? this.token_decode(token) : null
 		}
 
+		admin_url() { return this.realm_url('/admin') }
+
 		roles() { return this.token_params()?.realm_access?.roles ?? [] }
 
 		resource_roles(resource: 'realm-management' | 'account') {
@@ -269,13 +251,10 @@ namespace $ {
 		can_users_logout() { return this.has_role('realm-management', ['manage-users', 'realm-admin', 'manage-realm']) }
 
 		@ $mol_mem
-		protected user_profile() {
-			const response = this.response_authorized(this.endpoint('account'))
-			return response ? User_profile_response(response) : null
-		}
+		users() { return this.$.$yuf_session_oids_user_store.make({ session: () => this }) }
 
-		override user_id() { return this.user_profile()?.id ?? null }
-		user_name() { return this.user_profile()?.username ?? '' }
+		override user_id() { return this.users().current()?.id() ?? '' }
+		user_name() { return this.users().current()?.login() ?? '' }
 
 		@ $mol_mem
 		protected token_refresh(next?: string | null) {
@@ -283,10 +262,7 @@ namespace $ {
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
 
-
-		logout_redirect_uri() {
-			return this.redirect_uri()
-		}
+		logout_redirect_uri() { return this.redirect_uri() }
 
 		@ $mol_mem
 		redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
