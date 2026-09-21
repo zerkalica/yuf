@@ -55,5 +55,11 @@
 	"$yuf_localizer_settings_form_langs_name": "Idiomas disponibles, separados por coma o espacio",
 	"$yuf_localizer_settings_form_locales_data_hint": "Coloque JSON sin formato aquí { \"lang\": { \"key\": \"val\" } }",
 	"$yuf_localizer_settings_form_locales_data_name": "Todos los datos JSON de locales cambiados",
-	"$yuf_localizer_settings_page_title": "Configuración"
+	"$yuf_localizer_settings_page_title": "Configuración",
+	"$yuf_time_duration_day": "día|días|días",
+	"$yuf_time_duration_hour": "hora|horas|horas",
+	"$yuf_time_duration_minute": "minuto|minutos|minutos",
+	"$yuf_time_duration_month": "mes|meses|meses",
+	"$yuf_time_duration_second": "segundo|segundos|segundos",
+	"$yuf_time_duration_year": "año|años|años"
 }

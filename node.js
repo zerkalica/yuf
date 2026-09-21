@@ -39733,7 +39733,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-86cce61";
+    $.$yuf_sj_jammer_version = "0.0.1-16d85f4";
 })($ || ($ = {}));
 
 ;

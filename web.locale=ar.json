@@ -55,5 +55,11 @@
 	"$yuf_localizer_settings_form_langs_name": "اللغات المتاحة، مفصولة بفاصلة/مسافة",
 	"$yuf_localizer_settings_form_locales_data_hint": "ضع JSON الخام هنا { \"lang\": { \"key\": \"val\" } }",
 	"$yuf_localizer_settings_form_locales_data_name": "جميع بيانات JSON للغات المعدلة",
-	"$yuf_localizer_settings_page_title": "الإعدادات"
+	"$yuf_localizer_settings_page_title": "الإعدادات",
+	"$yuf_time_duration_day": "يوم|أيام|أيام",
+	"$yuf_time_duration_hour": "ساعة|ساعات|ساعات",
+	"$yuf_time_duration_minute": "دقيقة|دقائق|دقائق",
+	"$yuf_time_duration_month": "شهر|أشهر|أشهر",
+	"$yuf_time_duration_second": "ثانية|ثواني|ثواني",
+	"$yuf_time_duration_year": "سنة|سنوات|سنوات"
 }
