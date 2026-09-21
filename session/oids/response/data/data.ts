@@ -4,7 +4,9 @@ namespace $ {
 		return $mol_data_setup( ( response : $mol_fetch_response ) => {
 			let json, err
 			try {
-				json = response.json()
+				const text = response.text()
+
+				json = JSON.parse(text || '{}')
 				if (response.ok()) return sub(json) as ReturnType<Sub>
 			} catch (e) {
 				if ( $mol_promise_like(e)) $mol_fail_hidden(e)
@@ -14,7 +16,7 @@ namespace $ {
 
 			const err_obj = $yuf_session_oids_error_pick(json)
 			const message = err_obj?.error_description
-			const code = err_obj?.error || err?.message || response.message()
+			const code = err_obj?.error || err_obj?.errorMessage || err?.message || response.message()
 
 			const cause = { message, response, json }
 

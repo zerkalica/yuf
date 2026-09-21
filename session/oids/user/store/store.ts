@@ -67,13 +67,22 @@ namespace $ {
 
 	const Meta_response = $yuf_session_oids_response_data(meta_dto)
 
+	const role_dto = rec({
+		id: str,
+		name: opt(nul(str)),
+		clientRole: opt(nul(bool)),
+		composite: opt(nul(bool)),
+	})
+
+	const Roles_response = $yuf_session_oids_response_data(arr(role_dto))
+
 	const Users_response = $yuf_session_oids_response_data(arr($yuf_session_oids_user_model_dto))
 	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
 	function attr_normalize(attr: typeof attr_dto.Value): $yuf_form_attr_type {
 		return {
-			type: 'string',
+			type: attr.name?.includes('date') ? 'date' : 'string',
 			name: attr.displayName || '',
 			hint: attr.annotations?.description || undefined,
 			mask: attr.validators?.pattern?.pattern || '',
@@ -87,14 +96,16 @@ namespace $ {
 	export class $yuf_session_oids_user_store extends $mol_object {
 		session() { return this.$.$mol_one.$yuf_session_oids }
 
-		protected user_data_preloaded = {} as Record<string, typeof $yuf_session_oids_user_model_dto.Value | null>
+		protected user_data_preloaded = {} as Record<string, $yuf_session_oids_user_model_data | null>
 
-		protected admin_users_url() { return this.session().admin_url() + '/users' }
+		protected admin_url() { return this.session().admin_url() }
+		protected admin_roles_url() { return this.admin_url() + '/roles' }
+		protected admin_users_url() { return this.admin_url() + '/users' }
 		protected admin_metadata_url() { return this.admin_users_url() + '/profile/metadata' }
 		protected self_url() { return this.session().endpoint('account') }
 
 		@ $mol_mem
-		protected profile_metadata() {
+		protected attrs() {
 			const session = this.session()
 			const url = session.can_users_view()
 				? this.admin_metadata_url()
@@ -113,89 +124,40 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		metadata_ids() { return Object.keys(this.profile_metadata()) }
+		attr_ids() {
+			const attrs = this.attrs()
+			return Object.keys(attrs).filter(id => id !== 'username')
+		}
 
 		@ $mol_mem_key
 		attr(key: string) {
-			return this.$.$yuf_form_attr.make({ data: () => this.profile_metadata()[key] ?? {} })
+			return this.$.$yuf_form_attr.make({ data: () => this.attrs()[key] ?? {} })
 		}
 
-		create_user(next: {
-			username: string
-			email: string
-			enabled: boolean
+		@ $mol_action
+		make_empty() {
+			const id = 'tmp_' + $mol_guid()
+			const user = this.by_id(id)
 
-			firstName?: string
-			lastName?: string
-			attributes?: Record<string, string | readonly string[]>
+			return user
+		}
 
-			password?: {
-				value: string
-				temporary?: boolean
-			}
+		@ $mol_mem
+		deleted_ids(next?: readonly string[]): readonly string[] {
+			$mol_wire_solid()
+			const prev = $mol_wire_probe(() => this.deleted_ids())
 
-			otp?: { secret: string, creds: string }
-			webauthn?: { secret: string, creds: string }
-		}) {
-			const url = this.admin_users_url()
+			next?.forEach(id => this.by_id(id).data(null))
 
-			const attributes = ! next.attributes ? undefined
-				: Object.fromEntries(Object.entries(next.attributes).map(([k, v]) => [k, Array.isArray(v) ? v : [ v ?? '' ]]))
-
-			const credentials = [
-				! next.password ? null : {
-					type: 'password',
-					value: next.password.value,
-					temporary: next.password.temporary ?? false,
-				},
-				! next.otp ? null : {
-					type: 'otp',
-					secretData: next.otp.secret,
-					credentialData: next.otp.creds,
-				},
-
-				! next.webauthn ? null : {
-					type: 'webauthn',
-					secretData: next.webauthn.secret,
-					credentialData: next.webauthn.creds,
-				}
-			].filter(Boolean)
-
-			if (! credentials.length) throw new Error('Require credentials for creating user', { cause: { body: next }})
-
-			const res = this.session().response_authorized(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					...next,
-					password: undefined,
-					otp: undefined,
-					webauthn: undefined,
-					attributes,
-					credentials,
-				})
-			})
-
-			Ok_response(res)
-
-			const user_id = res.headers().get('Location')?.split('/')?.at(-1) ?? null
-
-			if (! user_id) throw new Error('Can\'t create user', { cause: {
-				url,
-				body: next,
-			}})
-
-			return user_id
+			return [ ...prev ?? [], ...next ?? [] ]
 		}
 
 		@ $mol_mem_key
-		protected data({ first, max, enabled, search }: { search?: string, first?: 0, max?: 1000, enabled?: boolean }) {
+		protected data({ first, max, enabled, search }: { search?: string, first?: 0, max?: number, enabled?: boolean }) {
 			const q: Record<string, string> = {
 				briefRepresentation: 'true',
 				first: String(first || '0'),
-				max: String(max || '1000'),
+				max: String(max || '2000'),
 			}
 
 			if (search) q.search = search
@@ -207,21 +169,30 @@ namespace $ {
 			const res = session.response_authorized(url)
 
 			const recs = Users_response(res)
-			recs.forEach(rec => this.preloaded(rec.id, rec))
 
-			return recs
+			return recs.map(rec => this.preloaded(rec.id, {
+				...rec,
+				locked: rec.enabled === false,
+				login: rec.username ?? undefined
+			})!)
 		}
 
 		@ $mol_mem_key
-		protected sorted({ order_by, is_online, ...params }: Parameters<typeof this.data>[0] & {
-			is_online?: boolean
-			order_by?: `${'created' | 'modified' | 'login' | 'name'}${'' | '_desc'}`
+		protected sorted({ order_by, activity, ...params }: Parameters<typeof this.data>[0] & {
+			activity?: 'all' | 'online'
+			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
 		}) {
 			const order_field = order_by?.replace('_desc', '')
 			const desc = (order_by ?? undefined) !== (order_field ?? undefined)
+			const deleted_ids = this.deleted_ids()
+
+			const is_online = activity === 'online' ? true : null
 
 			return this.data(params)
-				.filter(rec => is_online === undefined || is_online === null ? true : is_online === this.by_id(rec.id).is_online())
+				.filter(rec => deleted_ids.includes(rec.id)
+					? false
+					: is_online === null || is_online === this.by_id(rec.id).is_online()
+				)
 				.toSorted((a, b) => {
 					if (desc) {
 						let c = a
@@ -229,7 +200,7 @@ namespace $ {
 						b = c
 					}
 
-					if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
+					if (order_field === 'login') return a.login?.localeCompare(b.login ?? '') ?? 0
 					const aa_raw = a.attributes?.[order_field ?? '']
 					const ba_raw = b.attributes?.[order_field ?? '']
 					const aa = Array.isArray(aa_raw) ? aa_raw[0] : null
@@ -248,8 +219,7 @@ namespace $ {
 		by_id(id: string) {
 			return this.$.$yuf_session_oids_user_model.make({
 				id: $mol_const(id),
-				session: () => this.session(),
-				preloaded: next => this.preloaded(id, next)
+				store: () => this,
 			})
 		}
 
@@ -258,14 +228,52 @@ namespace $ {
 			const response = this.session().response_authorized(this.self_url())
 			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
 			const id = data?.id ?? ''
-			this.preloaded(id, data ?? { id })
+			const locked = data?.enabled === false
+			const login = data?.username ?? undefined
+			this.preloaded(id, { ...data, id, locked, login })
+
 			return this.by_id(id)
 		}
 
-		protected preloaded(id: string, next?: typeof $yuf_session_oids_user_model_dto.Value | null) {
-			if (next !== undefined) this.user_data_preloaded[id] = next
-			return this.user_data_preloaded[id]
+		preloaded(id: string, next?: $yuf_session_oids_user_model_data | null) {
+			let prev = this.user_data_preloaded[id]
+			if (next === undefined) return prev
+
+			if (next && prev) {
+				;(Object.keys(next) as readonly (keyof typeof next)[]).forEach(key => {
+					if (next[key] !== undefined) prev![key as never] = next[key] as never
+				})
+				return prev
+			}
+
+			return this.user_data_preloaded[id] = next
+		}
+
+		@ $mol_mem_key
+		protected roles_search({ search }: { search?: string | null }) {
+			const url = this.admin_roles_url()
+			const query = ! search ? '' : '?' + new URLSearchParams({ search }).toString()
+			const response = this.session().response_authorized(url + query)
+
+			const roles = Roles_response(response)
+
+			const hided = this.role_names_hided()
+			return roles.filter(role => ! hided.includes(role.name ?? ''))
+		}
+
+		protected roles_data() { return this.roles_search({ search: null}) }
+
+		role_names_hided() {
+			return ['uma_authorization', 'offline_access']
+		}
+
+		@ $mol_mem
+		role_dictionary() {
+			return Object.fromEntries(
+				this.roles_data().map(rec => [ rec.id, rec.name || rec.id ])
+			)
 		}
 
 	}
+
 }

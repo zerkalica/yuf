@@ -205,15 +205,17 @@ export class YufLocalizerMerge {
 					let data = this.locale_data_cache(path)
 					if (data === undefined) data = await this.locale_data(path)
 					if (! data) continue
-					if ( ! patches[lang_code] ) patches[lang_code] = {}
 
 					if (lang_code !== 'all') {
+						if ( ! patches[lang_code] ) patches[lang_code] = {}
 						patches[lang_code][path] = data
 						continue
 					}
 
 					for (const [lang_code_local, some] of Object.entries(data)) {
-						if (some && typeof some === 'object') patches[lang_code_local][path] = some
+						if (! some || typeof some !== 'object') continue
+						if (! patches[lang_code_local]) patches[lang_code_local] = {}
+						patches[lang_code_local][path] = some
 					}
 				}
 			}
@@ -407,6 +409,7 @@ export class YufLocalizerMerge {
 
 		if (diff_all && merge && ! info) {
 			for (let [ path, patch ] of Object.entries(diff_all) ) {
+				if (path.endsWith('=all.json')) continue
 				await this.locale_data(path, patch)
 			}
 		}

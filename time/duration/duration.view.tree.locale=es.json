@@ -1,0 +1,8 @@
+{
+  "$yuf_time_duration_year": "año|años|años",
+  "$yuf_time_duration_month": "mes|meses|meses",
+  "$yuf_time_duration_day": "día|días|días",
+  "$yuf_time_duration_hour": "hora|horas|horas",
+  "$yuf_time_duration_minute": "minuto|minutos|minutos",
+  "$yuf_time_duration_second": "segundo|segundos|segundos"
+}
