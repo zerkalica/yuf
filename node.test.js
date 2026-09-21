@@ -32029,13 +32029,23 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        function declOfNum(number, titles) {
+        function decl_ru(number, titles) {
             const cases = [2, 0, 1, 1, 1, 2];
             number = Math.abs(number);
             return titles[(number % 100 > 4 && number % 100 < 20)
                 ? 2
                 : cases[(number % 10 < 5) ? number % 10 : 5]];
         }
+        function decl_common(number, titles) {
+            return number === 1 ? titles[0] : titles[1];
+        }
+        function decl_ar(number, titles) {
+            return number === 1 ? titles[0] : number === 2 ? titles[1] : titles[2];
+        }
+        const rules = {
+            ru: decl_ru,
+            ar: decl_ar
+        };
         class $yuf_time_duration extends $.$yuf_time_duration {
             normalized() {
                 return this.value().normal;
@@ -32043,7 +32053,10 @@ var $;
             part(key, index) {
                 const data = this.normalized();
                 let value = key in data ? Math.round(data[key]) : null;
-                const text = value ? declOfNum(value, this[key]().split('|')) : '';
+                const lang = this.$.$mol_locale.lang();
+                const text = value
+                    ? (rules[lang] || decl_common)(value, this[key]().split('|'))
+                    : '';
                 const normalized = !value ? null : this.show_minus() ? value : Math.abs(value);
                 return normalized
                     ? `${normalized === 1 ? '' : `${normalized} `}${text}`
@@ -39724,7 +39737,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-16d85f4";
+    $.$yuf_sj_jammer_version = "0.0.1-66a21ad";
 })($ || ($ = {}));
 
 ;
