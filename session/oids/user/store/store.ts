@@ -9,6 +9,7 @@ namespace $ {
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
 
+	type Preloaded_data = typeof $yuf_session_oids_user_model_dto.Value & { locked?: boolean, login?: string }
 	/**
 	 * @example
 	 * ```json
@@ -96,8 +97,6 @@ namespace $ {
 	export class $yuf_session_oids_user_store extends $mol_object {
 		session() { return this.$.$mol_one.$yuf_session_oids }
 
-		protected user_data_preloaded = {} as Record<string, $yuf_session_oids_user_model_data | null>
-
 		protected admin_url() { return this.session().admin_url() }
 		protected admin_roles_url() { return this.admin_url() + '/roles' }
 		protected admin_users_url() { return this.admin_url() + '/users' }
@@ -153,7 +152,10 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		protected data({ first, max, enabled, search }: { search?: string, first?: 0, max?: number, enabled?: boolean }) {
+		protected data(
+			{ first, max, enabled, search }: { search?: string, first?: 0, max?: number, enabled?: boolean },
+			reset?: null
+		) {
 			const q: Record<string, string> = {
 				briefRepresentation: 'true',
 				first: String(first || '0'),
@@ -170,25 +172,21 @@ namespace $ {
 
 			const recs = Users_response(res)
 
-			return recs.map(rec => this.preloaded(rec.id, {
-				...rec,
-				locked: rec.enabled === false,
-				login: rec.username ?? undefined
-			})!)
+			return recs.map(rec => this.preloaded(rec.id, rec)!)
 		}
 
 		@ $mol_mem_key
 		protected sorted({ order_by, activity, ...params }: Parameters<typeof this.data>[0] & {
 			activity?: 'all' | 'online'
 			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
-		}) {
+		}, reset?: null) {
 			const order_field = order_by?.replace('_desc', '')
 			const desc = (order_by ?? undefined) !== (order_field ?? undefined)
 			const deleted_ids = this.deleted_ids()
 
 			const is_online = activity === 'online' ? true : null
 
-			return this.data(params)
+			return this.data(params, reset)
 				.filter(rec => deleted_ids.includes(rec.id)
 					? false
 					: is_online === null || is_online === this.by_id(rec.id).is_online()
@@ -200,7 +198,7 @@ namespace $ {
 						b = c
 					}
 
-					if (order_field === 'login') return a.login?.localeCompare(b.login ?? '') ?? 0
+					if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
 					const aa_raw = a.attributes?.[order_field ?? '']
 					const ba_raw = b.attributes?.[order_field ?? '']
 					const aa = Array.isArray(aa_raw) ? aa_raw[0] : null
@@ -211,8 +209,8 @@ namespace $ {
 				})
 		}
 
-		ids(params: Parameters<typeof this.sorted>[0]) {
-			return this.sorted(params).map(rec => rec.id)
+		ids(params: Parameters<typeof this.sorted>[0], reset?: null) {
+			return this.sorted(params, reset).map(rec => rec.id)
 		}
 
 		@ $mol_mem_key
@@ -228,25 +226,16 @@ namespace $ {
 			const response = this.session().response_authorized(this.self_url())
 			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
 			const id = data?.id ?? ''
-			const locked = data?.enabled === false
-			const login = data?.username ?? undefined
-			this.preloaded(id, { ...data, id, locked, login })
+			this.preloaded(id, data)
 
 			return this.by_id(id)
 		}
 
-		preloaded(id: string, next?: $yuf_session_oids_user_model_data | null) {
-			let prev = this.user_data_preloaded[id]
-			if (next === undefined) return prev
-
-			if (next && prev) {
-				;(Object.keys(next) as readonly (keyof typeof next)[]).forEach(key => {
-					if (next[key] !== undefined) prev![key as never] = next[key] as never
-				})
-				return prev
-			}
-
-			return this.user_data_preloaded[id] = next
+		protected _preloaded = {} as Record<string, Preloaded_data | null>
+		preloaded(id: string, next?: Preloaded_data | null) {
+			if (next === null) delete this._preloaded[id]
+			if (next) this._preloaded[id] = next
+			return next ?? this._preloaded[id]
 		}
 
 		@ $mol_mem_key

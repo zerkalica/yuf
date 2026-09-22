@@ -39,7 +39,7 @@ namespace $ {
 		totp: opt(nul(bool)),
 	})
 
-	export type $yuf_session_oids_user_model_data = Omit<typeof $yuf_session_oids_user_model_dto.Value, 'username' | 'enabled'> & Extra_fields
+	export type $yuf_session_oids_user_model_data = typeof $yuf_session_oids_user_model_dto.Value & Extra_fields
 
 	const Session_dto = rec({
 		id: str,
@@ -70,15 +70,35 @@ namespace $ {
 		session() { return this.store().session() }
 
 		protected request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
+		protected post(url: string, body?: {}, method ='POST') {
+			const res = this.request(url, {
+				method,
+				body: ! body ? undefined : JSON.stringify(body),
+				headers: { 'Content-Type': 'application/json' }
+			})
+			Ok_response(res)
+			return res
+		}
+
+		protected attributes_decode(attributes: Record<string, unknown> | undefined | null) {
+			return attributes
+		}
+
+		protected attributes_encode(attributes: Record<string, unknown> | undefined | null) {
+			return attributes
+		}
+
+		protected put(url: string, body?: {}) { return this.post(url, body, 'PUT') }
+		protected delete_req(url: string, body?: {}) { return this.post(url, body, 'DELETE') }
+
 		protected token(next?: null) { return this.session().token(null) }
 		protected is_admin() { return this.session().can_users_view() }
 		protected admin_users_url() { return `${this.session().admin_url()}/users` }
 		protected admin_user_url() { return `${this.admin_users_url()}/${this.id_actual || this.id()}` }
 		protected self_url() { return this.session().endpoint('account') }
 
-		protected preloaded(next?: $yuf_session_oids_user_model_data | null) {
-			return this.store().preloaded(this.id(), next)
-		}
+		protected preloaded(next?: null) { return this.store().preloaded(this.id(), next) }
+
 		protected role_id_name() { return this.store().role_dictionary() }
 		protected deleted_ids(next?: readonly string[]) { return this.store().deleted_ids(next) }
 
@@ -105,28 +125,12 @@ namespace $ {
 			const prev = $mol_wire_probe(() => this.roles()) ?? []
 			const to_delete = prev.filter(id => ! next.includes(id))
 			const to_add = next.filter(id => ! prev.includes(id))
-			const headers = { 'Content-Type': 'application/json' }
 
 			const role_id_name = this.role_id_name()
 			const map_id = (id: string) => ({ id, name: role_id_name[id] || undefined })
 
-			if (to_delete.length) {
-				const res = this.request(url, {
-					method: 'DELETE',
-					headers,
-					body: JSON.stringify(to_delete.map(map_id))
-				})
-				Ok_response(res)
-			}
-
-			if (to_add.length) {
-				const res = this.request(url, {
-					method: 'POST',
-					headers,
-					body: JSON.stringify(to_add.map(map_id))
-				})
-				Ok_response(res)
-			}
+			if (to_delete.length) this.delete_req(url, to_delete.map(map_id))
+			if (to_add.length) this.post(url, to_add.map(map_id))
 
 			return next
 		}
@@ -143,7 +147,7 @@ namespace $ {
 
 		id_actual = null as null | string
 
-		deletable() { return ! this.is_self() }
+		is_removable() { return ! this.is_self() }
 
 		@ $mol_mem
 		data(
@@ -151,33 +155,31 @@ namespace $ {
 			flush?: 'flush'
 		): $yuf_session_oids_user_model_data {
 			const id = this.id()
-			const prev = $mol_wire_probe(() => this.data()) ?? this.preloaded()
+			let prev = $mol_wire_probe(() => this.data()) ?? this.preloaded()
 
 			const is_admin = this.is_admin()
 			const url = is_admin ? this.admin_user_url() : this.self_url()
 
 			if (next === undefined) {
-				if (! is_admin && prev) return prev
-				if (is_admin && prev?.createdTimestamp) return prev
-
-				if (this.is_tmp()) return { id }
-
-				if (! prev || ( is_admin && ! prev.createdTimestamp) ) {
-					const res = this.request(url)
-					const data = $yuf_session_oids_user_model_response(res)
-					return { ...data, locked: data.enabled === false, login: data.username ?? '' }
+				if (flush || ! prev || ( is_admin && ! prev.createdTimestamp) ) {
+					prev = this.is_tmp() ? { id } : $yuf_session_oids_user_model_response(this.request(url))
 				}
 
-				return prev
-			}
+				this.preloaded(null)
 
-			const headers = { 'Content-Type': 'application/json' }
+				return {
+					...prev,
+					attributes: this.attributes_decode(prev.attributes),
+					username: undefined,
+					enabled: undefined,
+					locked: prev.locked ?? prev.enabled === false,
+					login: prev.login ?? prev.username ?? '',
+				}
+			}
 
 			if (next === null) {
 				if (this.is_self()) throw new Error('Can\'t delete user itself', { cause: { id, url }})
-				const res = this.request(url, { method: 'DELETE', headers })
-				Ok_response(res)
-
+				this.delete_req(url)
 				return { id }
 			}
 
@@ -228,21 +230,15 @@ namespace $ {
 
 				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: { body: next }})
 
-				const res = this.request(this.admin_users_url(), {
-					method: 'POST',
-					headers,
-					body: JSON.stringify({
-						username: merged.login,
-						email: merged.email,
-						firstName: merged.firstName,
-						lastName: merged.lastName,
-						enabled: ! merged.locked,
-						attributes: merged.attributes,
-						credentials,
-					}),
+				const res = this.post(this.admin_users_url(), {
+					username: merged.login,
+					email: merged.email,
+					firstName: merged.firstName,
+					lastName: merged.lastName,
+					enabled: ! merged.locked,
+					attributes: this.attributes_encode(merged.attributes),
+					credentials,
 				})
-
-				Ok_response(res)
 				const user_id = res.headers().get('Location')?.split('/')?.at(-1) ?? null
 				if (! user_id) throw new Error('Can\'t create user', { cause: { url, body: next }})
 				this.id_actual = user_id
@@ -258,54 +254,33 @@ namespace $ {
 			const changed_fields = (Object.keys(merged) as (keyof typeof merged)[])
 				.filter(key => ! key.startsWith('password') && key !== 'roles' && ! $mol_compare_deep(prev?.[key as never], merged[key]))
 
-			if (changed_fields.length > 0) {
-				const res = this.request(url, {
-					method: is_admin ? 'PUT' : 'POST',
-					headers,
-					body: JSON.stringify({
-						id,
-						username: merged.login,
-						attributes: merged.attributes,
-						email: merged.email,
-						enabled: is_admin ? ! merged.locked : undefined,
-						firstName: merged.firstName,
-						lastName: merged.lastName,
-					}),
-				})
+			if (changed_fields.length > 0) this.post(url, {
+					id,
+					username: merged.login,
+					attributes: this.attributes_encode(merged.attributes),
+					email: merged.email,
+					enabled: is_admin ? ! merged.locked : undefined,
+					firstName: merged.firstName,
+					lastName: merged.lastName,
+				},
+				is_admin ? 'PUT' : 'POST'
+			)
 
-				Ok_response(res)
-			}
+			if (merged.password && is_admin) this.put(this.admin_user_url() + '/reset-password', {
+				type: 'password',
+				value: merged.password,
+				temporary: merged.password_temporary ?? false,
+			})
 
-			if (merged.password) {
-				let res
-				if (is_admin) {
-					res = this.request(this.admin_user_url() + '/reset-password', {
-						method: 'PUT',
-						headers,
-						body: JSON.stringify({
-							type: 'password',
-							value: merged.password,
-							temporary: merged.password_temporary ?? false,
-						})
-					})
-				} else {
-					res = this.request(this.self_url() + '/credentials/password', {
-						method: 'POST',
-						headers,
-						body: JSON.stringify({
-							currentPassword: merged.password_old,
-							newPassword: merged.password,
-							confirmation: merged.password,
-						})
-					})
-				}
-
-				Ok_response(res)
-			}
+			if (merged.password && ! is_admin) this.post(this.self_url() + '/credentials/password', {
+				currentPassword: merged.password_old,
+				newPassword: merged.password,
+				confirmation: merged.password,
+			})
 
 			if (merged.roles) merged.roles = this.roles(merged.roles)
 
-			return merged ?? { id }
+			return merged
 		}
 
 		@ $mol_mem_key
@@ -357,8 +332,7 @@ namespace $ {
 				return true
 			}
 
-			const res = this.request(this.admin_user_url() + '/logout', { method: 'POST' })
-			Ok_response(res)
+			this.post(this.admin_user_url() + '/logout')
 			this.sessions(null)
 
 			return true
@@ -366,7 +340,7 @@ namespace $ {
 
 		name(next?: string) { return this.profile_str('name', next) }
 		birthday_raw(next?: string) { return this.profile_str('dateOfBirth', next) }
-		avatar_url(next?: string) { return this.profile_str('avatar', next) }
+		avatar_image(next?: string) { return this.profile_str('avatar_image', next) }
 
 		title() { return this.login() + ' ' + this.name() + ' ' + this.email() }
 

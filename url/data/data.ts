@@ -12,4 +12,10 @@ namespace $ {
 		const encoded = $mol_base64_encode(buffer)
 		return `data:${blob.type};base64,${encoded}`
 	}
+
+	export function $yuf_url_data_enrich(url: string, prefix = 'data:image/jpeg;base64,') {
+		return url.startsWith('data:') || url.startsWith('http')? url : `${prefix}${url}`
+	}
+
+	export function $yuf_url_data_strip(url: string) { return url.replace(/[^,]*,(.*)/, '$1') }
 }
