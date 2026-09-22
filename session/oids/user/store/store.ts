@@ -71,16 +71,16 @@ namespace $ {
 	const role_dto = rec({
 		id: str,
 		name: opt(nul(str)),
+		description: opt(nul(str)),
 		clientRole: opt(nul(bool)),
 		composite: opt(nul(bool)),
 	})
 
 	const Roles_response = $yuf_session_oids_response_data(arr(role_dto))
-
 	const Users_response = $yuf_session_oids_response_data(arr($yuf_session_oids_user_model_dto))
-	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
+
 	function attr_normalize(attr: typeof attr_dto.Value): $yuf_form_attr_type {
 		return {
 			type: attr.name?.includes('date') ? 'date' : 'string',
@@ -97,23 +97,25 @@ namespace $ {
 	export class $yuf_session_oids_user_store extends $mol_object {
 		session() { return this.$.$mol_one.$yuf_session_oids }
 
+		protected is_admin() { return this.session().can_users_view() }
+		protected request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
 		protected admin_url() { return this.session().admin_url() }
+		protected self_url() { return this.session().endpoint('account') }
+
 		protected admin_roles_url() { return this.admin_url() + '/roles' }
 		protected admin_users_url() { return this.admin_url() + '/users' }
 		protected admin_metadata_url() { return this.admin_users_url() + '/profile/metadata' }
-		protected self_url() { return this.session().endpoint('account') }
 
 		@ $mol_mem
 		protected attrs() {
-			const session = this.session()
-			const url = session.can_users_view()
+			const url = this.is_admin()
 				? this.admin_metadata_url()
 				:  this.self_url() + '?' + new URLSearchParams({ userProfileMetadata: 'true' }).toString()
 
-			const res = session.response_authorized(url)
+			const res = this.request(url)
+			const recs = Meta_response(res)
 
 			const result = {} as Record<string, $yuf_form_attr_type>
-			const recs = Meta_response(res)
 			for (const attr of recs?.attributes ?? []) {
 				if (! attr.name) continue
 				result[attr.name] = attr_normalize(attr)
@@ -166,9 +168,7 @@ namespace $ {
 
 			if (enabled || enabled === false) q.enabled = enabled ? 'true' : 'false'
 
-			const session = this.session()
-			const url = this.admin_users_url() + '?' + new URLSearchParams(q).toString()
-			const res = session.response_authorized(url)
+			const res = this.request(this.admin_users_url() + '?' + new URLSearchParams(q).toString())
 
 			const recs = Users_response(res)
 
@@ -191,13 +191,9 @@ namespace $ {
 					? false
 					: is_online === null || is_online === this.by_id(rec.id).is_online()
 				)
-				.toSorted((a, b) => {
-					if (desc) {
-						let c = a
-						a = b
-						b = c
-					}
-
+				.toSorted((a_raw, b_raw) => {
+					const a = desc ? b_raw : a_raw
+					const b = desc ? a_raw : b_raw
 					if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
 					const aa_raw = a.attributes?.[order_field ?? '']
 					const ba_raw = b.attributes?.[order_field ?? '']
@@ -223,10 +219,10 @@ namespace $ {
 
 		@ $mol_mem
 		current() {
-			const response = this.session().response_authorized(this.self_url())
+			const response = this.request(this.self_url())
 			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
 			const id = data?.id ?? ''
-			this.preloaded(id, data)
+			if (! this.is_admin()) this.preloaded(id, data)
 
 			return this.by_id(id)
 		}
@@ -242,7 +238,7 @@ namespace $ {
 		protected roles_search({ search }: { search?: string | null }) {
 			const url = this.admin_roles_url()
 			const query = ! search ? '' : '?' + new URLSearchParams({ search }).toString()
-			const response = this.session().response_authorized(url + query)
+			const response = this.request(url + query)
 
 			const roles = Roles_response(response)
 
@@ -257,12 +253,18 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		role_dictionary() {
+		role_names() {
 			return Object.fromEntries(
 				this.roles_data().map(rec => [ rec.id, rec.name || rec.id ])
 			)
 		}
 
+		@ $mol_mem
+		role_hints() {
+			return Object.fromEntries(
+				this.roles_data().map(rec => [ rec.id, rec.description || '' ])
+			)
+		}
 	}
 
 }

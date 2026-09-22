@@ -80,13 +80,8 @@ namespace $ {
 			return res
 		}
 
-		protected attributes_decode(attributes: Record<string, unknown> | undefined | null) {
-			return attributes
-		}
-
-		protected attributes_encode(attributes: Record<string, unknown> | undefined | null) {
-			return attributes
-		}
+		protected attributes_decode(attributes: Record<string, unknown> | undefined | null) { return attributes }
+		protected attributes_encode(attributes: Record<string, unknown> | undefined | null) { return attributes }
 
 		protected put(url: string, body?: {}) { return this.post(url, body, 'PUT') }
 		protected delete_req(url: string, body?: {}) { return this.post(url, body, 'DELETE') }
@@ -99,7 +94,7 @@ namespace $ {
 
 		protected preloaded(next?: null) { return this.store().preloaded(this.id(), next) }
 
-		protected role_id_name() { return this.store().role_dictionary() }
+		protected role_id_name() { return this.store().role_names() }
 		protected deleted_ids(next?: readonly string[]) { return this.store().deleted_ids(next) }
 
 		is_self() { return this.store().current().id() === this.id() }
@@ -155,21 +150,22 @@ namespace $ {
 			flush?: 'flush'
 		): $yuf_session_oids_user_model_data {
 			const id = this.id()
-			let prev = $mol_wire_probe(() => this.data()) ?? this.preloaded()
+			let prev = $mol_wire_probe(() => this.data())
 
 			const is_admin = this.is_admin()
 			const url = is_admin ? this.admin_user_url() : this.self_url()
 
 			if (next === undefined) {
-				if (flush || ! prev || ( is_admin && ! prev.createdTimestamp) ) {
-					prev = this.is_tmp() ? { id } : $yuf_session_oids_user_model_response(this.request(url))
+				if (flush || ! prev ) {
+					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.request(url)))
 				}
+				const attributes = this.attributes_decode(prev.attributes)
 
 				this.preloaded(null)
 
 				return {
 					...prev,
-					attributes: this.attributes_decode(prev.attributes),
+					attributes,
 					username: undefined,
 					enabled: undefined,
 					locked: prev.locked ?? prev.enabled === false,
@@ -326,6 +322,7 @@ namespace $ {
 			return null as null | $mol_time_moment
 		}
 
+		@ $mol_action
 		logout() {
 			if (this.is_self()) {
 				this.token(null)
@@ -339,10 +336,8 @@ namespace $ {
 		}
 
 		name(next?: string) { return this.profile_str('name', next) }
-		birthday_raw(next?: string) { return this.profile_str('dateOfBirth', next) }
-		avatar_image(next?: string) { return this.profile_str('avatar_image', next) }
 
-		title() { return this.login() + ' ' + this.name() + ' ' + this.email() }
+		title() { return this.login() + ' ' + this.name() }
 
 		@ $mol_mem
 		is_online(next?: boolean) {
