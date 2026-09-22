@@ -39737,7 +39737,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-46fc65f";
+    $.$yuf_sj_jammer_version = "0.0.1-6fbcba2";
 })($ || ($ = {}));
 
 ;
