@@ -1,4 +1,6 @@
 $yuf_locale_switch $mol_select
 	Filter null
-	dictionary <= langs_available *string
+	dictionary *string
+		en \EN
+		ru \RU
 	value? <=> lang? \
