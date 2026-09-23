@@ -1,5 +1,5 @@
 $yuf_locale_switch $mol_select
 	Filter null
-	langs /
+	langs /string
 		\en
 	value? <=> lang? \
