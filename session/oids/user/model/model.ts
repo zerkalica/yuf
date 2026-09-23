@@ -74,7 +74,6 @@ namespace $ {
 			const res = this.request(url, {
 				method,
 				body: ! body ? undefined : JSON.stringify(body),
-				headers: { 'Content-Type': 'application/json' }
 			})
 			Ok_response(res)
 			return res
@@ -224,7 +223,7 @@ namespace $ {
 					}
 				].filter(Boolean)
 
-				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: { body: next }})
+				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: next })
 
 				const res = this.post(this.admin_users_url(), {
 					username: merged.login,
@@ -236,7 +235,7 @@ namespace $ {
 					credentials,
 				})
 				const user_id = res.headers().get('Location')?.split('/')?.at(-1) ?? null
-				if (! user_id) throw new Error('Can\'t create user', { cause: { url, body: next }})
+				if (! user_id) throw new Error('Can\'t create user', { cause: res })
 				this.id_actual = user_id
 
 				if (merged.roles?.length) {

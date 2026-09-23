@@ -236,6 +236,7 @@ namespace $ {
 
 		@ $mol_mem_key
 		protected roles_search({ search }: { search?: string | null }) {
+			$mol_wire_solid()
 			const url = this.admin_roles_url()
 			const query = ! search ? '' : '?' + new URLSearchParams({ search }).toString()
 			const response = this.request(url + query)

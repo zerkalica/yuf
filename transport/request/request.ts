@@ -1,6 +1,12 @@
 namespace $ {
 	export class $yuf_transport_request extends $mol_fetch_request {
 
+		@ $mol_action
+		static from_path(path: RequestInfo, init?: $yuf_transport_request_init) {
+			const native = $yuf_transport_request_native(path, init)
+			return this.make({ native })
+		}
+
 		header(key: string) {
 			return this.native?.headers?.get(key) ?? null
 		}

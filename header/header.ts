@@ -34,4 +34,32 @@ namespace $ {
 		])
 	}
 
+	export type $yuf_header_std_rec = {
+		id?: string | null
+		deadline?: number | null
+		client_id?: string | null
+		count_prefer?: 'exact' | 'planned' | null
+		auth_token?: string | null // null - auth disabled
+		content_type?: string | null
+	}
+
+	export function $yuf_header_std_make(init: $yuf_header_std_rec) {
+		return {
+			'Content-Type': ! init.content_type ? undefined : [init.content_type],
+			'Authorization': init.auth_token ? `Bearer ${init.auth_token}` : init.auth_token,
+			'Range-Unit': ! init.count_prefer ? undefined : 'items',
+			'Prefer': ! init.count_prefer ? undefined : `count=${init.count_prefer}`,
+
+			'X-Request-ID': init.id === undefined ? $mol_guid() : init.id,
+			'X-Request-Deadline': typeof init.deadline === 'number' ? `${init.deadline.toFixed(0)}ms` : init.deadline,
+			'X-Client-ID': init.client_id,
+		}
+	}
+
+	export function $yuf_header_content_type_from_body(body: unknown) {
+		if (body instanceof URLSearchParams) return 'application/x-www-form-urlencoded'
+		if ( typeof body === 'string' ) return 'application/json'
+		return null
+	}
+
 }

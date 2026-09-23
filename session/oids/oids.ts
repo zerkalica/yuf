@@ -432,11 +432,12 @@ namespace $ {
 		@ $mol_action
 		response_authorized(url: string, init?: RequestInit) {
 			return this.$.$yuf_transport_retry(
-				token => this.$.$mol_fetch.request(url, { ...init, headers: {
+				token => this.$.$mol_fetch.request(url, { ...init, headers: $yuf_header_merge(init?.headers, {
 					Accept: 'application/json',
+					'Content-Type': init?.method ? 'application/json' : undefined,
 					Authorization: 'bearer ' + token,
 					...init?.headers,
-				} }).response(),
+				}) }).response(),
 
 				reset => this.token_grab(reset)
 			)
