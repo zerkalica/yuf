@@ -42,26 +42,6 @@ namespace $ {
 
 	const Config_response = $yuf_session_oids_response_data(Config_dto)
 
-	const Roles_dto = rec({
-		roles: arr(str),
-	})
-
-	const Token_dto = rec({
-		iss: opt(nul(str)),
-		sub: opt(nul(str)),
-		sid: opt(nul(str)),
-		aud: opt(nul(vr(str, arr(str)))),
-		exp: opt(nul(num)),
-		iat: opt(nul(num)),
-		auth_time: opt(nul(num)),
-		nonce: opt(nul(str)),
-		acr: opt(nul(str)),
-		amr: opt(nul(str)),
-		azp: opt(nul(str)),
-		session_state: opt(nul(str)),
-		realm_access: opt(nul(Roles_dto)),
-		resource_access: opt(nul(dict(Roles_dto))),
-	})
 
 	/**
 	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
@@ -74,7 +54,7 @@ namespace $ {
 		realm() { return 'mssc' }
 
 		realm_url(prefix = '') {
-			return `${this.auth_server_url().replace(/\/+$/, '')}${prefix}/realms/${encodeURIComponent(this.realm())}`
+			return `${this.auth_server_url().replace(/\/+$/, '')}${prefix ? `/${prefix}` : ''}/realms/${encodeURIComponent(this.realm())}`
 		}
 
 		endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'account' | 'userinfo' | 'status' | 'step1') {
@@ -144,7 +124,7 @@ namespace $ {
 		}
 
 		protected checker_message() {
-			return `${this.client_id()} ${this.token_params()?.sid ?? ''}`
+			return `${this.client_id()} ${this.token_params()?.payload?.sid ?? ''}`
 		}
 
 		checker_enabled() { return true }
@@ -220,27 +200,20 @@ namespace $ {
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
 
-		protected token_decode(token: string) {
-			const payload = this.$.$mol_jwt_decode(token).payload
-
-			return $mol_error_fence(
-				() => payload ? Token_dto( payload) : null,
-				e => new $mol_error_mix('Invalid token', { payload }, e)
-			)
-		}
-
 		@ $mol_mem
 		protected token_params() {
 			const token = super.token()
-			return token ? this.token_decode(token) : null
+			return token ? this.$.$yuf_session_oids_token_data(token) : null
 		}
 
-		admin_url() { return this.realm_url('/admin') }
-
-		roles() { return this.token_params()?.realm_access?.roles ?? [] }
+		roles() { return this.token_params()?.payload?.realm_access?.roles ?? [] }
+		groups() {
+			const params = this.token_params()?.payload
+			return params?.groups ?? params?.group_membership ?? []
+		}
 
 		resource_roles(resource: 'realm-management' | 'account') {
-			return (this.token_params()?.resource_access?.[resource || this.client_id()]?.roles ?? []) as readonly Resource_role[]
+			return (this.token_params()?.payload?.resource_access?.[resource || this.client_id()]?.roles ?? []) as readonly Resource_role[]
 		}
 
 		has_role(resource: 'realm-management' | 'account', roles: readonly Resource_role[]) {
@@ -253,8 +226,20 @@ namespace $ {
 		@ $mol_mem
 		users() { return this.$.$yuf_session_oids_user_store.make({ session: () => this }) }
 
-		override user_id() { return this.users().current()?.id() ?? '' }
-		user_name() { return this.users().current()?.login() ?? '' }
+		@ $mol_mem
+		override user_id() {
+			const params = this.token_params()
+			if (! params) return ''
+			let id = params.payload?.sub
+			if (id) return id
+
+			const response = this.response_authorized(this.endpoint('account'))
+			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
+			id = data?.id ?? ''
+			if (! this.can_users_view()) this.users().preloaded(id, data)
+
+			return id
+		}
 
 		@ $mol_mem
 		protected token_refresh(next?: string | null) {
@@ -446,7 +431,7 @@ namespace $ {
 		logout_use_post() { return true }
 
 		@ $mol_action
-		logout_send() {
+		protected logout_send() {
 			const url = this.endpoint('logout')
 			const body = this.logout_params()
 			if (! this.logout_use_post() ) return url + '?' + body.toString()
@@ -471,10 +456,17 @@ namespace $ {
 		}
 
 		@ $mol_action
-		time_cut() { return new Date().getTime() }
+		override logout() {
+			super.logout()
+			const redirect_uri = this.logout_send()
+			if (redirect_uri) this.redirect_to(redirect_uri)
+		}
 
 		@ $mol_action
-		update() {
+		protected time_cut() { return new Date().getTime() }
+
+		@ $mol_action
+		protected update() {
 			const refresh_token = this.token_refresh()
 			const callback_params = refresh_token ? null  : this.callback_params()
 			const error_message = `${callback_params?.error_description ?? ''}${callback_params?.error ? ` ${callback_params?.error}` : ''}`
@@ -521,7 +513,7 @@ namespace $ {
 
 			if (! result ) return null
 
-			const id_token = nonce && result.id_token ? this.token_decode(result.id_token) : null
+			const id_token = nonce && result.id_token ? this.$.$yuf_session_oids_token_data(result.id_token)?.payload : null
 
 			if (id_token && id_token.nonce !== nonce) {
 				throw new Error('Invalid nonce', { cause: {
@@ -556,7 +548,7 @@ namespace $ {
 		min_validity() { return 5000 }
 
 		@ $mol_mem
-		override token(next?: string | null, op?: 'refresh' | 'logout') {
+		override token(next?: string | null, op?: 'refresh') {
 			// after redirect from sso url params not empty, but nulled in token_id(null)
 			const callback_params = this.callback_params()
 			const token = super.token()
@@ -566,13 +558,7 @@ namespace $ {
 					return token
 				}
 
-				let actual
-				if (next === undefined) actual = this.update()
-				if (op === 'refresh') actual = this.update()
-				if (op === 'logout') {
-					const redirect_uri = this.logout_send()
-					if (redirect_uri) this.redirect_to(redirect_uri)
-				}
+				const actual = next === undefined || op === 'refresh' ? this.update() : null
 
 				this.$.$mol_log3_rise({
 					place: '$yuf_session_oids.token()',
@@ -609,7 +595,7 @@ namespace $ {
 
 		@ $mol_action
 		protected is_expired(token?: string, average_time?: number) {
-			const params = token ? this.token_decode(token) : null
+			const params = token ? this.$.$yuf_session_oids_token_data(token)?.payload : null
 
 			if (! params) return true
 

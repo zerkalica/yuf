@@ -59,12 +59,17 @@ namespace $ {
 	const Roles_response = $yuf_session_oids_response_data(arr(Role_dto))
 
 	export const $yuf_session_oids_user_model_response = $yuf_session_oids_response_data($yuf_session_oids_user_model_dto)
+	const Info_dto = rec({
+
+	})
+	const Info_response = $yuf_session_oids_response_data(Info_dto)
 
 	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
 
 	export class $yuf_session_oids_user_model extends $mol_object {
 
 		id() { return '' }
+
 
 		store() { return this.$.$mol_one.$yuf_session_oids_user_store }
 		session() { return this.store().session() }
@@ -87,16 +92,17 @@ namespace $ {
 
 		protected token(next?: null) { return this.session().token(null) }
 		protected is_admin() { return this.session().can_users_view() }
-		protected admin_users_url() { return `${this.session().admin_url()}/users` }
+		protected admin_users_url() { return `${this.session().realm_url('admin')}/users` }
 		protected admin_user_url() { return `${this.admin_users_url()}/${this.id_actual || this.id()}` }
-		protected self_url() { return this.session().endpoint('account') }
+		protected account_url() { return this.session().endpoint('account') }
+		protected info_url() { return this.session().endpoint('userinfo') }
 
 		protected preloaded(next?: null) { return this.store().preloaded(this.id(), next) }
 
 		protected role_id_name() { return this.store().role_names() }
 		protected deleted_ids(next?: readonly string[]) { return this.store().deleted_ids(next) }
 
-		is_self() { return this.store().current().id() === this.id() }
+		is_self() { return this.session().user_id() === this.id() }
 
 		deleted(next?: boolean) {
 			const id = this.id_actual || (this.is_tmp() ? null : this.id())
@@ -152,12 +158,13 @@ namespace $ {
 			let prev = $mol_wire_probe(() => this.data())
 
 			const is_admin = this.is_admin()
-			const url = is_admin ? this.admin_user_url() : this.self_url()
+			const url = is_admin ? this.admin_user_url() : this.account_url()
 
 			if (next === undefined) {
 				if (flush || ! prev ) {
 					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.request(url)))
 				}
+				// const info = Info_response(this.request(this.info_url()))
 				const attributes = this.attributes_decode(prev.attributes)
 
 				this.preloaded(null)
@@ -267,7 +274,7 @@ namespace $ {
 				temporary: merged.password_temporary ?? false,
 			})
 
-			if (merged.password && ! is_admin) this.post(this.self_url() + '/credentials/password', {
+			if (merged.password && ! is_admin) this.post(this.account_url() + '/credentials/password', {
 				currentPassword: merged.password_old,
 				newPassword: merged.password,
 				confirmation: merged.password,
@@ -275,7 +282,7 @@ namespace $ {
 
 			if (merged.roles) merged.roles = this.roles(merged.roles)
 
-			return merged
+			return { ...merged, password: undefined, password_old: undefined, password_temporary: undefined, }
 		}
 
 		@ $mol_mem_key

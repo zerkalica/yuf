@@ -3,7 +3,7 @@ namespace $ {
 		client_id() { return this.$.$mol_dom_context.location.hostname }
 		token_key() { return `${this.client_id()}_token` }
 
-		token(next?: string | null, op?: 'refresh' | 'logout') {
+		token(next?: string | null, op?: 'refresh') {
 			return this.$.$mol_state_local.value(this.token_key(), next === '' ? null : next) || null
 		}
 
@@ -14,15 +14,10 @@ namespace $ {
 
 		user_id() { return null as null | string }
 
-		user_id_ensure() {
-			const user_id = this.user_id()
-			if (! user_id) throw new Error('Required user_id in session')
-			return user_id
-		}
-
 		@ $mol_mem
 		logged() { return Boolean(this.token()) }
-		logout() { return this.token(null, 'logout') }
+		logout() { this.token(null) }
+
 		roles() { return [] as readonly string[] }
 	}
 

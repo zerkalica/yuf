@@ -99,8 +99,8 @@ namespace $ {
 
 		protected is_admin() { return this.session().can_users_view() }
 		protected request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
-		protected admin_url() { return this.session().admin_url() }
-		protected self_url() { return this.session().endpoint('account') }
+		protected admin_url() { return this.session().realm_url('admin') }
+		protected account_url() { return this.session().endpoint('account') }
 
 		protected admin_roles_url() { return this.admin_url() + '/roles' }
 		protected admin_users_url() { return this.admin_url() + '/users' }
@@ -110,7 +110,7 @@ namespace $ {
 		protected attrs() {
 			const url = this.is_admin()
 				? this.admin_metadata_url()
-				:  this.self_url() + '?' + new URLSearchParams({ userProfileMetadata: 'true' }).toString()
+				:  this.account_url() + '?' + new URLSearchParams({ userProfileMetadata: 'true' }).toString()
 
 			const res = this.request(url)
 			const recs = Meta_response(res)
@@ -176,7 +176,7 @@ namespace $ {
 		}
 
 		@ $mol_mem_key
-		protected sorted({ order_by, activity, ...params }: Parameters<typeof this.data>[0] & {
+		ids({ order_by, activity, ...params }: Parameters<typeof this.data>[0] & {
 			activity?: 'all' | 'online'
 			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
 		}, reset?: null) {
@@ -203,10 +203,7 @@ namespace $ {
 
 					return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
 				})
-		}
-
-		ids(params: Parameters<typeof this.sorted>[0], reset?: null) {
-			return this.sorted(params, reset).map(rec => rec.id)
+				.map(rec => rec.id)
 		}
 
 		@ $mol_mem_key
@@ -215,16 +212,6 @@ namespace $ {
 				id: $mol_const(id),
 				store: () => this,
 			})
-		}
-
-		@ $mol_mem
-		current() {
-			const response = this.request(this.self_url())
-			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
-			const id = data?.id ?? ''
-			if (! this.is_admin()) this.preloaded(id, data)
-
-			return this.by_id(id)
 		}
 
 		protected _preloaded = {} as Record<string, Preloaded_data | null>
