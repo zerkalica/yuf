@@ -15,6 +15,11 @@ namespace $.$$ {
 				display: 'none',
 			}
 		},
+		Login: {
+			font: {
+				size: '.9rem',
+			}
+		},
 	} )
 	
 }
