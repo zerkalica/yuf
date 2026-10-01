@@ -525,7 +525,7 @@ namespace $ {
 			const end_time = this.time_cut()
 			const average_time = (start_time + end_time) / 2
 
-			if ( result?.access_token && this.is_expired(result.access_token, average_time) ) {
+			if ( result?.access_token && this.expires_in(result.access_token, average_time) <= 0) {
 				throw new Error('Auth token expired', { cause: {
 					access_token: result.access_token?.slice(0, 3),
 					average_time,
@@ -554,7 +554,8 @@ namespace $ {
 			const token = super.token()
 
 			try {
-				if ( next === undefined && token && ! this.session_error() && ! this.is_expired(token) ) {
+				const timer = this.expires_timer()
+				if ( next === undefined && token && ! this.session_error() && timer ) {
 					return token
 				}
 
@@ -566,13 +567,14 @@ namespace $ {
 					next,
 					op,
 					token: token?.slice(0, 5),
-					is_expired: ! token ? null : this.is_expired(token),
 					session_error: ! token ? null : this.session_error(),
 				})
 
 				this.token_refresh(actual?.refresh_token ?? null)
 				this.token_id(actual?.id_token ?? null)
-				return super.token(actual?.access_token ?? null)
+				const next_token = super.token(actual?.access_token ?? null)
+				this.expires_timer(null)
+				return next_token
 			} catch (e) {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)
 				this.token_refresh(null)
@@ -593,11 +595,21 @@ namespace $ {
 
 		protected time_skew = 0
 
+		@ $mol_mem
+		protected expires_timer(reset?: null) {
+			const token = super.token()
+			if (! token) return null
+			if (reset === null) return null
+			const expires_in = this.expires_in(token)
+			if (expires_in <= 0) return null
+			return new $mol_after_timeout(expires_in, () => this.expires_timer(null))
+		}
+
 		@ $mol_action
-		protected is_expired(token?: string, average_time?: number) {
+		protected expires_in(token?: string, average_time?: number) {
 			const params = token ? this.$.$yuf_session_oids_token_data(token)?.payload : null
 
-			if (! params) return true
+			if (! params) return 0
 
 			if (params.iat && average_time) {
 				this.time_skew = Math.floor(average_time - params.iat * 1000)
@@ -605,9 +617,7 @@ namespace $ {
 
 			const min_validity = this.min_validity()
 			const end_time = this.time_cut()
-			const expires_in = params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
-
-			return expires_in <= 0
+			return params.exp ? params.exp * 1000 - end_time - this.time_skew - min_validity : 0
 		}
 	}
 }

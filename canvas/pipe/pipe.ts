@@ -29,17 +29,21 @@ namespace $ {
 		}
 
 		@ $mol_action
-		resize( canvas: $yuf_canvas_host, { max }: {
+		resize( canvas: $yuf_canvas_host, { max: [ max_x, max_y ] }: {
 			max: readonly [number, number]
 		} ) {
-			const size = canvas.size()
-			if (size[0] <= max[0] && size[1] <= max[1]) return
+			const [ x, y ] = canvas.size()
+			if (x <= max_x && y <= max_y) return
+
+			const scale = Math.min(max_x / x, max_y / y, 1)
+			const next_x = Math.round(x * scale)
+			const next_y = Math.round(y * scale)
 
 			const tmp = canvas.clone()
 
-			canvas.size(max)
+			canvas.size([ next_x, next_y ])
 
-			canvas.d2.drawImage(tmp.native, 0, 0, max[0], max[1])
+			canvas.d2.drawImage(tmp.native, 0, 0, next_x, next_y)
 		}
 
 		image_type() { return 'image/png' }

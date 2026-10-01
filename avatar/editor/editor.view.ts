@@ -2,7 +2,7 @@ namespace $.$$ {
 	export class $yuf_avatar_editor extends $.$yuf_avatar_editor {
 
 		@ $mol_mem
-		protected url_versions() {
+		protected url_versions(reset?: null) {
 			return this.blobs().map(blob => this.$.$yuf_url_object.from_blob(blob).url)
 		}
 
@@ -14,7 +14,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_action
-		protected value_cut() { return this.value_blob() }
+		protected value_cut() { return $mol_error_fence(() => this.value_blob(), e => (this.$.$mol_fail_log(e), null)) }
 
 		@ $mol_mem
 		override blobs(next?: readonly Blob[]): readonly Blob[] {
@@ -31,8 +31,8 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override current_url() {
-			return this.url_versions().at(-1) ?? ''
+		override current_url(reset?: null) {
+			return this.url_versions(reset).at(-1) ?? ''
 		}
 
 		override pane_content() {
@@ -59,10 +59,10 @@ namespace $.$$ {
 
 		override instrument_accept(next?: Event) {
 			const id = this.note_id_selected()
-			if (! id ) return
+			if (! id ) return null
 			const [ lt, rb ] = this.points(id) ?? []
 
-			if (! lt || ! rb ) return
+			if (! lt || ! rb ) return null
 
 			if (id === 'crop') {
 				const src = this.current_url()
@@ -76,6 +76,7 @@ namespace $.$$ {
 			}
 
 			this.note_id_selected('')
+			return null
 		}
 
 		@ $mol_mem
