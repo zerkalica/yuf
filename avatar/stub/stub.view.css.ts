@@ -1,4 +1,5 @@
 namespace $.$$ {
+	const { clamp } = $mol_style_func
 	
 	$mol_style_define( $yuf_avatar_stub, {
 		
@@ -53,7 +54,7 @@ namespace $.$$ {
 				grow: 1,
 			},
 			objectFit: 'contain',
-			width: '18rem',
+			width: clamp('340px', '360px', '95vw'),
 			border: {
 				bottomLeft: {
 					radius: 0

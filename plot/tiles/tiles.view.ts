@@ -8,10 +8,14 @@ namespace $.$$ {
 			return this.level_override() ?? super.level()
 		}
 
+		@ $mol_mem
 		override transform() {
 			const flip_h = this.flipped_hor()
 			const flip_v = this.flipped_vert()
 			const rotation = this.rotation()
+
+			if (! flip_h && ! flip_v && ! rotation) return null
+
 			const size = this.size_real()
 
 			let x = 0
@@ -27,7 +31,7 @@ namespace $.$$ {
 			if (flip_h) x -= size.x
 			if (flip_v) y -= size.y
 
-			return super.transform()
+			return this.transform_cmd()
 				.replace('{sc_x}', flip_h ? '-1' : '1')
 				.replace('{sc_y}', flip_v ? '-1' : '1')
 				.replace('{tr_x}', x.toFixed(0))

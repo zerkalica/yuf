@@ -9,7 +9,8 @@ $yuf_plot_tiles $mol_plot_map_tiles
 	rotation? 0
 	style *
 		^
-		transform <= transform \scale({sc_x}, {sc_y}) translate({tr_x}px, {tr_y}px) rotate({rotation}deg)
+		transform <= transform null string
+	transform_cmd \scale({sc_x}, {sc_y}) translate({tr_x}px, {tr_y}px) rotate({rotation}deg)
 	tile_type* \image
 	tile_uri_actual* \
 	flipped_hor false
@@ -37,3 +38,11 @@ $yuf_plot_tiles $mol_plot_map_tiles
 		size <= tile_dims_real <= image_size
 		style *
 			transform <= tile_transform*
+	Tile* $mol_svg_image
+		style *
+			transform <= tile_transform*
+		uri <= tile_uri*
+		pos /
+			0
+			0
+		size <= tile_dims_real

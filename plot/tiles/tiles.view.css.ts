@@ -4,8 +4,12 @@ namespace $.$$ {
 		Tile_video: {
 			transition: 'none',
 		},
-		willChange: 'transform',
+		// @ts-ignore
+		animation: 'none',
+		transition: 'none',
 		Tile: {
+			transition: 'none',
+			imageRendering: '-webkit-optimize-contrast',
 			willChange: 'transform',
 			// @ts-ignore
 			animation: 'none',
