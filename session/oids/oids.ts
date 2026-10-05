@@ -200,7 +200,7 @@ namespace $ {
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
-			if (next || next === null) this.redirect_params(null)
+			if (next === null) this.redirect_params(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
