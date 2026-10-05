@@ -190,7 +190,12 @@ namespace $ {
 		}
 
 		protected redirect_uri() { return this.callback_parts().clean_url }
-		protected callback_params() { return this.callback_parts().params }
+		protected callback_params() {
+			const params = this.callback_parts().params
+			const redirect_params = this.redirect_params()
+			if (redirect_params?.[0] !== params?.state) return null
+			return params
+		}
 
 		@ $mol_mem
 		protected token_id(next?: string | null) {
@@ -248,6 +253,8 @@ namespace $ {
 		}
 
 		logout_redirect_uri() { return this.redirect_uri() }
+
+		override token_key() { return `${this.realm_url()}_${this.client_id()}_token` }
 
 		@ $mol_mem
 		redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
@@ -469,22 +476,19 @@ namespace $ {
 		protected update() {
 			const refresh_token = this.token_refresh()
 			const callback_params = refresh_token ? null  : this.callback_params()
-			const error_message = `${callback_params?.error_description ?? ''}${callback_params?.error ? ` ${callback_params?.error}` : ''}`
+			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
+			if (callback_params?.state && callback_params.state !== state) {
+				throw new Error('Wrong redirect state', { cause: callback_params })
+			}
+
+			const error_message = `${callback_params?.error_description ?? ''}${
+				callback_params?.error ? ` ${callback_params?.error}` : ''}`
 
 			if (error_message) {
 				throw new Error(error_message, { cause: callback_params })
 			}
 
 			const start_time = this.time_cut()
-
-			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
-
-			if (callback_params?.state && callback_params.state !== state) {
-				throw new Error('Invalid state in backurl', { cause: {
-					stored_state: state,
-					callback_params,
-				}})
-			}
 
 			let result = null as null | typeof Update_dto.Value
 
@@ -555,7 +559,7 @@ namespace $ {
 
 			try {
 				const timer = this.expires_timer()
-				if ( next === undefined && token && ! this.session_error() && timer ) {
+				if ( ! callback_params && next === undefined && token && ! this.session_error() && timer ) {
 					return token
 				}
 

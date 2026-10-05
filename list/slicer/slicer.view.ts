@@ -48,8 +48,8 @@ namespace $.$$ {
 
 		@ $mol_mem
 		width() {
-			const rect = this.view_rect()
-			return rect?.width ?? 0
+			const { width } = this.view_rect() ?? { width: 0, height: 0 }
+			return width
 		}
 
 		@ $mol_mem
