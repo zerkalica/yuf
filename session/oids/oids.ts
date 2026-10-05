@@ -148,7 +148,7 @@ namespace $ {
 			const use_query = this.use_query()
 
 			const known = this.params_hybrid()
-			const params = {} as Record<typeof known[number], string | null | undefined>
+			let params = {} as Record<typeof known[number], string | null | undefined>
 
 			const href = location.href
 			const query_index = href.indexOf('?')
@@ -175,6 +175,8 @@ namespace $ {
 				unknown.push(param_raw)
 			}
 
+			if ( params.state && params.state !== this.redirect_params()?.[0]) return null
+
 			let clean_url = href.slice(0, from_index) + unknown.join('&') + href.slice(to_index)
 			clean_url = clean_url.replace(/[\#\?]$/, '')
 
@@ -182,25 +184,19 @@ namespace $ {
 				if (location.href !== clean_url) {
 					this.redirect_to(clean_url, 'history')
 				}
-
-				return { params: null , clean_url }
+				return { params: null as typeof params | null, clean_url }
 			}
 
 			return { params, clean_url }
 		}
 
-		protected redirect_uri() { return this.callback_parts().clean_url }
-		protected callback_params() {
-			const params = this.callback_parts().params
-			const redirect_params = this.redirect_params()
-			if (redirect_params?.[0] !== params?.state) return null
-			return params
-		}
+		protected redirect_uri() { return this.callback_parts()?.clean_url }
 
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
 			if (next === null) this.redirect_params(null)
+			if (next || next === null) this.callback_parts(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
@@ -252,19 +248,17 @@ namespace $ {
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
 
-		logout_redirect_uri() { return this.redirect_uri() }
+		logout_redirect_uri() { return '/' }
 
 		override token_key() { return `${this.realm_url()}_${this.client_id()}_token` }
 
 		@ $mol_mem
-		redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
+		protected redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
 			if ( refresh ) next = [
 				$mol_guid(36),
 				this.use_nonse() ? $mol_guid(36) : undefined,
 				this.pkce_method() ? $mol_guid(96) : undefined,
 			]
-
-			if (next === null) this.callback_parts(null)
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_redirect`, next)
 		}
@@ -475,11 +469,8 @@ namespace $ {
 		@ $mol_action
 		protected update() {
 			const refresh_token = this.token_refresh()
-			const callback_params = refresh_token ? null  : this.callback_params()
-			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
-			if (callback_params?.state && callback_params.state !== state) {
-				throw new Error('Wrong redirect state', { cause: callback_params })
-			}
+			const callback_params = refresh_token ? null  : this.callback_parts()?.params
+			const [ nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 
 			const error_message = `${callback_params?.error_description ?? ''}${
 				callback_params?.error ? ` ${callback_params?.error}` : ''}`
@@ -554,7 +545,7 @@ namespace $ {
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh') {
 			// after redirect from sso url params not empty, but nulled in token_id(null)
-			const callback_params = this.callback_params()
+			const callback_params = this.callback_parts()
 			const token = super.token()
 
 			try {
