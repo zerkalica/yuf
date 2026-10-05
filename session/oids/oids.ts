@@ -143,7 +143,7 @@ namespace $ {
 		session_error() { return this.checker()?.status() ?? null }
 
 		@ $mol_action
-		protected callback_parts(next?: null) {
+		protected callback_parts() {
 			const { location } = this.$.$mol_dom_context
 			const use_query = this.use_query()
 
@@ -175,28 +175,19 @@ namespace $ {
 				unknown.push(param_raw)
 			}
 
-			if ( params.state && params.state !== this.redirect_params()?.[0]) return null
-
 			let clean_url = href.slice(0, from_index) + unknown.join('&') + href.slice(to_index)
 			clean_url = clean_url.replace(/[\#\?]$/, '')
-
-			if (next === null) {
-				if (location.href !== clean_url) {
-					this.redirect_to(clean_url, 'history')
-				}
-				return { params: null as typeof params | null, clean_url }
-			}
 
 			return { params, clean_url }
 		}
 
-		protected redirect_uri() { return this.callback_parts()?.clean_url }
+		protected redirect_uri() { return this.callback_parts().clean_url }
 
 		@ $mol_mem
 		protected token_id(next?: string | null) {
 			if (next === null) super.token(null)
 			if (next === null) this.redirect_params(null)
-			if (next || next === null) this.callback_parts(null)
+			if (next === null || next) this.redirect_to(this.redirect_uri(), 'history')
 
 			return this.$.$mol_state_local.value(`${this.token_key()}_id`, next === '' ? null : next) || null
 		}
@@ -248,13 +239,13 @@ namespace $ {
 			return this.$.$mol_state_local.value(`${this.token_key()}_refresh`, next === '' ? null : next) || null
 		}
 
-		logout_redirect_uri() { return '/' }
+		logout_redirect_uri() { return this.redirect_uri() }
 
 		override token_key() { return `${this.realm_url()}_${this.client_id()}_token` }
 
 		@ $mol_mem
 		protected redirect_params(next?: [ state: string, nonce?: string, verifier?: string ] | null, refresh?: 'refresh') {
-			if ( refresh ) next = [
+			if ( refresh === 'refresh') next = [
 				$mol_guid(36),
 				this.use_nonse() ? $mol_guid(36) : undefined,
 				this.pkce_method() ? $mol_guid(96) : undefined,
@@ -458,8 +449,8 @@ namespace $ {
 
 		@ $mol_action
 		override logout() {
-			super.logout()
 			const redirect_uri = this.logout_send()
+			super.logout()
 			if (redirect_uri) this.redirect_to(redirect_uri)
 		}
 
@@ -470,8 +461,8 @@ namespace $ {
 		protected update() {
 			const refresh_token = this.token_refresh()
 			const callback_params = refresh_token ? null  : this.callback_parts()?.params
-			const [ nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
-
+			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
+			if (state && state !== callback_params?.state) throw new Error('Wrong state id', { cause: { callback_params, state } })
 			const error_message = `${callback_params?.error_description ?? ''}${
 				callback_params?.error ? ` ${callback_params?.error}` : ''}`
 
@@ -501,7 +492,7 @@ namespace $ {
 					code_verifier,
 				})
 
-				const response = this.request(url, { credentials: 'include', body }).success()
+				const response = this.request(url, { credentials: 'include', body }).response()
 
 				result = Update_response(response)
 			}
@@ -532,12 +523,10 @@ namespace $ {
 
 		@ $mol_action
 		redirect_to(url?: string | null, history?: 'history') {
-			if (history) {
-				url && this.$.$mol_state_arg.href(url)
-				return
-			}
 			const loc = this.$.$mol_dom_context.location
-			new this.$.$mol_after_frame(() => url ? loc.assign(url) : loc.reload())
+			if (! history) new this.$.$mol_after_frame(() => url ? loc.assign(url) : loc.reload())
+			else if (url && loc.href !== url) this.$.$mol_state_arg.href(url)
+			return null
 		}
 
 		min_validity() { return 5000 }
@@ -568,7 +557,9 @@ namespace $ {
 				this.token_refresh(actual?.refresh_token ?? null)
 				this.token_id(actual?.id_token ?? null)
 				const next_token = super.token(actual?.access_token ?? null)
+
 				this.expires_timer(null)
+
 				return next_token
 			} catch (e) {
 				if ($mol_promise_like(e) ) $mol_fail_hidden(e)

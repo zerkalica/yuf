@@ -57,13 +57,33 @@ namespace $ {
 		}))),
 	})
 
-	const group_dto = rec({
+	const subgroup_dto = rec({
+		id: str,
+		name: opt(nul(str)),
+		path: opt(nul(str)),
+	})
 
+	const group_dto = rec({
+		... subgroup_dto.config,
+		subGroups: opt(nul(arr(rec({
+			... subgroup_dto.config,
+			subGroups: opt(nul(arr(rec({
+				... subgroup_dto.config,
+				subGroups: opt(nul(arr(subgroup_dto))),
+			})))),
+		})))),
+	})
+
+	const attr_group_dto = rec({
+		name: str,
+		displayDescription: opt(nul(str)),
+		displayHeader: opt(nul(str)),
+		annotations: opt(nul(dict($yuf_data_unknown))),
 	})
 
 	const meta_dto = rec({
 		attributes: opt(nul(arr(attr_dto))),
-		groups: opt(nul(arr(group_dto)))
+		groups: opt(nul(arr(attr_group_dto)))
 	})
 
 	const Meta_response = $yuf_session_oids_response_data(meta_dto)
@@ -77,6 +97,9 @@ namespace $ {
 	})
 
 	const Roles_response = $yuf_session_oids_response_data(arr(role_dto))
+
+	const Groups_response = $yuf_session_oids_response_data(arr(group_dto))
+
 	const Users_response = $yuf_session_oids_response_data(arr($yuf_session_oids_user_model_dto))
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
@@ -102,7 +125,6 @@ namespace $ {
 		protected admin_url() { return this.session().realm_url('admin') }
 		protected account_url() { return this.session().endpoint('account') }
 
-		protected admin_roles_url() { return this.admin_url() + '/roles' }
 		protected admin_users_url() { return this.admin_url() + '/users' }
 		protected admin_metadata_url() { return this.admin_users_url() + '/profile/metadata' }
 
@@ -224,7 +246,7 @@ namespace $ {
 		@ $mol_mem_key
 		protected roles_search({ search }: { search?: string | null }) {
 			$mol_wire_solid()
-			const url = this.admin_roles_url()
+			const url = this.admin_url() + '/roles'
 			const query = ! search ? '' : '?' + new URLSearchParams({ search }).toString()
 			const response = this.request(url + query)
 
@@ -242,16 +264,30 @@ namespace $ {
 
 		@ $mol_mem
 		role_names() {
-			return Object.fromEntries(
-				this.roles_data().map(rec => [ rec.id, rec.name || rec.id ])
-			)
+			return Object.fromEntries( this.roles_data().map(rec => [ rec.id, rec.name || rec.id ]) )
 		}
 
 		@ $mol_mem
 		role_hints() {
-			return Object.fromEntries(
-				this.roles_data().map(rec => [ rec.id, rec.description || '' ])
-			)
+			return Object.fromEntries( this.roles_data().map(rec => [ rec.id, rec.description || '' ]) )
+		}
+
+		@ $mol_mem
+		protected groups_data() {
+			const url = this.admin_url() + '/groups'
+			const response = this.request(url)
+
+			return Groups_response(response)
+		}
+
+		@ $mol_mem
+		group_names() {
+			return Object.fromEntries( this.groups_data().map(rec => [ rec.id, rec.name || rec.id ]) )
+		}
+
+		@ $mol_mem
+		group_hints() {
+			return Object.fromEntries( this.groups_data().map(rec => [ rec.id, rec.name || '' ]) )
 		}
 	}
 

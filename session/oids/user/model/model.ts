@@ -110,6 +110,8 @@ namespace $ {
 			return this.deleted_ids(next ? [ id ] : undefined).includes(id)
 		}
 
+		groups() { return [] }
+
 		@ $mol_mem
 		roles(next?: readonly string[] | null): readonly string[] {
 			const url = this.admin_user_url() + '/role-mappings/realm'
@@ -241,6 +243,7 @@ namespace $ {
 					attributes: this.attributes_encode(merged.attributes),
 					credentials,
 				})
+
 				const user_id = res.headers().get('Location')?.split('/')?.at(-1) ?? null
 				if (! user_id) throw new Error('Can\'t create user', { cause: res })
 				this.id_actual = user_id
