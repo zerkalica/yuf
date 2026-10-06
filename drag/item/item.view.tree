@@ -1,0 +1,19 @@
+$yuf_drag_item $mol_drag
+	param \
+	id \
+	remove? null
+	end? <=> remove_event? null
+	start? <=> start_event? null
+	Drag_image null
+	drag_align \center
+	attr *
+		^
+		draggable <= draggable true
+	transfer *
+		text/plain <= task_title \
+		text/html <= task_html \
+		text/uri-list <= task_uri \
+	Sub <= Item_drop $mol_drop
+		adopt? <=> adopt? null
+		receive? <=> receive? <=> receive_before? null
+		Sub <= Item $mol_view

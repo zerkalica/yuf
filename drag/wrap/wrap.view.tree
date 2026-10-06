@@ -1,0 +1,4 @@
+$yuf_drag_wrap $mol_drag
+	files /File
+	- transfer *
+		text/plain <= file_names \

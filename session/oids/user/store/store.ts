@@ -9,7 +9,8 @@ namespace $ {
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
 
-	type Preloaded_data = typeof $yuf_session_oids_user_model_dto.Value & { locked?: boolean, login?: string }
+	type Preloaded_data = typeof $yuf_session_oids_user_model_dto.Value
+
 	/**
 	 * @example
 	 * ```json
@@ -100,9 +101,18 @@ namespace $ {
 
 	const Groups_response = $yuf_session_oids_response_data(arr(group_dto))
 
-	const Users_response = $yuf_session_oids_response_data(arr($yuf_session_oids_user_model_dto))
+	export const $yuf_session_oids_user_store_dto = arr($yuf_session_oids_user_model_dto)
+	const Users_response = $yuf_session_oids_response_data($yuf_session_oids_user_store_dto)
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
+
+	const partial_import_dto = rec({
+		added: opt(nul(num)),
+		overwritten: opt(nul(num)),
+		skipped: opt(nul(num)),
+	})
+
+	const Partial_import_response = $yuf_session_oids_response_data(partial_import_dto)
 
 	function attr_normalize(attr: typeof attr_dto.Value): $yuf_form_attr_type {
 		return {
@@ -129,7 +139,7 @@ namespace $ {
 		protected admin_metadata_url() { return this.admin_users_url() + '/profile/metadata' }
 
 		@ $mol_mem
-		protected attrs() {
+		attrs() {
 			const url = this.is_admin()
 				? this.admin_metadata_url()
 				:  this.account_url() + '?' + new URLSearchParams({ userProfileMetadata: 'true' }).toString()
@@ -175,10 +185,9 @@ namespace $ {
 			return [ ...prev ?? [], ...next ?? [] ]
 		}
 
-		@ $mol_mem_key
-		protected data(
-			{ first, max, enabled, search }: { search?: string, first?: 0, max?: number, enabled?: boolean },
-			reset?: null
+		@ $mol_action
+		protected users_chunk(
+			{ first, max, enabled, search }: { search?: string, first?: number, max?: number, enabled?: boolean },
 		) {
 			const q: Record<string, string> = {
 				briefRepresentation: 'true',
@@ -192,40 +201,64 @@ namespace $ {
 
 			const res = this.request(this.admin_users_url() + '?' + new URLSearchParams(q).toString())
 
-			const recs = Users_response(res)
-
-			return recs.map(rec => this.preloaded(rec.id, rec)!)
+			return Users_response(res)
 		}
 
+		@ $mol_action
+		protected users_chunk_filtered(
+			params: Parameters<typeof this.users_chunk>[0] & {
+				activity?: 'all' | 'online'
+			},
+		) {
+			const deleted_ids = this.deleted_ids()
+
+			const is_online = params.activity === 'online' ? true : null
+			const chunk = this.users_chunk(params)
+			const users = chunk.filter(rec =>
+				( is_online === null || is_online === this.by_id(rec.id).is_online() )
+				&& ! deleted_ids.includes(rec.id)
+			)
+
+			return { end: chunk.length < ( params.max ?? 2000 ), users }
+		}
+
+		protected chunk_max() { return 500 }
+		protected users_max() { return 100_000 }
+
 		@ $mol_mem_key
-		ids({ order_by, activity, ...params }: Parameters<typeof this.data>[0] & {
+		ids(params: Parameters<typeof this.users_chunk>[0] & {
 			activity?: 'all' | 'online'
 			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
 		}, reset?: null) {
-			const order_field = order_by?.replace('_desc', '')
-			const desc = (order_by ?? undefined) !== (order_field ?? undefined)
-			const deleted_ids = this.deleted_ids()
+			let users = [] as ReturnType<typeof this.users_chunk>[number][]
 
-			const is_online = activity === 'online' ? true : null
+			const max = this.chunk_max()
+			const users_max = this.users_max()
 
-			return this.data(params, reset)
-				.filter(rec => deleted_ids.includes(rec.id)
-					? false
-					: is_online === null || is_online === this.by_id(rec.id).is_online()
-				)
-				.toSorted((a_raw, b_raw) => {
-					const a = desc ? b_raw : a_raw
-					const b = desc ? a_raw : b_raw
-					if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
-					const aa_raw = a.attributes?.[order_field ?? '']
-					const ba_raw = b.attributes?.[order_field ?? '']
-					const aa = Array.isArray(aa_raw) ? aa_raw[0] : null
-					const ba = Array.isArray(ba_raw) ? ba_raw[0] : null
-					if (aa || ba ) return aa?.localeCompare(ba ?? '') ?? 0
+			for (let first = 0; first < users_max; first += max) {
+				const chunk = this.users_chunk_filtered({ ...params, first, max })
+				users = users.concat(chunk.users)
+				if (chunk.end) break
+			}
 
-					return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
-				})
-				.map(rec => rec.id)
+			const order_field = params.order_by?.replace('_desc', '')
+			const desc = (params.order_by ?? undefined) !== (order_field ?? undefined)
+
+			this._preloaded = {}
+
+			return users.sort((a_raw, b_raw) => {
+				const a = desc ? b_raw : a_raw
+				const b = desc ? a_raw : b_raw
+				if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
+				const aa_raw = a.attributes?.[order_field ?? '']
+				const ba_raw = b.attributes?.[order_field ?? '']
+				const aa = Array.isArray(aa_raw) ? aa_raw[0] : null
+				const ba = Array.isArray(ba_raw) ? ba_raw[0] : null
+				if (aa || ba ) return aa?.localeCompare(ba ?? '') ?? 0
+
+				return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
+			})
+			.map(rec => (this._preloaded[rec.id] = rec).id)
 		}
 
 		@ $mol_mem_key
@@ -288,6 +321,99 @@ namespace $ {
 		@ $mol_mem
 		group_hints() {
 			return Object.fromEntries( this.groups_data().map(rec => [ rec.id, rec.name || '' ]) )
+		}
+
+		@ $mol_action
+		export_data(ids: readonly string[]) {
+			this.ids({}) // preload
+			const preloaded = this._preloaded
+			const ids_not_loaded = ids.filter(id => ! preloaded[id])
+			if (ids_not_loaded.length) throw new Error('Not loaded some ids', { cause: { ids_not_loaded } })
+
+			return ids.map(id => preloaded[id]!)
+		}
+
+		@ $mol_action
+		import_info(to_import: readonly Preloaded_data[]) {
+			const ids = this.ids({}) // preload
+			const preloaded = this._preloaded
+			const existing_by_name = {} as typeof preloaded
+
+			const to_create = [] as typeof to_import[number][]
+			const to_update = [] as typeof to_import[number][]
+
+			ids.forEach(id => {
+				const name = preloaded[id]?.username ?? ''
+				if (name) existing_by_name[name] = preloaded[id]
+			})
+
+			to_import.forEach(user => {
+				const cur = existing_by_name[user.username ?? '']
+				if (! cur) to_create.push(user)
+				else to_update.push({ ...cur, ...user, id: cur.id })
+			})
+
+			return { to_create, to_update }
+		}
+
+
+		@ $mol_action
+		protected import_body(users: readonly Preloaded_data[]) {
+			return JSON.stringify({ ifResourceExists: 'SKIP', users })
+		}
+
+		@ $mol_action
+		protected import_new(next: readonly Preloaded_data[]): typeof partial_import_dto.Value {
+			const max = this.chunk_max()
+			const users_max = this.users_max()
+			const url = this.admin_url() + '/partialImport'
+
+			const overall = { added: 0, overwritten: 0, skipped: 0 }
+
+			for (let i = 0; i < users_max; i += max) {
+				const users = next.slice(i, max)
+				if (! users.length) break
+
+				const res = this.request(url, { method: 'POST', body: this.import_body(users) })
+
+				const info = Partial_import_response(res)
+
+				overall.added += info.added ?? 0
+				overall.overwritten += info.overwritten ?? 0
+				overall.skipped += info.skipped ?? 0
+			}
+
+			return overall
+		}
+
+		@ $mol_action
+		protected update_user(next: Preloaded_data) {
+			const user = this.by_id(next.id)
+			const prev = user.data()
+
+			$mol_error_fence(
+				() => user.data({ ...prev, ...next }),
+				e => new $mol_error_mix('User import error', { user_data: next }, e)
+			)
+
+			return user.login()
+		}
+
+		@ $mol_action
+		import({ to_create, to_update }: {
+			to_create: readonly Preloaded_data[]
+			to_update: readonly Preloaded_data[]
+		}) {
+			const stat = this.import_new(to_create)
+
+			const created = to_create.map(next => ! next.credentials?.length || ! next.id ? null : this.update_user({
+				id: next.id,
+				credentials: next.credentials
+			})).filter($mol_guard_defined)
+
+			const updated = to_update.map(next => this.update_user(next))
+
+			return { stat, updated, created }
 		}
 	}
 

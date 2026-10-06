@@ -1,0 +1,15 @@
+$yuf_drag_group $mol_drop
+	ids /string
+	param \
+	item_move*? null
+	is_before* false
+	adopted_id*? null
+	Sub <= List $mol_view sub <= rows /$mol_view
+		<= Item_drag*0 $yuf_drag_item
+			id <= id* \
+			param <= param
+			Drag_image <= Item_drag_image* null
+			remove? <=> item_remove*? null
+			draggable <= item_draggable* true
+			receive_before? <=> receive_before*? null
+			Item <= Item* $mol_view

@@ -8,13 +8,30 @@ namespace $ {
 	const arr = $mol_data_array
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
-
+	const cnst = $mol_data_const
 	const unk = (v: unknown) => v
 
+	const Credential_dto_password = rec({
+		type: cnst('password' as const),
+		value: str,
+		temporary: opt(nul(bool)),
+	})
+	const Credential_dto_otp = rec({
+		type: cnst('otp' as const),
+		secretData: str,
+		credentialData: str,
+	})
+	const Credential_dto_webauthn = rec({
+		type: cnst('webauthn' as const),
+		secretData: str,
+		credentialData: str,
+	})
+
+	const Credentials_dto = arr(vr(Credential_dto_password, Credential_dto_otp, Credential_dto_webauthn))
 
 	type Extra_fields = {
 		password?: string | null
-		password_temporary?: boolean
+		password_temporary?: boolean | null
 		password_old?: string | null
 		otp?: { secret: string, creds: string }
 		webauthn?: { secret: string, creds: string }
@@ -22,6 +39,27 @@ namespace $ {
 
 		locked?: boolean
 		login?: string
+	}
+
+	export function $yuf_session_oids_user_model_credentials(next: Extra_fields): typeof Credentials_dto.Value {
+		return [
+			! next.password ? null : {
+				type: 'password' as const,
+				value: next.password,
+				temporary: next.password_temporary ?? false,
+			},
+			! next.otp ? null : {
+				type: 'otp' as const,
+				secretData: next.otp.secret,
+				credentialData: next.otp.creds,
+			},
+
+			! next.webauthn ? null : {
+				type: 'webauthn' as const,
+				secretData: next.webauthn.secret,
+				credentialData: next.webauthn.creds,
+			}
+		].filter($mol_guard_defined)
 	}
 
 	export const $yuf_session_oids_user_model_dto = rec({
@@ -33,10 +71,16 @@ namespace $ {
 		createdTimestamp: opt(nul(num)),
 		firstName: opt(nul(str)),
 		lastName: opt(nul(str)),
-		attributes: opt(nul(dict(unk))),
+		attributes: opt(nul(dict(arr(str)))),
 		emailVerified: opt(nul(bool)),
 		email: opt(nul(str)),
 		totp: opt(nul(bool)),
+		credentials: opt(nul(Credentials_dto)),
+
+		// access: opt(nul(dict(bool))),
+		// disableableCredentialTypes: opt(nul(arr(unk))),
+		// requiredActions: opt(nul(arr(unk))),
+		// notBefore: opt(nul(num)),
 	})
 
 	export type $yuf_session_oids_user_model_data = typeof $yuf_session_oids_user_model_dto.Value & Extra_fields
@@ -84,8 +128,8 @@ namespace $ {
 			return res
 		}
 
-		protected attributes_decode(attributes: Record<string, unknown> | undefined | null) { return attributes }
-		protected attributes_encode(attributes: Record<string, unknown> | undefined | null) { return attributes }
+		protected attributes_decode(attributes: Record<string, readonly string[]> | undefined | null) { return attributes }
+		protected attributes_encode(attributes: Record<string, readonly string[]> | undefined | null) { return attributes }
 
 		protected put(url: string, body?: {}) { return this.post(url, body, 'PUT') }
 		protected delete_req(url: string, body?: {}) { return this.post(url, body, 'DELETE') }
@@ -169,8 +213,6 @@ namespace $ {
 				// const info = Info_response(this.request(this.info_url()))
 				const attributes = this.attributes_decode(prev.attributes)
 
-				this.preloaded(null)
-
 				return {
 					...prev,
 					attributes,
@@ -199,7 +241,7 @@ namespace $ {
 				else if (key !== 'attributes') (merged as Record<string, unknown>)[key] = next[key]
 			}
 
-			const attributes = next.attributes
+			const attributes = this.attributes_decode(next.attributes)
 			if (attributes) {
 				for (const key of Object.keys(attributes)) {
 					if (attributes[key] === undefined) continue
@@ -213,25 +255,7 @@ namespace $ {
 			if (this.is_tmp() && ! flush) return merged
 
 			if (this.is_tmp()) {
-				const credentials = [
-					! next.password ? null : {
-						type: 'password',
-						value: next.password,
-						temporary: next.password_temporary ?? false,
-					},
-					! next.otp ? null : {
-						type: 'otp',
-						secretData: next.otp.secret,
-						credentialData: next.otp.creds,
-					},
-
-					! next.webauthn ? null : {
-						type: 'webauthn',
-						secretData: next.webauthn.secret,
-						credentialData: next.webauthn.creds,
-					}
-				].filter(Boolean)
-
+				const credentials = next.credentials ?? $yuf_session_oids_user_model_credentials(next)
 				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: next })
 
 				const res = this.post(this.admin_users_url(), {
@@ -285,7 +309,7 @@ namespace $ {
 
 			if (merged.roles) merged.roles = this.roles(merged.roles)
 
-			return { ...merged, password: undefined, password_old: undefined, password_temporary: undefined, }
+			return { ...merged, password: undefined, password_old: undefined, password_temporary: undefined, credentials: undefined }
 		}
 
 		@ $mol_mem_key
@@ -298,16 +322,15 @@ namespace $ {
 			return this.data(next ? { [field]: next } : next === null ? null : undefined)?.[ field ] ?? null
 		}
 
-		attrs(next?: Record<string, unknown>) { return this.value('attributes', next) ?? {} }
+		protected attrs(next?: Record<string, readonly string[]>) { return this.value('attributes', next) ?? {} }
 
 		@ $mol_mem_key
-		protected profile_unknown(key: string, next?: unknown): unknown {
-			return this.attrs(next === undefined ? next : { [key]: next })?.[key] ?? null
+		profile_list(key: string, next?: readonly string[]) {
+			return this.attrs(next === undefined ? next : { [key]: next })?.[key] ?? []
 		}
 
-		profile_str(key: string, next?: string): string {
-			const val = this.profile_unknown(key, next) ?? null
-			return (Array.isArray(val) ? val?.[0] : val) ?? ''
+		profile_str(key: string, next?: string) {
+			return this.profile_list(key, next === undefined ? next : next === null ? [] : [ next ] )?.[0] ?? ''
 		}
 
 		login() { return this.value('login') ?? '' }

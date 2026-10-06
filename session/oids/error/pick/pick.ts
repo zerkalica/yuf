@@ -11,4 +11,14 @@ namespace $ {
 				}
 				: null
 	}
+
+	export function $yuf_session_oids_error_pick_field(cause: unknown) {
+		return cause && typeof cause === 'object' && 'json' in cause
+			? (cause as { json: {
+				field?: string
+				params?: readonly string[]
+			}} ).json
+			: null
+	}
+
 }
