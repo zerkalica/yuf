@@ -222,14 +222,8 @@ namespace $ {
 			return { end: chunk.length < ( params.max ?? 2000 ), users }
 		}
 
-		protected chunk_max() { return 500 }
-		protected users_max() { return 100_000 }
-
-		@ $mol_mem_key
-		ids(params: Parameters<typeof this.users_chunk>[0] & {
-			activity?: 'all' | 'online'
-			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
-		}, reset?: null) {
+		// @ $mol_mem_key
+		protected users_chunks_filtered(params: Parameters<typeof this.users_chunk_filtered>[0], reset?: null) {
 			let users = [] as ReturnType<typeof this.users_chunk>[number][]
 
 			const max = this.chunk_max()
@@ -241,24 +235,38 @@ namespace $ {
 				if (chunk.end) break
 			}
 
-			const order_field = params.order_by?.replace('_desc', '')
-			const desc = (params.order_by ?? undefined) !== (order_field ?? undefined)
+			return users
+		}
+
+		protected chunk_max() { return 500 }
+		protected users_max() { return 100_000 }
+
+		@ $mol_mem_key
+		ids({ order_by, ...params}: Parameters<typeof this.users_chunk>[0] & {
+			activity?: 'all' | 'online'
+			order_by?: `${'created' | 'modified' | 'login' | 'name' | string}${'' | '_desc'}`
+		}, reset?: null) {
+			const users = this.users_chunks_filtered(params, reset)
+
+			const order_field = order_by?.replace('_desc', '')
+			const desc = (order_by ?? undefined) !== (order_field ?? undefined)
 
 			this._preloaded = {}
 
-			return users.sort((a_raw, b_raw) => {
+			users.sort((a_raw, b_raw) => {
 				const a = desc ? b_raw : a_raw
 				const b = desc ? a_raw : b_raw
-				if (order_field === 'login') return a.username?.localeCompare(b.username ?? '') ?? 0
+				if (order_field === 'login') return (a.username ?? '').localeCompare(b.username ?? '')
 				const aa_raw = a.attributes?.[order_field ?? '']
 				const ba_raw = b.attributes?.[order_field ?? '']
-				const aa = Array.isArray(aa_raw) ? aa_raw[0] : null
-				const ba = Array.isArray(ba_raw) ? ba_raw[0] : null
-				if (aa || ba ) return aa?.localeCompare(ba ?? '') ?? 0
+				const aa: string = Array.isArray(aa_raw) ? aa_raw[0] ?? '' : ''
+				const ba: string = Array.isArray(ba_raw) ? ba_raw[0] ?? '' : ''
+				if (aa || ba ) return aa.localeCompare(ba)
 
 				return (a.createdTimestamp ?? 0) - (b.createdTimestamp ?? 0)
 			})
-			.map(rec => (this._preloaded[rec.id] = rec).id)
+
+			return users.map(rec => (this._preloaded[rec.id] = rec).id)
 		}
 
 		@ $mol_mem_key

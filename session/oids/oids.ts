@@ -408,7 +408,7 @@ namespace $ {
 
 		@ $mol_action
 		response_authorized(url: string, init?: RequestInit) {
-			return this.$.$yuf_transport_retry(
+			return this.$.$yuf_transport_retry<$mol_fetch_response>(
 				token => this.$.$mol_fetch.request(url, { ...init, headers: $yuf_header_merge(init?.headers, {
 					Accept: 'application/json',
 					'Content-Type': init?.method ? 'application/json' : undefined,
@@ -416,7 +416,8 @@ namespace $ {
 					...init?.headers,
 				}) }).response(),
 
-				reset => this.token_grab(reset)
+				reset => this.token_grab(reset),
+				// res => res.code() !== 403 && res.code() !== 401
 			)
 		}
 
