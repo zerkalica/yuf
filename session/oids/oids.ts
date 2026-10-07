@@ -346,7 +346,6 @@ namespace $ {
 			return new URLSearchParams(params as Record<string, string>)
 		}
 
-		@ $mol_mem
 		protected action_params() {
 			const [ state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
 			const scope = this.scope()
@@ -377,13 +376,13 @@ namespace $ {
 
 		@ $mol_mem
 		account_url() {
-			return this.endpoint('account', {
-				referrer: this.client_id(),
-				referrer_uri: this.redirect_uri()
-			})
+			return this.endpoint('account', { referrer: this.client_id(), referrer_uri: this.redirect_uri() })
 		}
 
+		@ $mol_mem
 		login_url() { return this.endpoint('auth', this.action_params()) }
+
+		@ $mol_mem
 		register_url() { return this.endpoint('registrations', this.action_params()) }
 
 		logout_params() {
