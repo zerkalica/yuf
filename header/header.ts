@@ -2,7 +2,7 @@ namespace $ {
 
 	export type $yuf_header_rec = Record<string, string | readonly (string | null | undefined)[] | null | undefined >
 
-	function assign_headers(target: Headers, rec?: $yuf_header_rec | null) {
+	export function $yuf_header_assign(target: Headers, rec?: $yuf_header_rec | null) {
 		for (let k in rec) {
 			const values = rec[k]
 
@@ -19,13 +19,13 @@ namespace $ {
 	export function $yuf_header_normalize(headers: RequestInit['headers'] | $yuf_header_rec | null) {
 		if (headers instanceof Headers) return headers
 		if (Array.isArray(headers)) return new Headers(headers)
-		return assign_headers(new Headers(), headers)
+		return $yuf_header_assign(new Headers(), headers)
 	}
 
 	export function $yuf_header_merge( main_raw: RequestInit['headers'] | $yuf_header_rec, extra?: typeof main_raw) {
 		const main = $yuf_header_normalize(main_raw)
 		if ( ! ( extra instanceof Headers) && ! (Array.isArray(extra) ) ) {
-			return assign_headers(new Headers(main), extra)
+			return $yuf_header_assign(new Headers(main), extra)
 		}
 
 		return new Headers([
@@ -43,7 +43,7 @@ namespace $ {
 		content_type?: string | null
 	}
 
-	export function $yuf_header_std_make(init: $yuf_header_std_rec) {
+	export function $yuf_header_std(init: $yuf_header_std_rec) {
 		return {
 			'Content-Type': ! init.content_type ? undefined : [init.content_type],
 			'Authorization': init.auth_token ? `Bearer ${init.auth_token}` : init.auth_token,

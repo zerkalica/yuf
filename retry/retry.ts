@@ -1,8 +1,8 @@
 namespace $ {
-	export function $yuf_transport_retry<Res extends { code(): number | string }>(
+	export function $yuf_retry<Res>(
 		make_request: (token: string | undefined) => Res,
 		grab_token: (reset?: null) => string | null | undefined,
-		is_ok = (res: Res) => res.code() !== 403 && res.code() !== 401
+		is_ok: (res: Res) => boolean
 	): Res {
 		let token = grab_token() || undefined
 

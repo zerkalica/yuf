@@ -3,13 +3,16 @@ namespace $ {
 
 		static response(path: RequestInfo, init?: $yuf_transport_request_init) {
 			const session = this.$.$mol_one.$yuf_session
+			const client_id = session.client_id()
 
-			return this.$.$yuf_transport_retry(
-				auth_token => this.$.$yuf_transport_request.from_path(path, { ...init, auth_token, client_id: session.client_id() }).response(),
+			return this.$.$yuf_retry(
+				auth_token => this.$.$yuf_transport_request.from_path(path, { ...init, auth_token, client_id }).response(),
 
 				reset => reset === null || init?.auth_token === undefined
 					? session.token_grab(reset)
 					: (init.auth_token || undefined),
+
+				$yuf_transport_authorized
 			)
 		}
 

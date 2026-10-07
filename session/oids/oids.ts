@@ -148,7 +148,7 @@ namespace $ {
 			const use_query = this.use_query()
 
 			const known = this.params_hybrid()
-			let params = {} as Record<typeof known[number], string | null | undefined>
+			let params = null as null | Partial<Record<typeof known[number], string | null | undefined>>
 
 			const href = location.href
 			const query_index = href.indexOf('?')
@@ -168,6 +168,7 @@ namespace $ {
 				const name = known.find(key => param_raw.startsWith(key + '='))
 
 				if ( name ) {
+					if (! params) params = {}
 					params[name] = param_raw.slice(name.length + 1)
 					continue
 				}
@@ -408,16 +409,15 @@ namespace $ {
 
 		@ $mol_action
 		response_authorized(url: string, init?: RequestInit) {
-			return this.$.$yuf_transport_retry<$mol_fetch_response>(
-				token => this.$.$mol_fetch.request(url, { ...init, headers: $yuf_header_merge(init?.headers, {
+			return this.$.$yuf_retry(
+				token => this.$.$mol_fetch.request(url, { ...init, headers: $mol_wire_sync(this.$).$yuf_header_merge(init?.headers, {
 					Accept: 'application/json',
 					'Content-Type': init?.method ? 'application/json' : undefined,
 					Authorization: 'bearer ' + token,
-					...init?.headers,
 				}) }).response(),
 
 				reset => this.token_grab(reset),
-				// res => res.code() !== 403 && res.code() !== 401
+				$yuf_transport_authorized
 			)
 		}
 
@@ -461,7 +461,7 @@ namespace $ {
 		@ $mol_action
 		protected update() {
 			const refresh_token = this.token_refresh()
-			const callback_params = refresh_token ? null  : this.callback_parts()?.params
+			const callback_params = refresh_token ? null  : this.callback_parts().params
 			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 			if (state && state !== callback_params?.state) throw new Error('Wrong state id', { cause: { callback_params, state } })
 			const error_message = `${callback_params?.error_description ?? ''}${
@@ -535,7 +535,7 @@ namespace $ {
 		@ $mol_mem
 		override token(next?: string | null, op?: 'refresh') {
 			// after redirect from sso url params not empty, but nulled in token_id(null)
-			const callback_params = this.callback_parts()
+			const callback_params = this.callback_parts().params
 			const token = super.token()
 
 			try {
