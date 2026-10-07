@@ -42,6 +42,11 @@ namespace $ {
 
 	const Config_response = $yuf_session_oids_response_data(Config_dto)
 
+	export type $yuf_session_oids_endpoint = 'account'
+		| 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1'
+		| 'users' | 'metadata' | 'roles' | 'groups' | 'partialImport'
+
+	export type $yuf_session_oids_params = Record<string, string | number | null | undefined> | null
 
 	/**
 	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
@@ -53,32 +58,36 @@ namespace $ {
 
 		realm() { return 'mssc' }
 
-		realm_url(prefix = '') {
+		protected realm_url(prefix = '') {
 			return `${this.auth_server_url().replace(/\/+$/, '')}${prefix ? `/${prefix}` : ''}/realms/${encodeURIComponent(this.realm())}`
 		}
 
-		endpoint(key: 'auth' | 'token' | 'logout' | 'registrations' | 'account' | 'userinfo' | 'status' | 'step1') {
-			let str = key as string
+		endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+			const query = ! params ? '' : '?' + this.search_params(params).toString()
+			if (k === 'users' || k === 'roles' || k === 'groups' || k === 'partialImport' || k === 'metadata') {
+				return `${this.realm_url('admin')}/${k === 'metadata' ? `users/profile/${k}` : k}${query}`
+			}
 
-			let url = this.config_value(key)
+			let url = this.config_value(k)
 
 			if (url && url.startsWith('/') && ! this.realm_url().startsWith('/')) {
 				const origin = new URL(this.realm_url()).origin
 				url = origin + url
 			}
 
-			if (url) return url
+			if (url) return url + query
 
-			if (key === 'step1') str = '3p-cookies/step1.html'
+			let str = k as string
+			if (k === 'step1') str = '3p-cookies/step1.html'
 
-			if (key === 'status') {
+			if (k === 'status') {
 				const version = this.status_iframe_version()
 				str = `login-status-iframe.html${version ? '?' + this.search_params({ version }) : ''}`
 			}
 
-			const prefix = key === 'account' ? '' : '/protocol/openid-connect'
+			if (k !== 'account') str = `protocol/openid-connect/${str}`
 
-			return `${this.realm_url()}${prefix}/${str}`
+			return `${this.realm_url()}/${str}${query}`
 		}
 
 		protected endpoint_config_names() {
@@ -99,7 +108,7 @@ namespace $ {
 		@ $mol_mem
 		protected config() {
 			$mol_wire_solid()
-			const response = this.request(`${this.realm_url()}/.well-known/openid-configuration`).success()
+			const response = this.response(`${this.realm_url()}/.well-known/openid-configuration`, { auth_token: null })
 
 			return Config_response(response)
 		}
@@ -226,7 +235,7 @@ namespace $ {
 			let id = params.payload?.sub
 			if (id) return id
 
-			const response = this.response_authorized(this.endpoint('account'))
+			const response = this.response(this.endpoint('account'))
 			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
 			id = data?.id ?? ''
 			if (! this.can_users_view()) this.users().preloaded(id, data)
@@ -338,12 +347,12 @@ namespace $ {
 		}
 
 		@ $mol_mem
-		protected action_query() {
+		protected action_params() {
 			const [ state, nonce, code_verifier ] = this.redirect_params(null, 'refresh')!
 			const scope = this.scope()
 			const flow = this.flow()
 
-			return this.search_params({
+			return {
 				client_id: this.client_id(),
 				redirect_uri: this.redirect_uri(),
 				state,
@@ -363,71 +372,39 @@ namespace $ {
 				acr_values: this.acr_values(),
 				code_challenge: code_verifier ? this.pkce_generate(code_verifier) : null,
 				code_challenge_method: code_verifier ? this.pkce_method()?.replace('SHA-', 'S') : null,
-			})
+			}
 		}
 
 		@ $mol_mem
 		account_url() {
-			return this.realm_url() + '/account?' + this.search_params({
+			return this.endpoint('account', {
 				referrer: this.client_id(),
 				referrer_uri: this.redirect_uri()
 			})
 		}
 
-		login_url() {
-			return this.endpoint('auth') + '?' + this.action_query()
-		}
-		register_url() { return this.endpoint('registrations') + '?' + this.action_query() }
+		login_url() { return this.endpoint('auth', this.action_params()) }
+		register_url() { return this.endpoint('registrations', this.action_params()) }
 
-		@ $mol_mem
-		protected logout_params() {
-			return this.search_params({
+		logout_params() {
+			return {
 				client_id: this.client_id(),
 				id_token_hint: this.token_id(),
 				post_logout_redirect_uri: this.logout_redirect_uri(),
-			})
+			}
 		}
 
 		@ $mol_mem
-		logout_url() {
-			return this.endpoint('logout') + '?' + this.logout_params()
-		}
+		logout_url() { return this.endpoint('logout', this.logout_params()) }
 
-		@ $mol_action
-		protected request(url: string, params?: RequestInit) {
-			const headers = { ... params?.headers } as Record<string, string>
-			if (params?.body instanceof URLSearchParams) {
-				headers['Content-type'] = 'application/x-www-form-urlencoded'
-			}
-
-			return this.$.$mol_fetch.request(url, {
-				...params,
-				method: params?.method ?? (params?.body ? 'POST' : 'GET'),
-				headers
-			})
-		}
-
-		@ $mol_action
-		response_authorized(url: string, init?: RequestInit) {
-			return this.$.$yuf_retry(
-				token => this.$.$mol_fetch.request(url, { ...init, headers: $mol_wire_sync(this.$).$yuf_header_merge(init?.headers, {
-					Accept: 'application/json',
-					'Content-Type': init?.method ? 'application/json' : undefined,
-					Authorization: 'bearer ' + token,
-				}) }).response(),
-
-				reset => this.token_grab(reset),
-				$yuf_transport_authorized
-			)
-		}
+		response(url: string, init?: $yuf_transport_request_init) { return this.$.$yuf_transport.response(url, init, this) }
 
 		logout_use_post() { return true }
 
 		@ $mol_action
 		protected logout_send() {
 			const url = this.endpoint('logout')
-			const body = this.logout_params()
-			if (! this.logout_use_post() ) return url + '?' + body.toString()
+			const params = this.search_params(this.logout_params())
 
 			const doc = this.$.$mol_dom_context.document
 			const form = doc.createElement('form')
@@ -435,7 +412,7 @@ namespace $ {
 			form.setAttribute('action', url)
 			form.style.display = 'none'
 
-			for (const [name, value] of body) {
+			for (const [name, value] of params) {
 				const field = doc.createElement('input')
 				field.setAttribute('type', 'hidden')
 				field.setAttribute('name', name)
@@ -450,7 +427,7 @@ namespace $ {
 
 		@ $mol_action
 		override logout() {
-			const redirect_uri = this.logout_send()
+			const redirect_uri = this.logout_use_post() ? this.logout_send() : this.login_url()
 			super.logout()
 			if (redirect_uri) this.redirect_to(redirect_uri)
 		}
@@ -461,7 +438,7 @@ namespace $ {
 		@ $mol_action
 		protected update() {
 			const refresh_token = this.token_refresh()
-			const callback_params = refresh_token ? null  : this.callback_parts().params
+			const callback_params = refresh_token ? null : this.callback_parts().params
 			const [ state, nonce, code_verifier ] = refresh_token ? [] : this.redirect_params() ?? []
 			if (state && state !== callback_params?.state) throw new Error('Wrong state id', { cause: { callback_params, state } })
 			const error_message = `${callback_params?.error_description ?? ''}${
@@ -493,7 +470,7 @@ namespace $ {
 					code_verifier,
 				})
 
-				const response = this.request(url, { credentials: 'include', body }).response()
+				const response = this.response(url, { credentials: 'include', body, auth_token: null, id: null, client_id: null })
 
 				result = Update_response(response)
 			}

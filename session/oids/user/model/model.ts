@@ -118,9 +118,9 @@ namespace $ {
 		store() { return this.$.$mol_one.$yuf_session_oids_user_store }
 		session() { return this.store().session() }
 
-		protected request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
+		protected response(url: string, init?: RequestInit) { return this.session().response(url, init) }
 		protected post(url: string, body?: {}, method ='POST') {
-			const res = this.request(url, {
+			const res = this.response(url, {
 				method,
 				body: ! body ? undefined : JSON.stringify(body),
 			})
@@ -136,7 +136,7 @@ namespace $ {
 
 		protected token(next?: null) { return this.session().token(null) }
 		protected is_admin() { return this.session().can_users_view() }
-		protected admin_users_url() { return `${this.session().realm_url('admin')}/users` }
+		protected admin_users_url() { return `${this.session().endpoint('users')}` }
 		protected admin_user_url() { return `${this.admin_users_url()}/${this.id_actual || this.id()}` }
 		protected account_url() { return this.session().endpoint('account') }
 		protected info_url() { return this.session().endpoint('userinfo') }
@@ -162,7 +162,7 @@ namespace $ {
 			if (this.is_tmp() && ! this.id_actual) return next ?? []
 
 			if (! next) {
-				const res = this.request(url)
+				const res = this.response(url)
 				const roles = Roles_response(res)
 
 				return roles.map(rec => rec.id)
@@ -184,7 +184,7 @@ namespace $ {
 		@ $mol_mem
 		protected sessions(reset?: null) {
 			if (! this.is_admin()) return []
-			const res = this.request(`${this.admin_user_url()}/sessions`)
+			const res = this.response(`${this.admin_user_url()}/sessions`)
 
 			return Sessions_response(res)
 		}
@@ -208,7 +208,7 @@ namespace $ {
 
 			if (next === undefined) {
 				if (flush || ! prev ) {
-					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.request(url)))
+					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.response(url)))
 				}
 				// const info = Info_response(this.request(this.info_url()))
 				const attributes = this.attributes_decode(prev.attributes)

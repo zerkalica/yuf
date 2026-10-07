@@ -22,7 +22,7 @@ namespace $ {
 		return $yuf_header_assign(new Headers(), headers)
 	}
 
-	export function $yuf_header_merge( main_raw: RequestInit['headers'] | $yuf_header_rec, extra?: typeof main_raw) {
+	export function $yuf_header_merge( main_raw: RequestInit['headers'] | $yuf_header_rec | null | undefined, extra?: typeof main_raw) {
 		const main = $yuf_header_normalize(main_raw)
 		if ( ! ( extra instanceof Headers) && ! (Array.isArray(extra) ) ) {
 			return $yuf_header_assign(new Headers(main), extra)
@@ -46,13 +46,12 @@ namespace $ {
 	export function $yuf_header_std(init: $yuf_header_std_rec) {
 		return {
 			'Content-Type': ! init.content_type ? undefined : [init.content_type],
-			'Authorization': init.auth_token ? `Bearer ${init.auth_token}` : init.auth_token,
+			'Authorization': ! init.auth_token ? undefined : `Bearer ${init.auth_token}`,
 			'Range-Unit': ! init.count_prefer ? undefined : 'items',
 			'Prefer': ! init.count_prefer ? undefined : `count=${init.count_prefer}`,
-
 			'X-Request-ID': init.id === undefined ? $mol_guid() : init.id,
 			'X-Request-Deadline': typeof init.deadline === 'number' ? `${init.deadline.toFixed(0)}ms` : init.deadline,
-			'X-Client-ID': init.client_id,
+			'X-Client-ID': init.client_id || undefined,
 		}
 	}
 

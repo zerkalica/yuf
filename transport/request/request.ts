@@ -2,21 +2,20 @@ namespace $ {
 	export class $yuf_transport_request extends $mol_fetch_request {
 
 		@ $mol_action
-		static from_path(path: RequestInfo, init?: $yuf_transport_request_init) {
-			const native = $yuf_transport_request_native(path, init)
-			return this.make({ native })
+		static from_path(path: RequestInfo, init_raw?: $yuf_transport_request_init) {
+			return this.make({ native: $yuf_transport_request_native(path, init_raw) })
 		}
 
-		header(key: string) {
+		value(key: string) {
 			return this.native?.headers?.get(key) ?? null
 		}
 
-		id() { return this.header('X-Request-ID') }
+		id() { return this.value('X-Request-ID') }
 
-		client_id() { return this.header('X-Client-ID') }
+		client_id() { return this.value('X-Client-ID') }
 
 		deadline() {
-			const str = this.header('X-Request-Deadline') ?? ''
+			const str = this.value('X-Request-Deadline') ?? ''
 
 			let num = parseInt(str)
 

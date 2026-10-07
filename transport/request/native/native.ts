@@ -1,15 +1,8 @@
 namespace $ {
-
-	export function $yuf_transport_request_native(path: RequestInfo, init?: $yuf_transport_request_init) {
-
-		let url = typeof path === 'string' ? path : path.url
-		const prev = typeof path === 'string' ? url : new Request(url, path)
-
-		const req = new Request(prev, $yuf_transport_request_init_enrich(init))
-		if (req.body && init?.body) {
-			$yuf_pojo_known.set(req, init)
-		}
-		return req
+	export function $yuf_transport_request_native(path: RequestInfo, base?: $yuf_transport_request_init) {
+		const init = ! base ? undefined : $yuf_transport_request_init_merge(base, { headers: $yuf_header_std(base) })
+		const native = new Request(path, init)
+		if (native.body && init?.body) $yuf_pojo_known.set(native, init)
+		return native
 	}
-
 }

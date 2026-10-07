@@ -131,20 +131,18 @@ namespace $ {
 		session() { return this.$.$mol_one.$yuf_session_oids }
 
 		protected is_admin() { return this.session().can_users_view() }
-		protected request(url: string, init?: RequestInit) { return this.session().response_authorized(url, init) }
-		protected admin_url() { return this.session().realm_url('admin') }
-		protected account_url() { return this.session().endpoint('account') }
-
-		protected admin_users_url() { return this.admin_url() + '/users' }
-		protected admin_metadata_url() { return this.admin_users_url() + '/profile/metadata' }
+		protected response(url: string, init?: RequestInit) { return this.session().response(url, init) }
+		protected endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+			return this.session().endpoint(k, params)
+		}
 
 		@ $mol_mem
 		attrs() {
 			const url = this.is_admin()
-				? this.admin_metadata_url()
-				:  this.account_url() + '?' + new URLSearchParams({ userProfileMetadata: 'true' }).toString()
+				? this.endpoint('metadata')
+				:  this.endpoint('account', { userProfileMetadata: 'true' })
 
-			const res = this.request(url)
+			const res = this.response(url)
 			const recs = Meta_response(res)
 
 			const result = {} as Record<string, $yuf_form_attr_type>
@@ -199,7 +197,7 @@ namespace $ {
 
 			if (enabled || enabled === false) q.enabled = enabled ? 'true' : 'false'
 
-			const res = this.request(this.admin_users_url() + '?' + new URLSearchParams(q).toString())
+			const res = this.response(this.endpoint('users', q))
 
 			return Users_response(res)
 		}
@@ -287,9 +285,7 @@ namespace $ {
 		@ $mol_mem_key
 		protected roles_search({ search }: { search?: string | null }) {
 			$mol_wire_solid()
-			const url = this.admin_url() + '/roles'
-			const query = ! search ? '' : '?' + new URLSearchParams({ search }).toString()
-			const response = this.request(url + query)
+			const response = this.response(this.endpoint('roles', search ? { search }: undefined))
 
 			const roles = Roles_response(response)
 
@@ -315,8 +311,7 @@ namespace $ {
 
 		@ $mol_mem
 		protected groups_data() {
-			const url = this.admin_url() + '/groups'
-			const response = this.request(url)
+			const response = this.response(this.endpoint('groups'))
 
 			return Groups_response(response)
 		}
@@ -374,7 +369,6 @@ namespace $ {
 		protected import_new(next: readonly Preloaded_data[]): typeof partial_import_dto.Value {
 			const max = this.chunk_max()
 			const users_max = this.users_max()
-			const url = this.admin_url() + '/partialImport'
 
 			const overall = { added: 0, overwritten: 0, skipped: 0 }
 
@@ -382,7 +376,7 @@ namespace $ {
 				const users = next.slice(i, max)
 				if (! users.length) break
 
-				const res = this.request(url, { method: 'POST', body: this.import_body(users) })
+				const res = this.response(this.endpoint('partialImport'), { method: 'POST', body: this.import_body(users) })
 
 				const info = Partial_import_response(res)
 
