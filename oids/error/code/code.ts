@@ -1,5 +1,5 @@
 namespace $ {
-	export enum $yuf_session_oids_error_code {
+	export enum $yuf_oids_error_code {
 		invalid_grant,
 		invalid_client,
 		unauthorized_client,

@@ -1,5 +1,5 @@
 namespace $ {
-	export class $yuf_session_oids_checker extends $mol_object {
+	export class $yuf_oids_checker extends $mol_object {
 		src() { return '' }
 		check_timeout() { return 5000 }
 		message() { return '' }

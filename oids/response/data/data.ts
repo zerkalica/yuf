@@ -1,5 +1,5 @@
 namespace $ {
-	export function $yuf_session_oids_response_data< Sub extends $mol_data_value >( sub : Sub ) {
+	export function $yuf_oids_response_data< Sub extends $mol_data_value >( sub : Sub ) {
 
 		return $mol_data_setup( ( response : $mol_fetch_response ) => {
 			let json, err
@@ -14,7 +14,7 @@ namespace $ {
 				err = e as Error
 			}
 
-			const err_obj = $yuf_session_oids_error_pick(json)
+			const err_obj = $yuf_oids_error_pick(json)
 			const message = err_obj?.error_description
 			const code = err_obj?.error || err_obj?.errorMessage || err?.message || response.message()
 

@@ -24,7 +24,7 @@ namespace $ {
 		refresh_token: nul(str),
 	})
 
-	const Update_response = $yuf_session_oids_response_data(Update_rec)
+	const Update_response = $yuf_oids_response_data(Update_rec)
 
 	const Config_rec = rec({
 		authorization_endpoint: str,
@@ -34,23 +34,23 @@ namespace $ {
 		end_session_endpoint: nul(str),
 	})
 
-	const Config_response = $yuf_session_oids_response_data(Config_rec)
+	const Config_response = $yuf_oids_response_data(Config_rec)
 	
 	const User_brief_rec = rec({
 		id: nul(str),
 	})
-	const User_brief_response = $yuf_session_oids_response_data(User_brief_rec)
+	const User_brief_response = $yuf_oids_response_data(User_brief_rec)
 
-	export type $yuf_session_oids_endpoint = 'account'
+	export type $yuf_oids_endpoint = 'account'
 		| 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1'
 		| 'users' | 'profile' | 'metadata' | 'roles' | 'groups' | 'partialImport'
 
-	export type $yuf_session_oids_params = Record<string, string | number | null | undefined> | null
+	export type $yuf_oids_params = Record<string, string | number | null | undefined> | null
 
 	/**
 	 * original: https://github.com/keycloak/keycloak-js/blob/main/lib/keycloak.js
 	 */
-	export class $yuf_session_oids extends $yuf_session {
+	export class $yuf_oids_session extends $yuf_session {
 		auth_server_url() {
 			return `/${this.client_id()}-keycloak`
 		}
@@ -61,7 +61,7 @@ namespace $ {
 			return `${this.auth_server_url().replace(/\/+$/, '')}${prefix ? `/${prefix}` : ''}/realms/${encodeURIComponent(this.realm())}`
 		}
 
-		endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+		endpoint(k: $yuf_oids_endpoint, params?: $yuf_oids_params) {
 			const query = ! params ? '' : '?' + this.search_params(params).toString()
 			if (k === 'users' || k === 'roles' || k === 'groups' || k === 'partialImport' || k === 'metadata' || k === 'profile') {
 				return `${this.realm_url('admin')}${k === 'metadata' ? `/users/profile` : k === 'profile' ? '/users': ''}/${k}${query}`
@@ -141,7 +141,7 @@ namespace $ {
 		protected checker() {
 			if (! this.checker_enabled()) return null
 
-			return this.$.$yuf_session_oids_checker.make({
+			return this.$.$yuf_oids_checker.make({
 				src: () => this.endpoint('status'),
 				origin: () => this.checker_origin(),
 				message: () => this.checker_message()
@@ -204,7 +204,8 @@ namespace $ {
 		@ $mol_mem
 		protected token_params() {
 			const token = super.token()
-			return token ? this.$.$yuf_session_oids_token_data(token) : null
+
+			return token ? this.$.$yuf_oids_token_data(token) : null
 		}
 
 		roles() { return this.token_params()?.payload?.realm_access?.roles ?? [] }
@@ -226,6 +227,7 @@ namespace $ {
 
 		@ $mol_mem
 		override user_id() {
+			this.token()
 			const params = this.token_params()
 			if (! params) return ''
 			let id = params.payload?.sub
@@ -469,7 +471,7 @@ namespace $ {
 
 			if (! result ) return null
 
-			const id_token = nonce && result.id_token ? this.$.$yuf_session_oids_token_data(result.id_token)?.payload : null
+			const id_token = nonce && result.id_token ? this.$.$yuf_oids_token_data(result.id_token)?.payload : null
 
 			if (id_token && id_token.nonce !== nonce) {
 				throw new Error('Invalid nonce', { cause: {
@@ -516,7 +518,7 @@ namespace $ {
 				const actual = next === undefined || op === 'refresh' ? this.update() : null
 
 				this.$.$mol_log3_rise({
-					place: '$yuf_session_oids.token()',
+					place: '$yuf_oids_session.token()',
 					message: 'changes',
 					next,
 					op,
@@ -563,7 +565,7 @@ namespace $ {
 
 		@ $mol_action
 		protected expires_in(token?: string, average_time?: number) {
-			const params = token ? this.$.$yuf_session_oids_token_data(token)?.payload : null
+			const params = token ? this.$.$yuf_oids_token_data(token)?.payload : null
 
 			if (! params) return 0
 

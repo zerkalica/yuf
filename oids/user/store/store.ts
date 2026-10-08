@@ -6,7 +6,7 @@ namespace $ {
 	const arr = $mol_data_array
 	const nul = $yuf_data_nul
 
-	const Meta_response = $yuf_session_oids_response_data($yuf_session_oids_user_model_meta_dto)
+	const Meta_response = $yuf_oids_response_data($yuf_oids_user_model_meta_dto)
 
 	const Role_rec = rec({
 		id: str,
@@ -16,7 +16,7 @@ namespace $ {
 		composite: nul(bool),
 	})
 
-	const Roles_response = $yuf_session_oids_response_data(arr(Role_rec))
+	const Roles_response = $yuf_oids_response_data(arr(Role_rec))
 
 	const Subgroup_rec = rec({
 		id: str,
@@ -35,10 +35,10 @@ namespace $ {
 		}))),
 	})
 
-	const Groups_response = $yuf_session_oids_response_data(arr(Group_rec))
+	const Groups_response = $yuf_oids_response_data(arr(Group_rec))
 
-	export const $yuf_session_oids_user_store_dto = arr($yuf_session_oids_user_model_dto)
-	const Users_response = $yuf_session_oids_response_data($yuf_session_oids_user_store_dto)
+	export const $yuf_oids_user_store_dto = arr($yuf_oids_user_model_dto)
+	const Users_response = $yuf_oids_response_data($yuf_oids_user_store_dto)
 
 	const parse_num = (num: string | undefined | null) => typeof num === 'string' ? Number(num) : undefined
 
@@ -48,14 +48,14 @@ namespace $ {
 		skipped: nul(num),
 	})
 
-	const Partial_import_response = $yuf_session_oids_response_data(Partial_import_rec)
+	const Partial_import_response = $yuf_oids_response_data(Partial_import_rec)
 
-	type Profile = typeof $yuf_session_oids_user_model_profile_dto.Value
+	type Profile = typeof $yuf_oids_user_model_profile_dto.Value
 	type Profile_attr = NonNullable<Profile['attributes']>[0]
-	type Metadata = typeof $yuf_session_oids_user_model_meta_dto.Value
+	type Metadata = typeof $yuf_oids_user_model_meta_dto.Value
 	type Metadata_attr = Metadata['attributes'][0]
-	type Group = NonNullable<typeof $yuf_session_oids_user_model_meta_dto.Value.groups>[9]
-	type User_data = typeof $yuf_session_oids_user_model_dto.Value
+	type Group = NonNullable<typeof $yuf_oids_user_model_meta_dto.Value.groups>[9]
+	type User_data = typeof $yuf_oids_user_model_dto.Value
 
 	function attr_meta_to_internal(attr: Metadata_attr): $yuf_form_attr_type {
 		const v = attr.validators
@@ -162,7 +162,7 @@ namespace $ {
 		return { attributes, groups }
 	}
 
-	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
+	const Ok_response = $yuf_oids_response_data($yuf_data_unknown)
 
 	function profile_meta_to_internal(recs: Metadata, prev?: Profile_data) {
 		const result = { attrs: {}, groups: {} } as Profile_data
@@ -180,21 +180,21 @@ namespace $ {
 		return result
 	}
 
-	export class $yuf_session_oids_user_store extends $mol_object {
-		session() { return this.$.$mol_one.$yuf_session_oids }
+	export class $yuf_oids_user_store extends $mol_object {
+		session() { return this.$.$mol_one.$yuf_oids_session }
 
-		protected static _by_session = new WeakMap<{}, $yuf_session_oids_user_store>()
-		static by_session(session: $yuf_session_oids) {
+		protected static _by_session = new WeakMap<{}, $yuf_oids_user_store>()
+		static by_session(session: $yuf_oids_session) {
 			let store = this._by_session.get(session)
 			if (store) return store
-			store = this.$.$yuf_session_oids_user_store.make({ $: session.$, session: $mol_const(session) })
+			store = this.$.$yuf_oids_user_store.make({ $: session.$, session: $mol_const(session) })
 			this._by_session.set(session,store)
 			return store
 		}
 
 		protected is_admin() { return this.session().can_users_view() }
 		protected response(url: string, init?: RequestInit) { return this.session().response(url, init) }
-		protected endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+		protected endpoint(k: $yuf_oids_endpoint, params?: $yuf_oids_params) {
 			return this.session().endpoint(k, params)
 		}
 
@@ -352,7 +352,7 @@ namespace $ {
 
 		@ $mol_mem_key
 		by_id(id: string) {
-			return this.$.$yuf_session_oids_user_model.make({
+			return this.$.$yuf_oids_user_model.make({
 				id: $mol_const(id),
 				store: () => this,
 			})

@@ -41,7 +41,7 @@ namespace $ {
 		login?: string
 	}
 
-	export function $yuf_session_oids_user_model_credentials(next: Extra_fields): typeof Credentials_rec.Value {
+	export function $yuf_oids_user_model_credentials(next: Extra_fields): typeof Credentials_rec.Value {
 		return [
 			! next.password ? null : {
 				type: 'password' as const,
@@ -104,7 +104,7 @@ namespace $ {
 		readOnly: nul(bool),
 	})
 
-	export const $yuf_session_oids_user_model_meta_dto = rec({
+	export const $yuf_oids_user_model_meta_dto = rec({
 		attributes: arr(Meta_attr_rec),
 		groups: nul(arr(Attr_group_rec))
 	})
@@ -125,12 +125,12 @@ namespace $ {
 		})),
 	})
 
-	export const $yuf_session_oids_user_model_profile_dto = rec({
+	export const $yuf_oids_user_model_profile_dto = rec({
 		attributes: nul(arr(Profile_attr_rec)),
 		groups: nul(arr(Attr_group_rec))
 	})
 
-	export const $yuf_session_oids_user_model_dto = rec({
+	export const $yuf_oids_user_model_dto = rec({
 		id: str,
 
 		username: nul(str),
@@ -145,14 +145,14 @@ namespace $ {
 		totp: nul(bool),
 		credentials: nul(Credentials_rec),
 
-		userProfileMetadata: nul($yuf_session_oids_user_model_meta_dto),
+		userProfileMetadata: nul($yuf_oids_user_model_meta_dto),
 		// access: nul(dict(bool)),
 		// disableableCredentialTypes: nul(arr(unk)),
 		// requiredActions: nul(arr(unk)),
 		// notBefore: nul(num),
 	})
 
-	export type $yuf_session_oids_user_model_data = typeof $yuf_session_oids_user_model_dto.Value & Extra_fields
+	export type $yuf_oids_user_model_data = typeof $yuf_oids_user_model_dto.Value & Extra_fields
 
 	const Session_rec = rec({
 		id: str,
@@ -162,31 +162,31 @@ namespace $ {
 		ipAddress: str,
 	})
 
-	const Sessions_response = $yuf_session_oids_response_data(arr(Session_rec))
+	const Sessions_response = $yuf_oids_response_data(arr(Session_rec))
 
 	const Role_rec = rec({
 		id: str,
 		name: nul(str),
 	})
 
-	const Roles_response = $yuf_session_oids_response_data(arr(Role_rec))
+	const Roles_response = $yuf_oids_response_data(arr(Role_rec))
 
-	export const $yuf_session_oids_user_model_response = $yuf_session_oids_response_data($yuf_session_oids_user_model_dto)
+	export const $yuf_oids_user_model_response = $yuf_oids_response_data($yuf_oids_user_model_dto)
 
 	const Info_rec = rec({
 
 	})
 
-	const Info_response = $yuf_session_oids_response_data(Info_rec)
+	const Info_response = $yuf_oids_response_data(Info_rec)
 
-	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
+	const Ok_response = $yuf_oids_response_data($yuf_data_unknown)
 
-	export class $yuf_session_oids_user_model extends $mol_object {
+	export class $yuf_oids_user_model extends $mol_object {
 
 		id() { return '' }
 
 
-		store() { return this.$.$mol_one.$yuf_session_oids_user_store }
+		store() { return this.$.$mol_one.$yuf_oids_user_store }
 		session() { return this.store().session() }
 
 		protected response(url: string, init?: RequestInit) { return this.session().response(url, init) }
@@ -207,7 +207,7 @@ namespace $ {
 
 		protected token(next?: null) { return this.session().token(null) }
 		protected is_admin() { return this.session().can_users_view() }
-		protected endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+		protected endpoint(k: $yuf_oids_endpoint, params?: $yuf_oids_params) {
 			return this.session().endpoint(k, params)
 		}
 		protected admin_user_url() { return `${this.endpoint('users')}/${this.id_actual || this.id()}` }
@@ -282,9 +282,9 @@ namespace $ {
 
 		@ $mol_mem
 		data(
-			next?: Partial<$yuf_session_oids_user_model_data> | null,
+			next?: Partial<$yuf_oids_user_model_data> | null,
 			flush?: 'flush'
-		): $yuf_session_oids_user_model_data {
+		): $yuf_oids_user_model_data {
 			const id = this.id()
 			let prev = $mol_wire_probe(() => this.data())
 
@@ -293,7 +293,7 @@ namespace $ {
 
 			if (next === undefined) {
 				if (flush || ! prev ) {
-					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.response(url)))
+					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_oids_user_model_response(this.response(url)))
 				}
 				// const info = Info_response(this.request(this.info_url()))
 				const attributes = this.attributes_decode(prev.attributes) ?? undefined
@@ -318,9 +318,9 @@ namespace $ {
 				throw new Error('Attributes can\'t contain internal values', { cause: { next }})
 			}
 
-			const merged = { ... prev, attributes: { ... prev?.attributes } } as $yuf_session_oids_user_model_data
+			const merged = { ... prev, attributes: { ... prev?.attributes } } as $yuf_oids_user_model_data
 
-			for (const key of Object.keys(next) as (keyof $yuf_session_oids_user_model_data)[]) {
+			for (const key of Object.keys(next) as (keyof $yuf_oids_user_model_data)[]) {
 				if (next[key] === undefined) continue
 				if (next[key] === null) delete (merged as Record<string, unknown>)[key]
 				else if (key !== 'attributes') (merged as Record<string, unknown>)[key] = next[key]
@@ -340,7 +340,7 @@ namespace $ {
 			if (this.is_tmp() && ! flush) return merged
 
 			if (this.is_tmp()) {
-				const credentials = next.credentials ?? $yuf_session_oids_user_model_credentials(next)
+				const credentials = next.credentials ?? $yuf_oids_user_model_credentials(next)
 				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: next })
 
 				const res = this.post(this.endpoint('users'), {

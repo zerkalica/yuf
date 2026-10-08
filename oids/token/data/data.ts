@@ -40,7 +40,7 @@ namespace $ {
 		payload: opt(nul(Token_payload_dto)),
 	})
 
-	export function $yuf_session_oids_token_data(token: string) {
+	export function $yuf_oids_token_data(token: string) {
 		const data = $mol_jwt_decode(token)
 
 		return $mol_error_fence(

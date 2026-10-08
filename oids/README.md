@@ -1,4 +1,4 @@
-# $yuf_session_oids
+# $yuf_oids_session
 
 [KeycloakJS](https://github.com/maapteh/keycloak/blob/main/js/libs/keycloak-js/src/keycloak.js) npm-deps free implementation.
 
