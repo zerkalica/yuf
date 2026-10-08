@@ -183,6 +183,15 @@ namespace $ {
 	export class $yuf_session_oids_user_store extends $mol_object {
 		session() { return this.$.$mol_one.$yuf_session_oids }
 
+		static _by_session = new WeakMap<{}, $yuf_session_oids_user_store>()
+		static by_session(session: $yuf_session_oids) {
+			let store = this._by_session.get(session)
+			if (store) return store
+			store = this.$.$yuf_session_oids_user_store.make({ session: $mol_const(session) })
+			this._by_session.set(session,store)
+			return store
+		}
+
 		protected is_admin() { return this.session().can_users_view() }
 		protected response(url: string, init?: RequestInit) { return this.session().response(url, init) }
 		protected endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {

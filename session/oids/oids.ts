@@ -1,13 +1,7 @@
 namespace $ {
 	const rec = $mol_data_record
-	const opt = $mol_data_optional
-	const nul = $mol_data_nullable
+	const nul = $yuf_data_nul
 	const str = $mol_data_string
-	const num = $mol_data_number
-	const bool = $mol_data_boolean
-	const arr = $mol_data_array
-	const dict = $mol_data_dict
-	const vr = $mol_data_variant
 
 	type Resource_role = 
 		| 'view-realm'
@@ -24,23 +18,28 @@ namespace $ {
 		| 'manage-account-links'
 		| 'view-profile'
 
-	const Update_dto = rec({
-		access_token: opt(nul(str)),
-		id_token: opt(nul(str)),
-		refresh_token: opt(nul(str)),
+	const Update_rec = rec({
+		access_token: nul(str),
+		id_token: nul(str),
+		refresh_token: nul(str),
 	})
 
-	const Update_response = $yuf_session_oids_response_data(Update_dto)
+	const Update_response = $yuf_session_oids_response_data(Update_rec)
 
-	const Config_dto = rec({
+	const Config_rec = rec({
 		authorization_endpoint: str,
 		token_endpoint: str,
-		userinfo_endpoint: opt(nul(str)),
-		check_session_iframe: opt(nul(str)),
-		end_session_endpoint: opt(nul(str)),
+		userinfo_endpoint: nul(str),
+		check_session_iframe: nul(str),
+		end_session_endpoint: nul(str),
 	})
 
-	const Config_response = $yuf_session_oids_response_data(Config_dto)
+	const Config_response = $yuf_session_oids_response_data(Config_rec)
+	
+	const User_brief_rec = rec({
+		id: nul(str),
+	})
+	const User_brief_response = $yuf_session_oids_response_data(User_brief_rec)
 
 	export type $yuf_session_oids_endpoint = 'account'
 		| 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1'
@@ -226,9 +225,6 @@ namespace $ {
 		can_users_logout() { return this.has_role('realm-management', ['manage-users', 'realm-admin', 'manage-realm']) }
 
 		@ $mol_mem
-		users() { return this.$.$yuf_session_oids_user_store.make({ session: () => this }) }
-
-		@ $mol_mem
 		override user_id() {
 			const params = this.token_params()
 			if (! params) return ''
@@ -236,11 +232,8 @@ namespace $ {
 			if (id) return id
 
 			const response = this.response(this.endpoint('account'))
-			const data = ! response ? null : $yuf_session_oids_user_model_response(response)
-			id = data?.id ?? ''
-			if (! this.can_users_view()) this.users().preloaded(id, data)
-
-			return id
+			const data = response ? User_brief_response(response) : null
+			return data?.id ?? ''
 		}
 
 		@ $mol_mem
@@ -449,7 +442,7 @@ namespace $ {
 
 			const start_time = this.time_cut()
 
-			let result = null as null | typeof Update_dto.Value
+			let result = null as null | typeof Update_rec.Value
 
 			const url = this.endpoint('token')
 			const flow = this.flow()
