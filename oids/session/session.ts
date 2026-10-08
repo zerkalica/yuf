@@ -422,8 +422,8 @@ namespace $ {
 		@ $mol_action
 		override logout() {
 			const redirect_uri = this.logout_use_post() ? this.logout_send() : this.login_url()
-			super.logout()
 			if (redirect_uri) this.redirect_to(redirect_uri)
+			new $mol_after_frame( () => super.token(null) )
 		}
 
 		@ $mol_action
