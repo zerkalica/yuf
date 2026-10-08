@@ -64,7 +64,7 @@ namespace $ {
 		endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
 			const query = ! params ? '' : '?' + this.search_params(params).toString()
 			if (k === 'users' || k === 'roles' || k === 'groups' || k === 'partialImport' || k === 'metadata' || k === 'profile') {
-				return `${this.realm_url('admin')}/${k === 'metadata' ? `users/profile` : k === 'profile' ? 'users': ''}/${k}${query}`
+				return `${this.realm_url('admin')}${k === 'metadata' ? `/users/profile` : k === 'profile' ? '/users': ''}/${k}${query}`
 			}
 
 			let url = this.config_value(k)
