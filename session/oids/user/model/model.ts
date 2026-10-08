@@ -1,7 +1,5 @@
 namespace $ {
 	const rec = $mol_data_record
-	const opt = $mol_data_optional
-	const nul = $mol_data_nullable
 	const str = $mol_data_string
 	const num = $mol_data_number
 	const bool = $mol_data_boolean
@@ -9,25 +7,27 @@ namespace $ {
 	const dict = $mol_data_dict
 	const vr = $mol_data_variant
 	const cnst = $mol_data_const
-	const unk = (v: unknown) => v
 
-	const Credential_dto_password = rec({
+	const nul = $yuf_data_nul
+	const unk = $yuf_data_unknown
+
+	const Credential_password_rec = rec({
 		type: cnst('password' as const),
 		value: str,
-		temporary: opt(nul(bool)),
+		temporary: nul(bool),
 	})
-	const Credential_dto_otp = rec({
+	const Credential_otp_rec = rec({
 		type: cnst('otp' as const),
 		secretData: str,
 		credentialData: str,
 	})
-	const Credential_dto_webauthn = rec({
+	const Credential_webauthn_rec = rec({
 		type: cnst('webauthn' as const),
 		secretData: str,
 		credentialData: str,
 	})
 
-	const Credentials_dto = arr(vr(Credential_dto_password, Credential_dto_otp, Credential_dto_webauthn))
+	const Credentials_rec = arr(vr(Credential_password_rec, Credential_otp_rec, Credential_webauthn_rec))
 
 	type Extra_fields = {
 		password?: string | null
@@ -41,7 +41,7 @@ namespace $ {
 		login?: string
 	}
 
-	export function $yuf_session_oids_user_model_credentials(next: Extra_fields): typeof Credentials_dto.Value {
+	export function $yuf_session_oids_user_model_credentials(next: Extra_fields): typeof Credentials_rec.Value {
 		return [
 			! next.password ? null : {
 				type: 'password' as const,
@@ -62,30 +62,99 @@ namespace $ {
 		].filter($mol_guard_defined)
 	}
 
+	const Validators_rec = rec({
+		multivalued: nul(rec({
+			min: nul(str),
+			max: nul(str),
+		})),
+		pattern: nul(rec({
+			pattern: nul(str),
+			'ignore.empty.value': nul(bool),
+		})),
+		length: nul(rec({
+			min: nul(str),
+			max: nul(str),
+			'trim-disabled': nul(str),
+		})),
+	})
+
+	const Annoations_rec = rec({
+		description: nul(str),
+	})
+
+	const Meta_base_rec = rec({
+		name: str,
+		displayName: nul(str),
+		multivalued: nul(bool),
+		group: nul(str),
+		annotations: nul(Annoations_rec),
+	})
+
+	const Attr_group_rec = rec({
+		name: str,
+		displayDescription: nul(str),
+		displayHeader: nul(str),
+		annotations: nul(dict(unk)),
+	})
+
+	const Meta_attr_rec = rec({
+		...Meta_base_rec.config,
+		validators: nul(Validators_rec),
+		required: nul(bool),
+		readOnly: nul(bool),
+	})
+
+	export const $yuf_session_oids_user_model_meta_dto = rec({
+		attributes: arr(Meta_attr_rec),
+		groups: nul(arr(Attr_group_rec))
+	})
+
+	const Profile_attr_rec = rec({
+		...Meta_base_rec.config,
+		validations: nul(Validators_rec),
+		required: nul(rec({
+			roles: nul(arr(str)),
+			scopes: nul(arr(str)),
+		})),
+		permissions: nul(rec({
+			view: nul(arr(str)),
+			edit: nul(arr(str)),
+		})),
+		selector: nul(rec({
+			scopes: nul(arr(str)),
+		})),
+	})
+
+	export const $yuf_session_oids_user_model_profile_dto = rec({
+		attributes: nul(arr(Profile_attr_rec)),
+		groups: nul(arr(Attr_group_rec))
+	})
+
 	export const $yuf_session_oids_user_model_dto = rec({
 		id: str,
 
-		username: opt(nul(str)),
-		enabled: opt(nul(bool)),
+		username: nul(str),
+		enabled: nul(bool),
 
-		createdTimestamp: opt(nul(num)),
-		firstName: opt(nul(str)),
-		lastName: opt(nul(str)),
-		attributes: opt(nul(dict(arr(str)))),
-		emailVerified: opt(nul(bool)),
-		email: opt(nul(str)),
-		totp: opt(nul(bool)),
-		credentials: opt(nul(Credentials_dto)),
+		createdTimestamp: nul(num),
+		firstName: nul(str),
+		lastName: nul(str),
+		attributes: nul(dict(arr(str))),
+		emailVerified: nul(bool),
+		email: nul(str),
+		totp: nul(bool),
+		credentials: nul(Credentials_rec),
 
-		// access: opt(nul(dict(bool))),
-		// disableableCredentialTypes: opt(nul(arr(unk))),
-		// requiredActions: opt(nul(arr(unk))),
-		// notBefore: opt(nul(num)),
+		userProfileMetadata: nul($yuf_session_oids_user_model_meta_dto),
+		// access: nul(dict(bool)),
+		// disableableCredentialTypes: nul(arr(unk)),
+		// requiredActions: nul(arr(unk)),
+		// notBefore: nul(num),
 	})
 
 	export type $yuf_session_oids_user_model_data = typeof $yuf_session_oids_user_model_dto.Value & Extra_fields
 
-	const Session_dto = rec({
+	const Session_rec = rec({
 		id: str,
 		clients: dict(str),
 		start: num,
@@ -93,20 +162,22 @@ namespace $ {
 		ipAddress: str,
 	})
 
-	const Sessions_response = $yuf_session_oids_response_data(arr(Session_dto))
+	const Sessions_response = $yuf_session_oids_response_data(arr(Session_rec))
 
-	const Role_dto = rec({
+	const Role_rec = rec({
 		id: str,
-		name: opt(nul(str)),
+		name: nul(str),
 	})
 
-	const Roles_response = $yuf_session_oids_response_data(arr(Role_dto))
+	const Roles_response = $yuf_session_oids_response_data(arr(Role_rec))
 
 	export const $yuf_session_oids_user_model_response = $yuf_session_oids_response_data($yuf_session_oids_user_model_dto)
-	const Info_dto = rec({
+
+	const Info_rec = rec({
 
 	})
-	const Info_response = $yuf_session_oids_response_data(Info_dto)
+
+	const Info_response = $yuf_session_oids_response_data(Info_rec)
 
 	const Ok_response = $yuf_session_oids_response_data($yuf_data_unknown)
 
@@ -136,8 +207,10 @@ namespace $ {
 
 		protected token(next?: null) { return this.session().token(null) }
 		protected is_admin() { return this.session().can_users_view() }
-		protected admin_users_url() { return `${this.session().endpoint('users')}` }
-		protected admin_user_url() { return `${this.admin_users_url()}/${this.id_actual || this.id()}` }
+		protected endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
+			return this.session().endpoint(k, params)
+		}
+		protected admin_user_url() { return `${this.endpoint('users')}/${this.id_actual || this.id()}` }
 		protected account_url() { return this.session().endpoint('account') }
 		protected info_url() { return this.session().endpoint('userinfo') }
 
@@ -181,10 +254,22 @@ namespace $ {
 			return next
 		}
 
+		protected sessions_url() { return `${this.admin_user_url()}/sessions` }
+
 		@ $mol_mem
-		protected sessions(reset?: null) {
+		protected sessions(next?: null | Record<string, null>) {
+			if (next === null && this.is_self()) {
+				this.token(null)
+				return []
+			}
+
 			if (! this.is_admin()) return []
-			const res = this.response(`${this.admin_user_url()}/sessions`)
+			const url = this.sessions_url()
+
+			if (next === null) this.post(this.admin_user_url() + '/logout')
+			else if (next) Object.keys(next).map(id => this.delete_req(url + '/' + id))
+
+			const res = this.response(url)
 
 			return Sessions_response(res)
 		}
@@ -211,7 +296,7 @@ namespace $ {
 					prev = this.is_tmp() ? { id } : (this.preloaded() ?? $yuf_session_oids_user_model_response(this.response(url)))
 				}
 				// const info = Info_response(this.request(this.info_url()))
-				const attributes = this.attributes_decode(prev.attributes)
+				const attributes = this.attributes_decode(prev.attributes) ?? undefined
 
 				return {
 					...prev,
@@ -258,7 +343,7 @@ namespace $ {
 				const credentials = next.credentials ?? $yuf_session_oids_user_model_credentials(next)
 				if (! credentials.length) throw new Error('Require credentials for creating user', { cause: next })
 
-				const res = this.post(this.admin_users_url(), {
+				const res = this.post(this.endpoint('users'), {
 					username: merged.login,
 					email: merged.email,
 					firstName: merged.firstName,
@@ -355,21 +440,19 @@ namespace $ {
 		}
 
 		@ $mol_action
-		logout() {
-			if (this.is_self()) {
-				this.token(null)
-				return true
-			}
-
-			this.post(this.admin_user_url() + '/logout')
-			this.sessions(null)
-
+		logout(next?: null | Record<string, null>) {
+			this.sessions(next ?? null)
 			return true
 		}
 
 		name(next?: string) { return this.profile_str('name', next) }
 
 		title() { return this.login() + ' ' + this.name() }
+
+		session_ids() { return this.sessions().map(rec => rec.id) }
+
+		@ $mol_mem_key
+		protected session_data_by_id(id: string) { return this.sessions().find(rec => rec.id === id) }
 
 		@ $mol_mem
 		is_online(next?: boolean) {

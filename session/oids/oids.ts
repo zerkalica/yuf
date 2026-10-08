@@ -44,7 +44,7 @@ namespace $ {
 
 	export type $yuf_session_oids_endpoint = 'account'
 		| 'auth' | 'token' | 'logout' | 'registrations' | 'userinfo' | 'status' | 'step1'
-		| 'users' | 'metadata' | 'roles' | 'groups' | 'partialImport'
+		| 'users' | 'profile' | 'metadata' | 'roles' | 'groups' | 'partialImport'
 
 	export type $yuf_session_oids_params = Record<string, string | number | null | undefined> | null
 
@@ -64,8 +64,8 @@ namespace $ {
 
 		endpoint(k: $yuf_session_oids_endpoint, params?: $yuf_session_oids_params) {
 			const query = ! params ? '' : '?' + this.search_params(params).toString()
-			if (k === 'users' || k === 'roles' || k === 'groups' || k === 'partialImport' || k === 'metadata') {
-				return `${this.realm_url('admin')}/${k === 'metadata' ? `users/profile/${k}` : k}${query}`
+			if (k === 'users' || k === 'roles' || k === 'groups' || k === 'partialImport' || k === 'metadata' || k === 'profile') {
+				return `${this.realm_url('admin')}/${k === 'metadata' ? `users/profile` : k === 'profile' ? 'users': ''}/${k}${query}`
 			}
 
 			let url = this.config_value(k)
