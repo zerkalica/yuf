@@ -1,3 +1,0 @@
-$yuf_drag_list $yuf_drag_group
-	List $mol_list
-		rows <= rows

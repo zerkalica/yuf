@@ -60,6 +60,7 @@ namespace $ {
 	function attr_meta_to_internal(attr: Metadata_attr): $yuf_form_attr_type {
 		const v = attr.validators
 		return {
+			id: attr.name,
 			type: attr.name?.includes('date') ? 'date' : attr.multivalued ? 'list' : 'string',
 			group: attr.group ?? '',
 			name: attr.displayName || '',
@@ -80,14 +81,14 @@ namespace $ {
 
 	function attr_internal_to_meta2(name: string, attr: $yuf_form_attr_type): Profile_attr {
 		return {
-			name,
+			name: attr.id || name,
 			group: attr.group || undefined,
 			displayName: attr.name,
 			multivalued: attr.type === 'list',
 			required: ! attr.required ? undefined : { roles },
 			permissions: {
-				view: roles,
-				edit: attr.enabled ? roles : roles_admin,
+				view: attr.enabled ? roles : roles_admin,
+				edit: attr.enabled ? roles : [],
 			},
 			annotations: ! attr.hint ? undefined : {
 				description: attr.hint
@@ -107,6 +108,7 @@ namespace $ {
 
 	function group_meta_to_internal(group: Group): $yuf_form_attr_group_type {
 		return {
+			id: group.name ?? '',
 			name: group.displayHeader ?? '',
 			hint: group.displayDescription ?? '',
 		}
@@ -114,7 +116,7 @@ namespace $ {
 
 	function group_internal_to_meta(name: string, group: $yuf_form_attr_group_type): Group {
 		return {
-			name,
+			name: group.id || name,
 			displayHeader: group.name || undefined,
 			displayDescription: group.hint || undefined,
 		}
@@ -125,9 +127,9 @@ namespace $ {
 		groups: Record<string, $yuf_form_attr_group_type | null>
 	}
 
-	function profile_internal_to_meta2(prev: Profile_data, next: Partial<Profile_data>): Profile | null {
+	function profile_internal_to_meta2(prev: Profile_data | undefined | null, next: Partial<Profile_data>): Profile | null {
 		const groups = [] as Group[]
-		const prev_groups = prev.groups ?? {}
+		const prev_groups = prev?.groups ?? {}
 		const next_groups = next?.groups ?? {}
 		let groups_updated = false
 
@@ -154,7 +156,7 @@ namespace $ {
 
 		for (let key in next_attrs) {
 			attrs_updated = true
-			if ( prev_attrs[key] || next_attrs[key] === null ) continue
+			if ( prev_attrs[key] || ! next_attrs[key] ) continue
 			attributes.push(attr_internal_to_meta2( key, next_attrs[key] ))
 		}
 		if (! groups_updated && ! attrs_updated) return null
@@ -199,17 +201,16 @@ namespace $ {
 		}
 
 		@ $mol_action
-		protected profile_save_body(prev: Profile_data, next: Partial<Profile_data>) {
+		protected profile_save_body(prev: Profile_data | null | undefined, next: Partial<Profile_data>) {
 			const next_data = profile_internal_to_meta2(prev, next)
 			return next_data ? JSON.stringify(next_data) : null
 		}
 
 		@ $mol_mem
-		protected attrs(next?: Partial<Profile_data> ): Profile_data {
-			const prev = $mol_wire_probe(() => this.attrs())
+		protected attrs(next?: Partial<Profile_data>, mode?: 'replace' ): Profile_data {
+			const prev = mode === 'replace' ? null : $mol_wire_probe(() => this.attrs())
 
 			if (next) {
-				if (! prev) throw new Error('Load attrs before save')
 				const body = this.profile_save_body(prev, next)
 				if (body) {
 					const save_res = this.response(this.endpoint('profile'), { method: 'PUT', body })
@@ -239,17 +240,52 @@ namespace $ {
 		@ $mol_mem
 		attr_group_ids() { return Object.keys(this.attrs().groups ?? {}) }
 
+		@ $mol_mem
+		attr_group_dict() {
+			const result = {} as Record<string, string>
+			const groups = this.attrs().groups ?? {}
+			for (let key in groups) {
+				const group = groups[key]
+				result[key] = group?.name || group?.id || ''
+			}
+			return result
+		}
+
 		@ $mol_mem_key
 		attr_group(key: string) {
 			return this.$.$yuf_form_attr_group.make({ data: next => this.attr_group_data(key, next) })
 		}
 
 		@ $mol_mem
-		attr_ids() { return Object.keys(this.attrs().attrs).filter(id => id !== 'username') }
+		attr_ids(next_ids?: readonly string[]) {
+			let meta = this.attrs()
+			if (next_ids) {
+				const attrs = {} as typeof meta.attrs
+				for (const id of next_ids) attrs[id] = meta.attrs[id]
+				meta = this.attrs({ attrs, groups: meta.groups }, 'replace')
+			}
+			return Object.keys(meta.attrs)
+		}
 
+		@ $mol_mem
+		attr_ids_deleted(next?: readonly string[]): readonly string[] {
+			const prev = $mol_wire_probe(() => this.attr_ids_deleted())
+			next = [...prev ?? [], ...next ?? []]
+			if (next.length) this.attr_ids(this.attr_ids().filter(id => ! next.includes(id)))
+
+			return next
+		}
+
+		protected attr_id_map = {} as Record<string, string>
 		@ $mol_mem_key
-		protected attr_data(key: string, next?: $yuf_form_attr_type | null): $yuf_form_attr_type {
-			return this.attrs(next === undefined ? next : { attrs: { [key]: next } }).attrs[key] ?? {}
+		protected attr_data(id: string, next?: $yuf_form_attr_type | null): $yuf_form_attr_type {
+			if (next?.id && next.id !== id) this.attr_id_map[id] = next.id
+			const real_id = this.attr_id_map[id] ?? id
+			return this.attrs(next === undefined ? next : { attrs: { [id]: null, [real_id]: next } }).attrs[id] ?? {}
+		}
+
+		real_id(id: string) {
+			return this.attr_id_map[id] ?? id
 		}
 
 		@ $mol_mem_key

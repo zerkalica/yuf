@@ -391,7 +391,13 @@ namespace $ {
 		@ $mol_mem
 		logout_url() { return this.endpoint('logout', this.logout_params()) }
 
-		response(url: string, init?: $yuf_transport_request_init) { return this.$.$yuf_transport.response(url, init, this) }
+		response(url: string, init?: Parameters<typeof $yuf_fetch>[1]) {
+			return this.$.$yuf_fetch(url, {
+				... init,
+				client_id: init?.client_id === undefined ? this.client_id() : init.client_id,
+				auth_token: init?.auth_token === undefined ? reset => this.token_grab(reset) : null,
+			})
+		}
 
 		logout_use_post() { return true }
 
@@ -510,21 +516,15 @@ namespace $ {
 			const token = super.token()
 
 			try {
-				const timer = this.expires_timer()
-				if ( ! callback_params && next === undefined && token && ! this.session_error() && timer ) {
-					return token
-				}
+				if (
+					! callback_params
+					&& next === undefined
+					&& token
+					&& ! this.session_error()
+					&& this.expires_timer()
+				) return token
 
 				const actual = next === undefined || op === 'refresh' ? this.update() : null
-
-				this.$.$mol_log3_rise({
-					place: '$yuf_oids_session.token()',
-					message: 'changes',
-					next,
-					op,
-					token: token?.slice(0, 5),
-					session_error: ! token ? null : this.session_error(),
-				})
 
 				this.token_refresh(actual?.refresh_token ?? null)
 				this.token_id(actual?.id_token ?? null)
@@ -557,10 +557,13 @@ namespace $ {
 		protected expires_timer(reset?: null) {
 			const token = super.token()
 			if (! token) return null
-			if (reset === null) return null
 			const expires_in = this.expires_in(token)
 			if (expires_in <= 0) return null
-			return new $mol_after_timeout(expires_in, () => this.expires_timer(null))
+
+			return new $mol_after_timeout(
+				Math.max(1000, expires_in - 10_000),
+				$mol_wire_async(() => this.token(null, 'refresh'))
+			)
 		}
 
 		@ $mol_action

@@ -1,0 +1,7 @@
+$yuf_drop $mol_drop
+	adopted_id* null
+	id \
+	param \
+	ids /string
+	receive_id? \
+	is_before* false

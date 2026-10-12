@@ -1,0 +1,7 @@
+$yuf_drag $mol_drag
+	id \
+	param \
+	args *
+	remove? null
+	Drag_image null
+	drag_align \center

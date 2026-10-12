@@ -1,0 +1,7 @@
+$yuf_drag_drop $yuf_drag
+	Sub <= Drop $yuf_drop
+		id <= id
+		param <= param
+		Sub <= Item $mol_view
+		ids <= ids /string
+		receive_id*? <=> receive_id*? \

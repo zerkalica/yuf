@@ -1,11 +1,11 @@
 namespace $ {
-	export type $yuf_transport_request_init = Omit<RequestInit, 'headers'> & {
+	export type $yuf_request_init = Omit<RequestInit, 'headers'> & {
 		headers?: [string, string][] | Headers | $yuf_header_rec | null
 	} & $yuf_header_std_rec
 
-	export function $yuf_transport_request_init_merge(
-		base?: $yuf_transport_request_init,
-		extra?: $yuf_transport_request_init
+	export function $yuf_request_init_merge(
+		base?: $yuf_request_init,
+		extra?: $yuf_request_init
 	): RequestInit {
 		const body = extra?.body ?? base?.body
 		const detected_method = body ? 'POST' : 'GET'

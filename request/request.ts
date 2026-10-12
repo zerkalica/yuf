@@ -1,9 +1,9 @@
 namespace $ {
-	export class $yuf_transport_request extends $mol_fetch_request {
+	export class $yuf_request extends $mol_fetch_request {
 
 		@ $mol_action
-		static from_path(path: RequestInfo, init_raw?: $yuf_transport_request_init) {
-			return this.make({ native: $yuf_transport_request_native(path, init_raw) })
+		static from_params(base: $yuf_request_init & { path: RequestInfo }) {
+			return this.make({ native: $yuf_request_native(base.path, base) })
 		}
 
 		value(key: string) {
