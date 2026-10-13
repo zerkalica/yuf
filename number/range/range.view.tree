@@ -10,7 +10,7 @@ $yuf_number_range $mol_labeler
 	value*? 0
 	content /
 		<= Min_field $mol_form_field
-			name <= min_name @ \Min
+			name <= min_name @ \From
 			bids /
 				<= required_num*min <= required_msg \*
 				<= limit_msg*min \
@@ -21,7 +21,7 @@ $yuf_number_range $mol_labeler
 				Dec null
 				Inc null
 		<= Max_field $mol_form_field
-			name <= max_name @ \Max
+			name <= max_name @ \To
 			bids /
 				<= required_num*max
 				<= limit_msg*max
