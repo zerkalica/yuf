@@ -95,8 +95,8 @@ namespace $ {
 			},
 			validations: {
 				length: ! attr.length_min && ! attr.length_max ? undefined : {
-					min: Number.isNaN(attr.length_min) ? undefined : String(attr.length_min),
-					max: Number.isNaN(attr.length_max) ? undefined : String(attr.length_max),
+					min: attr.length_min === undefined || Number.isNaN(attr.length_min) ? undefined : attr.length_min.toFixed(),
+					max: attr.length_max === undefined || Number.isNaN(attr.length_max) ? undefined : attr.length_max.toFixed(),
 					'trim-disabled': attr.trim_disabled ? 'true' : undefined,
 				},
 				pattern: ! attr.mask ? undefined : {
