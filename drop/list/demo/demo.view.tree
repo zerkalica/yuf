@@ -34,7 +34,7 @@ $yuf_drop_list_demo_catalog $mol_book2_catalog
 			title <= errors_on_title @ \Error
 			checked? <=> errors_on? false
 	menu_foot /$mol_view
-		<= Foot_title $mol_view sub / <= \Footer
+		<= Foot_title $mol_view sub / \Footer
 		^
 		^ status_content /$mol_view <= Status
 	menu_body /$mol_view
