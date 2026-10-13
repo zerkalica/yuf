@@ -1,4 +1,4 @@
-$yuf_number_range_string $mol_string
+$yuf_number_slider_string $mol_string
 	type \range
 	keyboard \decimal
 	attr *

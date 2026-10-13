@@ -20,6 +20,7 @@ $yuf_form_bid $mol_view
 	min_date_val* $mol_time_moment|null
 	max_date_val* $mol_time_moment|null
 	-
+	regexp_str* <= regexp_str_message* @ \Not an regexp
 	url* <= url_msg @ \Not valid url
 	required* <= required_msg @ \*
 	pattern* <= pattern_not_match_msg @ \Mask {mask}

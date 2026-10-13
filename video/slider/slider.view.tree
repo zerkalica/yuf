@@ -1,4 +1,4 @@
-$yuf_video_slider $yuf_number_range
+$yuf_video_slider $yuf_number_slider
 	precision 0.05
 	value_max 100
 	value_min 0

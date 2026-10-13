@@ -302,7 +302,6 @@ export class YufLocalizerMerge {
 			for (const lang_code of lang_codes) {
 				const locale_path = this.module_locale_path(module_dir, lang_code)
 				const locale_data = await this.locale_data(locale_path) ?? {}
-
 				// Add non-existing keys from en locale
 				for (const key of module_en_keys) {
 					let patch_value = locale_data[key]
@@ -443,9 +442,13 @@ export class YufLocalizerMerge {
 				'Add manually some not founded keys'
 			)
 		} else if (translate_values_from_en_to) {
-			(status = status ?? [])?.push(
-				'Translate the values into the last values in the hierarchy of translate_values_from_en_to branch, output them in the same structure and format',
-				'Save it as file `your_app_name.locale=all.json` in your project in target directory or above',
+			let sub = dirname(directories?.[0] ?? '')
+
+			const locale_patch_name = `${sub}/${basename(sub)}.locale=all.json`
+
+			;(status = status ?? [])?.push(
+				'Translate the values (exclude placeholders between {} brakets) into the last values in the hierarchy of translate_values_from_en_to branch, output them in the json {"<lang_code>": { "<key>": "<val>" } }',
+				`Save result to \`${locale_patch_name}\``,
 				'And run with --merge to merge into projects'
 			)
 		}

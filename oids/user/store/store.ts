@@ -95,8 +95,8 @@ namespace $ {
 			},
 			validations: {
 				length: ! attr.length_min && ! attr.length_max ? undefined : {
-					min: String(attr.length_min || '1'),
-					max: attr.length_max ? String(attr.length_max) : undefined,
+					min: Number.isNaN(attr.length_min) ? undefined : String(attr.length_min),
+					max: Number.isNaN(attr.length_max) ? undefined : String(attr.length_max),
 					'trim-disabled': attr.trim_disabled ? 'true' : undefined,
 				},
 				pattern: ! attr.mask ? undefined : {
@@ -242,7 +242,7 @@ namespace $ {
 
 		@ $mol_mem
 		attr_group_dict() {
-			const result = {} as Record<string, string>
+			const result = { '': '' } as Record<string, string>
 			const groups = this.attrs().groups ?? {}
 			for (let key in groups) {
 				const group = groups[key]

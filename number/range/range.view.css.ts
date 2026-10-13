@@ -1,27 +1,29 @@
 namespace $.$$ {
 	
 	$mol_style_define( $yuf_number_range, {
-
-		Dec: {
-			minHeight: '1.25rem',
-			width: '1rem',
-			justifyContent: 'center',
+		Content: {
+			padding: { top: 0, bottom: 0 },
+			gap: $mol_gap.block,
 		},
-		Inc: {
-			minHeight: '1.25rem',
-			width: '1rem',
-			justifyContent: 'center',
+		Min_field: {
+			Label: {
+				padding: { top: $mol_gap.space, left: 0 }
+			},
+			flex: {
+				grow: 0,
+				basis: '11rem',
+			}
 		},
-
-		flex: {
-			grow: 11,
-			shrink: 1,
+		Max_field: {
+			Label: {
+				padding: { top: $mol_gap.space, left: 0 }
+			},
+			flex: {
+				grow: 0,
+				basis: '11rem',
+			}
 		},
-		minWidth: '8rem',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-
-
+		
 	} )
 	
 }

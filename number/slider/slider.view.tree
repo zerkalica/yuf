@@ -1,0 +1,10 @@
+$yuf_number_slider $mol_number
+	String $yuf_number_slider_string
+		type <= type \range
+		value? <=> value_string?
+		hint <= hint
+		enabled <= string_enabled
+		submit? <=> submit?
+		min <= value_min
+		max <= value_max
+		step <= step 0

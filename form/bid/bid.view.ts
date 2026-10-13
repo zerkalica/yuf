@@ -148,6 +148,18 @@ namespace $.$$ {
 			return this.format(field, this.pattern_not_match_msg())
 		}
 
+		override regexp_str(field: string) {
+			if (this.value_empty(field)) return ''
+
+			try {
+				new RegExp(this.value_str(field))
+			} catch (e) {
+				return this.regexp_str_message(field)
+			}
+
+			return ''
+		}
+
 		override rows_max( field: string ) {
 			if (this.value_empty(field)) return ''
 
