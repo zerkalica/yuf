@@ -33,9 +33,12 @@ $yuf_drop_list_demo_catalog $mol_book2_catalog
 		<= Errors_on $mol_check_box
 			title <= errors_on_title @ \Error
 			checked? <=> errors_on? false
+	menu_foot /$mol_view
+		\Footer
+		^
+		^ status_content /$mol_view <= Status
 	menu_body /$mol_view
 		<= Menu_filter
-		^ status_content /$mol_view <= Status
 		<= Menu_links $yuf_drop_list
 			item_pending* => item_pending*
 			Item_status* => Item_status*
