@@ -2,9 +2,6 @@ $yuf_drag_drop $yuf_drag
 	Sub <= Drop $yuf_drop
 		id <= id
 		param <= param
-		Item <= Item $mol_view
+		Sub <= Item $mol_view
 		ids <= ids /string
-		Error => Error
-		error => error
-		receive_status? => receive_status?
 		receive_id*? <=> receive_id*? \

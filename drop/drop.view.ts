@@ -45,49 +45,17 @@ namespace $.$$ {
 			return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1
 		}
 
-		override sub_error() {
-			if ($mol_promise_like(this.receive_status()[0])) return 'Promise'
-			return null
-		}
-
-		override status_extended() {
-			const status = this.status()
-			return this.receive_status().length ? 'drag' : status
-		}
-
 		override receive(dragged: Adopted) {
-			const promise = $mol_wire_async(this).receive_tracked(dragged)
-			this.receive_status([
-				promise
-					.then(e => this.receive_status([]))
-					.catch(e => this.receive_status([e]))
-			])
-		}
-
-		@ $mol_mem
-		override receive_status( next?: readonly ( Promise<unknown> | Error )[] ) {
-			const syncing = this.$.$yuf_drop.syncing
-			if ($mol_promise_like(next?.[0])) syncing.add(this.param())
-			else syncing.delete(this.param())
-
-			return next ?? []
-		}
-
-		override receive_tracked(dragged: Adopted) {
+			const param = this.param()
 			const moved_id = this.adopted_id(dragged)
-			this.receive_id(moved_id)
+
+			const promise = $mol_wire_async(this).receive_id(moved_id)
+
+			const syncing = this.$.$yuf_drop.syncing
+			syncing.add(param)
+			const cb = () => syncing.delete(param)
+			promise.then(cb, cb)
 		}
-
-		override error() {
-			const error = this.receive_status()?.[0]
-			if( !error ) return ''
-
-			if( $mol_promise_like(error) ) return $mol_fail_hidden( error )
-			return this.$.$mol_error_message( error )
-
-		}
-
-		override Error() { return this.error() ? this.Error_spec() : null }
 
 	}
 }

@@ -1,1 +1,2 @@
 $yuf_drop_empty $yuf_drop
+	Sub $mol_view sub <= sub_sub /$mol_view_content

@@ -1,0 +1,17 @@
+$yuf_drop_list $mol_list
+	ids_filtered <= ids_actual? /string
+	ids_current <= ids_next /string
+	-
+	item_move? /string
+	item_status*? null
+	rows /$mol_view
+		^ items /$mol_view <= Drop* $yuf_drag_drop
+			param <= param \
+			receive_id? <=> receive_id*? null
+			-
+			id <= id* \
+			ids <= ids_actual
+			Item <= Item* $mol_view
+		^ last /$mol_view <= Drop_last $yuf_drop_empty
+			param <= param
+			receive_id? <=> receive_id*0?
