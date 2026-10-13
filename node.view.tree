@@ -4659,6 +4659,19 @@ $yuf_drop_list $mol_list
 	-
 	item_move? /string
 	item_status*? null
+	Status* null $mol_view
+	Error $mol_view
+		sub /$mol_view
+			<= Prefix $mol_view
+				attr *
+					mol_view_error <= error_status null string
+				sub / <= prefix_title @ \DnD:
+			<= Retry $mol_button_major
+				title <= retry_title @ \Retry
+				click? <=> retry? null
+			<= Cancel $mol_button_minor
+				title <= cancel_title @ \Cancel
+				click? <=> cancel? null
 	rows /$mol_view
 		^ items /$mol_view <= Drop* $yuf_drag_drop
 			param <= param \
@@ -4691,19 +4704,24 @@ $yuf_drop_list_demo $mol_example_large
 
 $yuf_drop_list_demo_catalog $mol_book2_catalog
 	items_max 50
+	menu_tools /
+		<= Errors_on $mol_check_box
+			title <= errors_on_title @ \Error
+			checked? <=> errors_on? false
 	Menu_links $yuf_drop_list
 		Empty <= Menu_links_empty
 		param <= param
 		ids_actual? <=> ids_actual? /string
 		-
 		id* <= id* \
-		Item* <= Menu_item* $mol_view sub <= menu_item_content*
+		Item* <= Menu_item* $mol_view sub /
+			^ menu_item_content*
+			<= Status*
 		-
-		item_status* => item_status*
+		Status* => Status*
 		-
 		ids_current => spread_ids
 		ids_filtered <= spread_ids_filtered
 	menu_link_content* /$mol_view_content
-		<= item_status*
 		<= Menu_link_title*
 	spread_title* <= id*

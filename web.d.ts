@@ -20974,47 +20974,84 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_drag_drop__param_yuf_drop_list_1 = $mol_type_enforce<
+	type $mol_view__attr_yuf_drop_list_1 = $mol_type_enforce<
+		({ 
+			'mol_view_error': ReturnType< $yuf_drop_list['error_status'] >,
+		}) 
+		,
+		ReturnType< $mol_view['attr'] >
+	>
+	type $mol_view__sub_yuf_drop_list_2 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_button_major__title_yuf_drop_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['retry_title'] >
+		,
+		ReturnType< $mol_button_major['title'] >
+	>
+	type $mol_button_major__click_yuf_drop_list_4 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['retry'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_button_minor__title_yuf_drop_list_5 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['cancel_title'] >
+		,
+		ReturnType< $mol_button_minor['title'] >
+	>
+	type $mol_button_minor__click_yuf_drop_list_6 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['cancel'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $yuf_drag_drop__param_yuf_drop_list_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['param'] >
 		,
 		ReturnType< $yuf_drag_drop['param'] >
 	>
-	type $yuf_drag_drop__receive_id_yuf_drop_list_2 = $mol_type_enforce<
+	type $yuf_drag_drop__receive_id_yuf_drop_list_8 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['receive_id'] >
 		,
 		ReturnType< $yuf_drag_drop['receive_id'] >
 	>
-	type $yuf_drag_drop__id_yuf_drop_list_3 = $mol_type_enforce<
+	type $yuf_drag_drop__id_yuf_drop_list_9 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['id'] >
 		,
 		ReturnType< $yuf_drag_drop['id'] >
 	>
-	type $yuf_drag_drop__ids_yuf_drop_list_4 = $mol_type_enforce<
+	type $yuf_drag_drop__ids_yuf_drop_list_10 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['ids_actual'] >
 		,
 		ReturnType< $yuf_drag_drop['ids'] >
 	>
-	type $yuf_drag_drop__Item_yuf_drop_list_5 = $mol_type_enforce<
+	type $yuf_drag_drop__Item_yuf_drop_list_11 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['Item'] >
 		,
 		ReturnType< $yuf_drag_drop['Item'] >
 	>
-	type $yuf_drop_empty__param_yuf_drop_list_6 = $mol_type_enforce<
+	type $yuf_drop_empty__param_yuf_drop_list_12 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['param'] >
 		,
 		ReturnType< $yuf_drop_empty['param'] >
 	>
-	type $yuf_drop_empty__receive_id_yuf_drop_list_7 = $mol_type_enforce<
+	type $yuf_drop_empty__receive_id_yuf_drop_list_13 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['receive_id'] >
 		,
 		ReturnType< $yuf_drop_empty['receive_id'] >
 	>
-	type $yuf_drop_list_rows__8 = $mol_type_enforce<
+	type $mol_view__sub_yuf_drop_list_14 = $mol_type_enforce<
+		readonly($mol_view)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_drop_list_rows__15 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['items'] >[number]
 		,
 		$mol_view
 	>
-	type $yuf_drop_list_rows__9 = $mol_type_enforce<
+	type $yuf_drop_list_rows__16 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['last'] >[number]
 		,
 		$mol_view
@@ -21022,6 +21059,15 @@ declare namespace $ {
 	export class $yuf_drop_list extends $mol_list {
 		ids_actual( next?: readonly(string)[] ): readonly(string)[]
 		ids_next( ): readonly(string)[]
+		error_status( ): string | null
+		prefix_title( ): string
+		Prefix( ): $mol_view
+		retry_title( ): string
+		retry( next?: any ): any
+		Retry( ): $mol_button_major
+		cancel_title( ): string
+		cancel( next?: any ): any
+		Cancel( ): $mol_button_minor
 		param( ): string
 		receive_id( id: any, next?: any ): any
 		id( id: any): string
@@ -21034,6 +21080,8 @@ declare namespace $ {
 		ids_current( ): ReturnType< $yuf_drop_list['ids_next'] >
 		item_move( next?: readonly(string)[] ): readonly(string)[]
 		item_status( id: any, next?: any ): any
+		Status( id: any): $mol_view | null
+		Error( ): $mol_view
 		rows( ): readonly($mol_view)[]
 	}
 	
@@ -21049,7 +21097,14 @@ declare namespace $.$$ {
         ids_current(): readonly string[];
         id(id: string): string;
         items(): $yuf_drag_drop[];
+        Status(id: string): $mol_view | null;
+        retry(e?: Event): null | undefined;
+        cancel(e?: Event): void;
+        error_status(): string;
     }
+}
+
+declare namespace $.$$ {
 }
 
 declare namespace $ {
@@ -21072,53 +21127,67 @@ declare namespace $ {
 		aspects( ): readonly(any)[]
 	}
 	
-	type $mol_view__sub_yuf_drop_list_demo_catalog_1 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo_catalog['menu_item_content'] >
+	type $mol_check_box__title_yuf_drop_list_demo_catalog_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['errors_on_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_drop_list_demo_catalog_2 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['errors_on'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_view__sub_yuf_drop_list_demo_catalog_3 = $mol_type_enforce<
+		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type __yuf_drop_list_demo_catalog_2 = $mol_type_enforce<
-		Parameters< $yuf_drop_list_demo_catalog['item_status'] >[0]
+	type __yuf_drop_list_demo_catalog_4 = $mol_type_enforce<
+		Parameters< $yuf_drop_list_demo_catalog['Status'] >[0]
 		,
-		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_status'] >[0]
+		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Status'] >[0]
 	>
-	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_3 = $mol_type_enforce<
+	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_5 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['Menu_links_empty'] >
 		,
 		ReturnType< $yuf_drop_list['Empty'] >
 	>
-	type $yuf_drop_list__param_yuf_drop_list_demo_catalog_4 = $mol_type_enforce<
+	type $yuf_drop_list__param_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 		,
 		ReturnType< $yuf_drop_list['param'] >
 	>
-	type $yuf_drop_list__ids_actual_yuf_drop_list_demo_catalog_5 = $mol_type_enforce<
+	type $yuf_drop_list__ids_actual_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['ids_actual'] >
 		,
 		ReturnType< $yuf_drop_list['ids_actual'] >
 	>
-	type $yuf_drop_list__id_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
+	type $yuf_drop_list__id_yuf_drop_list_demo_catalog_8 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['id'] >
 		,
 		ReturnType< $yuf_drop_list['id'] >
 	>
-	type $yuf_drop_list__Item_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
+	type $yuf_drop_list__Item_yuf_drop_list_demo_catalog_9 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['Menu_item'] >
 		,
 		ReturnType< $yuf_drop_list['Item'] >
 	>
-	type $yuf_drop_list__ids_filtered_yuf_drop_list_demo_catalog_8 = $mol_type_enforce<
+	type $yuf_drop_list__ids_filtered_yuf_drop_list_demo_catalog_10 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['spread_ids_filtered'] >
 		,
 		ReturnType< $yuf_drop_list['ids_filtered'] >
 	>
 	export class $yuf_drop_list_demo_catalog extends $mol_book2_catalog {
+		errors_on_title( ): string
+		errors_on( next?: boolean ): boolean
+		Errors_on( ): $mol_check_box
 		ids_actual( next?: readonly(string)[] ): readonly(string)[]
 		id( id: any): string
 		Menu_item( id: any): $mol_view
-		item_status( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_status'] >
+		Status( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Status'] >
 		spread_ids( ): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['ids_current'] >
 		items_max( ): number
+		menu_tools( ): readonly(any)[]
 		Menu_links( ): $yuf_drop_list
 		menu_link_content( id: any): readonly($mol_view_content)[]
 		spread_title( id: any): ReturnType< $yuf_drop_list_demo_catalog['id'] >
