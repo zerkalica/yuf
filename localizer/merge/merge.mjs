@@ -112,8 +112,8 @@ export class YufLocalizerMerge {
 	/**
 	 * @param {string} module_dir
 	 */
-	builded_module_locale_path(module_dir, locale = 'en') {
-		return join(module_dir, '-view.tree', this.module_locale_name(module_dir, locale))
+	builded_module_locale_path(module_dir) {
+		return join(module_dir, '-view.tree', this.module_locale_name(module_dir, 'en'))
 	}
 
 	/**
@@ -143,7 +143,7 @@ export class YufLocalizerMerge {
 				let maybe_module_dir = join(...parts.slice(0, i))
 				if (prefix) maybe_module_dir = join(maybe_module_dir, basename(maybe_module_dir))
 
-				const path = this.builded_module_locale_path(maybe_module_dir, 'en')
+				const path = this.builded_module_locale_path(maybe_module_dir)
 				let locale = this.locale_data_cache(path)
 				if (locale === undefined) locale = await this.locale_data(path)
 
@@ -293,15 +293,23 @@ export class YufLocalizerMerge {
 			if (exclude && module_dir.match(exclude)) {
 				continue
 			}
-			const module_en_path = this.builded_module_locale_path(module_dir, 'en')
+			const module_en_path = this.builded_module_locale_path(module_dir)
 			let module_en_data = this.locale_data_cache(module_en_path)
 			if (module_en_data === undefined) module_en_data = (await this.locale_data(module_en_path)) ?? {}
 			if (! module_en_data) module_en_data = {}
 			const module_en_keys = Object.keys(module_en_data)
 
 			for (const lang_code of lang_codes) {
-				const locale_path = this.module_locale_path(module_dir, lang_code)
-				const locale_data = await this.locale_data(locale_path) ?? {}
+				let locale_path = this.module_locale_path(module_dir, lang_code)
+				let locale_data = await this.locale_data(locale_path)
+
+				if (! locale_data) {
+					const lp = locale_path.replace('.view.tree', '')
+					locale_data = await this.locale_data(lp)
+					if (! locale_data) locale_data = {}
+					else locale_path = lp
+				}
+
 				// Add non-existing keys from en locale
 				for (const key of module_en_keys) {
 					let patch_value = locale_data[key]
