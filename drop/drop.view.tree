@@ -3,5 +3,13 @@ $yuf_drop $mol_drop
 	id \
 	param \
 	ids /string
+	receive_tracked? null
 	receive_id? \
 	is_before* false
+	receive_status? /Promise<unknown>|Error
+	Sub <= Item $mol_view sub / <= Error null $mol_view
+	Error_spec $mol_speck value <= error \
+	attr *
+		^
+		mol_view_error <= sub_error null string
+		mol_drop_status <= status_extended <= status
