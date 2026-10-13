@@ -40722,29 +40722,11 @@ var $;
 		ids_next(){
 			return [];
 		}
-		error_status(){
+		Status(){
 			return null;
 		}
-		prefix_title(){
-			return (this.$.$mol_locale.text("$yuf_drop_list_prefix_title"));
-		}
-		Prefix(){
-			const obj = new this.$.$mol_view();
-			(obj.attr) = () => ({"mol_view_error": (this.error_status())});
-			(obj.sub) = () => ([(this.prefix_title())]);
-			return obj;
-		}
-		retry_title(){
-			return (this.$.$mol_locale.text("$yuf_drop_list_retry_title"));
-		}
-		retry(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		Retry(){
-			const obj = new this.$.$mol_button_major();
-			(obj.title) = () => ((this.retry_title()));
-			(obj.click) = (next) => ((this.retry(next)));
+		Cancel_icon(){
+			const obj = new this.$.$mol_icon_close();
 			return obj;
 		}
 		cancel_title(){
@@ -40754,11 +40736,8 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
-		Cancel(){
-			const obj = new this.$.$mol_button_minor();
-			(obj.title) = () => ((this.cancel_title()));
-			(obj.click) = (next) => ((this.cancel(next)));
-			return obj;
+		error_message(){
+			return "";
 		}
 		param(){
 			return "";
@@ -40805,20 +40784,28 @@ var $;
 			if(next !== undefined) return next;
 			return [];
 		}
-		item_status(id, next){
+		item_pending(id){
+			return null;
+		}
+		Item_status(id){
+			return (this.Status());
+		}
+		status(){
+			return null;
+		}
+		error(){
+			return null;
+		}
+		retry(next){
 			if(next !== undefined) return next;
 			return null;
 		}
-		Status(id){
-			return null;
-		}
-		Error(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([
-				(this.Prefix()), 
-				(this.Retry()), 
-				(this.Cancel())
-			]);
+		Cancel_button(){
+			const obj = new this.$.$mol_button_major();
+			(obj.sub) = () => ([(this.Cancel_icon())]);
+			(obj.hint) = () => ((this.cancel_title()));
+			(obj.click) = (next) => ((this.cancel(next)));
+			(obj.error) = () => ((this.error_message()));
 			return obj;
 		}
 		rows(){
@@ -40826,18 +40813,15 @@ var $;
 		}
 	};
 	($mol_mem(($.$yuf_drop_list.prototype), "ids_actual"));
-	($mol_mem(($.$yuf_drop_list.prototype), "Prefix"));
-	($mol_mem(($.$yuf_drop_list.prototype), "retry"));
-	($mol_mem(($.$yuf_drop_list.prototype), "Retry"));
+	($mol_mem(($.$yuf_drop_list.prototype), "Cancel_icon"));
 	($mol_mem(($.$yuf_drop_list.prototype), "cancel"));
-	($mol_mem(($.$yuf_drop_list.prototype), "Cancel"));
 	($mol_mem_key(($.$yuf_drop_list.prototype), "receive_id"));
 	($mol_mem_key(($.$yuf_drop_list.prototype), "Item"));
 	($mol_mem_key(($.$yuf_drop_list.prototype), "Drop"));
 	($mol_mem(($.$yuf_drop_list.prototype), "Drop_last"));
 	($mol_mem(($.$yuf_drop_list.prototype), "item_move"));
-	($mol_mem_key(($.$yuf_drop_list.prototype), "item_status"));
-	($mol_mem(($.$yuf_drop_list.prototype), "Error"));
+	($mol_mem(($.$yuf_drop_list.prototype), "retry"));
+	($mol_mem(($.$yuf_drop_list.prototype), "Cancel_button"));
 
 
 ;
@@ -40868,29 +40852,32 @@ var $;
                 const target_index = !before_id ? ids.length : ids.indexOf(before_id);
                 return ids.toSpliced(target_index, 0, dragged_id);
             }
-            item_status(id) {
-                const [, dragged_id] = this.item_move();
-                if (id !== dragged_id)
-                    return null;
-                const next_ids = this.ids_next();
-                this.ids_actual(next_ids);
-                this.item_move([]);
-                return null;
-            }
             ids_current() {
                 const next_ids = this.ids_next();
                 const actual = this.ids_actual();
                 return next_ids.length ? next_ids : actual;
             }
             id(id) { return id; }
-            items() {
-                return this.ids_filtered().map(id => this.Drop(id));
-            }
-            Status(id) {
-                const error = $mol_error_fence(() => this.item_status(id), e => [e])?.[0];
-                if (!error)
+            items() { return this.ids_filtered().map(id => this.Drop(id)); }
+            status() {
+                const next_ids = this.ids_next();
+                if (!next_ids.length)
                     return null;
-                return this.Error();
+                this.item_move(); // to retry
+                this.ids_actual(next_ids);
+                this.item_move([]);
+                return null;
+            }
+            item_pending(id) { return this.item_move()[1] === id ? (this.error(), null) : null; }
+            Item_status(id) {
+                if (this.item_move()[1] !== id)
+                    return null;
+                return this.Status();
+            }
+            error() { return $mol_error_fence(() => this.status(), e => [e])?.[0] ?? null; }
+            error_message() { return this.error()?.message ?? ''; }
+            Status() {
+                return this.error() ? this.Cancel_button() : null;
             }
             retry(e) {
                 const [before_id, dragged_id, version] = this.item_move();
@@ -40899,12 +40886,7 @@ var $;
                 const version_str = String(Number(version || 0) + 1);
                 this.item_move([before_id, dragged_id, version_str]);
             }
-            cancel(e) {
-                this.item_move([]);
-            }
-            error_status() {
-                return 'Error';
-            }
+            cancel(e) { this.item_move([]); }
         }
         __decorate([
             $mol_action
@@ -40913,8 +40895,8 @@ var $;
             $mol_mem
         ], $yuf_drop_list.prototype, "ids_next", null);
         __decorate([
-            $mol_mem_key
-        ], $yuf_drop_list.prototype, "item_status", null);
+            $mol_mem
+        ], $yuf_drop_list.prototype, "status", null);
         $$.$yuf_drop_list = $yuf_drop_list;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -40926,13 +40908,11 @@ var $;
     var $$;
     (function ($$) {
         $mol_style_define($yuf_drop_list, {
-            Error: {
-                gap: $mol_gap.block,
-                justifyContent: 'space-between',
+            Cancel_button: {
                 position: 'absolute',
                 zIndex: $mol_layer.speck,
-                background: {
-                    color: $mol_theme.back,
+                Speck: {
+                    zIndex: $mol_layer.float,
                 }
             }
         });
@@ -40941,17 +40921,37 @@ var $;
 
 ;
 	($.$yuf_drop_list_demo) = class $yuf_drop_list_demo extends ($.$mol_example_large) {
-		Calatog(){
+		Catalog(){
 			const obj = new this.$.$yuf_drop_list_demo_catalog();
-			(obj.menu_title) = () => ((this.title()));
+			(obj.menu_title) = () => ("DnD - status in top");
 			(obj.param) = () => ("dnd");
 			return obj;
 		}
+		Item_status2(id){
+			return (this.Catalog2().Item_status(id));
+		}
+		ids_current2(){
+			return (this.Catalog2().ids_current());
+		}
+		Catalog2(){
+			const obj = new this.$.$yuf_drop_list_demo_catalog();
+			(obj.menu_title) = () => ("DnD - Per item status");
+			(obj.param) = () => ("dnd_per_item");
+			(obj.status_content) = () => ([]);
+			(obj.item_status_content) = (id) => ([(this.Item_status2(id))]);
+			(obj.spread_ids) = () => ((this.ids_current2()));
+			return obj;
+		}
+		Book(){
+			const obj = new this.$.$mol_book2();
+			(obj.pages) = () => ([(this.Catalog()), (this.Catalog2())]);
+			return obj;
+		}
 		title(){
-			return "DnD catalog";
+			return "DnD";
 		}
 		sub(){
-			return [(this.Calatog())];
+			return [(this.Book())];
 		}
 		tags(){
 			return [
@@ -40968,7 +40968,9 @@ var $;
 			return ["Widget/Plugin", "Drag'n'Drop"];
 		}
 	};
-	($mol_mem(($.$yuf_drop_list_demo.prototype), "Calatog"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog2"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Book"));
 	($.$yuf_drop_list_demo_catalog) = class $yuf_drop_list_demo_catalog extends ($.$mol_book2_catalog) {
 		errors_on_title(){
 			return (this.$.$mol_locale.text("$yuf_drop_list_demo_catalog_errors_on_title"));
@@ -40983,6 +40985,21 @@ var $;
 			(obj.checked) = (next) => ((this.errors_on(next)));
 			return obj;
 		}
+		status_content(){
+			return [(this.Status())];
+		}
+		item_pending(id){
+			return (this.Menu_links().item_pending(id));
+		}
+		Item_status(id){
+			return (this.Menu_links().Item_status(id));
+		}
+		Status(){
+			return (this.Menu_links().Status());
+		}
+		ids_current(){
+			return (this.Menu_links().ids_current());
+		}
 		ids_actual(next){
 			if(next !== undefined) return next;
 			return [];
@@ -40990,22 +41007,13 @@ var $;
 		id(id){
 			return "";
 		}
+		item_status_content(id){
+			return [(this.item_pending(id))];
+		}
 		Menu_item(id){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([...(this.menu_item_content(id)), (this.Status(id))]);
+			(obj.sub) = () => ([...(this.item_status_content(id)), ...(this.menu_item_content(id))]);
 			return obj;
-		}
-		Status(id){
-			return (this.Menu_links().Status(id));
-		}
-		spread_ids(){
-			return (this.Menu_links().ids_current());
-		}
-		items_max(){
-			return 50;
-		}
-		menu_tools(){
-			return [(this.Errors_on())];
 		}
 		Menu_links(){
 			const obj = new this.$.$yuf_drop_list();
@@ -41013,12 +41021,28 @@ var $;
 			(obj.param) = () => ((this.param()));
 			(obj.ids_actual) = (next) => ((this.ids_actual(next)));
 			(obj.id) = (id) => ((this.id(id)));
-			(obj.Item) = (id) => ((this.Menu_item(id)));
 			(obj.ids_filtered) = () => ((this.spread_ids_filtered()));
+			(obj.Item) = (id) => ((this.Menu_item(id)));
 			return obj;
+		}
+		items_max(){
+			return 50;
+		}
+		menu_tools(){
+			return [(this.Errors_on())];
+		}
+		menu_body(){
+			return [
+				(this.Menu_filter()), 
+				...(this.status_content()), 
+				(this.Menu_links())
+			];
 		}
 		menu_link_content(id){
 			return [(this.Menu_link_title(id))];
+		}
+		spread_ids(){
+			return (this.ids_actual());
 		}
 		spread_title(id){
 			return (this.id(id));
@@ -41046,7 +41070,7 @@ var $;
                 if (next !== undefined) {
                     this.$.$mol_wait_timeout(500);
                     if (this.errors_on())
-                        throw new Error('Fake error');
+                        throw new Error('Fake error bla bla blablalbla some error');
                     return next;
                 }
                 const result = [];
