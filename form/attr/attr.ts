@@ -72,6 +72,10 @@ namespace $ {
 		list_max(next?: number | null) { return this.value('list_max', next) ?? null }
 		length_min(next?: number | null) { return this.value('length_min', next) ?? null }
 		length_max(next?: number | null) { return this.value('length_max', next) ?? null }
+
+		title() {
+			return `${this.id()} ${this.name()} ${this.hint()}`
+		}
 	}
 }
 
