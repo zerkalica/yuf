@@ -732,15 +732,17 @@ $mol_text $mol_list
 	Paragraph* $mol_paragraph
 		sub <= block_content* /
 	Quote* $mol_text
-		uri_resolve* <= uri_resolve* \
 		text <= quote_text* \
-		highlight <= highlight \
 		auto_scroll null
-	List* $mol_text_list
+		highlight <= highlight \
 		uri_resolve* <= uri_resolve* \
+		code_sidebar_showed <= code_sidebar_showed true
+	List* $mol_text_list
 		type <= list_type* \-
 		text <= list_text* \
 		highlight <= highlight \
+		uri_resolve* <= uri_resolve* \
+		code_sidebar_showed <= code_sidebar_showed true
 	item_index* 0
 	Header* $mol_text_header
 		minimal_height 40
@@ -752,7 +754,7 @@ $mol_text $mol_list
 		row_themes <= pre_themes* /string
 		highlight <= highlight \
 		uri_resolve* <= uri_resolve* \
-		sidebar_showed <= pre_sidebar_showed <= code_sidebar_showed true
+		sidebar_showed <= code_sidebar_showed true
 	Cut* $mol_view dom_name \hr
 	- \Table
 	Table* $mol_grid
@@ -762,9 +764,10 @@ $mol_text $mol_list
 		cells <= table_cells* /
 	Table_cell* $mol_text
 		auto_scroll null
+		text <= table_cell_text* \
 		highlight <= highlight \
 		uri_resolve* <= uri_resolve* \
-		text <= table_cell_text* \
+		code_sidebar_showed <= code_sidebar_showed true
 	- \Grid
 	Grid* $mol_grid
 		rows <= grid_rows* /
@@ -772,9 +775,10 @@ $mol_text $mol_list
 		cells <= grid_cells* /
 	Grid_cell* $mol_text
 		auto_scroll null
+		text <= grid_cell_text* \
 		highlight <= highlight \
 		uri_resolve* <= uri_resolve* \
-		text <= grid_cell_text* \
+		code_sidebar_showed <= code_sidebar_showed true
 	- \Lines
 	String* $mol_dimmer
 		dom_name \span
@@ -804,9 +808,15 @@ $mol_text $mol_list
 		label /
 			<= Spoiler_label* $mol_text
 				text <= spoiler_label* \
+				highlight <= highlight \
+				uri_resolve* <= uri_resolve* \
+				code_sidebar_showed <= code_sidebar_showed true
 		content /
 			<= Spoiler_content* $mol_text
 				text <= spoiler_content* \
+				highlight <= highlight \
+				uri_resolve* <= uri_resolve* \
+				code_sidebar_showed <= code_sidebar_showed true
 
 $mol_text_header $mol_paragraph
 	level 1
@@ -2075,6 +2085,7 @@ $yuf_form_bid $mol_view
 	min_date_val* $mol_time_moment|null
 	max_date_val* $mol_time_moment|null
 	-
+	regexp_str* <= regexp_str_message* @ \Not an regexp
 	url* <= url_msg @ \Not valid url
 	required* <= required_msg @ \*
 	pattern* <= pattern_not_match_msg @ \Mask {mask}
@@ -2751,11 +2762,9 @@ $yuf_localizer_demo $mol_example_large
 
 $yuf_locale_switch $mol_select
 	Filter null
-	model $yuf_locale_model
-		langs_available => langs_available
-		lang? => lang?
-	dictionary <= langs_available
-	value? <=> lang?
+	langs /string
+		\en
+	value? <=> lang? \
 
 $yuf_catalog_app $yuf_catalog
 	logged? false
@@ -2951,11 +2960,7 @@ $yuf_number_string $mol_string
 		^
 		blur? <=> blur_event? null
 
-$mol_icon_minus $mol_icon path \M19,13H5V11H19V13Z
-
-$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
-
-$yuf_number_range_string $mol_string
+$yuf_number_slider_string $mol_string
 	type \range
 	keyboard \decimal
 	attr *
@@ -2967,10 +2972,8 @@ $yuf_number_range_string $mol_string
 		min <= min 0
 		max <= max 100
 
-$yuf_number_range $mol_number
-	dec_icon $mol_icon_minus
-	inc_icon $mol_icon_plus
-	String $yuf_number_range_string
+$yuf_number_slider $mol_number
+	String $yuf_number_slider_string
 		type <= type \range
 		value? <=> value_string?
 		hint <= hint
@@ -2980,7 +2983,7 @@ $yuf_number_range $mol_number
 		max <= value_max
 		step <= step 0
 
-$yuf_video_slider $yuf_number_range
+$yuf_video_slider $yuf_number_slider
 	precision 0.05
 	value_max 100
 	value_min 0
@@ -3941,6 +3944,8 @@ $yuf_sj_ui_book_list $mol_page
 		<= Draft_label $mol_view sub <= draft_content /
 			<= Row_draft*0 $mol_view
 
+$mol_icon_plus $mol_icon path \M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z
+
 $yuf_button_add $mol_button_minor
 	hint @ \Add
 	sub / <= Icon $mol_icon_plus
@@ -4028,14 +4033,19 @@ $yuf_sj_ui_network_route_list $yuf_sj_ui_book_list
 		model <= by_id*
 		remove_event? <=> remove_event*?
 
-$yuf_sj_ui_range_group $mol_labeler
+$yuf_number_range $mol_labeler
 	limit $mol_vector_range<number> /
 		0
 		0
+	min 0
+	max 0
+	required* false
+	value_min? 0
+	value_max? 0
 	value*? 0
 	content /
 		<= Min_field $mol_form_field
-			name <= min_name @ \Min
+			name <= min_name @ \From
 			bids /
 				<= required_num*min <= required_msg \*
 				<= limit_msg*min \
@@ -4046,7 +4056,7 @@ $yuf_sj_ui_range_group $mol_labeler
 				Dec null
 				Inc null
 		<= Max_field $mol_form_field
-			name <= max_name @ \Max
+			name <= max_name @ \To
 			bids /
 				<= required_num*max
 				<= limit_msg*max
@@ -4071,7 +4081,7 @@ $yuf_sj_jammer_sdr_form $yuf_sj_ui_book_form
 			Min_field => Freq_range_min_field
 			Max_field => Freq_range_max_field
 
-$yuf_sj_jammer_sdr_form_ranges $yuf_sj_ui_range_group
+$yuf_sj_jammer_sdr_form_ranges $yuf_number_range
 	rows /
 		<= Content
 
@@ -4240,7 +4250,7 @@ $yuf_sj_jammer_task_item $yuf_sj_ui_book_item
 $yuf_sj_ui_freq_range $mol_view
 	bands *readonly(number)[]
 	sub /
-		<= Freq_range_fields $yuf_sj_ui_range_group
+		<= Freq_range_fields $yuf_number_range
 			title <= freq_range_title @ \Frequency, kHz
 			limit <= limit $mol_vector_range<number> /
 				0
@@ -4578,3 +4588,122 @@ $yuf_sj_jammer_app_demo $mol_example_large
 		\harp
 	aspects /
 		\Application
+
+$mol_drop $mol_ghost
+	enabled? true
+	event *
+		^
+		dragenter? <=> enter? null
+		dragover? <=> move? null
+		dragleave? <=> leave? null
+		drop? <=> drop? null
+	attr *
+		^
+		mol_drop_status <= status? \ready
+	adopt? *
+	receive? null
+	allow /
+		\copy
+		\move
+		\link
+
+$yuf_drop $mol_drop
+	adopted_id* null
+	id \
+	param \
+	ids /string
+	receive_id? \
+	is_before* false
+
+$mol_drag $mol_ghost
+	event *
+		^
+		dragstart? <=> drag_start? <=> start? null
+		drag? <=> drag_move? <=> move? null
+		dragend? <=> drag_end? <=> end? null
+	attr *
+		^
+		draggable <= draggable true
+		mol_drag_status <= status? \ready
+	transfer *string
+		text/plain <= plain <= title
+		text/html <= html \
+		text/uri-list <= uris \
+	allow_copy true
+	allow_link true
+	allow_move true
+	image <= dom_node
+
+$yuf_drag $mol_drag
+	id \
+	param \
+	args *
+	remove? null
+	Drag_image null
+	drag_align \center
+
+$yuf_drag_drop $yuf_drag
+	Sub <= Drop $yuf_drop
+		id <= id
+		param <= param
+		Sub <= Item $mol_view
+		ids <= ids /string
+		receive_id*? <=> receive_id*? \
+
+$yuf_drop_empty $yuf_drop
+	Sub $mol_view sub <= sub_sub /$mol_view_content
+
+$yuf_drop_list $mol_list
+	ids_filtered <= ids_actual? /string
+	ids_current <= ids_next /string
+	-
+	item_move? /string
+	item_status*? null
+	rows /$mol_view
+		^ items /$mol_view <= Drop* $yuf_drag_drop
+			param <= param \
+			receive_id? <=> receive_id*? null
+			-
+			id <= id* \
+			ids <= ids_actual
+			Item <= Item* $mol_view
+		^ last /$mol_view <= Drop_last $yuf_drop_empty
+			param <= param
+			receive_id? <=> receive_id*0?
+
+$yuf_drop_list_demo $mol_example_large
+	title \DnD catalog
+	sub /
+		<= Calatog $yuf_drop_list_demo_catalog
+			menu_title <= title
+			param \dnd
+	tags /
+		\drag
+		\dragndrop
+		\reorder
+		\transfer
+		\page
+		\menu
+		\navigation
+	aspects /
+		\Widget/Plugin
+		\Drag'n'Drop
+
+$yuf_drop_list_demo_catalog $mol_book2_catalog
+	items_max 50
+	Menu_links $yuf_drop_list
+		Empty <= Menu_links_empty
+		param <= param
+		ids_actual? <=> ids_actual? /string
+		-
+		id* <= id* \
+		Item* <= Menu_item* $mol_view sub <= menu_item_content*
+		-
+		item_status* => item_status*
+		-
+		ids_current => spread_ids
+		ids_filtered <= spread_ids_filtered
+	menu_link_content* /$mol_view_content
+		<= item_status*
+		<= Menu_link_title*
+	spread_title* <= id*

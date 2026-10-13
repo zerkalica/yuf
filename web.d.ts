@@ -4979,23 +4979,23 @@ declare namespace $ {
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_text__text_mol_text_2 = $mol_type_enforce<
-		ReturnType< $mol_text['spoiler_content'] >
+	type $mol_text__highlight_mol_text_2 = $mol_type_enforce<
+		ReturnType< $mol_text['highlight'] >
 		,
-		ReturnType< $mol_text['text'] >
+		ReturnType< $mol_text['highlight'] >
 	>
-	type $mol_paragraph__sub_mol_text_3 = $mol_type_enforce<
-		ReturnType< $mol_text['block_content'] >
-		,
-		ReturnType< $mol_paragraph['sub'] >
-	>
-	type $mol_text__uri_resolve_mol_text_4 = $mol_type_enforce<
+	type $mol_text__uri_resolve_mol_text_3 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text['uri_resolve'] >
+	>
+	type $mol_text__code_sidebar_showed_mol_text_4 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
 	>
 	type $mol_text__text_mol_text_5 = $mol_type_enforce<
-		ReturnType< $mol_text['quote_text'] >
+		ReturnType< $mol_text['spoiler_content'] >
 		,
 		ReturnType< $mol_text['text'] >
 	>
@@ -5004,237 +5004,287 @@ declare namespace $ {
 		,
 		ReturnType< $mol_text['highlight'] >
 	>
-	type $mol_text__auto_scroll_mol_text_7 = $mol_type_enforce<
+	type $mol_text__uri_resolve_mol_text_7 = $mol_type_enforce<
+		ReturnType< $mol_text['uri_resolve'] >
+		,
+		ReturnType< $mol_text['uri_resolve'] >
+	>
+	type $mol_text__code_sidebar_showed_mol_text_8 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
+	>
+	type $mol_paragraph__sub_mol_text_9 = $mol_type_enforce<
+		ReturnType< $mol_text['block_content'] >
+		,
+		ReturnType< $mol_paragraph['sub'] >
+	>
+	type $mol_text__text_mol_text_10 = $mol_type_enforce<
+		ReturnType< $mol_text['quote_text'] >
+		,
+		ReturnType< $mol_text['text'] >
+	>
+	type $mol_text__auto_scroll_mol_text_11 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_text['auto_scroll'] >
 	>
-	type $mol_text_list__uri_resolve_mol_text_8 = $mol_type_enforce<
+	type $mol_text__highlight_mol_text_12 = $mol_type_enforce<
+		ReturnType< $mol_text['highlight'] >
+		,
+		ReturnType< $mol_text['highlight'] >
+	>
+	type $mol_text__uri_resolve_mol_text_13 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
-		ReturnType< $mol_text_list['uri_resolve'] >
+		ReturnType< $mol_text['uri_resolve'] >
 	>
-	type $mol_text_list__type_mol_text_9 = $mol_type_enforce<
+	type $mol_text__code_sidebar_showed_mol_text_14 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
+	>
+	type $mol_text_list__type_mol_text_15 = $mol_type_enforce<
 		ReturnType< $mol_text['list_type'] >
 		,
 		ReturnType< $mol_text_list['type'] >
 	>
-	type $mol_text_list__text_mol_text_10 = $mol_type_enforce<
+	type $mol_text_list__text_mol_text_16 = $mol_type_enforce<
 		ReturnType< $mol_text['list_text'] >
 		,
 		ReturnType< $mol_text_list['text'] >
 	>
-	type $mol_text_list__highlight_mol_text_11 = $mol_type_enforce<
+	type $mol_text_list__highlight_mol_text_17 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text_list['highlight'] >
 	>
-	type $mol_text_header__minimal_height_mol_text_12 = $mol_type_enforce<
+	type $mol_text_list__uri_resolve_mol_text_18 = $mol_type_enforce<
+		ReturnType< $mol_text['uri_resolve'] >
+		,
+		ReturnType< $mol_text_list['uri_resolve'] >
+	>
+	type $mol_text_list__code_sidebar_showed_mol_text_19 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text_list['code_sidebar_showed'] >
+	>
+	type $mol_text_header__minimal_height_mol_text_20 = $mol_type_enforce<
 		number
 		,
 		ReturnType< $mol_text_header['minimal_height'] >
 	>
-	type $mol_text_header__level_mol_text_13 = $mol_type_enforce<
+	type $mol_text_header__level_mol_text_21 = $mol_type_enforce<
 		ReturnType< $mol_text['header_level'] >
 		,
 		ReturnType< $mol_text_header['level'] >
 	>
-	type $mol_text_header__content_mol_text_14 = $mol_type_enforce<
+	type $mol_text_header__content_mol_text_22 = $mol_type_enforce<
 		ReturnType< $mol_text['block_content'] >
 		,
 		ReturnType< $mol_text_header['content'] >
 	>
-	type $mol_text_header__arg_mol_text_15 = $mol_type_enforce<
+	type $mol_text_header__arg_mol_text_23 = $mol_type_enforce<
 		ReturnType< $mol_text['header_arg'] >
 		,
 		ReturnType< $mol_text_header['arg'] >
 	>
-	type $mol_text_code__text_mol_text_16 = $mol_type_enforce<
+	type $mol_text_code__text_mol_text_24 = $mol_type_enforce<
 		ReturnType< $mol_text['pre_text'] >
 		,
 		ReturnType< $mol_text_code['text'] >
 	>
-	type $mol_text_code__row_themes_mol_text_17 = $mol_type_enforce<
+	type $mol_text_code__row_themes_mol_text_25 = $mol_type_enforce<
 		ReturnType< $mol_text['pre_themes'] >
 		,
 		ReturnType< $mol_text_code['row_themes'] >
 	>
-	type $mol_text_code__highlight_mol_text_18 = $mol_type_enforce<
+	type $mol_text_code__highlight_mol_text_26 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text_code['highlight'] >
 	>
-	type $mol_text_code__uri_resolve_mol_text_19 = $mol_type_enforce<
+	type $mol_text_code__uri_resolve_mol_text_27 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text_code['uri_resolve'] >
 	>
-	type $mol_text_code__sidebar_showed_mol_text_20 = $mol_type_enforce<
-		ReturnType< $mol_text['pre_sidebar_showed'] >
+	type $mol_text_code__sidebar_showed_mol_text_28 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
 		,
 		ReturnType< $mol_text_code['sidebar_showed'] >
 	>
-	type $mol_view__dom_name_mol_text_21 = $mol_type_enforce<
+	type $mol_view__dom_name_mol_text_29 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_view['dom_name'] >
 	>
-	type $mol_grid__head_cells_mol_text_22 = $mol_type_enforce<
+	type $mol_grid__head_cells_mol_text_30 = $mol_type_enforce<
 		ReturnType< $mol_text['table_head_cells'] >
 		,
 		ReturnType< $mol_grid['head_cells'] >
 	>
-	type $mol_grid__rows_mol_text_23 = $mol_type_enforce<
+	type $mol_grid__rows_mol_text_31 = $mol_type_enforce<
 		ReturnType< $mol_text['table_rows'] >
 		,
 		ReturnType< $mol_grid['rows'] >
 	>
-	type $mol_grid_row__cells_mol_text_24 = $mol_type_enforce<
+	type $mol_grid_row__cells_mol_text_32 = $mol_type_enforce<
 		ReturnType< $mol_text['table_cells'] >
 		,
 		ReturnType< $mol_grid_row['cells'] >
 	>
-	type $mol_text__auto_scroll_mol_text_25 = $mol_type_enforce<
+	type $mol_text__auto_scroll_mol_text_33 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_text['auto_scroll'] >
 	>
-	type $mol_text__highlight_mol_text_26 = $mol_type_enforce<
-		ReturnType< $mol_text['highlight'] >
-		,
-		ReturnType< $mol_text['highlight'] >
-	>
-	type $mol_text__uri_resolve_mol_text_27 = $mol_type_enforce<
-		ReturnType< $mol_text['uri_resolve'] >
-		,
-		ReturnType< $mol_text['uri_resolve'] >
-	>
-	type $mol_text__text_mol_text_28 = $mol_type_enforce<
+	type $mol_text__text_mol_text_34 = $mol_type_enforce<
 		ReturnType< $mol_text['table_cell_text'] >
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_grid__rows_mol_text_29 = $mol_type_enforce<
+	type $mol_text__highlight_mol_text_35 = $mol_type_enforce<
+		ReturnType< $mol_text['highlight'] >
+		,
+		ReturnType< $mol_text['highlight'] >
+	>
+	type $mol_text__uri_resolve_mol_text_36 = $mol_type_enforce<
+		ReturnType< $mol_text['uri_resolve'] >
+		,
+		ReturnType< $mol_text['uri_resolve'] >
+	>
+	type $mol_text__code_sidebar_showed_mol_text_37 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
+	>
+	type $mol_grid__rows_mol_text_38 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_rows'] >
 		,
 		ReturnType< $mol_grid['rows'] >
 	>
-	type $mol_grid_row__cells_mol_text_30 = $mol_type_enforce<
+	type $mol_grid_row__cells_mol_text_39 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_cells'] >
 		,
 		ReturnType< $mol_grid_row['cells'] >
 	>
-	type $mol_text__auto_scroll_mol_text_31 = $mol_type_enforce<
+	type $mol_text__auto_scroll_mol_text_40 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_text['auto_scroll'] >
 	>
-	type $mol_text__highlight_mol_text_32 = $mol_type_enforce<
-		ReturnType< $mol_text['highlight'] >
-		,
-		ReturnType< $mol_text['highlight'] >
-	>
-	type $mol_text__uri_resolve_mol_text_33 = $mol_type_enforce<
-		ReturnType< $mol_text['uri_resolve'] >
-		,
-		ReturnType< $mol_text['uri_resolve'] >
-	>
-	type $mol_text__text_mol_text_34 = $mol_type_enforce<
+	type $mol_text__text_mol_text_41 = $mol_type_enforce<
 		ReturnType< $mol_text['grid_cell_text'] >
 		,
 		ReturnType< $mol_text['text'] >
 	>
-	type $mol_dimmer__dom_name_mol_text_35 = $mol_type_enforce<
+	type $mol_text__highlight_mol_text_42 = $mol_type_enforce<
+		ReturnType< $mol_text['highlight'] >
+		,
+		ReturnType< $mol_text['highlight'] >
+	>
+	type $mol_text__uri_resolve_mol_text_43 = $mol_type_enforce<
+		ReturnType< $mol_text['uri_resolve'] >
+		,
+		ReturnType< $mol_text['uri_resolve'] >
+	>
+	type $mol_text__code_sidebar_showed_mol_text_44 = $mol_type_enforce<
+		ReturnType< $mol_text['code_sidebar_showed'] >
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
+	>
+	type $mol_dimmer__dom_name_mol_text_45 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_dimmer['dom_name'] >
 	>
-	type $mol_dimmer__needle_mol_text_36 = $mol_type_enforce<
+	type $mol_dimmer__needle_mol_text_46 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_dimmer['needle'] >
 	>
-	type $mol_dimmer__haystack_mol_text_37 = $mol_type_enforce<
+	type $mol_dimmer__haystack_mol_text_47 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_dimmer['haystack'] >
 	>
-	type $mol_text_span__dom_name_mol_text_38 = $mol_type_enforce<
+	type $mol_text_span__dom_name_mol_text_48 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $mol_text_span['dom_name'] >
 	>
-	type $mol_text_span__type_mol_text_39 = $mol_type_enforce<
+	type $mol_text_span__type_mol_text_49 = $mol_type_enforce<
 		ReturnType< $mol_text['line_type'] >
 		,
 		ReturnType< $mol_text_span['type'] >
 	>
-	type $mol_text_span__sub_mol_text_40 = $mol_type_enforce<
+	type $mol_text_span__sub_mol_text_50 = $mol_type_enforce<
 		ReturnType< $mol_text['line_content'] >
 		,
 		ReturnType< $mol_text_span['sub'] >
 	>
-	type $mol_text_code_line__numb_showed_mol_text_41 = $mol_type_enforce<
+	type $mol_text_code_line__numb_showed_mol_text_51 = $mol_type_enforce<
 		boolean
 		,
 		ReturnType< $mol_text_code_line['numb_showed'] >
 	>
-	type $mol_text_code_line__highlight_mol_text_42 = $mol_type_enforce<
+	type $mol_text_code_line__highlight_mol_text_52 = $mol_type_enforce<
 		ReturnType< $mol_text['highlight'] >
 		,
 		ReturnType< $mol_text_code_line['highlight'] >
 	>
-	type $mol_text_code_line__text_mol_text_43 = $mol_type_enforce<
+	type $mol_text_code_line__text_mol_text_53 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_text_code_line['text'] >
 	>
-	type $mol_text_code_line__uri_resolve_mol_text_44 = $mol_type_enforce<
+	type $mol_text_code_line__uri_resolve_mol_text_54 = $mol_type_enforce<
 		ReturnType< $mol_text['uri_resolve'] >
 		,
 		ReturnType< $mol_text_code_line['uri_resolve'] >
 	>
-	type $mol_text_code_line__syntax_mol_text_45 = $mol_type_enforce<
+	type $mol_text_code_line__syntax_mol_text_55 = $mol_type_enforce<
 		ReturnType< $mol_text['code_syntax'] >
 		,
 		ReturnType< $mol_text_code_line['syntax'] >
 	>
-	type $mol_link_iconed__uri_mol_text_46 = $mol_type_enforce<
+	type $mol_link_iconed__uri_mol_text_56 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_link_iconed['uri'] >
 	>
-	type $mol_link_iconed__content_mol_text_47 = $mol_type_enforce<
+	type $mol_link_iconed__content_mol_text_57 = $mol_type_enforce<
 		ReturnType< $mol_text['line_content'] >
 		,
 		ReturnType< $mol_link_iconed['content'] >
 	>
-	type $mol_link_iconed__uri_mol_text_48 = $mol_type_enforce<
+	type $mol_link_iconed__uri_mol_text_58 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_link_iconed['uri'] >
 	>
-	type $mol_link_iconed__content_mol_text_49 = $mol_type_enforce<
+	type $mol_link_iconed__content_mol_text_59 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_link_iconed['content'] >
 	>
-	type $mol_embed_any__uri_mol_text_50 = $mol_type_enforce<
+	type $mol_embed_any__uri_mol_text_60 = $mol_type_enforce<
 		ReturnType< $mol_text['link_uri'] >
 		,
 		ReturnType< $mol_embed_any['uri'] >
 	>
-	type $mol_embed_any__title_mol_text_51 = $mol_type_enforce<
+	type $mol_embed_any__title_mol_text_61 = $mol_type_enforce<
 		ReturnType< $mol_text['line_text'] >
 		,
 		ReturnType< $mol_embed_any['title'] >
 	>
-	type $mol_expander__label_mol_text_52 = $mol_type_enforce<
+	type $mol_expander__label_mol_text_62 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_expander['label'] >
 	>
-	type $mol_expander__content_mol_text_53 = $mol_type_enforce<
+	type $mol_expander__content_mol_text_63 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_expander['content'] >
@@ -5242,17 +5292,16 @@ declare namespace $ {
 	export class $mol_text extends $mol_list {
 		auto_scroll( ): any
 		block_content( id: any): readonly(any)[]
-		uri_resolve( id: any): string
 		quote_text( id: any): string
 		highlight( ): string
+		uri_resolve( id: any): string
+		code_sidebar_showed( ): boolean
 		list_type( id: any): string
 		list_text( id: any): string
 		header_level( id: any): number
 		header_arg( id: any): Record<string, any>
 		pre_text( id: any): string
 		pre_themes( id: any): readonly(string)[]
-		code_sidebar_showed( ): boolean
-		pre_sidebar_showed( ): ReturnType< $mol_text['code_sidebar_showed'] >
 		table_head_cells( id: any): readonly(any)[]
 		table_rows( id: any): readonly(any)[]
 		table_cells( id: any): readonly(any)[]
@@ -7778,7 +7827,7 @@ declare namespace $ {
             lt: readonly [number, number];
             rb: readonly [number, number];
         }): void;
-        resize(canvas: $yuf_canvas_host, { max }: {
+        resize(canvas: $yuf_canvas_host, { max: [max_x, max_y] }: {
             max: readonly [number, number];
         }): void;
         image_type(): string;
@@ -10259,6 +10308,7 @@ declare namespace $.$$ {
 declare namespace $ {
 
 	export class $yuf_form_bid extends $mol_view {
+		regexp_str_message( id: any): string
 		url_msg( ): string
 		required_msg( ): string
 		pattern_not_match_msg( ): string
@@ -10287,6 +10337,7 @@ declare namespace $ {
 		max_val( id: any): number | null
 		min_date_val( id: any): $mol_time_moment|null
 		max_date_val( id: any): $mol_time_moment|null
+		regexp_str( id: any): ReturnType< $yuf_form_bid['regexp_str_message'] >
 		url( id: any): ReturnType< $yuf_form_bid['url_msg'] >
 		required( id: any): ReturnType< $yuf_form_bid['required_msg'] >
 		pattern( id: any): ReturnType< $yuf_form_bid['pattern_not_match_msg'] >
@@ -10336,6 +10387,7 @@ declare namespace $.$$ {
         min_date_val(field: string): $mol_time_moment;
         max_date_val(field: string): $mol_time_moment;
         pattern(field: string): string;
+        regexp_str(field: string): string;
         rows_max(field: string): string;
         json_invalid(field: string): string;
         ip4(field: string, flag?: 'mask-allowed' | 'mask-required'): string;
@@ -12588,28 +12640,16 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    class $yuf_locale_model extends $mol_object {
-        lang(next?: string): string;
-        langs_available(): {
-            ru: string;
-            en: string;
-        };
-    }
-}
 
-declare namespace $ {
-
-	type __yuf_locale_switch_1 = $mol_type_enforce<
-		Parameters< $yuf_locale_switch['lang'] >[0]
+	type $yuf_locale_switch_langs__1 = $mol_type_enforce<
+		`en`
 		,
-		Parameters< ReturnType< $yuf_locale_switch['model'] >['lang'] >[0]
+		string
 	>
 	export class $yuf_locale_switch extends $mol_select {
-		langs_available( ): ReturnType< ReturnType< $yuf_locale_switch['model'] >['langs_available'] >
-		lang( next?: ReturnType< ReturnType< $yuf_locale_switch['model'] >['lang'] > ): ReturnType< ReturnType< $yuf_locale_switch['model'] >['lang'] >
+		lang( next?: string ): string
 		Filter( ): any
-		model( ): $yuf_locale_model
-		dictionary( ): ReturnType< $yuf_locale_switch['langs_available'] >
+		langs( ): readonly(string)[]
 		value( next?: ReturnType< $yuf_locale_switch['lang'] > ): ReturnType< $yuf_locale_switch['lang'] >
 	}
 	
@@ -12617,6 +12657,10 @@ declare namespace $ {
 
 //# sourceMappingURL=switch.view.tree.d.ts.map
 declare namespace $.$$ {
+    class $yuf_locale_switch extends $.$yuf_locale_switch {
+        lang(next?: string): string;
+        dictionary(next?: Record<string, string>): Record<string, string>;
+    }
 }
 
 declare namespace $ {
@@ -12848,12 +12892,11 @@ declare namespace $ {
     class $yuf_session extends $mol_object {
         client_id(): string;
         token_key(): string;
-        token(next?: string | null, op?: 'refresh' | 'logout'): string | null;
+        token(next?: string | null, op?: 'refresh'): string | null;
         token_grab(reset?: null): string | null;
         user_id(): null | string;
-        user_id_ensure(): string;
         logged(): boolean;
-        logout(): string | null;
+        logout(): void;
         roles(): readonly string[];
     }
 }
@@ -13698,41 +13741,23 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
-
-	export class $mol_icon_minus extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=minus.view.tree.d.ts.map
-declare namespace $ {
-
-	export class $mol_icon_plus extends $mol_icon {
-		path( ): string
-	}
-	
-}
-
-//# sourceMappingURL=plus.view.tree.d.ts.map
-declare namespace $ {
 }
 
 declare namespace $ {
 
-	export class $yuf_number_range_string extends $mol_string {
+	export class $yuf_number_slider_string extends $mol_string {
 		step( ): number
 		min( ): number
 		max( ): number
 		type( ): string
 		keyboard( ): string
 		attr( ): ({ 
-			'title': ReturnType< $yuf_number_range_string['hint'] >,
+			'title': ReturnType< $yuf_number_slider_string['hint'] >,
 		})  & ReturnType< $mol_string['attr'] >
 		field( ): ({ 
-			'step': ReturnType< $yuf_number_range_string['step'] >,
-			'min': ReturnType< $yuf_number_range_string['min'] >,
-			'max': ReturnType< $yuf_number_range_string['max'] >,
+			'step': ReturnType< $yuf_number_slider_string['step'] >,
+			'min': ReturnType< $yuf_number_slider_string['min'] >,
+			'max': ReturnType< $yuf_number_slider_string['max'] >,
 		})  & ReturnType< $mol_string['field'] >
 	}
 	
@@ -13741,59 +13766,57 @@ declare namespace $ {
 //# sourceMappingURL=string.view.tree.d.ts.map
 declare namespace $ {
 
-	type $yuf_number_range_string__type_yuf_number_range_1 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['type'] >
+	type $yuf_number_slider_string__type_yuf_number_slider_1 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['type'] >
 		,
-		ReturnType< $yuf_number_range_string['type'] >
+		ReturnType< $yuf_number_slider_string['type'] >
 	>
-	type $yuf_number_range_string__value_yuf_number_range_2 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['value_string'] >
+	type $yuf_number_slider_string__value_yuf_number_slider_2 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['value_string'] >
 		,
-		ReturnType< $yuf_number_range_string['value'] >
+		ReturnType< $yuf_number_slider_string['value'] >
 	>
-	type $yuf_number_range_string__hint_yuf_number_range_3 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['hint'] >
+	type $yuf_number_slider_string__hint_yuf_number_slider_3 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['hint'] >
 		,
-		ReturnType< $yuf_number_range_string['hint'] >
+		ReturnType< $yuf_number_slider_string['hint'] >
 	>
-	type $yuf_number_range_string__enabled_yuf_number_range_4 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['string_enabled'] >
+	type $yuf_number_slider_string__enabled_yuf_number_slider_4 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['string_enabled'] >
 		,
-		ReturnType< $yuf_number_range_string['enabled'] >
+		ReturnType< $yuf_number_slider_string['enabled'] >
 	>
-	type $yuf_number_range_string__submit_yuf_number_range_5 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['submit'] >
+	type $yuf_number_slider_string__submit_yuf_number_slider_5 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['submit'] >
 		,
-		ReturnType< $yuf_number_range_string['submit'] >
+		ReturnType< $yuf_number_slider_string['submit'] >
 	>
-	type $yuf_number_range_string__min_yuf_number_range_6 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['value_min'] >
+	type $yuf_number_slider_string__min_yuf_number_slider_6 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['value_min'] >
 		,
-		ReturnType< $yuf_number_range_string['min'] >
+		ReturnType< $yuf_number_slider_string['min'] >
 	>
-	type $yuf_number_range_string__max_yuf_number_range_7 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['value_max'] >
+	type $yuf_number_slider_string__max_yuf_number_slider_7 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['value_max'] >
 		,
-		ReturnType< $yuf_number_range_string['max'] >
+		ReturnType< $yuf_number_slider_string['max'] >
 	>
-	type $yuf_number_range_string__step_yuf_number_range_8 = $mol_type_enforce<
-		ReturnType< $yuf_number_range['step'] >
+	type $yuf_number_slider_string__step_yuf_number_slider_8 = $mol_type_enforce<
+		ReturnType< $yuf_number_slider['step'] >
 		,
-		ReturnType< $yuf_number_range_string['step'] >
+		ReturnType< $yuf_number_slider_string['step'] >
 	>
-	export class $yuf_number_range extends $mol_number {
+	export class $yuf_number_slider extends $mol_number {
 		type( ): string
 		step( ): number
-		dec_icon( ): $mol_icon_minus
-		inc_icon( ): $mol_icon_plus
-		String( ): $yuf_number_range_string
+		String( ): $yuf_number_slider_string
 	}
 	
 }
 
-//# sourceMappingURL=range.view.tree.d.ts.map
+//# sourceMappingURL=slider.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_number_range extends $.$yuf_number_range {
+    class $yuf_number_slider extends $.$yuf_number_slider {
         step(): number;
     }
 }
@@ -13806,7 +13829,7 @@ declare namespace $ {
 
 declare namespace $ {
 
-	export class $yuf_video_slider extends $yuf_number_range {
+	export class $yuf_video_slider extends $yuf_number_slider {
 		precision( ): number
 		value_max( ): number
 		value_min( ): number
@@ -18064,6 +18087,15 @@ declare namespace $ {
 
 declare namespace $ {
 
+	export class $mol_icon_plus extends $mol_icon {
+		path( ): string
+	}
+	
+}
+
+//# sourceMappingURL=plus.view.tree.d.ts.map
+declare namespace $ {
+
 	export class $yuf_button_add extends $mol_button_minor {
 		Icon( ): $mol_icon_plus
 		hint( ): string
@@ -18359,95 +18391,95 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_number__value_yuf_sj_ui_range_group_1 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['value'] >
+	type $mol_number__value_yuf_number_range_1 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['value'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
-	type $mol_number__enabled_yuf_sj_ui_range_group_2 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+	type $mol_number__enabled_yuf_number_range_2 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['enabled'] >
 		,
 		ReturnType< $mol_number['enabled'] >
 	>
-	type $mol_number__submit_yuf_sj_ui_range_group_3 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['submit'] >
+	type $mol_number__submit_yuf_number_range_3 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['submit'] >
 		,
 		ReturnType< $mol_number['submit'] >
 	>
-	type $mol_number__Dec_yuf_sj_ui_range_group_4 = $mol_type_enforce<
+	type $mol_number__Dec_yuf_number_range_4 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_number['Dec'] >
 	>
-	type $mol_number__Inc_yuf_sj_ui_range_group_5 = $mol_type_enforce<
+	type $mol_number__Inc_yuf_number_range_5 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_number['Inc'] >
 	>
-	type $mol_form_field__name_yuf_sj_ui_range_group_6 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['min_name'] >
+	type $mol_form_field__name_yuf_number_range_6 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['min_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__bids_yuf_sj_ui_range_group_7 = $mol_type_enforce<
+	type $mol_form_field__bids_yuf_number_range_7 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_form_field['bids'] >
 	>
-	type $mol_form_field__Content_yuf_sj_ui_range_group_8 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['Min'] >
+	type $mol_form_field__Content_yuf_number_range_8 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['Min'] >
 		,
 		ReturnType< $mol_form_field['Content'] >
 	>
-	type $mol_number__submit_yuf_sj_ui_range_group_9 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['submit'] >
+	type $mol_number__submit_yuf_number_range_9 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['submit'] >
 		,
 		ReturnType< $mol_number['submit'] >
 	>
-	type $mol_number__value_yuf_sj_ui_range_group_10 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['value'] >
+	type $mol_number__value_yuf_number_range_10 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['value'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
-	type $mol_number__enabled_yuf_sj_ui_range_group_11 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+	type $mol_number__enabled_yuf_number_range_11 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['enabled'] >
 		,
 		ReturnType< $mol_number['enabled'] >
 	>
-	type $mol_number__Dec_yuf_sj_ui_range_group_12 = $mol_type_enforce<
+	type $mol_number__Dec_yuf_number_range_12 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_number['Dec'] >
 	>
-	type $mol_number__Inc_yuf_sj_ui_range_group_13 = $mol_type_enforce<
+	type $mol_number__Inc_yuf_number_range_13 = $mol_type_enforce<
 		any
 		,
 		ReturnType< $mol_number['Inc'] >
 	>
-	type $mol_form_field__name_yuf_sj_ui_range_group_14 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['max_name'] >
+	type $mol_form_field__name_yuf_number_range_14 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['max_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__bids_yuf_sj_ui_range_group_15 = $mol_type_enforce<
+	type $mol_form_field__bids_yuf_number_range_15 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_form_field['bids'] >
 	>
-	type $mol_form_field__Content_yuf_sj_ui_range_group_16 = $mol_type_enforce<
-		ReturnType< $yuf_sj_ui_range_group['Max'] >
+	type $mol_form_field__Content_yuf_number_range_16 = $mol_type_enforce<
+		ReturnType< $yuf_number_range['Max'] >
 		,
 		ReturnType< $mol_form_field['Content'] >
 	>
-	type $mol_vector_range__yuf_sj_ui_range_group_17 = $mol_type_enforce<
+	type $mol_vector_range__yuf_number_range_17 = $mol_type_enforce<
 		[ number, number ]
 		,
 		ConstructorParameters< typeof $mol_vector_range<number> >
 	>
-	export class $yuf_sj_ui_range_group extends $mol_labeler {
+	export class $yuf_number_range extends $mol_labeler {
 		min_name( ): string
 		required_msg( ): string
-		required_num( id: any): ReturnType< $yuf_sj_ui_range_group['required_msg'] >
+		required_num( id: any): ReturnType< $yuf_number_range['required_msg'] >
 		limit_msg( id: any): string
 		enabled( ): boolean
 		submit( next?: any ): any
@@ -18455,19 +18487,26 @@ declare namespace $ {
 		Min_field( ): $mol_form_field
 		max_name( ): string
 		greater_min_message( ): string
-		greater_min( id: any): ReturnType< $yuf_sj_ui_range_group['greater_min_message'] >
+		greater_min( id: any): ReturnType< $yuf_number_range['greater_min_message'] >
 		Max( ): $mol_number
 		Max_field( ): $mol_form_field
 		limit( ): $mol_vector_range<number>
+		min( ): number
+		max( ): number
+		required( id: any): boolean
+		value_min( next?: number ): number
+		value_max( next?: number ): number
 		value( id: any, next?: number ): number
 		content( ): readonly(any)[]
 	}
 	
 }
 
-//# sourceMappingURL=group.view.tree.d.ts.map
+//# sourceMappingURL=range.view.tree.d.ts.map
 declare namespace $.$$ {
-    class $yuf_sj_ui_range_group extends $.$yuf_sj_ui_range_group {
+    class $yuf_number_range extends $.$yuf_number_range {
+        limit(): $mol_vector_range<number>;
+        value(key: string, next?: number): number;
         required_num(key: string): string;
         limit_msg(key: string): string;
         greater_min(key: string): string;
@@ -18508,7 +18547,7 @@ declare namespace $ {
 		body( ): readonly(any)[]
 	}
 	
-	export class $yuf_sj_jammer_sdr_form_ranges extends $yuf_sj_ui_range_group {
+	export class $yuf_sj_jammer_sdr_form_ranges extends $yuf_number_range {
 		rows( ): readonly(any)[]
 	}
 	
@@ -19264,25 +19303,25 @@ declare namespace $ {
 		,
 		ConstructorParameters< typeof $mol_vector_range<number> >
 	>
-	type $yuf_sj_ui_range_group__title_yuf_sj_ui_freq_range_2 = $mol_type_enforce<
+	type $yuf_number_range__title_yuf_sj_ui_freq_range_2 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_freq_range['freq_range_title'] >
 		,
-		ReturnType< $yuf_sj_ui_range_group['title'] >
+		ReturnType< $yuf_number_range['title'] >
 	>
-	type $yuf_sj_ui_range_group__limit_yuf_sj_ui_freq_range_3 = $mol_type_enforce<
+	type $yuf_number_range__limit_yuf_sj_ui_freq_range_3 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_freq_range['limit'] >
 		,
-		ReturnType< $yuf_sj_ui_range_group['limit'] >
+		ReturnType< $yuf_number_range['limit'] >
 	>
-	type $yuf_sj_ui_range_group__enabled_yuf_sj_ui_freq_range_4 = $mol_type_enforce<
+	type $yuf_number_range__enabled_yuf_sj_ui_freq_range_4 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_freq_range['enabled'] >
 		,
-		ReturnType< $yuf_sj_ui_range_group['enabled'] >
+		ReturnType< $yuf_number_range['enabled'] >
 	>
-	type $yuf_sj_ui_range_group__value_yuf_sj_ui_freq_range_5 = $mol_type_enforce<
+	type $yuf_number_range__value_yuf_sj_ui_freq_range_5 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_freq_range['value'] >
 		,
-		ReturnType< $yuf_sj_ui_range_group['value'] >
+		ReturnType< $yuf_number_range['value'] >
 	>
 	type $mol_view__sub_yuf_sj_ui_freq_range_6 = $mol_type_enforce<
 		readonly(any)[]
@@ -19304,7 +19343,7 @@ declare namespace $ {
 		limit( ): $mol_vector_range<number>
 		enabled( ): boolean
 		value( id: any, next?: number ): number
-		Freq_range_fields( ): $yuf_sj_ui_range_group
+		Freq_range_fields( ): $yuf_number_range
 		freq_range_help_available( ): string
 		help_message( ): string
 		Freq_range_help( ): $mol_view
@@ -20453,10 +20492,6 @@ declare namespace $ {
 }
 
 declare namespace $ {
-    let $yuf_sj_jammer_version: string;
-}
-
-declare namespace $ {
 
 	type __yuf_sj_jammer_app_1 = $mol_type_enforce<
 		Parameters< $yuf_sj_jammer_app['rules'] >[0]
@@ -20739,5 +20774,368 @@ declare namespace $ {
 }
 
 //# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $ {
+
+	export class $mol_drop extends $mol_ghost {
+		enter( next?: any ): any
+		move( next?: any ): any
+		leave( next?: any ): any
+		drop( next?: any ): any
+		status( next?: string ): string
+		enabled( next?: boolean ): boolean
+		event( ): ({ 
+			dragenter( next?: ReturnType< $mol_drop['enter'] > ): ReturnType< $mol_drop['enter'] >,
+			dragover( next?: ReturnType< $mol_drop['move'] > ): ReturnType< $mol_drop['move'] >,
+			dragleave( next?: ReturnType< $mol_drop['leave'] > ): ReturnType< $mol_drop['leave'] >,
+			drop( next?: ReturnType< $mol_drop['drop'] > ): ReturnType< $mol_drop['drop'] >,
+		})  & ReturnType< $mol_ghost['event'] >
+		attr( ): ({ 
+			'mol_drop_status': ReturnType< $mol_drop['status'] >,
+		})  & ReturnType< $mol_ghost['attr'] >
+		adopt( next?: Record<string, any> ): Record<string, any>
+		receive( next?: any ): any
+		allow( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=drop.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_drop extends $.$mol_drop {
+        status(next?: "ready" | "drag"): "ready" | "drag";
+        protected _target: EventTarget | null;
+        enter(event: DragEvent): void;
+        move(event: DragEvent): void;
+        decide_action(event: DragEvent): any;
+        leave(event: DragEvent): void;
+        receive(transfer: unknown): unknown;
+        drop(event: DragEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_drop extends $mol_drop {
+		adopted_id( id: any): any
+		id( ): string
+		param( ): string
+		ids( ): readonly(string)[]
+		receive_id( next?: string ): string
+		is_before( id: any): boolean
+	}
+	
+}
+
+//# sourceMappingURL=drop.view.tree.d.ts.map
+declare namespace $.$$ {
+    type Adopted = Record<string, any>;
+    export class $yuf_drop extends $.$yuf_drop {
+        static dragging: Set<string>;
+        adopt(transfer: DataTransfer): any;
+        adopted_id(adopted: Adopted): any;
+        is_before(moved_id: string): boolean;
+        receive(dragged: Adopted): void;
+    }
+    export {};
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	export class $mol_drag extends $mol_ghost {
+		start( next?: any ): any
+		drag_start( next?: ReturnType< $mol_drag['start'] > ): ReturnType< $mol_drag['start'] >
+		move( next?: any ): any
+		drag_move( next?: ReturnType< $mol_drag['move'] > ): ReturnType< $mol_drag['move'] >
+		end( next?: any ): any
+		drag_end( next?: ReturnType< $mol_drag['end'] > ): ReturnType< $mol_drag['end'] >
+		draggable( ): boolean
+		status( next?: string ): string
+		plain( ): ReturnType< $mol_drag['title'] >
+		html( ): string
+		uris( ): string
+		event( ): ({ 
+			dragstart( next?: ReturnType< $mol_drag['drag_start'] > ): ReturnType< $mol_drag['drag_start'] >,
+			drag( next?: ReturnType< $mol_drag['drag_move'] > ): ReturnType< $mol_drag['drag_move'] >,
+			dragend( next?: ReturnType< $mol_drag['drag_end'] > ): ReturnType< $mol_drag['drag_end'] >,
+		})  & ReturnType< $mol_ghost['event'] >
+		attr( ): ({ 
+			'draggable': ReturnType< $mol_drag['draggable'] >,
+			'mol_drag_status': ReturnType< $mol_drag['status'] >,
+		})  & ReturnType< $mol_ghost['attr'] >
+		transfer( ): Record<string, string>
+		allow_copy( ): boolean
+		allow_link( ): boolean
+		allow_move( ): boolean
+		image( ): ReturnType< $mol_drag['dom_node'] >
+	}
+	
+}
+
+//# sourceMappingURL=drag.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_drag_demo
+     */
+    class $mol_drag extends $.$mol_drag {
+        status(next?: "ready" | "drag"): "ready" | "drag";
+        drag_start(event: DragEvent): void;
+        drag_end(event: DragEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $yuf_drag extends $mol_drag {
+		id( ): string
+		param( ): string
+		args( ): Record<string, any>
+		remove( next?: any ): any
+		Drag_image( ): any
+		drag_align( ): string
+	}
+	
+}
+
+//# sourceMappingURL=drag.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_drag extends $.$yuf_drag {
+        args(): {
+            [x: string]: string;
+        };
+        uris(): string;
+        start(e?: DragEvent): void;
+        end(e?: Event): void;
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_drop__id_yuf_drag_drop_1 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['id'] >
+		,
+		ReturnType< $yuf_drop['id'] >
+	>
+	type $yuf_drop__param_yuf_drag_drop_2 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['param'] >
+		,
+		ReturnType< $yuf_drop['param'] >
+	>
+	type $yuf_drop__Sub_yuf_drag_drop_3 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['Item'] >
+		,
+		ReturnType< $yuf_drop['Sub'] >
+	>
+	type $yuf_drop__ids_yuf_drag_drop_4 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['ids'] >
+		,
+		ReturnType< $yuf_drop['ids'] >
+	>
+	type $yuf_drop__receive_id_yuf_drag_drop_5 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['receive_id'] >
+		,
+		ReturnType< $yuf_drop['receive_id'] >
+	>
+	export class $yuf_drag_drop extends $yuf_drag {
+		Item( ): $mol_view
+		ids( ): readonly(string)[]
+		receive_id( id: any, next?: string ): string
+		Drop( ): $yuf_drop
+		Sub( ): ReturnType< $yuf_drag_drop['Drop'] >
+	}
+	
+}
+
+//# sourceMappingURL=drop.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_view__sub_yuf_drop_empty_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_empty['sub_sub'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_drop_empty extends $yuf_drop {
+		sub_sub( ): readonly($mol_view_content)[]
+		Sub( ): $mol_view
+	}
+	
+}
+
+//# sourceMappingURL=empty.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_drop_empty extends $.$yuf_drop_empty {
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_drag_drop__param_yuf_drop_list_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['param'] >
+		,
+		ReturnType< $yuf_drag_drop['param'] >
+	>
+	type $yuf_drag_drop__receive_id_yuf_drop_list_2 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['receive_id'] >
+		,
+		ReturnType< $yuf_drag_drop['receive_id'] >
+	>
+	type $yuf_drag_drop__id_yuf_drop_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['id'] >
+		,
+		ReturnType< $yuf_drag_drop['id'] >
+	>
+	type $yuf_drag_drop__ids_yuf_drop_list_4 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['ids_actual'] >
+		,
+		ReturnType< $yuf_drag_drop['ids'] >
+	>
+	type $yuf_drag_drop__Item_yuf_drop_list_5 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['Item'] >
+		,
+		ReturnType< $yuf_drag_drop['Item'] >
+	>
+	type $yuf_drop_empty__param_yuf_drop_list_6 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['param'] >
+		,
+		ReturnType< $yuf_drop_empty['param'] >
+	>
+	type $yuf_drop_empty__receive_id_yuf_drop_list_7 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['receive_id'] >
+		,
+		ReturnType< $yuf_drop_empty['receive_id'] >
+	>
+	type $yuf_drop_list_rows__8 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['items'] >[number]
+		,
+		$mol_view
+	>
+	type $yuf_drop_list_rows__9 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['last'] >[number]
+		,
+		$mol_view
+	>
+	export class $yuf_drop_list extends $mol_list {
+		ids_actual( next?: readonly(string)[] ): readonly(string)[]
+		ids_next( ): readonly(string)[]
+		param( ): string
+		receive_id( id: any, next?: any ): any
+		id( id: any): string
+		Item( id: any): $mol_view
+		Drop( id: any): $yuf_drag_drop
+		items( ): readonly($mol_view)[]
+		Drop_last( ): $yuf_drop_empty
+		last( ): readonly($mol_view)[]
+		ids_filtered( ): ReturnType< $yuf_drop_list['ids_actual'] >
+		ids_current( ): ReturnType< $yuf_drop_list['ids_next'] >
+		item_move( next?: readonly(string)[] ): readonly(string)[]
+		item_status( id: any, next?: any ): any
+		rows( ): readonly($mol_view)[]
+	}
+	
+}
+
+//# sourceMappingURL=list.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_drop_list extends $.$yuf_drop_list {
+        receive_id(before_id: string, dragged_id: string): string | null;
+        ids_actual_grab(): readonly string[];
+        ids_next(): string[];
+        item_status(id: string): null;
+        ids_current(): readonly string[];
+        id(id: string): string;
+        items(): $yuf_drag_drop[];
+    }
+}
+
+declare namespace $ {
+
+	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['title'] >
+		,
+		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
+	>
+	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_2 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_drop_list_demo_catalog['param'] >
+	>
+	export class $yuf_drop_list_demo extends $mol_example_large {
+		Calatog( ): $yuf_drop_list_demo_catalog
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $mol_view__sub_yuf_drop_list_demo_catalog_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['menu_item_content'] >
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type __yuf_drop_list_demo_catalog_2 = $mol_type_enforce<
+		Parameters< $yuf_drop_list_demo_catalog['item_status'] >[0]
+		,
+		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_status'] >[0]
+	>
+	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['Menu_links_empty'] >
+		,
+		ReturnType< $yuf_drop_list['Empty'] >
+	>
+	type $yuf_drop_list__param_yuf_drop_list_demo_catalog_4 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['param'] >
+		,
+		ReturnType< $yuf_drop_list['param'] >
+	>
+	type $yuf_drop_list__ids_actual_yuf_drop_list_demo_catalog_5 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['ids_actual'] >
+		,
+		ReturnType< $yuf_drop_list['ids_actual'] >
+	>
+	type $yuf_drop_list__id_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['id'] >
+		,
+		ReturnType< $yuf_drop_list['id'] >
+	>
+	type $yuf_drop_list__Item_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['Menu_item'] >
+		,
+		ReturnType< $yuf_drop_list['Item'] >
+	>
+	type $yuf_drop_list__ids_filtered_yuf_drop_list_demo_catalog_8 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo_catalog['spread_ids_filtered'] >
+		,
+		ReturnType< $yuf_drop_list['ids_filtered'] >
+	>
+	export class $yuf_drop_list_demo_catalog extends $mol_book2_catalog {
+		ids_actual( next?: readonly(string)[] ): readonly(string)[]
+		id( id: any): string
+		Menu_item( id: any): $mol_view
+		item_status( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_status'] >
+		spread_ids( ): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['ids_current'] >
+		items_max( ): number
+		Menu_links( ): $yuf_drop_list
+		menu_link_content( id: any): readonly($mol_view_content)[]
+		spread_title( id: any): ReturnType< $yuf_drop_list_demo_catalog['id'] >
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
+        ids_actual(next?: readonly string[]): readonly string[];
+        id(id: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
 export = $;
 //# sourceMappingURL=web.d.ts.map

@@ -11810,14 +11810,17 @@ var $;
 		block_content(id){
 			return [];
 		}
-		uri_resolve(id){
-			return "";
-		}
 		quote_text(id){
 			return "";
 		}
 		highlight(){
 			return "";
+		}
+		uri_resolve(id){
+			return "";
+		}
+		code_sidebar_showed(){
+			return true;
 		}
 		list_type(id){
 			return "-";
@@ -11836,12 +11839,6 @@ var $;
 		}
 		pre_themes(id){
 			return [];
-		}
-		code_sidebar_showed(){
-			return true;
-		}
-		pre_sidebar_showed(){
-			return (this.code_sidebar_showed());
 		}
 		table_head_cells(id){
 			return [];
@@ -11888,6 +11885,9 @@ var $;
 		Spoiler_label(id){
 			const obj = new this.$.$mol_text();
 			(obj.text) = () => ((this.spoiler_label(id)));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		spoiler_content(id){
@@ -11896,6 +11896,9 @@ var $;
 		Spoiler_content(id){
 			const obj = new this.$.$mol_text();
 			(obj.text) = () => ((this.spoiler_content(id)));
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		uri_base(){
@@ -11923,18 +11926,20 @@ var $;
 		}
 		Quote(id){
 			const obj = new this.$.$mol_text();
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
 			(obj.text) = () => ((this.quote_text(id)));
-			(obj.highlight) = () => ((this.highlight()));
 			(obj.auto_scroll) = () => (null);
+			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		List(id){
 			const obj = new this.$.$mol_text_list();
-			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
 			(obj.type) = () => ((this.list_type(id)));
 			(obj.text) = () => ((this.list_text(id)));
 			(obj.highlight) = () => ((this.highlight()));
+			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		item_index(id){
@@ -11954,7 +11959,7 @@ var $;
 			(obj.row_themes) = () => ((this.pre_themes(id)));
 			(obj.highlight) = () => ((this.highlight()));
 			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.sidebar_showed) = () => ((this.pre_sidebar_showed()));
+			(obj.sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		Cut(id){
@@ -11976,9 +11981,10 @@ var $;
 		Table_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
+			(obj.text) = () => ((this.table_cell_text(id)));
 			(obj.highlight) = () => ((this.highlight()));
 			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.text) = () => ((this.table_cell_text(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		Grid(id){
@@ -11994,9 +12000,10 @@ var $;
 		Grid_cell(id){
 			const obj = new this.$.$mol_text();
 			(obj.auto_scroll) = () => (null);
+			(obj.text) = () => ((this.grid_cell_text(id)));
 			(obj.highlight) = () => ((this.highlight()));
 			(obj.uri_resolve) = (id) => ((this.uri_resolve(id)));
-			(obj.text) = () => ((this.grid_cell_text(id)));
+			(obj.code_sidebar_showed) = () => ((this.code_sidebar_showed()));
 			return obj;
 		}
 		String(id){
@@ -12210,7 +12217,7 @@ var $;
                     .map((row, rowId) => {
                     const cells = [];
                     for (const line of row.trim().split(/\r?\n/)) {
-                        const [_, indent, content] = /^( *)! (.*)/.exec(line);
+                        const [_, indent, content] = /^( *)! (.*)/.exec(line) ?? ['', '', ''];
                         const col = Math.ceil(indent.length / 2);
                         cells[col] = (cells[col] ? cells[col] + '\n' : '') + content;
                     }
@@ -17456,13 +17463,16 @@ var $;
             canvas.size([width, height]);
             canvas.d2.drawImage(tmp.native, left_top_x, left_top_y, width, height, 0, 0, width, height);
         }
-        resize(canvas, { max }) {
-            const size = canvas.size();
-            if (size[0] <= max[0] && size[1] <= max[1])
+        resize(canvas, { max: [max_x, max_y] }) {
+            const [x, y] = canvas.size();
+            if (x <= max_x && y <= max_y)
                 return;
+            const scale = Math.min(max_x / x, max_y / y, 1);
+            const next_x = Math.round(x * scale);
+            const next_y = Math.round(y * scale);
             const tmp = canvas.clone();
-            canvas.size(max);
-            canvas.d2.drawImage(tmp.native, 0, 0, max[0], max[1]);
+            canvas.size([next_x, next_y]);
+            canvas.d2.drawImage(tmp.native, 0, 0, next_x, next_y);
         }
         image_type() { return 'image/png'; }
         quality() { return .99; }
@@ -21611,6 +21621,9 @@ var $;
 
 ;
 	($.$yuf_form_bid) = class $yuf_form_bid extends ($.$mol_view) {
+		regexp_str_message(id){
+			return (this.$.$mol_locale.text("$yuf_form_bid_regexp_str_message"));
+		}
 		url_msg(){
 			return (this.$.$mol_locale.text("$yuf_form_bid_url_msg"));
 		}
@@ -21697,6 +21710,9 @@ var $;
 		max_date_val(id){
 			const obj = new this.$["$mol_time_moment|null"]();
 			return obj;
+		}
+		regexp_str(id){
+			return (this.regexp_str_message(id));
 		}
 		url(id){
 			return (this.url_msg());
@@ -21914,6 +21930,17 @@ var $;
                 if (str.match(regex))
                     return '';
                 return this.format(field, this.pattern_not_match_msg());
+            }
+            regexp_str(field) {
+                if (this.value_empty(field))
+                    return '';
+                try {
+                    new RegExp(this.value_str(field));
+                }
+                catch (e) {
+                    return this.regexp_str_message(field);
+                }
+                return '';
             }
             rows_max(field) {
                 if (this.value_empty(field))
@@ -26096,44 +26123,22 @@ var $;
 })($ || ($ = {}));
 
 ;
-"use strict";
-var $;
-(function ($) {
-    class $yuf_locale_model extends $mol_object {
-        lang(next) { return this.$.$mol_locale.lang(next); }
-        langs_available() {
-            return {
-                ru: 'РУ',
-                en: 'EN'
-            };
-        }
-    }
-    $.$yuf_locale_model = $yuf_locale_model;
-})($ || ($ = {}));
-
-;
 	($.$yuf_locale_switch) = class $yuf_locale_switch extends ($.$mol_select) {
-		langs_available(){
-			return (this.model().langs_available());
-		}
 		lang(next){
-			return (this.model().lang(next));
+			if(next !== undefined) return next;
+			return "";
 		}
 		Filter(){
 			return null;
 		}
-		model(){
-			const obj = new this.$.$yuf_locale_model();
-			return obj;
-		}
-		dictionary(){
-			return (this.langs_available());
+		langs(){
+			return ["en"];
 		}
 		value(next){
 			return (this.lang(next));
 		}
 	};
-	($mol_mem(($.$yuf_locale_switch.prototype), "model"));
+	($mol_mem(($.$yuf_locale_switch.prototype), "lang"));
 
 
 ;
@@ -26146,17 +26151,16 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_locale_switch, {
-            Option: {
-                '[mol_check_checked]': {
-                    true: {
-                        font: {
-                            weight: 700,
-                        },
-                    },
-                },
-            },
-        });
+        class $yuf_locale_switch extends $.$yuf_locale_switch {
+            lang(next) { return this.$.$mol_locale.lang(next); }
+            dictionary(next) {
+                return next ?? Object.fromEntries(this.langs().map(code => [code, code]));
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_locale_switch.prototype, "dictionary", null);
+        $$.$yuf_locale_switch = $yuf_locale_switch;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -26693,14 +26697,8 @@ var $;
             return this.token(reset, reset === null ? 'refresh' : undefined);
         }
         user_id() { return null; }
-        user_id_ensure() {
-            const user_id = this.user_id();
-            if (!user_id)
-                throw new Error('Required user_id in session');
-            return user_id;
-        }
         logged() { return Boolean(this.token()); }
-        logout() { return this.token(null, 'logout'); }
+        logout() { this.token(null); }
         roles() { return []; }
     }
     __decorate([
@@ -27945,7 +27943,7 @@ var $;
             return String(val ?? '');
         }
         function norm_number(val) {
-            return val === '' ? Number.NaN : Number(val ?? 0);
+            return val === '' || val === null ? Number.NaN : Number(val ?? 0);
         }
         function norm_bool(val) {
             return Boolean(val ?? false);
@@ -28662,31 +28660,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$mol_icon_minus) = class $mol_icon_minus extends ($.$mol_icon) {
-		path(){
-			return "M19,13H5V11H19V13Z";
-		}
-	};
-
-
-;
-"use strict";
-
-
-;
-	($.$mol_icon_plus) = class $mol_icon_plus extends ($.$mol_icon) {
-		path(){
-			return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
-		}
-	};
-
-
-;
-"use strict";
-
-
-;
-	($.$yuf_number_range_string) = class $yuf_number_range_string extends ($.$mol_string) {
+	($.$yuf_number_slider_string) = class $yuf_number_slider_string extends ($.$mol_string) {
 		step(){
 			return 1;
 		}
@@ -28720,7 +28694,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("yuf/number/range/string/string.view.css", "[yuf_number_range_string] {\n\t-webkit-appearance: none;\n\twidth: auto;\n\theight: .5rem;\n\tborder-radius: var(--mol_gap_round);\n\tmargin-bottom: 0.2rem;\n\tbackground-color: var(--mol_theme_shade);\n\tcursor: pointer;\n\n\toverflow: visible;\n\tpadding: 0;\n}\n\n[yuf_number_range_string]::-webkit-slider-thumb {\n\t-webkit-appearance: none;\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[yuf_number_range_string]::-moz-range-thumb {\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n");
+    $mol_style_attach("yuf/number/slider/string/string.view.css", "[yuf_number_slider_string] {\n\t-webkit-appearance: none;\n\twidth: auto;\n\theight: .5rem;\n\tborder-radius: var(--mol_gap_round);\n\tmargin-bottom: 0.2rem;\n\tbackground-color: var(--mol_theme_shade);\n\tcursor: pointer;\n\n\toverflow: visible;\n\tpadding: 0;\n}\n\n[yuf_number_slider_string]::-webkit-slider-thumb {\n\t-webkit-appearance: none;\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n\n[yuf_number_slider_string]::-moz-range-thumb {\n\tbackground-color: var(--mol_theme_control);\n\twidth: 1rem;\n\theight: 1rem;\n\tborder-radius: var(--mol_gap_round);\n\toverflow: visible;\n\tcursor: pointer;\n\tborder-style: none;\n\tbox-shadow: 0 0 0 1px var(--mol_theme_line);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -28728,23 +28702,15 @@ var $;
 
 
 ;
-	($.$yuf_number_range) = class $yuf_number_range extends ($.$mol_number) {
+	($.$yuf_number_slider) = class $yuf_number_slider extends ($.$mol_number) {
 		type(){
 			return "range";
 		}
 		step(){
 			return 0;
 		}
-		dec_icon(){
-			const obj = new this.$.$mol_icon_minus();
-			return obj;
-		}
-		inc_icon(){
-			const obj = new this.$.$mol_icon_plus();
-			return obj;
-		}
 		String(){
-			const obj = new this.$.$yuf_number_range_string();
+			const obj = new this.$.$yuf_number_slider_string();
 			(obj.type) = () => ((this.type()));
 			(obj.value) = (next) => ((this.value_string(next)));
 			(obj.hint) = () => ((this.hint()));
@@ -28756,9 +28722,7 @@ var $;
 			return obj;
 		}
 	};
-	($mol_mem(($.$yuf_number_range.prototype), "dec_icon"));
-	($mol_mem(($.$yuf_number_range.prototype), "inc_icon"));
-	($mol_mem(($.$yuf_number_range.prototype), "String"));
+	($mol_mem(($.$yuf_number_slider.prototype), "String"));
 
 
 ;
@@ -28771,12 +28735,12 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_number_range extends $.$yuf_number_range {
+        class $yuf_number_slider extends $.$yuf_number_slider {
             step() {
                 return this.precision_change() * this.boost();
             }
         }
-        $$.$yuf_number_range = $yuf_number_range;
+        $$.$yuf_number_slider = $yuf_number_slider;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -28786,7 +28750,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_number_range, {
+        $mol_style_define($yuf_number_slider, {
             Dec: {
                 minHeight: '1.25rem',
                 width: '1rem',
@@ -28809,7 +28773,7 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_video_slider) = class $yuf_video_slider extends ($.$yuf_number_range) {
+	($.$yuf_video_slider) = class $yuf_video_slider extends ($.$yuf_number_slider) {
 		precision(){
 			return 0.05;
 		}
@@ -30001,8 +29965,8 @@ var $;
                 return this.items().at(0)?.minimal_height() || super.card_minimal_height();
             }
             width() {
-                const rect = this.view_rect();
-                return rect?.width ?? 0;
+                const { width } = this.view_rect() ?? { width: 0, height: 0 };
+                return width;
             }
             items_per_row_sync() {
                 const list_width = this.width();
@@ -36097,6 +36061,18 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_plus) = class $mol_icon_plus extends ($.$mol_icon) {
+		path(){
+			return "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
 	($.$yuf_button_add) = class $yuf_button_add extends ($.$mol_button_minor) {
 		Icon(){
 			const obj = new this.$.$mol_icon_plus();
@@ -36515,9 +36491,9 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_sj_ui_range_group) = class $yuf_sj_ui_range_group extends ($.$mol_labeler) {
+	($.$yuf_number_range) = class $yuf_number_range extends ($.$mol_labeler) {
 		min_name(){
-			return (this.$.$mol_locale.text("$yuf_sj_ui_range_group_min_name"));
+			return (this.$.$mol_locale.text("$yuf_number_range_min_name"));
 		}
 		required_msg(){
 			return "*";
@@ -36552,7 +36528,7 @@ var $;
 			return obj;
 		}
 		max_name(){
-			return (this.$.$mol_locale.text("$yuf_sj_ui_range_group_max_name"));
+			return (this.$.$mol_locale.text("$yuf_number_range_max_name"));
 		}
 		greater_min_message(){
 			return "> {min}";
@@ -36584,6 +36560,23 @@ var $;
 			const obj = new this.$.$mol_vector_range(0, 0);
 			return obj;
 		}
+		min(){
+			return 0;
+		}
+		max(){
+			return 0;
+		}
+		required(id){
+			return false;
+		}
+		value_min(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		value_max(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
 		value(id, next){
 			if(next !== undefined) return next;
 			return 0;
@@ -36592,13 +36585,15 @@ var $;
 			return [(this.Min_field()), (this.Max_field())];
 		}
 	};
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "submit"));
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Min"));
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Min_field"));
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Max"));
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "Max_field"));
-	($mol_mem(($.$yuf_sj_ui_range_group.prototype), "limit"));
-	($mol_mem_key(($.$yuf_sj_ui_range_group.prototype), "value"));
+	($mol_mem(($.$yuf_number_range.prototype), "submit"));
+	($mol_mem(($.$yuf_number_range.prototype), "Min"));
+	($mol_mem(($.$yuf_number_range.prototype), "Min_field"));
+	($mol_mem(($.$yuf_number_range.prototype), "Max"));
+	($mol_mem(($.$yuf_number_range.prototype), "Max_field"));
+	($mol_mem(($.$yuf_number_range.prototype), "limit"));
+	($mol_mem(($.$yuf_number_range.prototype), "value_min"));
+	($mol_mem(($.$yuf_number_range.prototype), "value_max"));
+	($mol_mem_key(($.$yuf_number_range.prototype), "value"));
 
 
 ;
@@ -36611,11 +36606,15 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        class $yuf_sj_ui_range_group extends $.$yuf_sj_ui_range_group {
+        class $yuf_number_range extends $.$yuf_number_range {
+            limit() { return new $mol_vector_range(this.min(), this.max()); }
+            value(key, next) {
+                return key === 'min' ? this.value_min(next) : this.value_max(next);
+            }
             required_num(key) {
                 const value = this.value(key);
-                if (Number.isNaN(value))
-                    return super.required_num(key);
+                if (Number.isNaN(value) && this.required(key))
+                    return this.required_msg();
                 return '';
             }
             limit_msg(key) {
@@ -36646,7 +36645,7 @@ var $;
                 return super.greater_min(key).replace('{min}', min.toFixed());
             }
         }
-        $$.$yuf_sj_ui_range_group = $yuf_sj_ui_range_group;
+        $$.$yuf_number_range = $yuf_number_range;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 
@@ -36656,7 +36655,7 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        $mol_style_define($yuf_sj_ui_range_group, {
+        $mol_style_define($yuf_number_range, {
             Content: {
                 padding: { top: 0, bottom: 0 },
                 gap: $mol_gap.block,
@@ -36667,7 +36666,7 @@ var $;
                 },
                 flex: {
                     grow: 0,
-                    basis: '12rem',
+                    basis: '11rem',
                 }
             },
             Max_field: {
@@ -36676,7 +36675,7 @@ var $;
                 },
                 flex: {
                     grow: 0,
-                    basis: '12rem',
+                    basis: '11rem',
                 }
             },
         });
@@ -36713,7 +36712,7 @@ var $;
 	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "limit"));
 	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "Freq_range_fields"));
 	($mol_mem(($.$yuf_sj_jammer_sdr_form.prototype), "model"));
-	($.$yuf_sj_jammer_sdr_form_ranges) = class $yuf_sj_jammer_sdr_form_ranges extends ($.$yuf_sj_ui_range_group) {
+	($.$yuf_sj_jammer_sdr_form_ranges) = class $yuf_sj_jammer_sdr_form_ranges extends ($.$yuf_number_range) {
 		rows(){
 			return [(this.Content())];
 		}
@@ -37786,7 +37785,7 @@ var $;
 			return 0;
 		}
 		Freq_range_fields(){
-			const obj = new this.$.$yuf_sj_ui_range_group();
+			const obj = new this.$.$yuf_number_range();
 			(obj.title) = () => ((this.freq_range_title()));
 			(obj.limit) = () => ((this.limit()));
 			(obj.enabled) = () => ((this.enabled()));
@@ -39744,13 +39743,6 @@ var $;
 
 ;
 "use strict";
-var $;
-(function ($) {
-    $.$yuf_sj_jammer_version = "0.0.1-fbf39d6";
-})($ || ($ = {}));
-
-;
-"use strict";
 
 
 ;
@@ -39761,7 +39753,7 @@ var $;
     (function ($$) {
         class $yuf_sj_jammer_app extends $.$yuf_sj_jammer_app {
             version() {
-                return $yuf_sj_jammer_version;
+                return '1.0.0';
             }
         }
         $$.$yuf_sj_jammer_app = $yuf_sj_jammer_app;
@@ -40287,6 +40279,759 @@ var $;
 ;
 "use strict";
 
+
+;
+	($.$mol_drop) = class $mol_drop extends ($.$mol_ghost) {
+		enter(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		leave(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drop(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		status(next){
+			if(next !== undefined) return next;
+			return "ready";
+		}
+		enabled(next){
+			if(next !== undefined) return next;
+			return true;
+		}
+		event(){
+			return {
+				...(super.event()), 
+				"dragenter": (next) => (this.enter(next)), 
+				"dragover": (next) => (this.move(next)), 
+				"dragleave": (next) => (this.leave(next)), 
+				"drop": (next) => (this.drop(next))
+			};
+		}
+		attr(){
+			return {...(super.attr()), "mol_drop_status": (this.status())};
+		}
+		adopt(next){
+			if(next !== undefined) return next;
+			return {};
+		}
+		receive(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		allow(){
+			return [
+				"copy", 
+				"move", 
+				"link"
+			];
+		}
+	};
+	($mol_mem(($.$mol_drop.prototype), "enter"));
+	($mol_mem(($.$mol_drop.prototype), "move"));
+	($mol_mem(($.$mol_drop.prototype), "leave"));
+	($mol_mem(($.$mol_drop.prototype), "drop"));
+	($mol_mem(($.$mol_drop.prototype), "status"));
+	($mol_mem(($.$mol_drop.prototype), "enabled"));
+	($mol_mem(($.$mol_drop.prototype), "adopt"));
+	($mol_mem(($.$mol_drop.prototype), "receive"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_drop extends $.$mol_drop {
+            status(next = 'ready') { return next; }
+            _target = null;
+            enter(event) {
+                if (event.defaultPrevented)
+                    return;
+                if (!this.enabled())
+                    return;
+                // if( !this.adopt( event.dataTransfer! ) ) return
+                const action = this.decide_action(event);
+                event.dataTransfer.dropEffect = action;
+                if (action !== 'none')
+                    this.status('drag');
+                this._target = event.target;
+                event.preventDefault();
+            }
+            move(event) {
+                if (event.defaultPrevented)
+                    return;
+                if (!this.enabled())
+                    return;
+                // if( !this.adopt( event.dataTransfer! ) ) return
+                event.dataTransfer.dropEffect = this.decide_action(event);
+                event.preventDefault();
+            }
+            decide_action(event) {
+                const allow = this.allow();
+                if (allow.includes('move') && event.shiftKey)
+                    return 'move';
+                else if (allow.includes('copy') && event.ctrlKey)
+                    return 'copy';
+                else if (allow.includes('link') && event.altKey)
+                    return 'link';
+                else
+                    return allow[0];
+            }
+            leave(event) {
+                if (this._target === event.target) {
+                    this.status('ready');
+                }
+            }
+            receive(transfer) {
+                return transfer;
+            }
+            drop(event) {
+                const e = $mol_dom_event.wrap(event);
+                if (e.prevented())
+                    return;
+                e.prevented(true);
+                setTimeout(() => this.status('ready'));
+                const obj = this.adopt(event.dataTransfer);
+                if (!obj)
+                    return;
+                this.receive(obj);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_drop.prototype, "status", null);
+        $$.$mol_drop = $mol_drop;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_drop) = class $yuf_drop extends ($.$mol_drop) {
+		adopted_id(id){
+			return null;
+		}
+		id(){
+			return "";
+		}
+		param(){
+			return "";
+		}
+		ids(){
+			return [];
+		}
+		receive_id(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		is_before(id){
+			return false;
+		}
+	};
+	($mol_mem(($.$yuf_drop.prototype), "receive_id"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drop extends $.$yuf_drop {
+            static dragging = new Set();
+            adopt(transfer) {
+                const uri = transfer.getData('text/uri-list');
+                const dict = Object.fromEntries(uri.split('/').map(chunk => chunk.split('=').map(decodeURIComponent)));
+                const dragging_id = !uri ? null : dict[this.param()] ?? null;
+                if (dragging_id === null)
+                    return null; // unknown item dragged
+                const self_id = this.id();
+                if (dragging_id === self_id)
+                    return null; // dragged to itself
+                if (this.is_before(dragging_id))
+                    return null;
+                this.$.$yuf_drop.dragging.delete(uri);
+                return { [this.param()]: dragging_id };
+            }
+            adopted_id(adopted) { return adopted[this.param()] ?? ''; }
+            is_before(moved_id) {
+                const ids = this.ids();
+                const before_id = this.id();
+                if (!before_id)
+                    return moved_id === ids.at(-1);
+                return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1;
+            }
+            receive(dragged) {
+                const moved_id = this.adopted_id(dragged);
+                this.receive_id(moved_id);
+            }
+        }
+        __decorate([
+            $mol_action
+        ], $yuf_drop.prototype, "adopt", null);
+        $$.$yuf_drop = $yuf_drop;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_drop, {
+            '@': {
+                mol_drop_status: {
+                    drag: {
+                        boxShadow: `inset 0 1px 0 0px ${$mol_theme.special}`,
+                    },
+                },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$mol_drag) = class $mol_drag extends ($.$mol_ghost) {
+		start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drag_start(next){
+			return (this.start(next));
+		}
+		move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drag_move(next){
+			return (this.move(next));
+		}
+		end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drag_end(next){
+			return (this.end(next));
+		}
+		draggable(){
+			return true;
+		}
+		status(next){
+			if(next !== undefined) return next;
+			return "ready";
+		}
+		plain(){
+			return (this.title());
+		}
+		html(){
+			return "";
+		}
+		uris(){
+			return "";
+		}
+		event(){
+			return {
+				...(super.event()), 
+				"dragstart": (next) => (this.drag_start(next)), 
+				"drag": (next) => (this.drag_move(next)), 
+				"dragend": (next) => (this.drag_end(next))
+			};
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"draggable": (this.draggable()), 
+				"mol_drag_status": (this.status())
+			};
+		}
+		transfer(){
+			return {
+				"text/plain": (this.plain()), 
+				"text/html": (this.html()), 
+				"text/uri-list": (this.uris())
+			};
+		}
+		allow_copy(){
+			return true;
+		}
+		allow_link(){
+			return true;
+		}
+		allow_move(){
+			return true;
+		}
+		image(){
+			return (this.dom_node());
+		}
+	};
+	($mol_mem(($.$mol_drag.prototype), "start"));
+	($mol_mem(($.$mol_drag.prototype), "move"));
+	($mol_mem(($.$mol_drag.prototype), "end"));
+	($mol_mem(($.$mol_drag.prototype), "status"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * @see https://mol.hyoo.ru/#!section=demos/demo=mol_drag_demo
+         */
+        class $mol_drag extends $.$mol_drag {
+            status(next = 'ready') { return next; }
+            drag_start(event) {
+                setTimeout(() => this.status('drag'));
+                const transfer = this.transfer();
+                for (let type in transfer) {
+                    event.dataTransfer.setData(type, transfer[type]);
+                }
+                event.dataTransfer.setDragImage(this.image(), 0, -32);
+                const effects = [];
+                if (this.allow_copy())
+                    effects.push('Copy');
+                if (this.allow_link())
+                    effects.push('Link');
+                if (this.allow_move())
+                    effects.push('Move');
+                let effectAllowed = effects[0].toLowerCase() + effects.slice(1).join('');
+                if (effectAllowed === 'copyLinkMove')
+                    effectAllowed = 'all';
+                event.dataTransfer.effectAllowed = effectAllowed;
+                this.start(event);
+            }
+            drag_end(event) {
+                setTimeout(() => this.status('ready'));
+                this.end(event);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_drag.prototype, "status", null);
+        $$.$mol_drag = $mol_drag;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_drag) = class $yuf_drag extends ($.$mol_drag) {
+		id(){
+			return "";
+		}
+		param(){
+			return "";
+		}
+		args(){
+			return {};
+		}
+		remove(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Drag_image(){
+			return null;
+		}
+		drag_align(){
+			return "center";
+		}
+	};
+	($mol_mem(($.$yuf_drag.prototype), "remove"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drag extends $.$yuf_drag {
+            args() { return { [this.param()]: this.id() }; }
+            uris() { return this.$.$mol_state_arg.link(this.args()); }
+            start(e) {
+                const crt = this.Drag_image()?.dom_node();
+                if (crt) {
+                    let x = 0;
+                    let y = 0;
+                    if (this.drag_align() === 'center') {
+                        x = crt.clientWidth / 2;
+                        y = crt.clientHeight / 2;
+                    }
+                    e?.dataTransfer?.setDragImage(crt, x, y);
+                }
+                this.$.$yuf_drop.dragging.add(this.uris());
+            }
+            end(e) {
+                new this.$.$mol_after_frame($mol_wire_async(() => {
+                    const uris = this.uris();
+                    if (!this.$.$yuf_drop.dragging.has(uris))
+                        return;
+                    $mol_error_fence(() => this.remove(e), e => ($mol_fail_log(e), null));
+                    this.$.$yuf_drop.dragging.delete(uris);
+                }));
+            }
+        }
+        $$.$yuf_drag = $yuf_drag;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drag) {
+		Item(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		ids(){
+			return [];
+		}
+		receive_id(id, next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Drop(){
+			const obj = new this.$.$yuf_drop();
+			(obj.id) = () => ((this.id()));
+			(obj.param) = () => ((this.param()));
+			(obj.Sub) = () => ((this.Item()));
+			(obj.ids) = () => ((this.ids()));
+			(obj.receive_id) = (id, next) => ((this.receive_id(id, next)));
+			return obj;
+		}
+		Sub(){
+			return (this.Drop());
+		}
+	};
+	($mol_mem(($.$yuf_drag_drop.prototype), "Item"));
+	($mol_mem_key(($.$yuf_drag_drop.prototype), "receive_id"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "Drop"));
+
+
+;
+"use strict";
+
+
+;
+	($.$yuf_drop_empty) = class $yuf_drop_empty extends ($.$yuf_drop) {
+		sub_sub(){
+			return [];
+		}
+		Sub(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.sub_sub()));
+			return obj;
+		}
+	};
+	($mol_mem(($.$yuf_drop_empty.prototype), "Sub"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drop_empty extends $.$yuf_drop_empty {
+        }
+        $$.$yuf_drop_empty = $yuf_drop_empty;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_drop_empty, {
+            alignSelf: 'stretch',
+            padding: {
+                top: '1px',
+                bottom: '1px',
+            },
+            minHeight: '2rem',
+            flex: {
+                grow: 1,
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_drop_list) = class $yuf_drop_list extends ($.$mol_list) {
+		ids_actual(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		ids_next(){
+			return [];
+		}
+		param(){
+			return "";
+		}
+		receive_id(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		id(id){
+			return "";
+		}
+		Item(id){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		Drop(id){
+			const obj = new this.$.$yuf_drag_drop();
+			(obj.param) = () => ((this.param()));
+			(obj.receive_id) = (next) => ((this.receive_id(id, next)));
+			(obj.id) = () => ((this.id(id)));
+			(obj.ids) = () => ((this.ids_actual()));
+			(obj.Item) = () => ((this.Item(id)));
+			return obj;
+		}
+		items(){
+			return [(this.Drop(id))];
+		}
+		Drop_last(){
+			const obj = new this.$.$yuf_drop_empty();
+			(obj.param) = () => ((this.param()));
+			(obj.receive_id) = (next) => ((this.receive_id("0", next)));
+			return obj;
+		}
+		last(){
+			return [(this.Drop_last())];
+		}
+		ids_filtered(){
+			return (this.ids_actual());
+		}
+		ids_current(){
+			return (this.ids_next());
+		}
+		item_move(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		item_status(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		rows(){
+			return [...(this.items()), ...(this.last())];
+		}
+	};
+	($mol_mem(($.$yuf_drop_list.prototype), "ids_actual"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "receive_id"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "Item"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "Drop"));
+	($mol_mem(($.$yuf_drop_list.prototype), "Drop_last"));
+	($mol_mem(($.$yuf_drop_list.prototype), "item_move"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "item_status"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drop_list extends $.$yuf_drop_list {
+            receive_id(before_id, dragged_id) {
+                if (before_id === '0')
+                    before_id = '';
+                if (this.item_move().length)
+                    return null; // prevent drag, while syncing
+                this.item_move([before_id, dragged_id]);
+                return dragged_id;
+            }
+            ids_actual_grab() { return this.ids_actual(); }
+            ids_next() {
+                const [before_id, dragged_id] = this.item_move();
+                if (!dragged_id)
+                    return [];
+                const ids = this.ids_actual_grab().filter(id => id !== dragged_id);
+                const target_index = !before_id ? ids.length : ids.indexOf(before_id);
+                return ids.toSpliced(target_index, 0, dragged_id);
+            }
+            item_status(id) {
+                const [, dragged_id] = this.item_move();
+                if (id !== dragged_id)
+                    return null;
+                const next_ids = this.ids_next();
+                this.ids_actual(next_ids);
+                this.item_move([]);
+                return null;
+            }
+            ids_current() {
+                const next_ids = this.ids_next();
+                const actual = this.ids_actual();
+                return next_ids.length ? next_ids : actual;
+            }
+            id(id) { return id; }
+            items() {
+                return this.ids_filtered().map(id => this.Drop(id));
+            }
+        }
+        __decorate([
+            $mol_action
+        ], $yuf_drop_list.prototype, "ids_actual_grab", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_drop_list.prototype, "ids_next", null);
+        __decorate([
+            $mol_mem_key
+        ], $yuf_drop_list.prototype, "item_status", null);
+        $$.$yuf_drop_list = $yuf_drop_list;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_drop_list_demo) = class $yuf_drop_list_demo extends ($.$mol_example_large) {
+		Calatog(){
+			const obj = new this.$.$yuf_drop_list_demo_catalog();
+			(obj.menu_title) = () => ((this.title()));
+			(obj.param) = () => ("dnd");
+			return obj;
+		}
+		title(){
+			return "DnD catalog";
+		}
+		sub(){
+			return [(this.Calatog())];
+		}
+		tags(){
+			return [
+				"drag", 
+				"dragndrop", 
+				"reorder", 
+				"transfer", 
+				"page", 
+				"menu", 
+				"navigation"
+			];
+		}
+		aspects(){
+			return ["Widget/Plugin", "Drag'n'Drop"];
+		}
+	};
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Calatog"));
+	($.$yuf_drop_list_demo_catalog) = class $yuf_drop_list_demo_catalog extends ($.$mol_book2_catalog) {
+		ids_actual(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		id(id){
+			return "";
+		}
+		Menu_item(id){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ((this.menu_item_content(id)));
+			return obj;
+		}
+		item_status(id){
+			return (this.Menu_links().item_status(id));
+		}
+		spread_ids(){
+			return (this.Menu_links().ids_current());
+		}
+		items_max(){
+			return 50;
+		}
+		Menu_links(){
+			const obj = new this.$.$yuf_drop_list();
+			(obj.Empty) = () => ((this.Menu_links_empty()));
+			(obj.param) = () => ((this.param()));
+			(obj.ids_actual) = (next) => ((this.ids_actual(next)));
+			(obj.id) = (id) => ((this.id(id)));
+			(obj.Item) = (id) => ((this.Menu_item(id)));
+			(obj.ids_filtered) = () => ((this.spread_ids_filtered()));
+			return obj;
+		}
+		menu_link_content(id){
+			return [(this.item_status(id)), (this.Menu_link_title(id))];
+		}
+		spread_title(id){
+			return (this.id(id));
+		}
+	};
+	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "ids_actual"));
+	($mol_mem_key(($.$yuf_drop_list_demo_catalog.prototype), "Menu_item"));
+	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "Menu_links"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
+            ids_actual(next) {
+                if (next !== undefined) {
+                    this.$.$mol_wait_timeout(500);
+                    return next;
+                }
+                const result = [];
+                const max = this.items_max();
+                for (let i = 0; i < max; i++)
+                    result.push(`Item № ${i}`);
+                return result;
+            }
+            id(id) { return id; }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_drop_list_demo_catalog.prototype, "ids_actual", null);
+        $$.$yuf_drop_list_demo_catalog = $yuf_drop_list_demo_catalog;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_drop_list_demo_catalog, {
+            Menu_item: {
+                padding: { top: '1px' },
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
 
 
 //# sourceMappingURL=node.js.map
