@@ -18,3 +18,4 @@ include \/yuf/localizer/demo
 include \/yuf/karaoke/demo
 include \/yuf/list/slicer/demo
 include \/yuf/sj/jammer/app/demo
+include \/yuf/drop/list/demo

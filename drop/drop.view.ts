@@ -4,8 +4,6 @@ namespace $.$$ {
 	export class $yuf_drop extends $.$yuf_drop {
 		static dragging = new Set<string>()
 
-		static syncing = new Set<string>()
-
 		@ $mol_action
 		override adopt( transfer : DataTransfer ) {
 			const uri = transfer.getData( 'text/uri-list' )
@@ -26,16 +24,6 @@ namespace $.$$ {
 			return { [this.param()] : dragging_id }
 		}
 
-		override enter(e?: DragEvent) {
-			if (this.$.$yuf_drop.syncing.has(this.param())) return null
-			return super.enter(e)
-		}
-
-		override drop(e?: DragEvent) {
-			if (this.$.$yuf_drop.syncing.has(this.param())) return null
-			return super.drop(e)
-		}
-
 		override adopted_id(adopted: Adopted) { return adopted[this.param()] ?? '' }
 
 		override is_before(moved_id: string) {
@@ -46,15 +34,8 @@ namespace $.$$ {
 		}
 
 		override receive(dragged: Adopted) {
-			const param = this.param()
 			const moved_id = this.adopted_id(dragged)
-
-			const promise = $mol_wire_async(this).receive_id(moved_id)
-
-			const syncing = this.$.$yuf_drop.syncing
-			syncing.add(param)
-			const cb = () => syncing.delete(param)
-			promise.then(cb, cb)
+			this.receive_id(moved_id)
 		}
 
 	}

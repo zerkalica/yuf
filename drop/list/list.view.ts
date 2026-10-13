@@ -3,7 +3,8 @@ namespace $.$$ {
 		
 		override receive_id(before_id: string, dragged_id: string) {
 			if (before_id === '0') before_id = ''
-			this.item_move([before_id, dragged_id ])
+			if (this.item_move().length) return null // prevent drag, while syncing
+			this.item_move([ before_id, dragged_id ])
 			return dragged_id
 		}
 
@@ -29,14 +30,16 @@ namespace $.$$ {
 			const next_ids = this.ids_next()
 
 			this.ids_actual(next_ids)
+			this.item_move([])
 
 			return null
 		}
 
 		override ids_current() {
 			const next_ids = this.ids_next()
+			const actual = this.ids_actual()
 
-			return next_ids.length ? next_ids : this.ids_actual()
+			return next_ids.length ? next_ids : actual
 		}
 
 		override id(id: string) { return id }
