@@ -4,6 +4,19 @@ $yuf_drop_list $mol_list
 	-
 	item_move? /string
 	item_status*? null
+	Status* null $mol_view
+	Error $mol_view
+		sub /$mol_view
+			<= Prefix $mol_view
+				attr *
+					mol_view_error <= error_status null string
+				sub / <= prefix_title @ \DnD:
+			<= Retry $mol_button_major
+				title <= retry_title @ \Retry
+				click? <=> retry? null
+			<= Cancel $mol_button_minor
+				title <= cancel_title @ \Cancel
+				click? <=> cancel? null
 	rows /$mol_view
 		^ items /$mol_view <= Drop* $yuf_drag_drop
 			param <= param \

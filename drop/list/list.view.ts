@@ -47,5 +47,28 @@ namespace $.$$ {
 		override items() {
 			return this.ids_filtered().map(id => this.Drop(id))
 		}
+
+		override Status(id: string) {
+			const error = $mol_error_fence(() => this.item_status(id), e => [ e ])?.[0]
+			if (! error) return null
+			return this.Error()
+		}
+
+		override retry(e?: Event) {
+			const [before_id, dragged_id, version] = this.item_move()
+			if (! dragged_id) return null
+
+			const version_str = String(Number(version || 0) + 1)
+			this.item_move([ before_id, dragged_id, version_str ])
+		}
+
+		override cancel(e?: Event) {
+			this.item_move([])
+		}
+
+		override error_status() {
+			return 'Error'
+		}
+
 	}
 }
