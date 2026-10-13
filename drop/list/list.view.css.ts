@@ -1,17 +1,13 @@
 namespace $.$$ {
 	
 	$mol_style_define( $yuf_drop_list, {
-		
-		Error: {
-			gap: $mol_gap.block,
-			justifyContent: 'space-between',
+		Cancel_button: {
 			position: 'absolute',
 			zIndex: $mol_layer.speck,
-			background: {
-				color: $mol_theme.back,
+			Speck: {
+				zIndex: $mol_layer.float,
 			}
 		}
-		
 	} )
 	
 }

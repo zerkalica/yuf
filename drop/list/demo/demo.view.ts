@@ -4,7 +4,7 @@ namespace $.$$ {
 		override ids_actual(next?: readonly string[]) {
 			if (next !== undefined) {
 				this.$.$mol_wait_timeout(500)
-				if (this.errors_on()) throw new Error('Fake error')
+				if (this.errors_on()) throw new Error('Fake error bla bla blablalbla some error')
 				return next
 			}
 

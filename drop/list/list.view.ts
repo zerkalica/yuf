@@ -22,36 +22,38 @@ namespace $.$$ {
 			return ids.toSpliced(target_index, 0, dragged_id)
 		}
 
-		@ $mol_mem_key
-		override item_status(id: string) {
-			const [, dragged_id] = this.item_move()
-			if (id !== dragged_id) return null
-
+		override ids_current() {
 			const next_ids = this.ids_next()
+			const actual = this.ids_actual()
+			return next_ids.length ? next_ids : actual
+		}
 
+		override id(id: string) { return id }
+
+		override items() { return this.ids_filtered().map(id => this.Drop(id)) }
+
+		@ $mol_mem
+		override status() {
+			const next_ids = this.ids_next()
+			if (! next_ids.length) return null
+			this.item_move() // to retry
 			this.ids_actual(next_ids)
 			this.item_move([])
 
 			return null
 		}
 
-		override ids_current() {
-			const next_ids = this.ids_next()
-			const actual = this.ids_actual()
-
-			return next_ids.length ? next_ids : actual
+		override item_pending(id: string) { return this.item_move()[1] === id ? (this.error(), null) : null }
+		override Item_status(id: string) {
+			if (this.item_move()[1] !== id) return null
+			return this.Status()
 		}
 
-		override id(id: string) { return id }
+		override error() { return $mol_error_fence(() => this.status(), e => [ e ])?.[0] ?? null }
+		override error_message() { return this.error()?.message ?? '' }
 
-		override items() {
-			return this.ids_filtered().map(id => this.Drop(id))
-		}
-
-		override Status(id: string) {
-			const error = $mol_error_fence(() => this.item_status(id), e => [ e ])?.[0]
-			if (! error) return null
-			return this.Error()
+		override Status() {
+			return this.error() ? this.Cancel_button() : null
 		}
 
 		override retry(e?: Event) {
@@ -62,13 +64,7 @@ namespace $.$$ {
 			this.item_move([ before_id, dragged_id, version_str ])
 		}
 
-		override cancel(e?: Event) {
-			this.item_move([])
-		}
-
-		override error_status() {
-			return 'Error'
-		}
+		override cancel(e?: Event) { this.item_move([]) }
 
 	}
 }
