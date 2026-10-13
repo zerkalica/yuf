@@ -21225,52 +21225,62 @@ declare namespace $ {
 		,
 		ReturnType< $mol_check_box['checked'] >
 	>
-	type __yuf_drop_list_demo_catalog_3 = $mol_type_enforce<
-		Parameters< $yuf_drop_list_demo_catalog['item_pending'] >[0]
-		,
-		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_pending'] >[0]
-	>
-	type __yuf_drop_list_demo_catalog_4 = $mol_type_enforce<
-		Parameters< $yuf_drop_list_demo_catalog['Item_status'] >[0]
-		,
-		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Item_status'] >[0]
-	>
-	type $mol_view__sub_yuf_drop_list_demo_catalog_5 = $mol_type_enforce<
+	type $mol_view__sub_yuf_drop_list_demo_catalog_3 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
+	type __yuf_drop_list_demo_catalog_4 = $mol_type_enforce<
+		Parameters< $yuf_drop_list_demo_catalog['item_pending'] >[0]
+		,
+		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_pending'] >[0]
+	>
+	type __yuf_drop_list_demo_catalog_5 = $mol_type_enforce<
+		Parameters< $yuf_drop_list_demo_catalog['Item_status'] >[0]
+		,
+		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Item_status'] >[0]
+	>
+	type $mol_view__sub_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['Menu_links_empty'] >
 		,
 		ReturnType< $yuf_drop_list['Empty'] >
 	>
-	type $yuf_drop_list__param_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
+	type $yuf_drop_list__param_yuf_drop_list_demo_catalog_8 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 		,
 		ReturnType< $yuf_drop_list['param'] >
 	>
-	type $yuf_drop_list__ids_actual_yuf_drop_list_demo_catalog_8 = $mol_type_enforce<
+	type $yuf_drop_list__ids_actual_yuf_drop_list_demo_catalog_9 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['ids_actual'] >
 		,
 		ReturnType< $yuf_drop_list['ids_actual'] >
 	>
-	type $yuf_drop_list__id_yuf_drop_list_demo_catalog_9 = $mol_type_enforce<
+	type $yuf_drop_list__id_yuf_drop_list_demo_catalog_10 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['id'] >
 		,
 		ReturnType< $yuf_drop_list['id'] >
 	>
-	type $yuf_drop_list__ids_filtered_yuf_drop_list_demo_catalog_10 = $mol_type_enforce<
+	type $yuf_drop_list__ids_filtered_yuf_drop_list_demo_catalog_11 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['spread_ids_filtered'] >
 		,
 		ReturnType< $yuf_drop_list['ids_filtered'] >
 	>
-	type $yuf_drop_list__Item_yuf_drop_list_demo_catalog_11 = $mol_type_enforce<
+	type $yuf_drop_list__Item_yuf_drop_list_demo_catalog_12 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['Menu_item'] >
 		,
 		ReturnType< $yuf_drop_list['Item'] >
 	>
-	type $yuf_drop_list_demo_catalog_menu_body__12 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog_menu_foot__13 = $mol_type_enforce<
+		ReturnType< $mol_book2_catalog['menu_foot'] >[number]
+		,
+		$mol_view
+	>
+	type $yuf_drop_list_demo_catalog_menu_foot__14 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['status_content'] >[number]
 		,
 		$mol_view
@@ -21279,6 +21289,7 @@ declare namespace $ {
 		errors_on_title( ): string
 		errors_on( next?: boolean ): boolean
 		Errors_on( ): $mol_check_box
+		Foot_title( ): $mol_view
 		status_content( ): readonly($mol_view)[]
 		item_pending( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_pending'] >
 		Item_status( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Item_status'] >
@@ -21291,6 +21302,7 @@ declare namespace $ {
 		Menu_links( ): $yuf_drop_list
 		items_max( ): number
 		menu_tools( ): readonly(any)[]
+		menu_foot( ): readonly($mol_view)[]
 		menu_body( ): readonly($mol_view)[]
 		menu_link_content( id: any): readonly($mol_view_content)[]
 		spread_ids( ): ReturnType< $yuf_drop_list_demo_catalog['ids_actual'] >

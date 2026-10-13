@@ -41055,6 +41055,11 @@ var $;
 			(obj.checked) = (next) => ((this.errors_on(next)));
 			return obj;
 		}
+		Foot_title(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => (["Footer"]);
+			return obj;
+		}
 		status_content(){
 			return [(this.Status())];
 		}
@@ -41101,12 +41106,15 @@ var $;
 		menu_tools(){
 			return [(this.Errors_on())];
 		}
-		menu_body(){
+		menu_foot(){
 			return [
-				(this.Menu_filter()), 
-				...(this.status_content()), 
-				(this.Menu_links())
+				(this.Foot_title()), 
+				...(super.menu_foot()), 
+				...(this.status_content())
 			];
+		}
+		menu_body(){
+			return [(this.Menu_filter()), (this.Menu_links())];
 		}
 		menu_link_content(id){
 			return [(this.Menu_link_title(id))];
@@ -41120,6 +41128,7 @@ var $;
 	};
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "errors_on"));
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "Errors_on"));
+	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "Foot_title"));
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "ids_actual"));
 	($mol_mem_key(($.$yuf_drop_list_demo_catalog.prototype), "Menu_item"));
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "Menu_links"));
