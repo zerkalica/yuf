@@ -40857,9 +40857,6 @@ var $;
 		item_pending(id){
 			return null;
 		}
-		Item_status(id){
-			return (this.Status());
-		}
 		status(){
 			return null;
 		}
@@ -40869,6 +40866,9 @@ var $;
 		retry(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		Item_status(id){
+			return (this.Status());
 		}
 		Cancel_button(){
 			const obj = new this.$.$mol_button_major();
@@ -40945,7 +40945,7 @@ var $;
                 return this.Status();
             }
             error() { return $mol_error_fence(() => this.status(), e => [e])?.[0] ?? null; }
-            error_message() { return this.error()?.message ?? ''; }
+            error_message() { return this.$.$mol_error_message(this.error()); }
             Status() {
                 return this.error() ? this.Cancel_button() : null;
             }
@@ -40979,10 +40979,8 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_drop_list, {
             Cancel_button: {
-                position: 'absolute',
-                zIndex: $mol_layer.speck,
                 Speck: {
-                    zIndex: $mol_layer.float,
+                    zIndex: $mol_layer.popup,
                 }
             }
         });

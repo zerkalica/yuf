@@ -4659,10 +4659,10 @@ $yuf_drop_list $mol_list
 	-
 	item_move? /string
 	item_pending* null
-	Item_status* <= Status null $mol_view
 	status null
 	error null Error
 	retry? null
+	Item_status* <= Status null $mol_view
 	Cancel_button $mol_button_major
 		sub / <= Cancel_icon $mol_icon_close
 		hint <= cancel_title @ \Cancel drag
