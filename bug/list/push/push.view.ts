@@ -12,7 +12,7 @@ namespace $.$$ {
 
 			const max = this.items_max()
 
-			for (let i = 0; i < max; i++) result.push(`Item № ${i}`)
+			for (let i = 0; i < max; i++) result.push(`Item_${i}`)
 
 			return result
 		}
@@ -20,7 +20,7 @@ namespace $.$$ {
 		override rows() { return this.ids_actual().map(id => this.Log(id)) }
 		override log_row(id: string) { return id }
 
-		override move(e?: Event) {
+		override move(e?: Event | null) {
 			const prev = this.ids_actual()
 			const moved = prev[1]
 			let next = prev.toSpliced(1, 1) // remove Item 1
