@@ -20816,11 +20816,9 @@ declare namespace $.$$ {
 declare namespace $ {
 
 	export class $yuf_drop extends $mol_drop {
-		adopted_id( id: any): any
 		id( ): string
 		param( ): string
 		ids( ): readonly(string)[]
-		receive_id( next?: string ): string
 		is_before( id: any): boolean
 	}
 	
@@ -20828,15 +20826,11 @@ declare namespace $ {
 
 //# sourceMappingURL=drop.view.tree.d.ts.map
 declare namespace $.$$ {
-    type Adopted = Record<string, any>;
-    export class $yuf_drop extends $.$yuf_drop {
+    class $yuf_drop extends $.$yuf_drop {
         static dragging: Set<string>;
         adopt(transfer: DataTransfer): any;
-        adopted_id(adopted: Adopted): any;
         is_before(moved_id: string): boolean;
-        receive(dragged: Adopted): void;
     }
-    export {};
 }
 
 declare namespace $.$$ {
@@ -20892,7 +20886,7 @@ declare namespace $ {
 		id( ): string
 		param( ): string
 		args( ): Record<string, any>
-		remove( next?: any ): any
+		receive_outside( next?: any ): any
 		Drag_image( ): any
 		drag_align( ): string
 	}
@@ -20933,15 +20927,15 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_drop['ids'] >
 	>
-	type $yuf_drop__receive_id_yuf_drag_drop_5 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['receive_id'] >
+	type $yuf_drop__receive_yuf_drag_drop_5 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['receive'] >
 		,
-		ReturnType< $yuf_drop['receive_id'] >
+		ReturnType< $yuf_drop['receive'] >
 	>
 	export class $yuf_drag_drop extends $yuf_drag {
 		Item( ): $mol_view
 		ids( ): readonly(string)[]
-		receive_id( id: any, next?: string ): string
+		receive( next?: any ): any
 		Drop( ): $yuf_drop
 		Sub( ): ReturnType< $yuf_drag_drop['Drop'] >
 	}
@@ -20979,62 +20973,67 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_drag_drop['param'] >
 	>
-	type $yuf_drag_drop__receive_id_yuf_drop_list_2 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list['receive_id'] >
+	type $yuf_drag_drop__receive_yuf_drop_list_2 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['receive'] >
 		,
-		ReturnType< $yuf_drag_drop['receive_id'] >
+		ReturnType< $yuf_drag_drop['receive'] >
 	>
-	type $yuf_drag_drop__id_yuf_drop_list_3 = $mol_type_enforce<
+	type $yuf_drag_drop__receive_outside_yuf_drop_list_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['receive_outside'] >
+		,
+		ReturnType< $yuf_drag_drop['receive_outside'] >
+	>
+	type $yuf_drag_drop__id_yuf_drop_list_4 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['id'] >
 		,
 		ReturnType< $yuf_drag_drop['id'] >
 	>
-	type $yuf_drag_drop__ids_yuf_drop_list_4 = $mol_type_enforce<
+	type $yuf_drag_drop__ids_yuf_drop_list_5 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['ids_actual'] >
 		,
 		ReturnType< $yuf_drag_drop['ids'] >
 	>
-	type $yuf_drag_drop__Item_yuf_drop_list_5 = $mol_type_enforce<
+	type $yuf_drag_drop__Item_yuf_drop_list_6 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['Item'] >
 		,
 		ReturnType< $yuf_drag_drop['Item'] >
 	>
-	type $yuf_drop_empty__param_yuf_drop_list_6 = $mol_type_enforce<
+	type $yuf_drop_empty__param_yuf_drop_list_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['param'] >
 		,
 		ReturnType< $yuf_drop_empty['param'] >
 	>
-	type $yuf_drop_empty__receive_id_yuf_drop_list_7 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list['receive_id'] >
+	type $yuf_drop_empty__receive_yuf_drop_list_8 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['receive'] >
 		,
-		ReturnType< $yuf_drop_empty['receive_id'] >
+		ReturnType< $yuf_drop_empty['receive'] >
 	>
-	type $mol_button_major__sub_yuf_drop_list_8 = $mol_type_enforce<
+	type $mol_button_major__sub_yuf_drop_list_9 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_major['sub'] >
 	>
-	type $mol_button_major__hint_yuf_drop_list_9 = $mol_type_enforce<
+	type $mol_button_major__hint_yuf_drop_list_10 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['cancel_title'] >
 		,
 		ReturnType< $mol_button_major['hint'] >
 	>
-	type $mol_button_major__click_yuf_drop_list_10 = $mol_type_enforce<
+	type $mol_button_major__click_yuf_drop_list_11 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['cancel'] >
 		,
 		ReturnType< $mol_button_major['click'] >
 	>
-	type $mol_button_major__error_yuf_drop_list_11 = $mol_type_enforce<
+	type $mol_button_major__error_yuf_drop_list_12 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['error_message'] >
 		,
 		ReturnType< $mol_button_major['error'] >
 	>
-	type $yuf_drop_list_rows__12 = $mol_type_enforce<
+	type $yuf_drop_list_rows__13 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['items'] >[number]
 		,
 		$mol_view
 	>
-	type $yuf_drop_list_rows__13 = $mol_type_enforce<
+	type $yuf_drop_list_rows__14 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['last'] >[number]
 		,
 		$mol_view
@@ -21045,10 +21044,11 @@ declare namespace $ {
 		Status( ): $mol_view | null
 		Cancel_icon( ): $mol_icon_close
 		cancel_title( ): string
-		cancel( next?: any ): any
+		cancel( next?: Event|null | null ): Event|null | null
 		error_message( ): string
 		param( ): string
-		receive_id( id: any, next?: any ): any
+		receive( id: any, next?: any ): any
+		receive_outside( id: any, next?: any ): any
 		id( id: any): string
 		Item( id: any): $mol_view
 		Drop( id: any): $yuf_drag_drop
@@ -21057,11 +21057,13 @@ declare namespace $ {
 		last( ): readonly($mol_view)[]
 		ids_filtered( ): ReturnType< $yuf_drop_list['ids_actual'] >
 		ids_current( ): ReturnType< $yuf_drop_list['ids_next'] >
-		item_move( next?: readonly(string)[] ): readonly(string)[]
+		dragged_id( next?: string | null ): string | null
+		before_id( next?: string | null ): string | null
 		item_pending( id: any): any
 		status( ): any
 		error( ): Error | null
-		retry( next?: any ): any
+		retry( next?: Event|null | null ): Event|null | null
+		retry_count( next?: number ): number
 		Item_status( id: any): ReturnType< $yuf_drop_list['Status'] >
 		Cancel_button( ): $mol_button_major
 		rows( ): readonly($mol_view)[]
@@ -21072,7 +21074,8 @@ declare namespace $ {
 //# sourceMappingURL=list.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_drop_list extends $.$yuf_drop_list {
-        receive_id(before_id: string, dragged_id: string): string | null;
+        receive(before_id: string, adopted?: Record<string, string>): string | null;
+        receive_outside(dragged_id: string): string | null;
         ids_actual_grab(): readonly string[];
         ids_next(): string[];
         ids_current(): readonly string[];
@@ -21084,8 +21087,8 @@ declare namespace $.$$ {
         error(): Error | null;
         error_message(): string;
         Status(): $mol_button_major | null;
-        retry(e?: Event): null | undefined;
-        cancel(e?: Event): void;
+        retry(e?: Event | null): null;
+        cancel(e?: Event | null): null;
     }
 }
 

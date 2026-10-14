@@ -40404,9 +40404,6 @@ var $;
 
 ;
 	($.$yuf_drop) = class $yuf_drop extends ($.$mol_drop) {
-		adopted_id(id){
-			return null;
-		}
 		id(){
 			return "";
 		}
@@ -40416,15 +40413,10 @@ var $;
 		ids(){
 			return [];
 		}
-		receive_id(next){
-			if(next !== undefined) return next;
-			return "";
-		}
 		is_before(id){
 			return false;
 		}
 	};
-	($mol_mem(($.$yuf_drop.prototype), "receive_id"));
 
 
 ;
@@ -40453,17 +40445,12 @@ var $;
                 this.$.$yuf_drop.dragging.delete(uri);
                 return { [this.param()]: dragging_id };
             }
-            adopted_id(adopted) { return adopted[this.param()] ?? ''; }
             is_before(moved_id) {
                 const ids = this.ids();
                 const before_id = this.id();
                 if (!before_id)
                     return moved_id === ids.at(-1);
                 return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1;
-            }
-            receive(dragged) {
-                const moved_id = this.adopted_id(dragged);
-                this.receive_id(moved_id);
             }
         }
         __decorate([
@@ -40629,7 +40616,7 @@ var $;
 		args(){
 			return {};
 		}
-		remove(next){
+		receive_outside(next){
 			if(next !== undefined) return next;
 			return null;
 		}
@@ -40640,7 +40627,7 @@ var $;
 			return "center";
 		}
 	};
-	($mol_mem(($.$yuf_drag.prototype), "remove"));
+	($mol_mem(($.$yuf_drag.prototype), "receive_outside"));
 
 
 ;
@@ -40674,7 +40661,7 @@ var $;
                     const uris = this.uris();
                     if (!this.$.$yuf_drop.dragging.has(uris))
                         return;
-                    $mol_error_fence(() => this.remove(e), e => ($mol_fail_log(e), null));
+                    $mol_error_fence(() => this.receive_outside(e), e => ($mol_fail_log(e), null));
                     this.$.$yuf_drop.dragging.delete(uris);
                 }));
             }
@@ -40692,9 +40679,9 @@ var $;
 		ids(){
 			return [];
 		}
-		receive_id(id, next){
+		receive(next){
 			if(next !== undefined) return next;
-			return "";
+			return null;
 		}
 		Drop(){
 			const obj = new this.$.$yuf_drop();
@@ -40702,7 +40689,7 @@ var $;
 			(obj.param) = () => ((this.param()));
 			(obj.Sub) = () => ((this.Item()));
 			(obj.ids) = () => ((this.ids()));
-			(obj.receive_id) = (id, next) => ((this.receive_id(id, next)));
+			(obj.receive) = (next) => ((this.receive(next)));
 			return obj;
 		}
 		Sub(){
@@ -40710,7 +40697,7 @@ var $;
 		}
 	};
 	($mol_mem(($.$yuf_drag_drop.prototype), "Item"));
-	($mol_mem_key(($.$yuf_drag_drop.prototype), "receive_id"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "receive"));
 	($mol_mem(($.$yuf_drag_drop.prototype), "Drop"));
 
 
@@ -40797,7 +40784,11 @@ var $;
 		param(){
 			return "";
 		}
-		receive_id(id, next){
+		receive(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		receive_outside(id, next){
 			if(next !== undefined) return next;
 			return null;
 		}
@@ -40811,7 +40802,8 @@ var $;
 		Drop(id){
 			const obj = new this.$.$yuf_drag_drop();
 			(obj.param) = () => ((this.param()));
-			(obj.receive_id) = (next) => ((this.receive_id(id, next)));
+			(obj.receive) = (next) => ((this.receive(id, next)));
+			(obj.receive_outside) = (next) => ((this.receive_outside(id, next)));
 			(obj.id) = () => ((this.id(id)));
 			(obj.ids) = () => ((this.ids_actual()));
 			(obj.Item) = () => ((this.Item(id)));
@@ -40823,7 +40815,7 @@ var $;
 		Drop_last(){
 			const obj = new this.$.$yuf_drop_empty();
 			(obj.param) = () => ((this.param()));
-			(obj.receive_id) = (next) => ((this.receive_id("0", next)));
+			(obj.receive) = (next) => ((this.receive("0", next)));
 			return obj;
 		}
 		last(){
@@ -40835,9 +40827,13 @@ var $;
 		ids_current(){
 			return (this.ids_next());
 		}
-		item_move(next){
+		dragged_id(next){
 			if(next !== undefined) return next;
-			return [];
+			return null;
+		}
+		before_id(next){
+			if(next !== undefined) return next;
+			return null;
 		}
 		item_pending(id){
 			return null;
@@ -40851,6 +40847,10 @@ var $;
 		retry(next){
 			if(next !== undefined) return next;
 			return null;
+		}
+		retry_count(next){
+			if(next !== undefined) return next;
+			return 0;
 		}
 		Item_status(id){
 			return (this.Status());
@@ -40870,12 +40870,15 @@ var $;
 	($mol_mem(($.$yuf_drop_list.prototype), "ids_actual"));
 	($mol_mem(($.$yuf_drop_list.prototype), "Cancel_icon"));
 	($mol_mem(($.$yuf_drop_list.prototype), "cancel"));
-	($mol_mem_key(($.$yuf_drop_list.prototype), "receive_id"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "receive"));
+	($mol_mem_key(($.$yuf_drop_list.prototype), "receive_outside"));
 	($mol_mem_key(($.$yuf_drop_list.prototype), "Item"));
 	($mol_mem_key(($.$yuf_drop_list.prototype), "Drop"));
 	($mol_mem(($.$yuf_drop_list.prototype), "Drop_last"));
-	($mol_mem(($.$yuf_drop_list.prototype), "item_move"));
+	($mol_mem(($.$yuf_drop_list.prototype), "dragged_id"));
+	($mol_mem(($.$yuf_drop_list.prototype), "before_id"));
 	($mol_mem(($.$yuf_drop_list.prototype), "retry"));
+	($mol_mem(($.$yuf_drop_list.prototype), "retry_count"));
 	($mol_mem(($.$yuf_drop_list.prototype), "Cancel_button"));
 
 
@@ -40890,27 +40893,40 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_drop_list extends $.$yuf_drop_list {
-            receive_id(before_id, dragged_id) {
+            receive(before_id, adopted) {
                 if (before_id === '0')
                     before_id = '';
-                if (this.item_move().length)
+                const dragged_id = adopted?.[this.param()];
+                if (!dragged_id)
+                    return null;
+                if (this.dragged_id())
                     return null; // prevent drag, while syncing
-                this.item_move([before_id, dragged_id]);
+                this.dragged_id(dragged_id);
+                this.before_id(before_id);
+                return dragged_id;
+            }
+            receive_outside(dragged_id) {
+                if (this.dragged_id())
+                    return null; // prevent drag, while syncing
+                this.dragged_id(dragged_id);
+                this.before_id(null);
                 return dragged_id;
             }
             ids_actual_grab() { return this.ids_actual(); }
             ids_next() {
-                const [before_id, dragged_id] = this.item_move();
+                const dragged_id = this.dragged_id();
+                const before_id = this.before_id();
                 if (!dragged_id)
                     return [];
                 const ids = this.ids_actual_grab().filter(id => id !== dragged_id);
+                if (before_id === null)
+                    return ids; // remove
                 const target_index = !before_id ? ids.length : ids.indexOf(before_id);
                 return ids.toSpliced(target_index, 0, dragged_id);
             }
             ids_current() {
-                const next_ids = this.ids_next();
                 const actual = this.ids_actual();
-                return next_ids.length ? next_ids : actual;
+                return this.dragged_id() ? this.ids_next() : actual;
             }
             id(id) { return id; }
             items() { return this.ids_filtered().map(id => this.Drop(id)); }
@@ -40918,30 +40934,26 @@ var $;
                 const next_ids = this.ids_next();
                 if (!next_ids.length)
                     return null;
-                this.item_move(); // to retry
+                this.retry_count();
                 this.ids_actual(next_ids);
-                this.item_move([]);
+                this.cancel(null);
                 return null;
             }
-            item_pending(id) { return this.item_move()[1] === id ? (this.error(), null) : null; }
-            Item_status(id) {
-                if (this.item_move()[1] !== id)
-                    return null;
-                return this.Status();
-            }
+            item_pending(id) { return this.dragged_id() === id ? (this.error(), null) : null; }
+            Item_status(id) { return this.dragged_id() === id ? this.Status() : null; }
             error() { return $mol_error_fence(() => this.status(), e => [e])?.[0] ?? null; }
             error_message() { return this.$.$mol_error_message(this.error()); }
-            Status() {
-                return this.error() ? this.Cancel_button() : null;
-            }
+            Status() { return this.error() ? this.Cancel_button() : null; }
             retry(e) {
-                const [before_id, dragged_id, version] = this.item_move();
-                if (!dragged_id)
-                    return null;
-                const version_str = String(Number(version || 0) + 1);
-                this.item_move([before_id, dragged_id, version_str]);
+                if (this.dragged_id())
+                    this.retry_count(this.retry_count() + 1);
+                return null;
             }
-            cancel(e) { this.item_move([]); }
+            cancel(e) {
+                this.dragged_id(null);
+                this.before_id(null);
+                return null;
+            }
         }
         __decorate([
             $mol_action
