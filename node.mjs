@@ -40715,12 +40715,12 @@ var $;
                 const dragging_id = !uri ? null : dict[this.param()] ?? null;
                 if (dragging_id === null)
                     return null; // unknown item dragged
+                this.$.$yuf_drop.dragging.delete(uri);
                 const self_id = this.id();
                 if (dragging_id === self_id)
                     return null; // dragged to itself
                 if (this.is_before(dragging_id))
                     return null;
-                this.$.$yuf_drop.dragging.delete(uri);
                 return { [this.param()]: dragging_id };
             }
             is_before(moved_id) {
@@ -40978,6 +40978,9 @@ var $;
 		ids_current(){
 			return (this.ids_next());
 		}
+		removable(){
+			return false;
+		}
 		dragged_id(next){
 			if(next !== undefined) return next;
 			return null;
@@ -41059,6 +41062,8 @@ var $;
             receive_outside(dragged_id) {
                 if (this.dragged_id())
                     return null; // prevent drag, while syncing
+                if (!this.removable())
+                    return null;
                 this.dragged_id(dragged_id);
                 this.before_id(null);
                 return dragged_id;
@@ -41194,13 +41199,13 @@ var $;
 			(obj.checked) = (next) => ((this.errors_on(next)));
 			return obj;
 		}
+		status_content(){
+			return [(this.Status())];
+		}
 		Foot_title(){
 			const obj = new this.$.$mol_view();
 			(obj.sub) = () => (["Footer"]);
 			return obj;
-		}
-		status_content(){
-			return [(this.Status())];
 		}
 		item_pending(id){
 			return (this.Menu_links().item_pending(id));
@@ -41247,9 +41252,9 @@ var $;
 		}
 		menu_foot(){
 			return [
-				(this.Foot_title()), 
 				...(super.menu_foot()), 
-				...(this.status_content())
+				...(this.status_content()), 
+				(this.Foot_title())
 			];
 		}
 		menu_body(){

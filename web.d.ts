@@ -21132,6 +21132,7 @@ declare namespace $ {
 		last( ): readonly($mol_view)[]
 		ids_filtered( ): ReturnType< $yuf_drop_list['ids_actual'] >
 		ids_current( ): ReturnType< $yuf_drop_list['ids_next'] >
+		removable( ): boolean
 		dragged_id( next?: string | null ): string | null
 		before_id( next?: string | null ): string | null
 		item_pending( id: any): any
@@ -21300,8 +21301,8 @@ declare namespace $ {
 		errors_on_title( ): string
 		errors_on( next?: boolean ): boolean
 		Errors_on( ): $mol_check_box
-		Foot_title( ): $mol_view
 		status_content( ): readonly($mol_view)[]
+		Foot_title( ): $mol_view
 		item_pending( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['item_pending'] >
 		Item_status( id: any): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Item_status'] >
 		Status( ): ReturnType< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Status'] >

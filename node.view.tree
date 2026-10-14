@@ -4684,6 +4684,7 @@ $yuf_drop_list $mol_list
 	ids_filtered <= ids_actual? /string
 	ids_current <= ids_next /string
 	-
+	removable false
 	dragged_id? null string
 	before_id? null string
 	item_pending* null
@@ -4746,9 +4747,9 @@ $yuf_drop_list_demo_catalog $mol_book2_catalog
 			title <= errors_on_title @ \Error
 			checked? <=> errors_on? false
 	menu_foot /$mol_view
-		<= Foot_title $mol_view sub / \Footer
 		^
 		^ status_content /$mol_view <= Status
+		<= Foot_title $mol_view sub / \Footer
 	menu_body /$mol_view
 		<= Menu_filter
 		<= Menu_links $yuf_drop_list
