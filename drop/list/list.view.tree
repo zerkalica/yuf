@@ -2,6 +2,7 @@ $yuf_drop_list $mol_list
 	ids_filtered <= ids_actual? /string
 	ids_current <= ids_next /string
 	-
+	removable false
 	dragged_id? null string
 	before_id? null string
 	item_pending* null

@@ -13,13 +13,13 @@ namespace $.$$ {
 			const dragging_id = ! uri ? null : dict[this.param()] ?? null
 			if (dragging_id === null) return null as any // unknown item dragged
 
+			this.$.$yuf_drop.dragging.delete(uri)
+
 			const self_id = this.id()
 
 			if (dragging_id === self_id) return null as any // dragged to itself
 
 			if (this.is_before(dragging_id)) return null as any
-
-			this.$.$yuf_drop.dragging.delete(uri)
 
 			return { [this.param()] : dragging_id }
 		}

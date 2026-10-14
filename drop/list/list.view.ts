@@ -15,6 +15,7 @@ namespace $.$$ {
 
 		override receive_outside(dragged_id: string) {
 			if (this.dragged_id()) return null // prevent drag, while syncing
+			if (! this.removable()) return null
 			this.dragged_id(dragged_id)
 			this.before_id(null)
 			return dragged_id
