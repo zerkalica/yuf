@@ -2425,7 +2425,9 @@ $yuf_bug_list_push $mol_example_small
 		<= List $mol_list
 			rows <= rows /$mol_view
 				<= Log*0 $mol_drag Sub <= Drop* $mol_drop
-					Sub <= Item* $mol_view sub / <= log_row* \
+					Sub <= Item* $mol_view
+						title <= log_row* \
+						sub / <= log_row* \
 		<= Status $mol_view sub /
 			\Sync status:
 			<= status null

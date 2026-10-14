@@ -11452,27 +11452,32 @@ declare namespace $ {
 		,
 		ReturnType< $mol_button_major['click'] >
 	>
-	type $mol_view__sub_yuf_bug_list_push_3 = $mol_type_enforce<
+	type $mol_view__title_yuf_bug_list_push_3 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_push['log_row'] >
+		,
+		ReturnType< $mol_view['title'] >
+	>
+	type $mol_view__sub_yuf_bug_list_push_4 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $mol_drop__Sub_yuf_bug_list_push_4 = $mol_type_enforce<
+	type $mol_drop__Sub_yuf_bug_list_push_5 = $mol_type_enforce<
 		ReturnType< $yuf_bug_list_push['Item'] >
 		,
 		ReturnType< $mol_drop['Sub'] >
 	>
-	type $mol_drag__Sub_yuf_bug_list_push_5 = $mol_type_enforce<
+	type $mol_drag__Sub_yuf_bug_list_push_6 = $mol_type_enforce<
 		ReturnType< $yuf_bug_list_push['Drop'] >
 		,
 		ReturnType< $mol_drag['Sub'] >
 	>
-	type $mol_list__rows_yuf_bug_list_push_6 = $mol_type_enforce<
+	type $mol_list__rows_yuf_bug_list_push_7 = $mol_type_enforce<
 		ReturnType< $yuf_bug_list_push['rows'] >
 		,
 		ReturnType< $mol_list['rows'] >
 	>
-	type $mol_view__sub_yuf_bug_list_push_7 = $mol_type_enforce<
+	type $mol_view__sub_yuf_bug_list_push_8 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -11505,7 +11510,7 @@ declare namespace $.$$ {
         ids_actual(next?: readonly string[]): readonly string[];
         rows(): $.$mol_drag[];
         log_row(id: string): string;
-        move(e?: Event): void;
+        move(e?: Event | null): void;
         status(): null;
     }
 }

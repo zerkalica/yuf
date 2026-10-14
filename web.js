@@ -23965,6 +23965,7 @@ var $;
 		}
 		Item(id){
 			const obj = new this.$.$mol_view();
+			(obj.title) = () => ((this.log_row(id)));
 			(obj.sub) = () => ([(this.log_row(id))]);
 			return obj;
 		}
@@ -24058,7 +24059,7 @@ var $;
                 const result = [];
                 const max = this.items_max();
                 for (let i = 0; i < max; i++)
-                    result.push(`Item № ${i}`);
+                    result.push(`Item_${i}`);
                 return result;
             }
             rows() { return this.ids_actual().map(id => this.Log(id)); }
