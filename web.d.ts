@@ -21089,9 +21089,6 @@ declare namespace $.$$ {
     }
 }
 
-declare namespace $.$$ {
-}
-
 declare namespace $ {
 
 	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_1 = $mol_type_enforce<
