@@ -50,7 +50,7 @@ namespace $.$$ {
 		}
 
 		override error() { return $mol_error_fence(() => this.status(), e => [ e ])?.[0] ?? null }
-		override error_message() { return this.error()?.message ?? '' }
+		override error_message() { return this.$.$mol_error_message(this.error()) }
 
 		override Status() {
 			return this.error() ? this.Cancel_button() : null
