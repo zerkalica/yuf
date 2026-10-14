@@ -1,0 +1,26 @@
+$yuf_bug_list_push $mol_example_small
+	title \Test app
+	items_max 3
+	ids_actual /string
+	ids_next? /string
+	sub /
+		<= Move $mol_button_major
+			sub / \Move 1 after 2
+			click? <=> move? null
+		<= List $mol_list
+			rows <= rows /$mol_view
+				<= Log*0 $mol_drag Sub <= Drop* $mol_drop
+					Sub <= Item* $mol_view sub / <= log_row* \
+		<= Status $mol_view sub /
+			\Sync status:
+			<= status null
+	tags /
+		\app
+		\list
+		\demo
+		\bug
+		\order
+		\push
+		\refresh
+	aspects /
+		\Bug

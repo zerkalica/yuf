@@ -43,7 +43,11 @@ namespace $.$$ {
 
 		override id(id: string) { return id }
 
-		override items() { return this.ids_filtered().map(id => this.Drop(id)) }
+		@ $mol_mem
+		override items() {
+			const ids = this.ids_filtered()
+			return ids.map(id => this.Drop(id))
+		}
 
 		@ $mol_mem
 		override status() {
@@ -51,7 +55,9 @@ namespace $.$$ {
 			if (! next_ids.length) return null
 			this.retry_count()
 			this.ids_actual(next_ids)
+
 			this.cancel(null)
+			// new $mol_after_frame(() =>this.cancel(null))
 
 			return null
 		}
