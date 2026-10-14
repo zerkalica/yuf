@@ -4,8 +4,9 @@ namespace $.$$ {
 		Menu_item: {
 			padding: { top: '1px' },
 		},
-
-		
+		Foot_title: {
+			padding: $mol_gap.text,
+		}
 	} )
 	
 }
