@@ -24,7 +24,7 @@ namespace $.$$ {
 			new this.$.$mol_after_frame($mol_wire_async(() => {
 				const uris = this.uris()
 				if (! this.$.$yuf_drop.dragging.has(uris)) return
-				$mol_error_fence( () => this.remove(e), e => ($mol_fail_log(e), null))
+				$mol_error_fence( () => this.receive_outside(e), e => ($mol_fail_log(e), null))
 				this.$.$yuf_drop.dragging.delete(uris)
 			}))
 		}

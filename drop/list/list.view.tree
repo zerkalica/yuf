@@ -2,25 +2,28 @@ $yuf_drop_list $mol_list
 	ids_filtered <= ids_actual? /string
 	ids_current <= ids_next /string
 	-
-	item_move? /string
+	dragged_id? null string
+	before_id? null string
 	item_pending* null
 	status null
 	error null Error
-	retry? null
+	retry? null Event|null
+	retry_count? 0
 	Item_status* <= Status null $mol_view
 	Cancel_button $mol_button_major
 		sub / <= Cancel_icon $mol_icon_close
 		hint <= cancel_title @ \Cancel drag
-		click? <=> cancel? null
+		click? <=> cancel? null Event|null
 		error <= error_message \
 	rows /$mol_view
 		^ items /$mol_view <= Drop* $yuf_drag_drop
 			param <= param \
-			receive_id? <=> receive_id*? null
+			receive? <=> receive*? null
+			receive_outside? <=> receive_outside*? null
 			-
 			id <= id* \
 			ids <= ids_actual
 			Item <= Item* $mol_view
 		^ last /$mol_view <= Drop_last $yuf_drop_empty
 			param <= param
-			receive_id? <=> receive_id*0?
+			receive? <=> receive*0?

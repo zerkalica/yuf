@@ -24,18 +24,11 @@ namespace $.$$ {
 			return { [this.param()] : dragging_id }
 		}
 
-		override adopted_id(adopted: Adopted) { return adopted[this.param()] ?? '' }
-
 		override is_before(moved_id: string) {
 			const ids = this.ids()
 			const before_id = this.id()
 			if (! before_id) return moved_id === ids.at(-1)
 			return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1
-		}
-
-		override receive(dragged: Adopted) {
-			const moved_id = this.adopted_id(dragged)
-			this.receive_id(moved_id)
 		}
 
 	}
