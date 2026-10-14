@@ -56,8 +56,10 @@ namespace $.$$ {
 			this.retry_count()
 			this.ids_actual(next_ids)
 
-			this.cancel(null)
-			// new $mol_after_frame(() =>this.cancel(null))
+			// fix bug https://github.com/hyoo-ru/mam_mol/pull/909
+			// https://t.me/mam_mol/179339
+			// after finish pushing view does not refresh list
+			new $mol_after_frame(() => this.cancel(null))
 
 			return null
 		}
