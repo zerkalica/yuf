@@ -2376,6 +2376,70 @@ $yuf_bug_list_equal $mol_example_small
 	aspects /
 		\Bug
 
+$mol_drop $mol_ghost
+	enabled? true
+	event *
+		^
+		dragenter? <=> enter? null
+		dragover? <=> move? null
+		dragleave? <=> leave? null
+		drop? <=> drop? null
+	attr *
+		^
+		mol_drop_status <= status? \ready
+	adopt? *
+	receive? null
+	allow /
+		\copy
+		\move
+		\link
+
+$mol_drag $mol_ghost
+	event *
+		^
+		dragstart? <=> drag_start? <=> start? null
+		drag? <=> drag_move? <=> move? null
+		dragend? <=> drag_end? <=> end? null
+	attr *
+		^
+		draggable <= draggable true
+		mol_drag_status <= status? \ready
+	transfer *string
+		text/plain <= plain <= title
+		text/html <= html \
+		text/uri-list <= uris \
+	allow_copy true
+	allow_link true
+	allow_move true
+	image <= dom_node
+
+$yuf_bug_list_push $mol_example_small
+	title \Test app
+	items_max 3
+	ids_actual /string
+	ids_next? /string
+	sub /
+		<= Move $mol_button_major
+			sub / \Move 1 after 2
+			click? <=> move? null
+		<= List $mol_list
+			rows <= rows /$mol_view
+				<= Log*0 $mol_drag Sub <= Drop* $mol_drop
+					Sub <= Item* $mol_view sub / <= log_row* \
+		<= Status $mol_view sub /
+			\Sync status:
+			<= status null
+	tags /
+		\app
+		\list
+		\demo
+		\bug
+		\order
+		\push
+		\refresh
+	aspects /
+		\Bug
+
 $yuf_bug_catalog_flash $mol_example_small
 	title \Test app
 	sub /
@@ -4589,48 +4653,11 @@ $yuf_sj_jammer_app_demo $mol_example_large
 	aspects /
 		\Application
 
-$mol_drop $mol_ghost
-	enabled? true
-	event *
-		^
-		dragenter? <=> enter? null
-		dragover? <=> move? null
-		dragleave? <=> leave? null
-		drop? <=> drop? null
-	attr *
-		^
-		mol_drop_status <= status? \ready
-	adopt? *
-	receive? null
-	allow /
-		\copy
-		\move
-		\link
-
 $yuf_drop $mol_drop
 	id \
 	param \
 	ids /string
 	is_before* false
-
-$mol_drag $mol_ghost
-	event *
-		^
-		dragstart? <=> drag_start? <=> start? null
-		drag? <=> drag_move? <=> move? null
-		dragend? <=> drag_end? <=> end? null
-	attr *
-		^
-		draggable <= draggable true
-		mol_drag_status <= status? \ready
-	transfer *string
-		text/plain <= plain <= title
-		text/html <= html \
-		text/uri-list <= uris \
-	allow_copy true
-	allow_link true
-	allow_move true
-	image <= dom_node
 
 $yuf_drag $mol_drag
 	id \

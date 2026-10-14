@@ -400,6 +400,9 @@
     "$mol_icon_tick",
     "$yuf_bug_list_equal_table_row",
     "$yuf_bug_list_equal_table",
+    "$yuf_bug_list_push",
+    "$mol_drop",
+    "$mol_drag",
     "$yuf_bug_catalog_flash",
     "$yuf_bug_catalog",
     "$yuf_localizer_demo",
@@ -675,10 +678,8 @@
     "$yuf_drop_list_demo",
     "$yuf_drop_list",
     "$yuf_drop",
-    "$mol_drop",
     "$yuf_drag_drop",
     "$yuf_drag",
-    "$mol_drag",
     "$yuf_drop_empty"
   ],
   "dependencies": {

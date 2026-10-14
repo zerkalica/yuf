@@ -11423,6 +11423,159 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	export class $mol_drop extends $mol_ghost {
+		enter( next?: any ): any
+		move( next?: any ): any
+		leave( next?: any ): any
+		drop( next?: any ): any
+		status( next?: string ): string
+		enabled( next?: boolean ): boolean
+		event( ): ({ 
+			dragenter( next?: ReturnType< $mol_drop['enter'] > ): ReturnType< $mol_drop['enter'] >,
+			dragover( next?: ReturnType< $mol_drop['move'] > ): ReturnType< $mol_drop['move'] >,
+			dragleave( next?: ReturnType< $mol_drop['leave'] > ): ReturnType< $mol_drop['leave'] >,
+			drop( next?: ReturnType< $mol_drop['drop'] > ): ReturnType< $mol_drop['drop'] >,
+		})  & ReturnType< $mol_ghost['event'] >
+		attr( ): ({ 
+			'mol_drop_status': ReturnType< $mol_drop['status'] >,
+		})  & ReturnType< $mol_ghost['attr'] >
+		adopt( next?: Record<string, any> ): Record<string, any>
+		receive( next?: any ): any
+		allow( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=drop.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_drop extends $.$mol_drop {
+        status(next?: "ready" | "drag"): "ready" | "drag";
+        protected _target: EventTarget | null;
+        enter(event: DragEvent): void;
+        move(event: DragEvent): void;
+        decide_action(event: DragEvent): any;
+        leave(event: DragEvent): void;
+        receive(transfer: unknown): unknown;
+        drop(event: DragEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	export class $mol_drag extends $mol_ghost {
+		start( next?: any ): any
+		drag_start( next?: ReturnType< $mol_drag['start'] > ): ReturnType< $mol_drag['start'] >
+		move( next?: any ): any
+		drag_move( next?: ReturnType< $mol_drag['move'] > ): ReturnType< $mol_drag['move'] >
+		end( next?: any ): any
+		drag_end( next?: ReturnType< $mol_drag['end'] > ): ReturnType< $mol_drag['end'] >
+		draggable( ): boolean
+		status( next?: string ): string
+		plain( ): ReturnType< $mol_drag['title'] >
+		html( ): string
+		uris( ): string
+		event( ): ({ 
+			dragstart( next?: ReturnType< $mol_drag['drag_start'] > ): ReturnType< $mol_drag['drag_start'] >,
+			drag( next?: ReturnType< $mol_drag['drag_move'] > ): ReturnType< $mol_drag['drag_move'] >,
+			dragend( next?: ReturnType< $mol_drag['drag_end'] > ): ReturnType< $mol_drag['drag_end'] >,
+		})  & ReturnType< $mol_ghost['event'] >
+		attr( ): ({ 
+			'draggable': ReturnType< $mol_drag['draggable'] >,
+			'mol_drag_status': ReturnType< $mol_drag['status'] >,
+		})  & ReturnType< $mol_ghost['attr'] >
+		transfer( ): Record<string, string>
+		allow_copy( ): boolean
+		allow_link( ): boolean
+		allow_move( ): boolean
+		image( ): ReturnType< $mol_drag['dom_node'] >
+	}
+	
+}
+
+//# sourceMappingURL=drag.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_drag_demo
+     */
+    class $mol_drag extends $.$mol_drag {
+        status(next?: "ready" | "drag"): "ready" | "drag";
+        drag_start(event: DragEvent): void;
+        drag_end(event: DragEvent): void;
+    }
+}
+
+declare namespace $ {
+
+	type $mol_button_major__sub_yuf_bug_list_push_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_major['sub'] >
+	>
+	type $mol_button_major__click_yuf_bug_list_push_2 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_push['move'] >
+		,
+		ReturnType< $mol_button_major['click'] >
+	>
+	type $mol_view__sub_yuf_bug_list_push_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_drop__Sub_yuf_bug_list_push_4 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_push['Item'] >
+		,
+		ReturnType< $mol_drop['Sub'] >
+	>
+	type $mol_drag__Sub_yuf_bug_list_push_5 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_push['Drop'] >
+		,
+		ReturnType< $mol_drag['Sub'] >
+	>
+	type $mol_list__rows_yuf_bug_list_push_6 = $mol_type_enforce<
+		ReturnType< $yuf_bug_list_push['rows'] >
+		,
+		ReturnType< $mol_list['rows'] >
+	>
+	type $mol_view__sub_yuf_bug_list_push_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_bug_list_push extends $mol_example_small {
+		move( next?: any ): any
+		Move( ): $mol_button_major
+		log_row( id: any): string
+		Item( id: any): $mol_view
+		Drop( id: any): $mol_drop
+		Log( id: any): $mol_drag
+		rows( ): readonly($mol_view)[]
+		List( ): $mol_list
+		status( ): any
+		Status( ): $mol_view
+		title( ): string
+		items_max( ): number
+		ids_actual( ): readonly(string)[]
+		ids_next( next?: readonly(string)[] ): readonly(string)[]
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=push.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_bug_list_push extends $.$yuf_bug_list_push {
+        ids_actual(next?: readonly string[]): readonly string[];
+        rows(): $.$mol_drag[];
+        log_row(id: string): string;
+        move(e?: Event): void;
+        status(): null;
+    }
+}
+
+declare namespace $ {
+
 	export class $yuf_bug_catalog_flash extends $mol_example_small {
 		Main( ): $yuf_bug_catalog_flash_catalog
 		title( ): string
@@ -20840,45 +20993,6 @@ declare namespace $ {
 //# sourceMappingURL=demo.view.tree.d.ts.map
 declare namespace $ {
 
-	export class $mol_drop extends $mol_ghost {
-		enter( next?: any ): any
-		move( next?: any ): any
-		leave( next?: any ): any
-		drop( next?: any ): any
-		status( next?: string ): string
-		enabled( next?: boolean ): boolean
-		event( ): ({ 
-			dragenter( next?: ReturnType< $mol_drop['enter'] > ): ReturnType< $mol_drop['enter'] >,
-			dragover( next?: ReturnType< $mol_drop['move'] > ): ReturnType< $mol_drop['move'] >,
-			dragleave( next?: ReturnType< $mol_drop['leave'] > ): ReturnType< $mol_drop['leave'] >,
-			drop( next?: ReturnType< $mol_drop['drop'] > ): ReturnType< $mol_drop['drop'] >,
-		})  & ReturnType< $mol_ghost['event'] >
-		attr( ): ({ 
-			'mol_drop_status': ReturnType< $mol_drop['status'] >,
-		})  & ReturnType< $mol_ghost['attr'] >
-		adopt( next?: Record<string, any> ): Record<string, any>
-		receive( next?: any ): any
-		allow( ): readonly(any)[]
-	}
-	
-}
-
-//# sourceMappingURL=drop.view.tree.d.ts.map
-declare namespace $.$$ {
-    class $mol_drop extends $.$mol_drop {
-        status(next?: "ready" | "drag"): "ready" | "drag";
-        protected _target: EventTarget | null;
-        enter(event: DragEvent): void;
-        move(event: DragEvent): void;
-        decide_action(event: DragEvent): any;
-        leave(event: DragEvent): void;
-        receive(transfer: unknown): unknown;
-        drop(event: DragEvent): void;
-    }
-}
-
-declare namespace $ {
-
 	export class $yuf_drop extends $mol_drop {
 		id( ): string
 		param( ): string
@@ -20898,50 +21012,6 @@ declare namespace $.$$ {
 }
 
 declare namespace $.$$ {
-}
-
-declare namespace $ {
-
-	export class $mol_drag extends $mol_ghost {
-		start( next?: any ): any
-		drag_start( next?: ReturnType< $mol_drag['start'] > ): ReturnType< $mol_drag['start'] >
-		move( next?: any ): any
-		drag_move( next?: ReturnType< $mol_drag['move'] > ): ReturnType< $mol_drag['move'] >
-		end( next?: any ): any
-		drag_end( next?: ReturnType< $mol_drag['end'] > ): ReturnType< $mol_drag['end'] >
-		draggable( ): boolean
-		status( next?: string ): string
-		plain( ): ReturnType< $mol_drag['title'] >
-		html( ): string
-		uris( ): string
-		event( ): ({ 
-			dragstart( next?: ReturnType< $mol_drag['drag_start'] > ): ReturnType< $mol_drag['drag_start'] >,
-			drag( next?: ReturnType< $mol_drag['drag_move'] > ): ReturnType< $mol_drag['drag_move'] >,
-			dragend( next?: ReturnType< $mol_drag['drag_end'] > ): ReturnType< $mol_drag['drag_end'] >,
-		})  & ReturnType< $mol_ghost['event'] >
-		attr( ): ({ 
-			'draggable': ReturnType< $mol_drag['draggable'] >,
-			'mol_drag_status': ReturnType< $mol_drag['status'] >,
-		})  & ReturnType< $mol_ghost['attr'] >
-		transfer( ): Record<string, string>
-		allow_copy( ): boolean
-		allow_link( ): boolean
-		allow_move( ): boolean
-		image( ): ReturnType< $mol_drag['dom_node'] >
-	}
-	
-}
-
-//# sourceMappingURL=drag.view.tree.d.ts.map
-declare namespace $.$$ {
-    /**
-     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_drag_demo
-     */
-    class $mol_drag extends $.$mol_drag {
-        status(next?: "ready" | "drag"): "ready" | "drag";
-        drag_start(event: DragEvent): void;
-        drag_end(event: DragEvent): void;
-    }
 }
 
 declare namespace $ {
