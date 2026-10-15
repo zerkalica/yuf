@@ -2339,6 +2339,7 @@ $yuf_bug_log_prepend $mol_example_small
 		\geizenbug
 		\log
 		\prepend
+		\fixed
 	aspects /
 		\Bug
 
@@ -2373,6 +2374,7 @@ $yuf_bug_list_equal $mol_example_small
 		\demo
 		\bug
 		\reverse
+		\fixed
 	aspects /
 		\Bug
 
@@ -2511,6 +2513,7 @@ $yuf_bug_catalog_flash $mol_example_small
 		\geizenbug
 		\catalog
 		\refresh
+		\fixed
 	aspects /
 		\Bug
 

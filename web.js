@@ -23374,7 +23374,8 @@ var $;
 				"bug", 
 				"geizenbug", 
 				"log", 
-				"prepend"
+				"prepend", 
+				"fixed"
 			];
 		}
 		aspects(){
@@ -23603,7 +23604,8 @@ var $;
 				"list", 
 				"demo", 
 				"bug", 
-				"reverse"
+				"reverse", 
+				"fixed"
 			];
 		}
 		aspects(){
@@ -24475,7 +24477,8 @@ var $;
 				"bug", 
 				"geizenbug", 
 				"catalog", 
-				"refresh"
+				"refresh", 
+				"fixed"
 			];
 		}
 		aspects(){
@@ -32808,10 +32811,12 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
-        const { rem, px, per } = $mol_style_unit;
         $mol_style_define($yuf_time_card, {
             font: {
-                size: rem(0.9)
+                size: '.9rem'
+            },
+            ':empty': {
+                display: 'none'
             },
             flex: {
                 shrink: 0,
