@@ -45,6 +45,7 @@
 	include \/yuf/bug/log/prepend
 	include \/yuf/bug/list/equal
 	include \/yuf/bug/list/push
+	include \/yuf/bug/search
 	include \/yuf/bug/catalog/flash
 	include \/yuf/localizer/demo
 	include \/yuf/karaoke/demo

@@ -11516,6 +11516,226 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+}
+
+declare namespace $ {
+
+	export class $mol_bar extends $mol_view {
+	}
+	
+}
+
+//# sourceMappingURL=bar.view.tree.d.ts.map
+declare namespace $ {
+
+	type $mol_button_minor__hint_mol_paginator_1 = $mol_type_enforce<
+		ReturnType< $mol_paginator['backward_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_mol_paginator_2 = $mol_type_enforce<
+		ReturnType< $mol_paginator['backward'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_button_minor__sub_mol_paginator_3 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	type $mol_view__sub_mol_paginator_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_button_minor__hint_mol_paginator_5 = $mol_type_enforce<
+		ReturnType< $mol_paginator['forward_hint'] >
+		,
+		ReturnType< $mol_button_minor['hint'] >
+	>
+	type $mol_button_minor__click_mol_paginator_6 = $mol_type_enforce<
+		ReturnType< $mol_paginator['forward'] >
+		,
+		ReturnType< $mol_button_minor['click'] >
+	>
+	type $mol_button_minor__sub_mol_paginator_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_button_minor['sub'] >
+	>
+	export class $mol_paginator extends $mol_bar {
+		backward_hint( ): string
+		backward( next?: any ): any
+		Backward_icon( ): $mol_icon_chevron_left
+		Backward( ): $mol_button_minor
+		value( next?: number ): number
+		Value( ): $mol_view
+		forward_hint( ): string
+		forward( next?: any ): any
+		Forward_icon( ): $mol_icon_chevron_right
+		Forward( ): $mol_button_minor
+		step( ): number
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=paginator.view.tree.d.ts.map
+declare namespace $.$$ {
+    /**
+     * Paginator UI component
+     * @see https://mol.hyoo.ru/#!section=demos/demo=mol_paginator_demo
+     */
+    class $mol_paginator extends $.$mol_paginator {
+        backward(event: Event): void;
+        forward(event: Event): void;
+    }
+}
+
+declare namespace $ {
+}
+
+declare namespace $ {
+
+	type __mol_search_jumper_1 = $mol_type_enforce<
+		Parameters< $mol_search_jumper['forward'] >[0]
+		,
+		Parameters< ReturnType< $mol_search_jumper['Index'] >['forward'] >[0]
+	>
+	type __mol_search_jumper_2 = $mol_type_enforce<
+		Parameters< $mol_search_jumper['backward'] >[0]
+		,
+		Parameters< ReturnType< $mol_search_jumper['Index'] >['backward'] >[0]
+	>
+	type $mol_hotkey__mod_shift_mol_search_jumper_3 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_hotkey['mod_shift'] >
+	>
+	type $mol_hotkey__key_mol_search_jumper_4 = $mol_type_enforce<
+		({ 
+			enter( next?: ReturnType< $mol_search_jumper['backward'] > ): ReturnType< $mol_search_jumper['backward'] >,
+		}) 
+		,
+		ReturnType< $mol_hotkey['key'] >
+	>
+	type $mol_hotkey__key_mol_search_jumper_5 = $mol_type_enforce<
+		({ 
+			enter( next?: ReturnType< $mol_search_jumper['forward'] > ): ReturnType< $mol_search_jumper['forward'] >,
+			escape( next?: ReturnType< $mol_search_jumper['escape'] > ): ReturnType< $mol_search_jumper['escape'] >,
+		}) 
+		,
+		ReturnType< $mol_hotkey['key'] >
+	>
+	type $mol_paginator__value_mol_search_jumper_6 = $mol_type_enforce<
+		ReturnType< $mol_search_jumper['index'] >
+		,
+		ReturnType< $mol_paginator['value'] >
+	>
+	export class $mol_search_jumper extends $mol_search {
+		index( next?: number ): number
+		forward( next?: ReturnType< ReturnType< $mol_search_jumper['Index'] >['forward'] > ): ReturnType< ReturnType< $mol_search_jumper['Index'] >['forward'] >
+		backward( next?: ReturnType< ReturnType< $mol_search_jumper['Index'] >['backward'] > ): ReturnType< ReturnType< $mol_search_jumper['Index'] >['backward'] >
+		Backward( ): $mol_hotkey
+		escape( next?: any ): any
+		Forward( ): $mol_hotkey
+		Root( ): $mol_view
+		Index( ): $mol_paginator
+		plugins( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=jumper.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $mol_search_jumper extends $.$mol_search_jumper {
+        results(): $mol_view[][];
+        index(next?: number): number;
+        anchor_content(): ($.$mol_string | $mol_button_minor | $.$mol_paginator)[];
+    }
+}
+
+declare namespace $ {
+
+	type $mol_search_jumper__query_yuf_bug_search_1 = $mol_type_enforce<
+		ReturnType< $yuf_bug_search['query'] >
+		,
+		ReturnType< $mol_search_jumper['query'] >
+	>
+	type $mol_search_jumper__hint_yuf_bug_search_2 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $mol_search_jumper['hint'] >
+	>
+	type $mol_search_jumper__Root_yuf_bug_search_3 = $mol_type_enforce<
+		ReturnType< $yuf_bug_search['Text'] >
+		,
+		ReturnType< $mol_search_jumper['Root'] >
+	>
+	type $mol_number__value_yuf_bug_search_4 = $mol_type_enforce<
+		ReturnType< $yuf_bug_search['max_rows'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_row__sub_yuf_bug_search_5 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_row['sub'] >
+	>
+	type $mol_text__code_sidebar_showed_yuf_bug_search_6 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $mol_text['code_sidebar_showed'] >
+	>
+	type $mol_text__highlight_yuf_bug_search_7 = $mol_type_enforce<
+		ReturnType< $yuf_bug_search['query'] >
+		,
+		ReturnType< $mol_text['highlight'] >
+	>
+	type $mol_text__text_yuf_bug_search_8 = $mol_type_enforce<
+		ReturnType< $yuf_bug_search['text'] >
+		,
+		ReturnType< $mol_text['text'] >
+	>
+	type $mol_scroll__sub_yuf_bug_search_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_scroll['sub'] >
+	>
+	type $mol_view__sub_yuf_bug_search_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_bug_search extends $mol_example_small {
+		query( next?: string ): string
+		Jumper( ): $mol_search_jumper
+		max_rows( next?: number ): number
+		Max_rows( ): $mol_number
+		Controls( ): $mol_row
+		text( ): string
+		Text( ): $mol_text
+		Scroll( ): $mol_scroll
+		Body( ): $mol_view
+		title( ): string
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=search.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_bug_search extends $.$yuf_bug_search {
+        text(): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
 
 	export class $yuf_bug_catalog_flash extends $mol_example_small {
 		Main( ): $yuf_bug_catalog_flash_catalog

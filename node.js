@@ -24169,6 +24169,371 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_bar) = class $mol_bar extends ($.$mol_view) {};
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/bar/bar.view.css", "[mol_bar] {\n\tdisplay: flex;\n\t/* box-shadow: inset 0 0 0 1px var(--mol_theme_line); */\n\tborder-radius: var(--mol_gap_round);\n}\n");
+})($ || ($ = {}));
+
+;
+"use strict";
+
+
+;
+	($.$mol_paginator) = class $mol_paginator extends ($.$mol_bar) {
+		backward_hint(){
+			return (this.$.$mol_locale.text("$mol_paginator_backward_hint"));
+		}
+		backward(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Backward_icon(){
+			const obj = new this.$.$mol_icon_chevron_left();
+			return obj;
+		}
+		Backward(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.backward_hint()));
+			(obj.click) = (next) => ((this.backward(next)));
+			(obj.sub) = () => ([(this.Backward_icon())]);
+			return obj;
+		}
+		value(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		Value(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.value())]);
+			return obj;
+		}
+		forward_hint(){
+			return (this.$.$mol_locale.text("$mol_paginator_forward_hint"));
+		}
+		forward(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Forward_icon(){
+			const obj = new this.$.$mol_icon_chevron_right();
+			return obj;
+		}
+		Forward(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.hint) = () => ((this.forward_hint()));
+			(obj.click) = (next) => ((this.forward(next)));
+			(obj.sub) = () => ([(this.Forward_icon())]);
+			return obj;
+		}
+		step(){
+			return 1;
+		}
+		sub(){
+			return [
+				(this.Backward()), 
+				(this.Value()), 
+				(this.Forward())
+			];
+		}
+	};
+	($mol_mem(($.$mol_paginator.prototype), "backward"));
+	($mol_mem(($.$mol_paginator.prototype), "Backward_icon"));
+	($mol_mem(($.$mol_paginator.prototype), "Backward"));
+	($mol_mem(($.$mol_paginator.prototype), "value"));
+	($mol_mem(($.$mol_paginator.prototype), "Value"));
+	($mol_mem(($.$mol_paginator.prototype), "forward"));
+	($mol_mem(($.$mol_paginator.prototype), "Forward_icon"));
+	($mol_mem(($.$mol_paginator.prototype), "Forward"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        /**
+         * Paginator UI component
+         * @see https://mol.hyoo.ru/#!section=demos/demo=mol_paginator_demo
+         */
+        class $mol_paginator extends $.$mol_paginator {
+            backward(event) {
+                if (event.defaultPrevented)
+                    return;
+                event.preventDefault();
+                this.value(this.value() - this.step());
+            }
+            forward(event) {
+                if (event.defaultPrevented)
+                    return;
+                event.preventDefault();
+                this.value(this.value() + this.step());
+            }
+        }
+        $$.$mol_paginator = $mol_paginator;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    $mol_style_attach("mol/paginator/paginator.view.css", "[mol_paginator] {\n\talign-items: flex-start;\n}\n\n[mol_paginator_value] {\n\tpadding: .5rem 0;\n}\n");
+})($ || ($ = {}));
+
+;
+	($.$mol_search_jumper) = class $mol_search_jumper extends ($.$mol_search) {
+		index(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		forward(next){
+			return (this.Index().forward(next));
+		}
+		backward(next){
+			return (this.Index().backward(next));
+		}
+		Backward(){
+			const obj = new this.$.$mol_hotkey();
+			(obj.mod_shift) = () => (true);
+			(obj.key) = () => ({"enter": (next) => (this.backward(next))});
+			return obj;
+		}
+		escape(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Forward(){
+			const obj = new this.$.$mol_hotkey();
+			(obj.key) = () => ({"enter": (next) => (this.forward(next)), "escape": (next) => (this.escape(next))});
+			return obj;
+		}
+		Root(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		Index(){
+			const obj = new this.$.$mol_paginator();
+			(obj.value) = (next) => ((this.index(next)));
+			return obj;
+		}
+		plugins(){
+			return [
+				...(super.plugins()), 
+				(this.Backward()), 
+				(this.Forward())
+			];
+		}
+	};
+	($mol_mem(($.$mol_search_jumper.prototype), "index"));
+	($mol_mem(($.$mol_search_jumper.prototype), "Backward"));
+	($mol_mem(($.$mol_search_jumper.prototype), "escape"));
+	($mol_mem(($.$mol_search_jumper.prototype), "Forward"));
+	($mol_mem(($.$mol_search_jumper.prototype), "Root"));
+	($mol_mem(($.$mol_search_jumper.prototype), "Index"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $mol_search_jumper extends $.$mol_search_jumper {
+            results() {
+                const needle = this.query();
+                if (needle.length < 2)
+                    return [];
+                const root = this.Root();
+                if (!root)
+                    return [];
+                const regexp = $mol_regexp.from({ needle }, { ignoreCase: true });
+                try {
+                    return [...root.view_find((_, text = '') => regexp.test(text))];
+                }
+                catch (error) {
+                    if (!(error instanceof Promise))
+                        $mol_fail_hidden(error);
+                    return [];
+                }
+            }
+            index(next) {
+                this.query();
+                const all = this.results();
+                if (all.length == 0)
+                    return 0;
+                let index = next ?? super.index();
+                if (index > all.length)
+                    index = 1;
+                if (index <= 0)
+                    index = all.length;
+                if (next !== undefined) {
+                    const path = all[index - 1];
+                    this.Root().ensure_visible(path[path.length - 1]);
+                }
+                return index;
+            }
+            anchor_content() {
+                return [
+                    this.Query(),
+                    ...(this.query().length > 0) ? [
+                        this.Clear(),
+                        this.Index(),
+                    ] : [],
+                ];
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $mol_search_jumper.prototype, "results", null);
+        __decorate([
+            $mol_mem
+        ], $mol_search_jumper.prototype, "index", null);
+        $$.$mol_search_jumper = $mol_search_jumper;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_bug_search) = class $yuf_bug_search extends ($.$mol_example_small) {
+		query(next){
+			if(next !== undefined) return next;
+			return "";
+		}
+		Jumper(){
+			const obj = new this.$.$mol_search_jumper();
+			(obj.query) = (next) => ((this.query(next)));
+			(obj.hint) = () => ("Type \"mix\" and press enter");
+			(obj.Root) = () => ((this.Text()));
+			return obj;
+		}
+		max_rows(next){
+			if(next !== undefined) return next;
+			return 25;
+		}
+		Max_rows(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.max_rows(next)));
+			return obj;
+		}
+		Controls(){
+			const obj = new this.$.$mol_row();
+			(obj.sub) = () => ([(this.Jumper()), (this.Max_rows())]);
+			return obj;
+		}
+		text(){
+			return "";
+		}
+		Text(){
+			const obj = new this.$.$mol_text();
+			(obj.code_sidebar_showed) = () => (false);
+			(obj.highlight) = () => ((this.query()));
+			(obj.text) = () => ((this.text()));
+			return obj;
+		}
+		Scroll(){
+			const obj = new this.$.$mol_scroll();
+			(obj.sub) = () => ([(this.Text())]);
+			return obj;
+		}
+		Body(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Scroll())]);
+			return obj;
+		}
+		title(){
+			return "Test app";
+		}
+		sub(){
+			return [(this.Controls()), (this.Body())];
+		}
+		tags(){
+			return [
+				"app", 
+				"demo", 
+				"bug", 
+				"search", 
+				"scroll", 
+				"text"
+			];
+		}
+		aspects(){
+			return ["Bug"];
+		}
+	};
+	($mol_mem(($.$yuf_bug_search.prototype), "query"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Jumper"));
+	($mol_mem(($.$yuf_bug_search.prototype), "max_rows"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Max_rows"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Controls"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Text"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Scroll"));
+	($mol_mem(($.$yuf_bug_search.prototype), "Body"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_bug_search extends $.$yuf_bug_search {
+            text() {
+                const result = [];
+                const max = this.max_rows() - 1;
+                for (let i = 0; i <= max; i++) {
+                    result.push(i === max ? `
+| . |
+| . |
+| mix |
+| . |
+` : '| . |');
+                }
+                return result.join('\n');
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_bug_search.prototype, "text", null);
+        $$.$yuf_bug_search = $yuf_bug_search;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_bug_search, {
+            flex: {
+                direction: 'column',
+            },
+            Body: {
+                maxHeight: '40rem',
+                width: '80rem',
+            }
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$yuf_bug_catalog_flash) = class $yuf_bug_catalog_flash extends ($.$mol_example_small) {
 		Main(){
 			const obj = new this.$.$yuf_bug_catalog_flash_catalog();
