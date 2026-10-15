@@ -14,5 +14,6 @@ $yuf_bug_log_prepend $mol_example_small
 		\geizenbug
 		\log
 		\prepend
+		\fixed
 	aspects /
 		\Bug

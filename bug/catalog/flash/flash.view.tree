@@ -10,6 +10,7 @@ $yuf_bug_catalog_flash $mol_example_small
 		\geizenbug
 		\catalog
 		\refresh
+		\fixed
 	aspects /
 		\Bug
 

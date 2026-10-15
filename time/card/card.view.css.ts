@@ -1,10 +1,11 @@
 namespace $.$$ {
 	
-	const { rem, px, per } = $mol_style_unit
-	
 	$mol_style_define( $yuf_time_card, {
 		font: {
-			size: rem(0.9)
+			size: '.9rem'
+		},
+		':empty': {
+			display: 'none'
 		},
 		flex: {
 			shrink: 0,

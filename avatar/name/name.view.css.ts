@@ -15,9 +15,11 @@ namespace $.$$ {
 				display: 'none',
 			}
 		},
-		Login: {
-			font: {
-				size: '.9rem',
+		First: {
+			justifyContent: 'space-between',
+			gap: $mol_gap.text,
+			flex: {
+				grow: 1,
 			}
 		},
 	} )

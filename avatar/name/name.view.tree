@@ -2,9 +2,13 @@ $yuf_avatar_name $mol_view
 	name \
 	login \
 	sub /
-		<= Login $mol_dimmer
-			needle <= needle \
-			haystack <= login_formatted <= login_tpl \@{login}
+		<= First $mol_view sub /
+			<= Login $mol_dimmer
+				needle <= needle \
+				haystack <= login_formatted <= login_tpl \@{login}
+			<= Time $yuf_time_card
+				moment <= moment null $mol_time_moment
+				format \short
 		<= Name $mol_dimmer
 			needle <= needle
 			haystack <= name_formatted <= name_tpl \{name}

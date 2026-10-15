@@ -6,6 +6,7 @@ $yuf_avatar_card $mol_view
 			url <= url \
 			needle <= needle \
 		<= Name $yuf_avatar_name
+			moment <= moment null $mol_time_moment
 			name <= name
 			login <= login
 			needle <= needle

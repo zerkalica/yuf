@@ -14,5 +14,6 @@ $yuf_bug_list_equal $mol_example_small
 		\demo
 		\bug
 		\reverse
+		\fixed
 	aspects /
 		\Bug

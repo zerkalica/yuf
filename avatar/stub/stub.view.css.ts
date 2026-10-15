@@ -3,11 +3,10 @@ namespace $.$$ {
 	
 	$mol_style_define( $yuf_avatar_stub, {
 		
-		font: {
-			size: '1.2rem'
-		},
-		minHeight: '2.5rem',
-		maxHeight: '2.5rem',
+		font: { size: '1rem' },
+		minHeight: '2.25rem',
+		minWidth: '2.25rem',
+		maxHeight: '2.25rem',
 
 		aspectRatio: 1/1,
 
