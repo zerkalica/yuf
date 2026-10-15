@@ -1,0 +1,25 @@
+$yuf_bug_search $mol_example_small
+	title \Test app
+	sub /
+		<= Controls $mol_row sub /
+			<= Jumper $mol_search_jumper
+				query? <=> query? \
+				hint \Type "mix" and press enter
+				Root <= Text
+			<= Max_rows $mol_number
+				value? <=> max_rows? 25
+		<= Body $mol_view sub /
+			<= Scroll $mol_scroll sub /
+				<= Text $mol_text
+					code_sidebar_showed false
+					highlight <= query
+					text <= text \
+	tags /
+		\app
+		\demo
+		\bug
+		\search
+		\scroll
+		\text
+	aspects /
+		\Bug
