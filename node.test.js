@@ -21615,31 +21615,53 @@ var $;
 	($.$yuf_carousel_demo) = class $yuf_carousel_demo extends ($.$mol_example_small) {
 		Card1(){
 			const obj = new this.$.$yuf_carousel_demo_card();
-			(obj.title) = () => ("Card 1");
+			(obj.ids) = () => ((this.urls()));
+			(obj.title) = () => ("All ok");
 			return obj;
+		}
+		card2_urls(){
+			return [...(this.urls()), ""];
 		}
 		Card2(){
 			const obj = new this.$.$yuf_carousel_demo_card();
-			(obj.title) = () => ("Card 2");
+			(obj.ids) = () => ((this.card2_urls()));
+			(obj.title) = () => ("Last url empty");
 			return obj;
 		}
 		Card3(){
 			const obj = new this.$.$yuf_carousel_demo_card();
-			(obj.title) = () => ("Card 3");
+			(obj.title) = () => ("No images");
+			return obj;
+		}
+		card4_ids(){
+			return [
+				"0", 
+				"100500", 
+				"1"
+			];
+		}
+		image_url(id){
+			return "";
+		}
+		Card4(){
+			const obj = new this.$.$yuf_carousel_demo_card();
+			(obj.ids) = () => ((this.card4_ids()));
+			(obj.image_url) = (id) => ((this.image_url(id)));
+			(obj.title) = () => ("By id, mid is \"Not Found\" err");
 			return obj;
 		}
 		title(){
 			return "Carousel";
 		}
-		ids(next){
-			if(next !== undefined) return next;
-			return [];
+		urls(){
+			return ["data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E", "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E"];
 		}
 		sub(){
 			return [
 				(this.Card1()), 
 				(this.Card2()), 
-				(this.Card3())
+				(this.Card3()), 
+				(this.Card4())
 			];
 		}
 		tags(){
@@ -21656,26 +21678,18 @@ var $;
 	($mol_mem(($.$yuf_carousel_demo.prototype), "Card1"));
 	($mol_mem(($.$yuf_carousel_demo.prototype), "Card2"));
 	($mol_mem(($.$yuf_carousel_demo.prototype), "Card3"));
-	($mol_mem(($.$yuf_carousel_demo.prototype), "ids"));
+	($mol_mem(($.$yuf_carousel_demo.prototype), "Card4"));
 	($.$yuf_carousel_demo_card) = class $yuf_carousel_demo_card extends ($.$mol_view) {
-		image_ids(){
-			return [
-				"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E", 
-				"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E", 
-				""
-			];
+		ids(){
+			return [];
 		}
 		image_url(id){
 			return "";
 		}
 		Carousel(){
 			const obj = new this.$.$yuf_carousel();
-			(obj.ids) = () => ((this.image_ids()));
+			(obj.ids) = () => ((this.ids()));
 			(obj.url) = (id) => ((this.image_url(id)));
-			return obj;
-		}
-		Body(){
-			const obj = new this.$.$mol_view();
 			return obj;
 		}
 		Text(){
@@ -21684,15 +21698,10 @@ var $;
 			return obj;
 		}
 		sub(){
-			return [
-				(this.Carousel()), 
-				(this.Body()), 
-				(this.Text())
-			];
+			return [(this.Carousel()), (this.Text())];
 		}
 	};
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Carousel"));
-	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Body"));
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Text"));
 
 
@@ -21706,10 +21715,16 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        class $yuf_carousel_demo extends $.$yuf_carousel_demo {
+            image_url(id) {
+                if (id === '100500')
+                    throw new Error($mol_rest_code[$mol_rest_code['Not Found']], { cause: { id } });
+                return this.urls()[Number(id)];
+            }
+        }
+        $$.$yuf_carousel_demo = $yuf_carousel_demo;
         class $yuf_carousel_demo_card extends $.$yuf_carousel_demo_card {
             image_url(id) {
-                if (!id)
-                    throw new Error($mol_rest_code[$mol_rest_code['Not Found']], { cause: { id } });
                 return id;
             }
         }
@@ -21725,7 +21740,13 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_carousel_demo_card, {
             width: '10rem',
-            height: '5rem',
+            boxShadow: `0 0 0 1px ${$mol_theme.line}`,
+            padding: $mol_gap.block,
+            color: $mol_theme.text,
+            border: {
+                radius: $mol_gap.round
+            },
+            gap: $mol_gap.space,
             flex: {
                 direction: 'column',
             },
@@ -21734,11 +21755,6 @@ var $;
                     grow: 0,
                     basis: '5rem',
                 },
-            },
-            Body: {
-                flex: {
-                    grow: 111,
-                }
             },
         });
     })($$ = $.$$ || ($.$$ = {}));
