@@ -21,7 +21,19 @@ namespace $.$$ {
             display: 'flex',
             justifyContent: 'center',
             gap: $mol_gap.block,
+			width: '100%',
+			height: '.25rem',
         },
+
+		':not( :has( :nth-child(2) ) )': {
+			'>': {
+				$mol_view: {
+					'::scroll-marker': {
+						visibility: 'hidden'
+					}
+				}
+			}
+		},
 
         '@supports': {
             '(scroll-marker-group: before)': {
