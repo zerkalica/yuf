@@ -1,6 +1,6 @@
 $yuf_carousel $mol_view
 	minimal_height 120
-	ids /string
+	ids /string - ids or urls
 	sub <= images /$mol_view
 		<= Empty*0 $mol_icon_camera_off
 		<= Image*0 $mol_image

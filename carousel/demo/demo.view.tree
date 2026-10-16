@@ -1,13 +1,26 @@
 $yuf_carousel_demo $mol_example_small
 	title \Carousel
-	ids? /string
+	urls /string
+		\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E
+		\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E
 	sub /
 		<= Card1 $yuf_carousel_demo_card
-			title \Card 1
+			ids <= urls
+			title \All ok
 		<= Card2 $yuf_carousel_demo_card
-			title \Card 2
+			ids <= card2_urls /string
+				^ urls
+				\
+			title \Last url empty
 		<= Card3 $yuf_carousel_demo_card
-			title \Card 3
+			title \No images
+		<= Card4 $yuf_carousel_demo_card
+			ids <= card4_ids /string
+				\0
+				\100500
+				\1
+			image_url* <= image_url* \
+			title \By id, mid is "Not Found" err
 	tags /
 		\image
 		\list
@@ -18,10 +31,6 @@ $yuf_carousel_demo $mol_example_small
 $yuf_carousel_demo_card $mol_view
 	sub /
 		<= Carousel $yuf_carousel
-			ids <= image_ids /string
-				\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E
-				\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E
-				\
+			ids <= ids /string
 			url* <= image_url* \
-		<= Body $mol_view
 		<= Text $mol_view sub / <= title
