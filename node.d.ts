@@ -10468,6 +10468,7 @@ declare namespace $ {
 		ids( ): readonly(string)[]
 		image_url( id: any): string
 		Carousel( ): $yuf_carousel
+		Body( ): $mol_view
 		Text( ): $mol_view
 		sub( ): readonly(any)[]
 	}
