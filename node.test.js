@@ -4226,7 +4226,7 @@ var $;
                         }
                     }
                 }
-                else if (key === '@media' || key === '@container') {
+                else if (key === '@media' || key === '@container' || key === '@supports') {
                     const media = config[key];
                     for (let query of Object.keys(media).reverse()) {
                         rules.push('}\n');
@@ -9188,7 +9188,7 @@ var $;
     $mol_style_define($mol_link, {
         textDecoration: 'none',
         color: $mol_theme.control,
-        stroke: 'currentcolor',
+        stroke: 'currentColor',
         cursor: 'pointer',
         padding: $mol_gap.text,
         boxSizing: 'border-box',
@@ -21470,6 +21470,9 @@ var $;
 		minimal_height(){
 			return 120;
 		}
+		auto_scroll(){
+			return true;
+		}
 		ids(){
 			return [];
 		}
@@ -21501,6 +21504,8 @@ var $;
             }
             event_move(e) {
                 if (!e)
+                    return null;
+                if (!this.auto_scroll())
                     return null;
                 this.mouse_pos([e.pageX, e.pageY]);
             }
@@ -21578,6 +21583,19 @@ var $;
                     stop: 'always',
                     align: 'start',
                 },
+                marker: {
+                    group: 'after'
+                }
+            },
+            '::scroll-marker-group': {
+                display: 'flex',
+                justifyContent: 'center',
+                gap: $mol_gap.block,
+            },
+            '@supports': {
+                '(scroll-marker-group: before)': {
+                    scrollbarWidth: 'none',
+                },
             },
             '>': {
                 $mol_view: {
@@ -21586,6 +21604,21 @@ var $;
                             type: 'none',
                             stop: 'always',
                             align: 'start',
+                        },
+                    },
+                    '::scroll-marker': {
+                        content: '""',
+                        display: 'block',
+                        width: $mol_gap.emoji,
+                        height: $mol_gap.emoji,
+                        border: {
+                            radius: $mol_gap.round
+                        },
+                        background: { color: $mol_theme.line },
+                        cursor: 'pointer',
+                        ':target-current': {
+                            background: { color: $mol_theme.shade },
+                            transform: 'scale(1.25)',
                         },
                     },
                 },
@@ -21606,7 +21639,7 @@ var $;
                 height: '100%',
                 minHeight: 'auto',
             },
-            minHeight: '5rem'
+            minHeight: '5rem',
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -21765,12 +21798,8 @@ var $;
                     color: $mol_theme.card
                 },
                 border: {
-                    bottomLeft: {
-                        radius: 0
-                    },
-                    bottomRight: {
-                        radius: 0
-                    },
+                    topLeft: { radius: $mol_gap.round },
+                    topRight: { radius: $mol_gap.round },
                 },
                 flex: {
                     grow: 0,
