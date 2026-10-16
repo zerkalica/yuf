@@ -21692,26 +21692,23 @@ var $;
 			(obj.url) = (id) => ((this.image_url(id)));
 			return obj;
 		}
-		Body(){
-			const obj = new this.$.$mol_view();
-			return obj;
-		}
 		Text(){
 			const obj = new this.$.$mol_view();
 			(obj.sub) = () => ([(this.title())]);
 			return obj;
 		}
+		Body(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Text())]);
+			return obj;
+		}
 		sub(){
-			return [
-				(this.Carousel()), 
-				(this.Body()), 
-				(this.Text())
-			];
+			return [(this.Carousel()), (this.Body())];
 		}
 	};
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Carousel"));
-	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Body"));
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Text"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Body"));
 
 
 ;
@@ -21749,27 +21746,45 @@ var $;
     (function ($$) {
         $mol_style_define($yuf_carousel_demo_card, {
             width: '10rem',
-            minHeight: '9.5rem',
+            minHeight: '9rem',
             boxShadow: `0 0 0 1px ${$mol_theme.line}`,
-            padding: $mol_gap.block,
             color: $mol_theme.text,
             border: {
                 radius: $mol_gap.round
             },
-            gap: $mol_gap.space,
+            background: {
+                color: $mol_theme.card
+            },
             flex: {
                 direction: 'column',
             },
+            justifyContent: 'space-between',
             Carousel: {
+                padding: $mol_gap.space,
+                background: {
+                    color: $mol_theme.card
+                },
+                border: {
+                    bottomLeft: {
+                        radius: 0
+                    },
+                    bottomRight: {
+                        radius: 0
+                    },
+                },
                 flex: {
                     grow: 0,
                     basis: '5rem',
                 },
             },
             Body: {
+                padding: $mol_gap.space,
                 flex: {
-                    grow: 1
-                }
+                    shrink: 1,
+                    grow: 111,
+                    direction: 'column',
+                },
+                justifyContent: 'end',
             }
         });
     })($$ = $.$$ || ($.$$ = {}));

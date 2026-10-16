@@ -10400,12 +10400,17 @@ declare namespace $ {
 		,
 		ReturnType< $mol_view['sub'] >
 	>
+	type $mol_view__sub_yuf_carousel_demo_card_4 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
 	export class $yuf_carousel_demo_card extends $mol_view {
 		ids( ): readonly(string)[]
 		image_url( id: any): string
 		Carousel( ): $yuf_carousel
-		Body( ): $mol_view
 		Text( ): $mol_view
+		Body( ): $mol_view
 		sub( ): readonly(any)[]
 	}
 	
