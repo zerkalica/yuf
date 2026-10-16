@@ -2,6 +2,7 @@ namespace $.$$ {
 	
 	$mol_style_define( $yuf_carousel_demo_card, {
 		width: '10rem',
+		minHeight: '9.5rem',
 		boxShadow: `0 0 0 1px ${$mol_theme.line}`,
 		padding: $mol_gap.block,
 		color: $mol_theme.text,
@@ -20,6 +21,11 @@ namespace $.$$ {
 				basis: '5rem',
 			},
 		},
+		Body: {
+			flex: {
+				grow: 1
+			}
+		}
 		
 		
 	} )
