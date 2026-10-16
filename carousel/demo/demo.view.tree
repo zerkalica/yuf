@@ -1,0 +1,27 @@
+$yuf_carousel_demo $mol_example_small
+	title \Carousel
+	ids? /string
+	sub /
+		<= Card1 $yuf_carousel_demo_card
+			title \Card 1
+		<= Card2 $yuf_carousel_demo_card
+			title \Card 2
+		<= Card3 $yuf_carousel_demo_card
+			title \Card 3
+	tags /
+		\image
+		\list
+		\carousel
+	aspects /
+		\Widget/Control
+
+$yuf_carousel_demo_card $mol_view
+	sub /
+		<= Carousel $yuf_carousel
+			ids <= image_ids /string
+				\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E
+				\data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E
+				\
+			url* <= image_url* \
+		<= Body $mol_view
+		<= Text $mol_view sub / <= title
