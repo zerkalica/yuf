@@ -7,6 +7,7 @@ namespace $.$$ {
 
 		override event_move(e?: MouseEvent) {
 			if ( ! e ) return null
+			if (! this.auto_scroll()) return null
 			this.mouse_pos([ e.pageX, e.pageY ])
 		}
 

@@ -24,12 +24,8 @@ namespace $.$$ {
 				color: $mol_theme.card
 			},
 			border: {
-				bottomLeft: {
-					radius: 0
-				},
-				bottomRight: {
-					radius: 0
-				},
+				topLeft: { radius: $mol_gap.round },
+				topRight: { radius: $mol_gap.round},
 			},
 			flex: {
 				grow: 0,

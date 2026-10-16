@@ -12,7 +12,23 @@ namespace $.$$ {
 				stop: 'always',
 				align: 'start',
 			},
+			marker: {
+				group: 'after'
+			}
 		},
+
+		'::scroll-marker-group': {
+            display: 'flex',
+            justifyContent: 'center',
+            gap: $mol_gap.block,
+        },
+
+        '@supports': {
+            '(scroll-marker-group: before)': {
+                scrollbarWidth: 'none',
+            },
+        },
+
 		'>': {
 			$mol_view: {
 				scroll: {
@@ -22,9 +38,24 @@ namespace $.$$ {
 						align: 'start',
 					},
 				},
+				'::scroll-marker': {
+					content: '""',
+					display: 'block',
+					width: $mol_gap.emoji,
+					height: $mol_gap.emoji,
+					border: {
+						radius: $mol_gap.round
+					},
+					background: { color: $mol_theme.line },
+					cursor: 'pointer',
+					':target-current': {
+						background: { color: $mol_theme.shade },
+						transform: 'scale(1.25)',
+					},
+				},
 			},
 		},
-	
+
 		alignItems: 'center',
 		Image: {
 			width: '100%',
@@ -43,7 +74,7 @@ namespace $.$$ {
 			minHeight: 'auto',
 		},
 
-		minHeight: '5rem'
+		minHeight: '5rem',
 
 	} )
 	
