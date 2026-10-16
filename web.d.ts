@@ -10249,6 +10249,131 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
+	type $mol_image__minimal_height_yuf_carousel_1 = $mol_type_enforce<
+		number
+		,
+		ReturnType< $mol_image['minimal_height'] >
+	>
+	type $mol_image__uri_yuf_carousel_2 = $mol_type_enforce<
+		ReturnType< $yuf_carousel['url'] >
+		,
+		ReturnType< $mol_image['uri'] >
+	>
+	export class $yuf_carousel extends $mol_view {
+		Empty( id: any): $mol_icon_camera_off
+		url( id: any): string
+		Image( id: any): $mol_image
+		images( ): readonly($mol_view)[]
+		event_move( next?: any ): any
+		minimal_height( ): number
+		ids( ): readonly(string)[]
+		sub( ): ReturnType< $yuf_carousel['images'] >
+		event( ): ({ 
+			mousemove( next?: ReturnType< $yuf_carousel['event_move'] > ): ReturnType< $yuf_carousel['event_move'] >,
+		})  & ReturnType< $mol_view['event'] >
+	}
+	
+}
+
+//# sourceMappingURL=carousel.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_carousel extends $.$yuf_carousel {
+        mouse_pos(next?: readonly [x: number, y: number]): readonly [x: number, y: number] | null;
+        event_move(e?: MouseEvent): null | undefined;
+        part_size(): number;
+        selected_index(): number;
+        switched(): number | null;
+        auto(): void;
+        images(): ($.$mol_image | $mol_icon_camera_off)[];
+        protected url_safe(id: string): string;
+        url(path: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
+	type $yuf_carousel_demo_card__title_yuf_carousel_demo_1 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_carousel_demo_card['title'] >
+	>
+	type $yuf_carousel_demo_card__title_yuf_carousel_demo_2 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_carousel_demo_card['title'] >
+	>
+	type $yuf_carousel_demo_card__title_yuf_carousel_demo_3 = $mol_type_enforce<
+		string
+		,
+		ReturnType< $yuf_carousel_demo_card['title'] >
+	>
+	export class $yuf_carousel_demo extends $mol_example_small {
+		Card1( ): $yuf_carousel_demo_card
+		Card2( ): $yuf_carousel_demo_card
+		Card3( ): $yuf_carousel_demo_card
+		title( ): string
+		ids( next?: readonly(string)[] ): readonly(string)[]
+		sub( ): readonly(any)[]
+		tags( ): readonly(any)[]
+		aspects( ): readonly(any)[]
+	}
+	
+	type $yuf_carousel_demo_card_image_ids__1 = $mol_type_enforce<
+		`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E`
+		,
+		string
+	>
+	type $yuf_carousel_demo_card_image_ids__2 = $mol_type_enforce<
+		`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E`
+		,
+		string
+	>
+	type $yuf_carousel_demo_card_image_ids__3 = $mol_type_enforce<
+		``
+		,
+		string
+	>
+	type $yuf_carousel__ids_yuf_carousel_demo_card_4 = $mol_type_enforce<
+		ReturnType< $yuf_carousel_demo_card['image_ids'] >
+		,
+		ReturnType< $yuf_carousel['ids'] >
+	>
+	type $yuf_carousel__url_yuf_carousel_demo_card_5 = $mol_type_enforce<
+		ReturnType< $yuf_carousel_demo_card['image_url'] >
+		,
+		ReturnType< $yuf_carousel['url'] >
+	>
+	type $mol_view__sub_yuf_carousel_demo_card_6 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	export class $yuf_carousel_demo_card extends $mol_view {
+		image_ids( ): readonly(string)[]
+		image_url( id: any): string
+		Carousel( ): $yuf_carousel
+		Body( ): $mol_view
+		Text( ): $mol_view
+		sub( ): readonly(any)[]
+	}
+	
+}
+
+//# sourceMappingURL=demo.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_carousel_demo_card extends $.$yuf_carousel_demo_card {
+        image_url(id: string): string;
+    }
+}
+
+declare namespace $.$$ {
+}
+
+declare namespace $ {
+
 	export class $mol_icon_eye_off extends $mol_icon {
 		path( ): string
 	}

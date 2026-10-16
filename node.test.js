@@ -21446,6 +21446,305 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$yuf_carousel) = class $yuf_carousel extends ($.$mol_view) {
+		Empty(id){
+			const obj = new this.$.$mol_icon_camera_off();
+			return obj;
+		}
+		url(id){
+			return "";
+		}
+		Image(id){
+			const obj = new this.$.$mol_image();
+			(obj.minimal_height) = () => (120);
+			(obj.uri) = () => ((this.url(id)));
+			return obj;
+		}
+		images(){
+			return [(this.Empty("0")), (this.Image("0"))];
+		}
+		event_move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		minimal_height(){
+			return 120;
+		}
+		ids(){
+			return [];
+		}
+		sub(){
+			return (this.images());
+		}
+		event(){
+			return {...(super.event()), "mousemove": (next) => (this.event_move(next))};
+		}
+	};
+	($mol_mem_key(($.$yuf_carousel.prototype), "Empty"));
+	($mol_mem_key(($.$yuf_carousel.prototype), "Image"));
+	($mol_mem(($.$yuf_carousel.prototype), "event_move"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_carousel extends $.$yuf_carousel {
+            mouse_pos(next) {
+                return next ?? null;
+            }
+            event_move(e) {
+                if (!e)
+                    return null;
+                this.mouse_pos([e.pageX, e.pageY]);
+            }
+            part_size() {
+                return 1 / (this.ids().length || 1);
+            }
+            selected_index() {
+                const r = this.view_rect();
+                const [x, y] = this.mouse_pos() ?? [];
+                if (!r || x === undefined || y === undefined)
+                    return 0;
+                const part = (x - r.left) / r.width;
+                return Math.floor(part / this.part_size());
+            }
+            switched() {
+                const index = this.selected_index();
+                const r = this.view_rect();
+                if (!r)
+                    return null;
+                const left = r.width * index;
+                this.dom_node().scrollTo({ left });
+                return index;
+            }
+            auto() {
+                try {
+                    this.switched();
+                }
+                catch (e) {
+                    $mol_fail_log(e);
+                }
+            }
+            images() {
+                const items = this.ids().map(id => this.url_safe(id) ? this.Image(id) : this.Empty(id));
+                return items.length ? items : [this.Empty('0')];
+            }
+            url_safe(id) {
+                return $mol_error_fence(() => this.url(id), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? '' : e);
+            }
+            url(path) { return path; }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_carousel.prototype, "mouse_pos", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_carousel.prototype, "part_size", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_carousel.prototype, "selected_index", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_carousel.prototype, "switched", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_carousel.prototype, "images", null);
+        $$.$yuf_carousel = $yuf_carousel;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_carousel, {
+            transition: 'none',
+            overflow: {
+                y: 'hidden',
+                x: 'auto',
+            },
+            scroll: {
+                snap: {
+                    type: ['x', 'mandatory'],
+                    stop: 'always',
+                    align: 'start',
+                },
+            },
+            '>': {
+                $mol_view: {
+                    scroll: {
+                        snap: {
+                            type: 'none',
+                            stop: 'always',
+                            align: 'start',
+                        },
+                    },
+                },
+            },
+            alignItems: 'center',
+            Image: {
+                width: '100%',
+                height: '100%',
+                minHeight: 'auto',
+                flex: {
+                    shrink: 0,
+                    grow: 0,
+                },
+                objectFit: 'contain',
+            },
+            Empty: {
+                width: '100%',
+                height: '100%',
+                minHeight: 'auto',
+            },
+            minHeight: '5rem'
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+	($.$yuf_carousel_demo) = class $yuf_carousel_demo extends ($.$mol_example_small) {
+		Card1(){
+			const obj = new this.$.$yuf_carousel_demo_card();
+			(obj.title) = () => ("Card 1");
+			return obj;
+		}
+		Card2(){
+			const obj = new this.$.$yuf_carousel_demo_card();
+			(obj.title) = () => ("Card 2");
+			return obj;
+		}
+		Card3(){
+			const obj = new this.$.$yuf_carousel_demo_card();
+			(obj.title) = () => ("Card 3");
+			return obj;
+		}
+		title(){
+			return "Carousel";
+		}
+		ids(next){
+			if(next !== undefined) return next;
+			return [];
+		}
+		sub(){
+			return [
+				(this.Card1()), 
+				(this.Card2()), 
+				(this.Card3())
+			];
+		}
+		tags(){
+			return [
+				"image", 
+				"list", 
+				"carousel"
+			];
+		}
+		aspects(){
+			return ["Widget/Control"];
+		}
+	};
+	($mol_mem(($.$yuf_carousel_demo.prototype), "Card1"));
+	($mol_mem(($.$yuf_carousel_demo.prototype), "Card2"));
+	($mol_mem(($.$yuf_carousel_demo.prototype), "Card3"));
+	($mol_mem(($.$yuf_carousel_demo.prototype), "ids"));
+	($.$yuf_carousel_demo_card) = class $yuf_carousel_demo_card extends ($.$mol_view) {
+		image_ids(){
+			return [
+				"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='red'/%3E%3C/svg%3E", 
+				"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='5' fill='blue'/%3E%3C/svg%3E", 
+				""
+			];
+		}
+		image_url(id){
+			return "";
+		}
+		Carousel(){
+			const obj = new this.$.$yuf_carousel();
+			(obj.ids) = () => ((this.image_ids()));
+			(obj.url) = (id) => ((this.image_url(id)));
+			return obj;
+		}
+		Body(){
+			const obj = new this.$.$mol_view();
+			return obj;
+		}
+		Text(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.title())]);
+			return obj;
+		}
+		sub(){
+			return [
+				(this.Carousel()), 
+				(this.Body()), 
+				(this.Text())
+			];
+		}
+	};
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Carousel"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Body"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Text"));
+
+
+;
+"use strict";
+
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_carousel_demo_card extends $.$yuf_carousel_demo_card {
+            image_url(id) {
+                if (!id)
+                    throw new Error($mol_rest_code[$mol_rest_code['Not Found']], { cause: { id } });
+                return id;
+            }
+        }
+        $$.$yuf_carousel_demo_card = $yuf_carousel_demo_card;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        $mol_style_define($yuf_carousel_demo_card, {
+            width: '10rem',
+            height: '5rem',
+            flex: {
+                direction: 'column',
+            },
+            Carousel: {
+                flex: {
+                    grow: 0,
+                    basis: '5rem',
+                },
+            },
+            Body: {
+                flex: {
+                    grow: 111,
+                }
+            },
+        });
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
+
+;
 	($.$mol_icon_eye_off) = class $mol_icon_eye_off extends ($.$mol_icon) {
 		path(){
 			return "M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z";
