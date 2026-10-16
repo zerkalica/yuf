@@ -33,5 +33,5 @@ $yuf_carousel_demo_card $mol_view
 		<= Carousel $yuf_carousel
 			ids <= ids /string
 			url* <= image_url* \
-		<= Body $mol_view
-		<= Text $mol_view sub / <= title
+		<= Body $mol_view sub /
+			<= Text $mol_view sub / <= title
