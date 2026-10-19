@@ -8,18 +8,18 @@ namespace $.$$ {
 			}
 		}
 
-		dict() {
-			const self_args = this.arg()
+		protected dict(is_nulled?: boolean) {
+			const arg = this.arg()
 			const dict = this.$.$mol_state_arg.dict()
-
-			const result = {} as Record<string, string>
+			const result = { } as Record<string, string | null>
+			const arg_keys = Object.keys(arg)
+			for (let self_key of arg_keys) {
+				result[self_key] = is_nulled ? null : arg[self_key]
+			}
 
 			for (let dict_key in dict) {
-				for (let self_key in self_args) {
-					if (! dict_key.startsWith(self_key)) {
-						result[dict_key] = dict[dict_key]
-					}
-				}
+				if (arg_keys.some(self_key => dict_key.startsWith(self_key))) continue
+				result[dict_key] = dict[dict_key]
 			}
 
 			return result
@@ -45,14 +45,12 @@ namespace $.$$ {
 
 		@ $mol_mem
 		override uri() {
-			return this.$.$mol_state_arg.make_link( { ... this.dict(), ... this.arg() } )
+			return this.$.$mol_state_arg.make_link( this.dict() )
 		}
 
 		@ $mol_mem
 		override uri_off() {
-			const result = { ...this.dict() } as Record<string, string | null>
-			for (let key in this.arg()) result[key] = null
-			return this.$.$mol_state_arg.make_link( result )
+			return this.$.$mol_state_arg.make_link( this.dict(true) )
 		}
 
 	}
