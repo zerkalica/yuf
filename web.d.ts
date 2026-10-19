@@ -8811,7 +8811,7 @@ declare namespace $.$$ {
         link_arg(): {
             [x: string]: string;
         };
-        dict(): Record<string, string>;
+        protected dict(is_nulled?: boolean): Record<string, string | null>;
         default_selected(): boolean;
         current(): boolean;
         click(e?: Event): any;

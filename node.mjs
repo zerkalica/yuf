@@ -20003,16 +20003,18 @@ var $;
                     [this.param_name()]: this.param_value()
                 };
             }
-            dict() {
-                const self_args = this.arg();
+            dict(is_nulled) {
+                const arg = this.arg();
                 const dict = this.$.$mol_state_arg.dict();
                 const result = {};
+                const arg_keys = Object.keys(arg);
+                for (let self_key of arg_keys) {
+                    result[self_key] = is_nulled ? null : arg[self_key];
+                }
                 for (let dict_key in dict) {
-                    for (let self_key in self_args) {
-                        if (!dict_key.startsWith(self_key)) {
-                            result[dict_key] = dict[dict_key];
-                        }
-                    }
+                    if (arg_keys.some(self_key => dict_key.startsWith(self_key)))
+                        continue;
+                    result[dict_key] = dict[dict_key];
                 }
                 return result;
             }
@@ -20030,13 +20032,10 @@ var $;
                 return super.click(e);
             }
             uri() {
-                return this.$.$mol_state_arg.make_link({ ...this.dict(), ...this.arg() });
+                return this.$.$mol_state_arg.make_link(this.dict());
             }
             uri_off() {
-                const result = { ...this.dict() };
-                for (let key in this.arg())
-                    result[key] = null;
-                return this.$.$mol_state_arg.make_link(result);
+                return this.$.$mol_state_arg.make_link(this.dict(true));
             }
         }
         __decorate([
