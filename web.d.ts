@@ -10290,12 +10290,12 @@ declare namespace $.$$ {
     class $yuf_carousel extends $.$yuf_carousel {
         event_move(e?: MouseEvent): null | undefined;
         part_size(): number;
-        mouse_index(): number;
+        mouse_index(): number | null;
         scroll_x(next?: number | null, cache?: 'cache'): number;
         event_scroll(next?: Event): void;
         protected width(): number;
         index(next?: number): number;
-        scroll_sync(next?: number): number;
+        mouse_index_sync(next?: number): number;
         auto(): void;
         images(): ($.$mol_image | $mol_icon_camera_off)[];
         protected url_safe(id: string): string;
