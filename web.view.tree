@@ -2650,9 +2650,6 @@ $mol_textarea $mol_stack
 			submit? <=> submit? null
 			submit_with_ctrl <= submit_with_ctrl true
 		<= View $mol_text_code
-			attr *
-				^
-				inert \
 			text <= value
 			render_visible_only false
 			row_numb* <= row_numb* 0
@@ -4780,13 +4777,29 @@ $yuf_drag $mol_drag
 	Drag_image null
 	drag_align \center
 
-$yuf_drag_drop $yuf_drag
-	Sub <= Drop $yuf_drop
-		id <= id
-		param <= param
-		Sub <= Item $mol_view
-		ids <= ids /string
-		receive? <=> receive? null
+$yuf_drag_drop $yuf_drop
+	args *
+	event *
+		^
+		dragstart? <=> drag_start? <=> start? null
+		drag? <=> drag_move? null
+		dragend? <=> drag_end? <=> end? null
+	attr *
+		^
+		draggable <= draggable true
+		mol_drag_status <= status? \ready
+	transfer *string
+		text/plain <= plain <= title
+		text/html <= html \
+		text/uri-list <= uris \
+	allow_copy true
+	allow_link true
+	allow_move true
+	image <= dom_node
+	receive_outside? null
+	Drag_image null
+	drag_align \center
+	Sub <= Item $mol_view
 
 $yuf_drop_empty $yuf_drop
 	Sub $mol_view sub <= sub_sub /$mol_view_content

@@ -12193,39 +12193,32 @@ declare namespace $ {
 		,
 		ReturnType< $mol_textarea_edit['submit_with_ctrl'] >
 	>
-	type $mol_text_code__attr_mol_textarea_9 = $mol_type_enforce<
-		({ 
-			'inert': string,
-		})  & ReturnType< $mol_text_code['attr'] >
-		,
-		ReturnType< $mol_text_code['attr'] >
-	>
-	type $mol_text_code__text_mol_textarea_10 = $mol_type_enforce<
+	type $mol_text_code__text_mol_textarea_9 = $mol_type_enforce<
 		ReturnType< $mol_textarea['value'] >
 		,
 		ReturnType< $mol_text_code['text'] >
 	>
-	type $mol_text_code__render_visible_only_mol_textarea_11 = $mol_type_enforce<
+	type $mol_text_code__render_visible_only_mol_textarea_10 = $mol_type_enforce<
 		boolean
 		,
 		ReturnType< $mol_text_code['render_visible_only'] >
 	>
-	type $mol_text_code__row_numb_mol_textarea_12 = $mol_type_enforce<
+	type $mol_text_code__row_numb_mol_textarea_11 = $mol_type_enforce<
 		ReturnType< $mol_textarea['row_numb'] >
 		,
 		ReturnType< $mol_text_code['row_numb'] >
 	>
-	type $mol_text_code__sidebar_showed_mol_textarea_13 = $mol_type_enforce<
+	type $mol_text_code__sidebar_showed_mol_textarea_12 = $mol_type_enforce<
 		ReturnType< $mol_textarea['sidebar_showed'] >
 		,
 		ReturnType< $mol_text_code['sidebar_showed'] >
 	>
-	type $mol_text_code__highlight_mol_textarea_14 = $mol_type_enforce<
+	type $mol_text_code__highlight_mol_textarea_13 = $mol_type_enforce<
 		ReturnType< $mol_textarea['highlight'] >
 		,
 		ReturnType< $mol_text_code['highlight'] >
 	>
-	type $mol_text_code__syntax_mol_textarea_15 = $mol_type_enforce<
+	type $mol_text_code__syntax_mol_textarea_14 = $mol_type_enforce<
 		ReturnType< $mol_textarea['syntax'] >
 		,
 		ReturnType< $mol_text_code['syntax'] >
@@ -21389,42 +21382,56 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_drop__id_yuf_drag_drop_1 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['id'] >
-		,
-		ReturnType< $yuf_drop['id'] >
-	>
-	type $yuf_drop__param_yuf_drag_drop_2 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['param'] >
-		,
-		ReturnType< $yuf_drop['param'] >
-	>
-	type $yuf_drop__Sub_yuf_drag_drop_3 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['Item'] >
-		,
-		ReturnType< $yuf_drop['Sub'] >
-	>
-	type $yuf_drop__ids_yuf_drag_drop_4 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['ids'] >
-		,
-		ReturnType< $yuf_drop['ids'] >
-	>
-	type $yuf_drop__receive_yuf_drag_drop_5 = $mol_type_enforce<
-		ReturnType< $yuf_drag_drop['receive'] >
-		,
-		ReturnType< $yuf_drop['receive'] >
-	>
-	export class $yuf_drag_drop extends $yuf_drag {
+	export class $yuf_drag_drop extends $yuf_drop {
+		start( next?: any ): any
+		drag_start( next?: ReturnType< $yuf_drag_drop['start'] > ): ReturnType< $yuf_drag_drop['start'] >
+		drag_move( next?: any ): any
+		end( next?: any ): any
+		drag_end( next?: ReturnType< $yuf_drag_drop['end'] > ): ReturnType< $yuf_drag_drop['end'] >
+		draggable( ): boolean
+		status( next?: string ): string
+		plain( ): ReturnType< $yuf_drag_drop['title'] >
+		html( ): string
+		uris( ): string
 		Item( ): $mol_view
-		ids( ): readonly(string)[]
-		receive( next?: any ): any
-		Drop( ): $yuf_drop
-		Sub( ): ReturnType< $yuf_drag_drop['Drop'] >
+		args( ): Record<string, any>
+		event( ): ({ 
+			dragstart( next?: ReturnType< $yuf_drag_drop['drag_start'] > ): ReturnType< $yuf_drag_drop['drag_start'] >,
+			drag( next?: ReturnType< $yuf_drag_drop['drag_move'] > ): ReturnType< $yuf_drag_drop['drag_move'] >,
+			dragend( next?: ReturnType< $yuf_drag_drop['drag_end'] > ): ReturnType< $yuf_drag_drop['drag_end'] >,
+		})  & ReturnType< $yuf_drop['event'] >
+		attr( ): ({ 
+			'draggable': ReturnType< $yuf_drag_drop['draggable'] >,
+			'mol_drag_status': ReturnType< $yuf_drag_drop['status'] >,
+		})  & ReturnType< $yuf_drop['attr'] >
+		transfer( ): Record<string, string>
+		allow_copy( ): boolean
+		allow_link( ): boolean
+		allow_move( ): boolean
+		image( ): ReturnType< $yuf_drag_drop['dom_node'] >
+		receive_outside( next?: any ): any
+		Drag_image( ): any
+		drag_align( ): string
+		Sub( ): ReturnType< $yuf_drag_drop['Item'] >
 	}
 	
 }
 
 //# sourceMappingURL=drop.view.tree.d.ts.map
+declare namespace $.$$ {
+    class $yuf_drag_drop extends $.$yuf_drag_drop {
+        args(): {
+            [x: string]: string;
+        };
+        uris(): string;
+        start(e?: DragEvent): void;
+        end(e?: Event): void;
+        status(next?: "ready" | "drag"): "ready" | "drag";
+        drag_start(event: DragEvent): void;
+        drag_end(event: DragEvent): void;
+    }
+}
+
 declare namespace $ {
 
 	type $mol_view__sub_yuf_drop_empty_1 = $mol_type_enforce<
@@ -21563,10 +21570,11 @@ declare namespace $.$$ {
         ids_next(): string[];
         ids_current(): readonly string[];
         id(id: string): string;
-        items(): $yuf_drag_drop[];
+        items(): $.$yuf_drag_drop[];
         status(): null;
         item_pending(id: string): null;
         Item_status(id: string): $mol_button_major | null;
+        auto(): void;
         error(): Error | null;
         error_message(): string;
         Status(): $mol_button_major | null;

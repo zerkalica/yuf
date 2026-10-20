@@ -25396,7 +25396,6 @@ var $;
 		}
 		View(){
 			const obj = new this.$.$mol_text_code();
-			(obj.attr) = () => ({...(this.$.$mol_text_code.prototype.attr.call(obj)), "inert": ""});
 			(obj.text) = () => ((this.value()));
 			(obj.render_visible_only) = () => (false);
 			(obj.row_numb) = (id) => ((this.row_numb(id)));
@@ -25595,7 +25594,7 @@ var $;
 "use strict";
 var $;
 (function ($) {
-    $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n\tpointer-events: none;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n\tuser-select: none;\n}\n\n[mol_textarea_view_copy] {\n\tpointer-events: all;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n\tpointer-events: all;\n\tuser-select: auto;\n}\n\n[mol_textarea_clickable] > [mol_textarea_edit] {\n\tuser-select: none;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
+    $mol_style_attach("mol/textarea/textarea.view.css", "[mol_textarea] {\n\tflex: 1 0 auto;\n\tflex-direction: column;\n\tvertical-align: top;\n\tmin-height: max-content;\n\twhite-space: pre-wrap;\n\tword-break: break-word;\n\tborder-radius: var(--mol_gap_round);\n\tfont-family: monospace;\n\tposition: relative;\n\ttab-size: 4;\n}\n\n[mol_textarea_view] {\n    interactivity: inert;\n\twhite-space: inherit;\n\tfont-family: inherit;\n\ttab-size: inherit;\n}\n\n[mol_textarea_view_copy] {\n    interactivity: initial;\n}\n\n[mol_textarea_clickable] > [mol_textarea_view] {\n    interactivity: initial;\n}\n\n[mol_textarea_clickable] > [mol_textarea_edit] {\n    interactivity: inert;\n}\n\n[mol_textarea_edit] {\n\tfont-family: inherit;\n\tpadding: var(--mol_gap_text);\n\tcolor: transparent !important;\n\tcaret-color: var(--mol_theme_text);\n\tresize: none;\n\ttext-align: inherit;\n\twhite-space: inherit;\n\tborder-radius: inherit;\n\toverflow-anchor: none;\n\tposition: absolute;\n\theight: 100%;\n\twidth: 100%;\n\ttab-size: inherit;\n}\n\n[mol_textarea_sidebar_showed] [mol_textarea_edit] {\n\tleft: 1.75rem;\n\twidth: calc( 100% - 1.75rem );\n}\n\n[mol_textarea_edit]:hover + [mol_textarea_view] {\n\tz-index: var(--mol_layer_hover);\n}\n\n[mol_textarea_edit]:focus + [mol_textarea_view] {\n\tz-index: var(--mol_layer_focus);\n}\n");
 })($ || ($ = {}));
 
 ;
@@ -41576,39 +41575,171 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drag) {
+	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drop) {
+		start(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drag_start(next){
+			return (this.start(next));
+		}
+		drag_move(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		end(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		drag_end(next){
+			return (this.end(next));
+		}
+		draggable(){
+			return true;
+		}
+		status(next){
+			if(next !== undefined) return next;
+			return "ready";
+		}
+		plain(){
+			return (this.title());
+		}
+		html(){
+			return "";
+		}
+		uris(){
+			return "";
+		}
 		Item(){
 			const obj = new this.$.$mol_view();
 			return obj;
 		}
-		ids(){
-			return [];
+		args(){
+			return {};
 		}
-		receive(next){
+		event(){
+			return {
+				...(super.event()), 
+				"dragstart": (next) => (this.drag_start(next)), 
+				"drag": (next) => (this.drag_move(next)), 
+				"dragend": (next) => (this.drag_end(next))
+			};
+		}
+		attr(){
+			return {
+				...(super.attr()), 
+				"draggable": (this.draggable()), 
+				"mol_drag_status": (this.status())
+			};
+		}
+		transfer(){
+			return {
+				"text/plain": (this.plain()), 
+				"text/html": (this.html()), 
+				"text/uri-list": (this.uris())
+			};
+		}
+		allow_copy(){
+			return true;
+		}
+		allow_link(){
+			return true;
+		}
+		allow_move(){
+			return true;
+		}
+		image(){
+			return (this.dom_node());
+		}
+		receive_outside(next){
 			if(next !== undefined) return next;
 			return null;
 		}
-		Drop(){
-			const obj = new this.$.$yuf_drop();
-			(obj.id) = () => ((this.id()));
-			(obj.param) = () => ((this.param()));
-			(obj.Sub) = () => ((this.Item()));
-			(obj.ids) = () => ((this.ids()));
-			(obj.receive) = (next) => ((this.receive(next)));
-			return obj;
+		Drag_image(){
+			return null;
+		}
+		drag_align(){
+			return "center";
 		}
 		Sub(){
-			return (this.Drop());
+			return (this.Item());
 		}
 	};
+	($mol_mem(($.$yuf_drag_drop.prototype), "start"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "drag_move"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "end"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "status"));
 	($mol_mem(($.$yuf_drag_drop.prototype), "Item"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "receive"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "Drop"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "receive_outside"));
 
 
 ;
 "use strict";
 
+
+;
+"use strict";
+var $;
+(function ($) {
+    var $$;
+    (function ($$) {
+        class $yuf_drag_drop extends $.$yuf_drag_drop {
+            args() { return { [this.param()]: this.id() }; }
+            uris() { return this.$.$mol_state_arg.link(this.args()); }
+            start(e) {
+                const crt = this.Drag_image()?.dom_node();
+                if (crt) {
+                    let x = 0;
+                    let y = 0;
+                    if (this.drag_align() === 'center') {
+                        x = crt.clientWidth / 2;
+                        y = crt.clientHeight / 2;
+                    }
+                    e?.dataTransfer?.setDragImage(crt, x, y);
+                }
+                this.$.$yuf_drop.dragging.add(this.uris());
+            }
+            end(e) {
+                new this.$.$mol_after_frame($mol_wire_async(() => {
+                    const uris = this.uris();
+                    if (!this.$.$yuf_drop.dragging.has(uris))
+                        return;
+                    $mol_error_fence(() => this.receive_outside(e), e => ($mol_fail_log(e), null));
+                    this.$.$yuf_drop.dragging.delete(uris);
+                }));
+            }
+            status(next = 'ready') { return next; }
+            drag_start(event) {
+                setTimeout(() => this.status('drag'));
+                const transfer = this.transfer();
+                for (let type in transfer) {
+                    event.dataTransfer.setData(type, transfer[type]);
+                }
+                event.dataTransfer.setDragImage(this.image(), 0, -32);
+                const effects = [];
+                if (this.allow_copy())
+                    effects.push('Copy');
+                if (this.allow_link())
+                    effects.push('Link');
+                if (this.allow_move())
+                    effects.push('Move');
+                let effectAllowed = effects[0].toLowerCase() + effects.slice(1).join('');
+                if (effectAllowed === 'copyLinkMove')
+                    effectAllowed = 'all';
+                event.dataTransfer.effectAllowed = effectAllowed;
+                this.start(event);
+            }
+            drag_end(event) {
+                setTimeout(() => this.status('ready'));
+                this.end(event);
+            }
+        }
+        __decorate([
+            $mol_mem
+        ], $yuf_drag_drop.prototype, "status", null);
+        $$.$yuf_drag_drop = $yuf_drag_drop;
+    })($$ = $.$$ || ($.$$ = {}));
+})($ || ($ = {}));
 
 ;
 	($.$yuf_drop_empty) = class $yuf_drop_empty extends ($.$yuf_drop) {
@@ -41809,6 +41940,7 @@ var $;
                     return null;
                 if (this.dragged_id())
                     return null; // prevent drag, while syncing
+                console.log('set new id', this.dragged_id(), 'to', dragged_id);
                 this.dragged_id(dragged_id);
                 this.before_id(before_id);
                 return dragged_id;
@@ -41857,6 +41989,9 @@ var $;
             }
             item_pending(id) { return this.dragged_id() === id ? (this.error(), null) : null; }
             Item_status(id) { return this.dragged_id() === id ? this.Status() : null; }
+            auto() {
+                this.error();
+            }
             error() { return $mol_error_fence(() => this.status(), e => [e])?.[0] ?? null; }
             error_message() { return this.$.$mol_error_message(this.error()); }
             Status() { return this.error() ? this.Cancel_button() : null; }
