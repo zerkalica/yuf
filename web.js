@@ -21397,11 +21397,27 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
-		minimal_height(){
-			return 120;
+		event_scroll(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		index(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		scroll_x(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
+		mouse_x(next){
+			if(next !== undefined) return next;
+			return 0;
 		}
 		auto_scroll(){
 			return true;
+		}
+		minimal_height(){
+			return 120;
 		}
 		ids(){
 			return [];
@@ -21410,12 +21426,20 @@ var $;
 			return (this.images());
 		}
 		event(){
-			return {...(super.event()), "mousemove": (next) => (this.event_move(next))};
+			return {
+				...(super.event()), 
+				"mousemove": (next) => (this.event_move(next)), 
+				"scroll": (next) => (this.event_scroll(next))
+			};
 		}
 	};
 	($mol_mem_key(($.$yuf_carousel.prototype), "Empty"));
 	($mol_mem_key(($.$yuf_carousel.prototype), "Image"));
 	($mol_mem(($.$yuf_carousel.prototype), "event_move"));
+	($mol_mem(($.$yuf_carousel.prototype), "event_scroll"));
+	($mol_mem(($.$yuf_carousel.prototype), "index"));
+	($mol_mem(($.$yuf_carousel.prototype), "scroll_x"));
+	($mol_mem(($.$yuf_carousel.prototype), "mouse_x"));
 
 
 ;
@@ -21429,39 +21453,51 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_carousel extends $.$yuf_carousel {
-            mouse_pos(next) {
-                return next ?? null;
-            }
             event_move(e) {
                 if (!e)
                     return null;
                 if (!this.auto_scroll())
                     return null;
-                this.mouse_pos([e.pageX, e.pageY]);
+                this.mouse_x(e.pageX);
             }
-            part_size() {
-                return 1 / (this.ids().length || 1);
-            }
-            selected_index() {
+            part_size() { return 1 / (this.ids().length || 1); }
+            mouse_index() {
                 const r = this.view_rect();
-                const [x, y] = this.mouse_pos() ?? [];
-                if (!r || x === undefined || y === undefined)
+                if (!r)
                     return 0;
+                const x = this.mouse_x();
                 const part = (x - r.left) / r.width;
                 return Math.floor(part / this.part_size());
             }
-            switched() {
-                const index = this.selected_index();
-                const r = this.view_rect();
-                if (!r)
-                    return null;
-                const left = r.width * index;
-                this.dom_node().scrollTo({ left });
+            scroll_x(next, cache) {
+                const node = this.dom_node();
+                if ((next || next === 0) && !cache)
+                    node.scrollTo({ left: next });
+                return next ?? node.scrollLeft;
+            }
+            event_scroll(next) { this.scroll_x(null, 'cache'); }
+            width() { return this.view_rect()?.width ?? 0; }
+            index(next) {
+                if (next !== undefined)
+                    return this.scroll_sync(next);
+                const width = this.width();
+                const x = this.scroll_x();
+                const index = width > 0 ? Math.round(x / width) : 0;
+                return index;
+            }
+            scroll_sync(next) {
+                const mouse_index = this.mouse_index();
+                if (next !== undefined)
+                    next = Math.max(Math.min(this.ids().length - 1, next), 0);
+                const index = next ?? mouse_index;
+                const width = this.width();
+                const left = width * index;
+                this.scroll_x(left);
                 return index;
             }
             auto() {
                 try {
-                    this.switched();
+                    this.scroll_sync();
                 }
                 catch (e) {
                     $mol_fail_log(e);
@@ -21478,16 +21514,16 @@ var $;
         }
         __decorate([
             $mol_mem
-        ], $yuf_carousel.prototype, "mouse_pos", null);
+        ], $yuf_carousel.prototype, "mouse_index", null);
         __decorate([
             $mol_mem
-        ], $yuf_carousel.prototype, "part_size", null);
+        ], $yuf_carousel.prototype, "scroll_x", null);
         __decorate([
             $mol_mem
-        ], $yuf_carousel.prototype, "selected_index", null);
+        ], $yuf_carousel.prototype, "index", null);
         __decorate([
             $mol_mem
-        ], $yuf_carousel.prototype, "switched", null);
+        ], $yuf_carousel.prototype, "scroll_sync", null);
         __decorate([
             $mol_mem
         ], $yuf_carousel.prototype, "images", null);
@@ -21586,6 +21622,30 @@ var $;
 })($ || ($ = {}));
 
 ;
+	($.$mol_icon_page_previous) = class $mol_icon_page_previous extends ($.$mol_icon) {
+		path(){
+			return "M4,21H19A2,2 0 0,0 21,19V13H17V15L13,12L17,9V11H21V5A2,2 0 0,0 19,3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21M4,15H8V17H4V15M4,11H11V13H4V11M4,7H11V9H4V7M21,11H24V13H21V11Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
+	($.$mol_icon_page_next) = class $mol_icon_page_next extends ($.$mol_icon) {
+		path(){
+			return "M20,3H5A2,2 0 0,0 3,5V11H7V9L11,12L7,15V13H3V19A2,2 0 0,0 5,21H20A2,2 0 0,0 22,19V5A2,2 0 0,0 20,3M17,17H13V15H17V17M20,13H13V11H20V13M20,9H13V7H20V9M3,13H0V11H3V13Z";
+		}
+	};
+
+
+;
+"use strict";
+
+
+;
 	($.$yuf_carousel_demo) = class $yuf_carousel_demo extends ($.$mol_example_small) {
 		Card1(){
 			const obj = new this.$.$yuf_carousel_demo_card();
@@ -21596,10 +21656,16 @@ var $;
 		card2_urls(){
 			return [...(this.urls()), ""];
 		}
+		card2_title(){
+			return "Last url empty {index2}";
+		}
+		index2(next){
+			return (this.Card2().index(next));
+		}
 		Card2(){
 			const obj = new this.$.$yuf_carousel_demo_card();
 			(obj.ids) = () => ((this.card2_urls()));
-			(obj.title) = () => ("Last url empty");
+			(obj.title) = () => ((this.card2_title()));
 			return obj;
 		}
 		Card3(){
@@ -21611,7 +21677,8 @@ var $;
 			return [
 				"0", 
 				"100500", 
-				"1"
+				"1", 
+				"3"
 			];
 		}
 		image_url(id){
@@ -21657,6 +21724,9 @@ var $;
 		ids(){
 			return [];
 		}
+		index(next){
+			return (this.Carousel().index(next));
+		}
 		image_url(id){
 			return "";
 		}
@@ -21671,9 +21741,38 @@ var $;
 			(obj.sub) = () => ([(this.title())]);
 			return obj;
 		}
+		Prev_icon(){
+			const obj = new this.$.$mol_icon_page_previous();
+			return obj;
+		}
+		nav(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		Prev(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Prev_icon())]);
+			(obj.click) = (next) => ((this.nav("prev", next)));
+			return obj;
+		}
+		Next_icon(){
+			const obj = new this.$.$mol_icon_page_next();
+			return obj;
+		}
+		Next(){
+			const obj = new this.$.$mol_button_minor();
+			(obj.sub) = () => ([(this.Next_icon())]);
+			(obj.click) = (next) => ((this.nav("next", next)));
+			return obj;
+		}
+		Buttons(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.Prev()), (this.Next())]);
+			return obj;
+		}
 		Body(){
 			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.Text())]);
+			(obj.sub) = () => ([(this.Text()), (this.Buttons())]);
 			return obj;
 		}
 		sub(){
@@ -21682,6 +21781,12 @@ var $;
 	};
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Carousel"));
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Text"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Prev_icon"));
+	($mol_mem_key(($.$yuf_carousel_demo_card.prototype), "nav"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Prev"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Next_icon"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Next"));
+	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Buttons"));
 	($mol_mem(($.$yuf_carousel_demo_card.prototype), "Body"));
 
 
@@ -21701,9 +21806,15 @@ var $;
                     throw new Error($mol_rest_code[$mol_rest_code['Not Found']], { cause: { id } });
                 return this.urls()[Number(id)];
             }
+            card2_title() {
+                return super.card2_title().replace('{index2}', this.index2().toFixed(0));
+            }
         }
         $$.$yuf_carousel_demo = $yuf_carousel_demo;
         class $yuf_carousel_demo_card extends $.$yuf_carousel_demo_card {
+            nav(id, e) {
+                this.index(this.index() + (id === 'prev' ? -1 : 1));
+            }
             image_url(id) {
                 return id;
             }
@@ -21755,6 +21866,9 @@ var $;
                     direction: 'column',
                 },
                 justifyContent: 'end',
+            },
+            Buttons: {
+                justifyContent: 'space-between',
             }
         });
     })($$ = $.$$ || ($.$$ = {}));
