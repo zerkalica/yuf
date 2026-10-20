@@ -17,7 +17,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		selected_index() {
+		override selected_index() {
 			const r = this.view_rect()
 			const [ x, y ] = this.mouse_pos() ?? []
 
