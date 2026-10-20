@@ -11,8 +11,9 @@ namespace $.$$ {
 		@ $mol_mem
 		mouse_index() {
 			const r = this.view_rect()
-			if (! r) return 0
+			if (! r) return null
 			const x = this.mouse_x()
+			if (! x ) return null
 
 			const part = (x - r.left) / r.width
 			return Math.floor(part / this.part_size())
@@ -31,31 +32,26 @@ namespace $.$$ {
 
 		@ $mol_mem
 		override index(next?: number) {
-			if (next !== undefined) return this.scroll_sync(next)
+			if (next !== undefined) next = Math.max(Math.min(this.ids().length - 1, next), 0)
 
 			const width = this.width()
 
-			const x = this.scroll_x()
+			const x = this.scroll_x(next === undefined ? next : width * next)
 			const index = width > 0 ? Math.round(x / width) : 0
 			return index
 		}
 
 		@ $mol_mem
-		scroll_sync(next?: number) {
+		mouse_index_sync(next?: number) {
 			const mouse_index = this.mouse_index()
-			if (next !== undefined) next = Math.max(Math.min(this.ids().length - 1, next), 0)
+			if (mouse_index === null) return 0
 			const index = next ?? mouse_index
-			const width = this.width()
-			const left = width * index
-
-			this.scroll_x(left)
-
-			return index
+			return this.index(index)
 		}
 
 		override auto() {
 			try {
-				this.scroll_sync()
+				this.mouse_index_sync()
 			} catch (e) {
 				$mol_fail_log(e)
 			}
