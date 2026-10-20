@@ -1,0 +1,4 @@
+$yuf_over_dimmer $mol_dimmer
+	style *
+		^
+		--yuf_over_dimmer_lines <= lines_max null string

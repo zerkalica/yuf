@@ -1,0 +1,7 @@
+[yuf_over_dimmer] {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: var(--yuf_over_dimmer_lines, 2);
+	line-clamp: var(--yuf_over_dimmer_lines, 2);
+	word-break: break-all;
+}
