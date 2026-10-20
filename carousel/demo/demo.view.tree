@@ -11,7 +11,8 @@ $yuf_carousel_demo $mol_example_small
 			ids <= card2_urls /string
 				^ urls
 				\
-			title \Last url empty
+			title <= card2_title \Last url empty {index2}
+			index? => index2?
 		<= Card3 $yuf_carousel_demo_card
 			title \No images
 		<= Card4 $yuf_carousel_demo_card
@@ -19,6 +20,7 @@ $yuf_carousel_demo $mol_example_small
 				\0
 				\100500
 				\1
+				\3
 			image_url* <= image_url* \
 			title \By id, mid throws "Not Found"
 	tags /
@@ -32,6 +34,14 @@ $yuf_carousel_demo_card $mol_view
 	sub /
 		<= Carousel $yuf_carousel
 			ids <= ids /string
+			index? => index?
 			url* <= image_url* \
 		<= Body $mol_view sub /
 			<= Text $mol_view sub / <= title
+			<= Buttons $mol_view sub /
+				<= Prev $mol_button_minor
+					sub / <= Prev_icon $mol_icon_page_previous
+					click? <=> nav*prev? null
+				<= Next $mol_button_minor
+					sub / <= Next_icon $mol_icon_page_next
+					click? <=> nav*next? null

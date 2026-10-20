@@ -40,7 +40,12 @@ namespace $.$$ {
 				direction: 'column',
 			},
 			justifyContent: 'end',
+		},
+
+		Buttons: {
+			justifyContent: 'space-between',
 		}
+
 	} )
 	
 }

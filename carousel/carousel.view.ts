@@ -1,48 +1,61 @@
 namespace $.$$ {
 	export class $yuf_carousel extends $.$yuf_carousel {
-		@ $mol_mem
-		mouse_pos(next?: readonly [ x: number, y: number ]) {
-			return next ?? null
-		}
-
 		override event_move(e?: MouseEvent) {
 			if ( ! e ) return null
 			if (! this.auto_scroll()) return null
-			this.mouse_pos([ e.pageX, e.pageY ])
+			this.mouse_x(e.pageX)
 		}
 
-		@ $mol_mem
-		part_size() {
-			return 1 / (this.ids().length || 1)
-		}
+		part_size() { return 1 / (this.ids().length || 1) }
 
 		@ $mol_mem
-		selected_index() {
+		mouse_index() {
 			const r = this.view_rect()
-			const [ x, y ] = this.mouse_pos() ?? []
-
-			if (! r || x === undefined || y === undefined) return 0
+			if (! r) return 0
+			const x = this.mouse_x()
 
 			const part = (x - r.left) / r.width
 			return Math.floor(part / this.part_size())
 		}
 
 		@ $mol_mem
-		switched() {
-			const index = this.selected_index()
-			
-			const r = this.view_rect()
-			if (! r) return null
+		override scroll_x(next?: number | null, cache?: 'cache') {
+			const node = this.dom_node()
+			if ( (next || next === 0) && ! cache) node.scrollTo({ left: next })
+			return next ?? node.scrollLeft
+		}
 
-			const left = r.width * index
-			this.dom_node().scrollTo({ left })
+		override event_scroll( next? : Event ) { this.scroll_x(null, 'cache') }
+
+		protected width() { return this.view_rect()?.width ?? 0 }
+
+		@ $mol_mem
+		override index(next?: number) {
+			if (next !== undefined) return this.scroll_sync(next)
+
+			const width = this.width()
+
+			const x = this.scroll_x()
+			const index = width > 0 ? Math.round(x / width) : 0
+			return index
+		}
+
+		@ $mol_mem
+		scroll_sync(next?: number) {
+			const mouse_index = this.mouse_index()
+			if (next !== undefined) next = Math.max(Math.min(this.ids().length - 1, next), 0)
+			const index = next ?? mouse_index
+			const width = this.width()
+			const left = width * index
+
+			this.scroll_x(left)
 
 			return index
 		}
 
 		override auto() {
 			try {
-				this.switched()
+				this.scroll_sync()
 			} catch (e) {
 				$mol_fail_log(e)
 			}
