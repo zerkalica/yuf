@@ -10253,20 +10253,21 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_image__minimal_height_yuf_carousel_1 = $mol_type_enforce<
-		number
-		,
-		ReturnType< $mol_image['minimal_height'] >
-	>
-	type $mol_image__uri_yuf_carousel_2 = $mol_type_enforce<
+	type $yuf_carousel_image__uri_yuf_carousel_1 = $mol_type_enforce<
 		ReturnType< $yuf_carousel['url'] >
 		,
-		ReturnType< $mol_image['uri'] >
+		ReturnType< $yuf_carousel_image['uri'] >
+	>
+	type $yuf_carousel_image__error_yuf_carousel_2 = $mol_type_enforce<
+		ReturnType< $yuf_carousel['url_error'] >
+		,
+		ReturnType< $yuf_carousel_image['error'] >
 	>
 	export class $yuf_carousel extends $mol_view {
 		Empty( id: any): $mol_icon_camera_off
 		url( id: any): string
-		Image( id: any): $mol_image
+		url_error( id: any, next?: any ): any
+		Image( id: any): $yuf_carousel_image
 		images( ): readonly($mol_view)[]
 		event_move( next?: any ): any
 		event_scroll( next?: any ): any
@@ -10275,11 +10276,20 @@ declare namespace $ {
 		auto_scroll( ): boolean
 		minimal_height( ): number
 		ids( ): readonly(string)[]
+		empty( id: any): readonly($mol_view)[]
 		sub( ): ReturnType< $yuf_carousel['images'] >
 		event( ): ({ 
 			mousemove( next?: ReturnType< $yuf_carousel['event_move'] > ): ReturnType< $yuf_carousel['event_move'] >,
 			scroll( next?: ReturnType< $yuf_carousel['event_scroll'] > ): ReturnType< $yuf_carousel['event_scroll'] >,
 		})  & ReturnType< $mol_view['event'] >
+	}
+	
+	export class $yuf_carousel_image extends $mol_image {
+		error( next?: any ): any
+		minimal_height( ): number
+		event( ): ({ 
+			error( next?: ReturnType< $yuf_carousel_image['error'] > ): ReturnType< $yuf_carousel_image['error'] >,
+		})  & ReturnType< $mol_image['event'] >
 	}
 	
 }
@@ -10294,7 +10304,7 @@ declare namespace $.$$ {
         scroll_x(next?: number | null, cache?: 'cache'): number;
         event_scroll(next?: Event): void;
         index(next?: number): number;
-        images(): ($.$mol_image | $mol_icon_camera_off)[];
+        images(): readonly $mol_view[];
         protected url_safe(id: string): string;
         url(path: string): string;
         auto(): any;

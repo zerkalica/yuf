@@ -21462,14 +21462,18 @@ var $;
 		url(id){
 			return "";
 		}
+		url_error(id, next){
+			if(next !== undefined) return next;
+			return null;
+		}
 		Image(id){
-			const obj = new this.$.$mol_image();
-			(obj.minimal_height) = () => (120);
+			const obj = new this.$.$yuf_carousel_image();
 			(obj.uri) = () => ((this.url(id)));
+			(obj.error) = (next) => ((this.url_error(id, next)));
 			return obj;
 		}
 		images(){
-			return [(this.Empty("0")), (this.Image("0"))];
+			return [(this.Image("0"))];
 		}
 		event_move(next){
 			if(next !== undefined) return next;
@@ -21496,6 +21500,9 @@ var $;
 		ids(){
 			return [];
 		}
+		empty(id){
+			return [(this.Empty(id))];
+		}
 		sub(){
 			return (this.images());
 		}
@@ -21508,11 +21515,25 @@ var $;
 		}
 	};
 	($mol_mem_key(($.$yuf_carousel.prototype), "Empty"));
+	($mol_mem_key(($.$yuf_carousel.prototype), "url_error"));
 	($mol_mem_key(($.$yuf_carousel.prototype), "Image"));
 	($mol_mem(($.$yuf_carousel.prototype), "event_move"));
 	($mol_mem(($.$yuf_carousel.prototype), "event_scroll"));
 	($mol_mem(($.$yuf_carousel.prototype), "index"));
 	($mol_mem(($.$yuf_carousel.prototype), "scroll_x"));
+	($.$yuf_carousel_image) = class $yuf_carousel_image extends ($.$mol_image) {
+		error(next){
+			if(next !== undefined) return next;
+			return null;
+		}
+		minimal_height(){
+			return 120;
+		}
+		event(){
+			return {...(super.event()), "error": (next) => (this.error(next))};
+		}
+	};
+	($mol_mem(($.$yuf_carousel_image.prototype), "error"));
 
 
 ;
@@ -21564,11 +21585,11 @@ var $;
                 return index;
             }
             images() {
-                const items = this.ids().map(id => this.url_safe(id) ? this.Image(id) : this.Empty(id));
-                return items.length ? items : [this.Empty('0')];
+                const items = this.ids().map(id => this.url_safe(id) ? this.Image(id) : this.empty(id)?.[0]);
+                return items.length ? items : this.empty('0');
             }
             url_safe(id) {
-                return $mol_error_fence(() => this.url(id), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? '' : e);
+                return $mol_error_fence(() => this.url_error(id) ? '' : this.url(id), e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? '' : e);
             }
             url(path) { return path; }
             auto() {
@@ -21634,6 +21655,14 @@ var $;
             },
             '>': {
                 $mol_view: {
+                    width: '100%',
+                    height: '100%',
+                    minHeight: 'auto',
+                    flex: {
+                        shrink: 0,
+                        grow: 0,
+                    },
+                    objectFit: 'contain',
                     scroll: {
                         snap: {
                             type: 'none',
@@ -21657,22 +21686,6 @@ var $;
                         },
                     },
                 },
-            },
-            alignItems: 'center',
-            Image: {
-                width: '100%',
-                height: '100%',
-                minHeight: 'auto',
-                flex: {
-                    shrink: 0,
-                    grow: 0,
-                },
-                objectFit: 'contain',
-            },
-            Empty: {
-                width: '100%',
-                height: '100%',
-                minHeight: 'auto',
             },
             minHeight: '5rem',
         });
