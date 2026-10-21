@@ -4,12 +4,17 @@ $yuf_carousel $mol_view
 	auto_scroll true
 	minimal_height 120
 	ids /string - ids or urls
-	sub <= images /$mol_view
-		<= Empty*0 $mol_icon_camera_off
-		<= Image*0 $mol_image
-			minimal_height 120
-			uri <= url* \
+	empty* /$mol_view <= Empty* $mol_icon_camera_off
+	sub <= images /$mol_view <= Image*0 $yuf_carousel_image
+		uri <= url* \
+		error? <=> url_error*? null
 	event *
 		^
 		mousemove? <=> event_move? null
 		scroll? <=> event_scroll? null
+
+$yuf_carousel_image $mol_image
+	minimal_height 120
+	event *
+		^
+		error? <=> error? null

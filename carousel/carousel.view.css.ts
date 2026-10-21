@@ -43,6 +43,15 @@ namespace $.$$ {
 
 		'>': {
 			$mol_view: {
+				width: '100%',
+				height: '100%',
+				minHeight: 'auto',
+				flex: {
+					shrink: 0,
+					grow: 0,
+				},
+				objectFit: 'contain',
+
 				scroll: {
 					snap: {
 						type: 'none',
@@ -66,24 +75,6 @@ namespace $.$$ {
 					},
 				},
 			},
-		},
-
-		alignItems: 'center',
-		Image: {
-			width: '100%',
-			height: '100%',
-			minHeight: 'auto',
-			flex: {
-				shrink: 0,
-				grow: 0,
-			},
-			objectFit: 'contain',
-		},
-
-		Empty: {
-			width: '100%',
-			height: '100%',
-			minHeight: 'auto',
 		},
 
 		minHeight: '5rem',

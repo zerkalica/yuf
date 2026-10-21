@@ -44,15 +44,15 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem
-		override images() {
-			const items = this.ids().map(id => this.url_safe(id) ? this.Image(id) : this.Empty(id))
+		override images(): readonly $mol_view[] {
+			const items = this.ids().map(id => this.url_safe(id) ? this.Image(id) : this.empty(id)?.[0])
 
-			return items.length ? items : [ this.Empty('0') ]
+			return items.length ? items : this.empty('0')
 		}
 
 		protected url_safe(id: string) {
 			return $mol_error_fence(
-				() => this.url(id),
+				() => this.url_error(id) ? '' : this.url(id),
 				e => e.message === $mol_rest_code[$mol_rest_code['Not Found']] ? '' : e,
 			)
 		}
