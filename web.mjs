@@ -21466,8 +21466,8 @@ var $;
                 if (!r)
                     return null;
                 const count = this.count();
-                const index = Math.max(0, Math.floor((x - r.left) / r.width * count));
-                this.scroll_x(index * r.width);
+                const index = Math.floor((x - r.left) / r.width * count);
+                this.index(index);
                 this.mouse_x = -1;
             }
             scroll_x(next, cache) {
@@ -21479,7 +21479,7 @@ var $;
             event_scroll(next) { this.scroll_x(null, 'cache'); }
             index(next) {
                 if (next !== undefined)
-                    next = Math.max(Math.min(this.ids().length - 1, next), 0);
+                    next = Math.max(Math.min(this.count() - 1, next), 0);
                 const width = this.view_rect()?.width ?? 0;
                 const x = this.scroll_x(next === undefined ? next : width * next);
                 const index = width > 0 ? Math.round(x / width) : 0;
