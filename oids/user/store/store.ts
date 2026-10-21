@@ -280,8 +280,9 @@ namespace $ {
 		@ $mol_mem_key
 		protected attr_data(id: string, next?: $yuf_form_attr_type | null): $yuf_form_attr_type {
 			if (next?.id && next.id !== id) this.attr_id_map[id] = next.id
-			const real_id = this.attr_id_map[id] ?? id
-			return this.attrs(next === undefined ? next : { attrs: { [id]: null, [real_id]: next } }).attrs[id] ?? {}
+			const next_id = this.attr_id_map[id] ?? id
+			if (next?.id && next?.id !== id) next = { ...this.attrs().attrs[id], ... next, }
+			return this.attrs(next === undefined ? next : { attrs: { [id]: null, [next_id]: next } }).attrs[id] ?? {}
 		}
 
 		real_id(id: string) {

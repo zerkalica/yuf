@@ -3,20 +3,24 @@ namespace $.$$ {
 		override event_move(e?: MouseEvent) {
 			if ( ! e ) return null
 			if (! this.auto_scroll()) return null
-			this.mouse_x(e.pageX)
+			if (this.mouse_x !== -1) return null
+
+			this.mouse_x = e.pageX
+			new $mol_after_frame(() => this.mouse_index())
 		}
 
-		part_size() { return 1 / (this.ids().length || 1) }
+		protected mouse_x = -1
 
-		@ $mol_mem
+		protected count() { return this.ids().length || 1 }
+
 		mouse_index() {
+			const x = this.mouse_x
 			const r = this.view_rect()
 			if (! r) return null
-			const x = this.mouse_x()
-			if (! x ) return null
-
-			const part = (x - r.left) / r.width
-			return Math.floor(part / this.part_size())
+			const count = this.count()
+			const index = Math.max(0, Math.floor((x - r.left) / r.width * count))
+			this.scroll_x(index * r.width)
+			this.mouse_x = -1
 		}
 
 		@ $mol_mem
@@ -28,33 +32,15 @@ namespace $.$$ {
 
 		override event_scroll( next? : Event ) { this.scroll_x(null, 'cache') }
 
-		protected width() { return this.view_rect()?.width ?? 0 }
-
 		@ $mol_mem
 		override index(next?: number) {
 			if (next !== undefined) next = Math.max(Math.min(this.ids().length - 1, next), 0)
 
-			const width = this.width()
+			const width = this.view_rect()?.width ?? 0
 
 			const x = this.scroll_x(next === undefined ? next : width * next)
 			const index = width > 0 ? Math.round(x / width) : 0
 			return index
-		}
-
-		@ $mol_mem
-		mouse_index_sync(next?: number) {
-			const mouse_index = this.mouse_index()
-			if (mouse_index === null) return 0
-			const index = next ?? mouse_index
-			return this.index(index)
-		}
-
-		override auto() {
-			try {
-				this.mouse_index_sync()
-			} catch (e) {
-				$mol_fail_log(e)
-			}
 		}
 
 		@ $mol_mem
@@ -72,5 +58,11 @@ namespace $.$$ {
 		}
 
 		override url(path: string) { return path }
+
+		override auto() {
+			this.index()
+			return super.auto()
+		}
+
 	}
 }

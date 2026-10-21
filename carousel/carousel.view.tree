@@ -1,7 +1,6 @@
 $yuf_carousel $mol_view
 	index? 0
 	scroll_x? 0
-	mouse_x? 0
 	auto_scroll true
 	minimal_height 120
 	ids /string - ids or urls
