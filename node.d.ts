@@ -10336,7 +10336,6 @@ declare namespace $ {
 		event_scroll( next?: any ): any
 		index( next?: number ): number
 		scroll_x( next?: number ): number
-		mouse_x( next?: number ): number
 		auto_scroll( ): boolean
 		minimal_height( ): number
 		ids( ): readonly(string)[]
@@ -10353,17 +10352,16 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_carousel extends $.$yuf_carousel {
         event_move(e?: MouseEvent): null | undefined;
-        part_size(): number;
-        mouse_index(): number | null;
+        protected mouse_x: number;
+        protected count(): number;
+        mouse_index(): null | undefined;
         scroll_x(next?: number | null, cache?: 'cache'): number;
         event_scroll(next?: Event): void;
-        protected width(): number;
         index(next?: number): number;
-        mouse_index_sync(next?: number): number;
-        auto(): void;
         images(): ($.$mol_image | $mol_icon_camera_off)[];
         protected url_safe(id: string): string;
         url(path: string): string;
+        auto(): any;
     }
 }
 
