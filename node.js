@@ -42042,7 +42042,6 @@ var $;
                     return null;
                 if (this.dragged_id())
                     return null; // prevent drag, while syncing
-                console.log('set new id', this.dragged_id(), 'to', dragged_id);
                 this.dragged_id(dragged_id);
                 this.before_id(before_id);
                 return dragged_id;
@@ -42132,24 +42131,9 @@ var $;
 			(obj.param) = () => ("dnd");
 			return obj;
 		}
-		Item_status2(id){
-			return (this.Catalog2().Item_status(id));
-		}
-		ids_current2(){
-			return (this.Catalog2().ids_current());
-		}
-		Catalog2(){
-			const obj = new this.$.$yuf_drop_list_demo_catalog();
-			(obj.menu_title) = () => ("DnD - Per item status");
-			(obj.param) = () => ("dnd_per_item");
-			(obj.status_content) = () => ([]);
-			(obj.item_status_content) = (id) => ([(this.Item_status2(id))]);
-			(obj.spread_ids) = () => ((this.ids_current2()));
-			return obj;
-		}
 		Book(){
 			const obj = new this.$.$mol_book2();
-			(obj.pages) = () => ([(this.Catalog()), (this.Catalog2())]);
+			(obj.pages) = () => ([(this.Catalog())]);
 			return obj;
 		}
 		title(){
@@ -42174,7 +42158,6 @@ var $;
 		}
 	};
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
-	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog2"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Book"));
 	($.$yuf_drop_list_demo_catalog) = class $yuf_drop_list_demo_catalog extends ($.$mol_book2_catalog) {
 		errors_on_title(){
@@ -42221,7 +42204,7 @@ var $;
 			return [(this.item_pending(id))];
 		}
 		Menu_item(id){
-			const obj = new this.$.$mol_view();
+			const obj = new this.$.$yuf_drop_list_demo_catalog_item();
 			(obj.sub) = () => ([...(this.item_status_content(id)), ...(this.menu_item_content(id))]);
 			return obj;
 		}
@@ -42236,7 +42219,7 @@ var $;
 			return obj;
 		}
 		items_max(){
-			return 50;
+			return 3;
 		}
 		menu_tools(){
 			return [(this.Errors_on())];
@@ -42267,6 +42250,7 @@ var $;
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "ids_actual"));
 	($mol_mem_key(($.$yuf_drop_list_demo_catalog.prototype), "Menu_item"));
 	($mol_mem(($.$yuf_drop_list_demo_catalog.prototype), "Menu_links"));
+	($.$yuf_drop_list_demo_catalog_item) = class $yuf_drop_list_demo_catalog_item extends ($.$mol_view) {};
 
 
 ;
@@ -42299,6 +42283,16 @@ var $;
             $mol_mem
         ], $yuf_drop_list_demo_catalog.prototype, "ids_actual", null);
         $$.$yuf_drop_list_demo_catalog = $yuf_drop_list_demo_catalog;
+        class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
+            constructor() {
+                super();
+                console.log('constr', this);
+            }
+            destructor() {
+                console.log('destr', this);
+            }
+        }
+        $$.$yuf_drop_list_demo_catalog_item = $yuf_drop_list_demo_catalog_item;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
 

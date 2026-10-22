@@ -21679,46 +21679,13 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 	>
-	type __yuf_drop_list_demo_3 = $mol_type_enforce<
-		Parameters< $yuf_drop_list_demo['Item_status2'] >[0]
-		,
-		Parameters< ReturnType< $yuf_drop_list_demo['Catalog2'] >['Item_status'] >[0]
-	>
-	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_4 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
-	>
-	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_5 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $yuf_drop_list_demo_catalog['param'] >
-	>
-	type $yuf_drop_list_demo_catalog__status_content_yuf_drop_list_demo_6 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $yuf_drop_list_demo_catalog['status_content'] >
-	>
-	type $yuf_drop_list_demo_catalog__item_status_content_yuf_drop_list_demo_7 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $yuf_drop_list_demo_catalog['item_status_content'] >
-	>
-	type $yuf_drop_list_demo_catalog__spread_ids_yuf_drop_list_demo_8 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['ids_current2'] >
-		,
-		ReturnType< $yuf_drop_list_demo_catalog['spread_ids'] >
-	>
-	type $mol_book2__pages_yuf_drop_list_demo_9 = $mol_type_enforce<
+	type $mol_book2__pages_yuf_drop_list_demo_3 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_book2['pages'] >
 	>
 	export class $yuf_drop_list_demo extends $mol_example_large {
 		Catalog( ): $yuf_drop_list_demo_catalog
-		Item_status2( id: any): ReturnType< ReturnType< $yuf_drop_list_demo['Catalog2'] >['Item_status'] >
-		ids_current2( ): ReturnType< ReturnType< $yuf_drop_list_demo['Catalog2'] >['ids_current'] >
-		Catalog2( ): $yuf_drop_list_demo_catalog
 		Book( ): $mol_book2
 		title( ): string
 		sub( ): readonly(any)[]
@@ -21751,10 +21718,10 @@ declare namespace $ {
 		,
 		Parameters< ReturnType< $yuf_drop_list_demo_catalog['Menu_links'] >['Item_status'] >[0]
 	>
-	type $mol_view__sub_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog_item__sub_yuf_drop_list_demo_catalog_6 = $mol_type_enforce<
 		readonly(any)[]
 		,
-		ReturnType< $mol_view['sub'] >
+		ReturnType< $yuf_drop_list_demo_catalog_item['sub'] >
 	>
 	type $yuf_drop_list__Empty_yuf_drop_list_demo_catalog_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo_catalog['Menu_links_empty'] >
@@ -21809,7 +21776,7 @@ declare namespace $ {
 		ids_actual( next?: readonly(string)[] ): readonly(string)[]
 		id( id: any): string
 		item_status_content( id: any): readonly($mol_view_content)[]
-		Menu_item( id: any): $mol_view
+		Menu_item( id: any): $yuf_drop_list_demo_catalog_item
 		Menu_links( ): $yuf_drop_list
 		items_max( ): number
 		menu_tools( ): readonly(any)[]
@@ -21820,6 +21787,9 @@ declare namespace $ {
 		spread_title( id: any): ReturnType< $yuf_drop_list_demo_catalog['id'] >
 	}
 	
+	export class $yuf_drop_list_demo_catalog_item extends $mol_view {
+	}
+	
 }
 
 //# sourceMappingURL=demo.view.tree.d.ts.map
@@ -21827,6 +21797,10 @@ declare namespace $.$$ {
     class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
         ids_actual(next?: readonly string[]): readonly string[];
         id(id: string): string;
+    }
+    class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
+        constructor();
+        destructor(): void;
     }
 }
 
