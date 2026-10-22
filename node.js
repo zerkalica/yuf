@@ -41793,19 +41793,6 @@ var $;
         class $yuf_drag_drop extends $.$yuf_drag_drop {
             args() { return { [this.param()]: this.id() }; }
             uris() { return this.$.$mol_state_arg.link(this.args()); }
-            start(e) {
-                const crt = this.Drag_image()?.dom_node();
-                if (crt) {
-                    let x = 0;
-                    let y = 0;
-                    if (this.drag_align() === 'center') {
-                        x = crt.clientWidth / 2;
-                        y = crt.clientHeight / 2;
-                    }
-                    e?.dataTransfer?.setDragImage(crt, x, y);
-                }
-                this.$.$yuf_drop.dragging.add(this.uris());
-            }
             end(e) {
                 new this.$.$mol_after_frame($mol_wire_async(() => {
                     const uris = this.uris();
@@ -41822,7 +41809,14 @@ var $;
                 for (let type in transfer) {
                     event.dataTransfer.setData(type, transfer[type]);
                 }
-                event.dataTransfer.setDragImage(this.image(), 0, -32);
+                const crt = this.image();
+                let x = 0;
+                let y = -32;
+                if (this.drag_align() === 'center') {
+                    x = crt.clientWidth / 2;
+                    y = crt.clientHeight / 2;
+                }
+                event.dataTransfer.setDragImage(crt, x, y);
                 const effects = [];
                 if (this.allow_copy())
                     effects.push('Copy');
@@ -41834,6 +41828,7 @@ var $;
                 if (effectAllowed === 'copyLinkMove')
                     effectAllowed = 'all';
                 event.dataTransfer.effectAllowed = effectAllowed;
+                this.$.$yuf_drop.dragging.add(this.uris());
                 this.start(event);
             }
             drag_end(event) {

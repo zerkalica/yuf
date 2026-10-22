@@ -21509,7 +21509,6 @@ declare namespace $.$$ {
             [x: string]: string;
         };
         uris(): string;
-        start(e?: DragEvent): void;
         end(e?: Event): void;
         status(next?: "ready" | "drag"): "ready" | "drag";
         drag_start(event: DragEvent): void;
