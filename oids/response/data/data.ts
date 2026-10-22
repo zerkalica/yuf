@@ -15,10 +15,10 @@ namespace $ {
 			}
 
 			const err_obj = $yuf_oids_error_pick(json)
-			const message = err_obj?.error_description
-			const code = err_obj?.error || err_obj?.errorMessage || err?.message || response.message()
+			const message = err_obj?.errorMessage === undefined ? err_obj?.error_description : undefined
+			const code = (err_obj?.errorMessage === undefined ? err_obj?.error : err_obj.errorMessage) || err?.message || response.message()
 
-			const cause = { message, response, json }
+			const cause = { message, response, ...json }
 
 			if (err) throw new $mol_error_mix(code, cause, err)
 			throw new Error(code, { cause })

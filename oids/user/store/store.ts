@@ -6,6 +6,11 @@ namespace $ {
 	const arr = $mol_data_array
 	const nul = $yuf_data_nul
 
+	export class $yuf_oids_user_store_error extends $mol_error_mix<{
+		user_data?: typeof $yuf_oids_user_model_dto.Value
+	}> {}
+
+
 	const Meta_response = $yuf_oids_response_data($yuf_oids_user_model_meta_dto)
 
 	const Role_rec = rec({
@@ -499,7 +504,7 @@ namespace $ {
 
 			$mol_error_fence(
 				() => user.data({ ...prev, ...next }),
-				e => new $mol_error_mix('User import error', { user_data: next }, e)
+				e => new $yuf_oids_user_store_error('User import error', { user_data: next }, e)
 			)
 
 			return user.login()

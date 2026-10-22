@@ -1,4 +1,4 @@
-$yuf_avatar_editor $mol_view
+$yuf_avatar_editor $mol_form_field
 	value_data_url? \
 	value_blob? null Blob
 	size_max /number
@@ -32,6 +32,7 @@ $yuf_avatar_editor $mol_view
 					sub / <= Decline_icon $mol_icon_close
 					hint <= decline_hint @ \Decline
 					click? <=> instrument_close? null
+			<= Bid
 		^ pane_content /$mol_view <= Pane $yuf_avatar_pane
 			url <= current_url \
 			points* => points*

@@ -3,20 +3,6 @@ namespace $.$$ {
 		
 		override args() { return { [this.param()]: this.id() } }
 		override uris() { return this.$.$mol_state_arg.link(this.args()) }
-		override start(e?: DragEvent) {
-			const crt = this.Drag_image()?.dom_node()
-			if ( crt ) {
-				let x = 0
-				let y = 0
-				if (this.drag_align() === 'center') {
-					x = crt.clientWidth / 2
-					y = crt.clientHeight / 2
-				}
-				e?.dataTransfer?.setDragImage(crt, x, y)
-			}
-
-			this.$.$yuf_drop.dragging.add(this.uris())
-		}
 
 		override end(e?: Event) {
 			new this.$.$mol_after_frame($mol_wire_async(() => {
@@ -39,7 +25,14 @@ namespace $.$$ {
 				event.dataTransfer!.setData( type , transfer[ type as keyof typeof transfer] )
 			}
 
-			event.dataTransfer!.setDragImage( this.image() , 0 , -32 )
+			const crt = this.image()
+			let x = 0
+			let y = - 32
+			if (this.drag_align() === 'center') {
+				x = crt.clientWidth / 2
+				y = crt.clientHeight / 2
+			}
+			event.dataTransfer!.setDragImage( crt , x , y )
 			
 			const effects = [] as string[]
 			if( this.allow_copy() ) effects.push( 'Copy' )
@@ -50,6 +43,7 @@ namespace $.$$ {
 			if( effectAllowed === 'copyLinkMove' ) effectAllowed = 'all'
 			event.dataTransfer!.effectAllowed = effectAllowed as DataTransfer['effectAllowed']
 			
+			this.$.$yuf_drop.dragging.add(this.uris())
 			this.start( event )
 			
 		}
