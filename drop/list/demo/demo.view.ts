@@ -19,4 +19,14 @@ namespace $.$$ {
 
 		override id(id: string) { return id }
 	}
+
+	export class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
+		constructor() {
+			super()
+			console.log('constr', this)
+		}
+		destructor(): void {
+			console.log('destr', this)
+		}
+	}
 }

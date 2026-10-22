@@ -8,7 +8,6 @@ namespace $.$$ {
 			if (! dragged_id ) return null
 			if (this.dragged_id()) return null // prevent drag, while syncing
 
-			console.log('set new id', this.dragged_id(), 'to',dragged_id)
 			this.dragged_id(dragged_id)
 			this.before_id(before_id)
 			return dragged_id

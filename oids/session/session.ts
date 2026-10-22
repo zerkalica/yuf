@@ -561,7 +561,7 @@ namespace $ {
 			if (expires_in <= 0) return null
 
 			return new $mol_after_timeout(
-				Math.max(1000, expires_in - 10_000),
+				Math.max(1000, expires_in),
 				$mol_wire_async(() => this.token(null, 'refresh'))
 			)
 		}
