@@ -64,5 +64,9 @@
 	"$yuf_time_duration_minute": "minute|minutes|minutes",
 	"$yuf_time_duration_month": "mois|mois|mois",
 	"$yuf_time_duration_second": "seconde|secondes|secondes",
-	"$yuf_time_duration_year": "an|ans|ans"
+	"$yuf_time_duration_year": "an|ans|ans",
+	"$yuf_video_full_hint_checked": "Quitter le plein écran",
+	"$yuf_video_full_hint_unchecked": "Plein écran",
+	"$yuf_video_play_hint_checked": "Pause",
+	"$yuf_video_play_hint_unchecked": "Lecture"
 }

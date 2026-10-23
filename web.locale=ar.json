@@ -18,6 +18,7 @@
 	"$yuf_form_bid_max_msg": "حتى {max_val}",
 	"$yuf_form_bid_min_msg": "من {min_val}",
 	"$yuf_form_bid_pattern_not_match_msg": "القناع {mask}",
+	"$yuf_form_bid_regexp_str_message": "ليس تعبيرًا نمطيًا",
 	"$yuf_form_bid_required_msg": "*",
 	"$yuf_form_bid_rows_max_msg": "حتى {max_val} صفوف",
 	"$yuf_form_bid_str_max_msg": "حتى {max_val} أحرف",
@@ -61,5 +62,9 @@
 	"$yuf_time_duration_minute": "دقيقة|دقائق|دقائق",
 	"$yuf_time_duration_month": "شهر|أشهر|أشهر",
 	"$yuf_time_duration_second": "ثانية|ثواني|ثواني",
-	"$yuf_time_duration_year": "سنة|سنوات|سنوات"
+	"$yuf_time_duration_year": "سنة|سنوات|سنوات",
+	"$yuf_video_full_hint_checked": "الخروج من ملء الشاشة",
+	"$yuf_video_full_hint_unchecked": "ملء الشاشة",
+	"$yuf_video_play_hint_checked": "إيقاف مؤقت",
+	"$yuf_video_play_hint_unchecked": "تشغيل"
 }

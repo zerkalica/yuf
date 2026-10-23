@@ -64,5 +64,9 @@
 	"$yuf_time_duration_minute": "minuto|minutos|minutos",
 	"$yuf_time_duration_month": "mes|meses|meses",
 	"$yuf_time_duration_second": "segundo|segundos|segundos",
-	"$yuf_time_duration_year": "año|años|años"
+	"$yuf_time_duration_year": "año|años|años",
+	"$yuf_video_full_hint_checked": "Salir de pantalla completa",
+	"$yuf_video_full_hint_unchecked": "Pantalla completa",
+	"$yuf_video_play_hint_checked": "Pausar",
+	"$yuf_video_play_hint_unchecked": "Reproducir"
 }
