@@ -4862,13 +4862,24 @@ $yuf_drop_list_demo $mol_example_large
 					title <= hide_pages_title @ \Hide, show, drag to explore bug
 					checked? <=> hided? false
 				<= Toggling_check $mol_check_box
-					title <= toggling_title @ \Auto hide/show to explore memory leaks {count}
+					title <= toggling_title @ \Auto hide/show to explore memory leaks
 					checked? <=> toggling? false
 				<= Every_field $mol_form_field
-					name <= every_field_name \Wait 10sec every count
+					name <= every_field_name \Long wait every counts
 					content /
 						<= Every_count $mol_number
-							value? <=> every_count_wait? 30
+							value? <=> every_count_wait? 100
+				<= Short_wait_field $mol_form_field
+					name <= short_wait_name \Short wait, ms
+					content / <= Short_wait $mol_number
+						value? <=> short_wait? 120
+				<= Long_wait_field $mol_form_field
+					name <= long_wait_name \Long wait, ms
+					content / <= Long_wait $mol_number
+						value? <=> long_wait? 30000
+				<= Counter $mol_labeler
+					title <= counter_title \Count
+					content / <= count_msg <= waiting \waiting
 				<= Cat_title $mol_status message <= cat_title - pull title to simulate catalog behaviour
 			^ pages /$mol_view <= Catalog $yuf_drop_list_demo_catalog
 				menu_title \DnD - status in top

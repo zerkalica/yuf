@@ -21695,27 +21695,67 @@ declare namespace $ {
 		,
 		ReturnType< $mol_form_field['content'] >
 	>
-	type $mol_status__message_yuf_drop_list_demo_8 = $mol_type_enforce<
+	type $mol_number__value_yuf_drop_list_demo_8 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['short_wait'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_form_field__name_yuf_drop_list_demo_9 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['short_wait_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_drop_list_demo_10 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_number__value_yuf_drop_list_demo_11 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['long_wait'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_form_field__name_yuf_drop_list_demo_12 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['long_wait_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_drop_list_demo_13 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_labeler__title_yuf_drop_list_demo_14 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['counter_title'] >
+		,
+		ReturnType< $mol_labeler['title'] >
+	>
+	type $mol_labeler__content_yuf_drop_list_demo_15 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_labeler['content'] >
+	>
+	type $mol_status__message_yuf_drop_list_demo_16 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo['cat_title'] >
 		,
 		ReturnType< $mol_status['message'] >
 	>
-	type $mol_page__body_yuf_drop_list_demo_9 = $mol_type_enforce<
+	type $mol_page__body_yuf_drop_list_demo_17 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['body'] >
 	>
-	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_10 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_18 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
 	>
-	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_11 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_19 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 	>
-	type $mol_book2__pages_yuf_drop_list_demo_12 = $mol_type_enforce<
+	type $mol_book2__pages_yuf_drop_list_demo_20 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_book2['pages'] >
@@ -21732,6 +21772,18 @@ declare namespace $ {
 		every_count_wait( next?: number ): number
 		Every_count( ): $mol_number
 		Every_field( ): $mol_form_field
+		short_wait_name( ): string
+		short_wait( next?: number ): number
+		Short_wait( ): $mol_number
+		Short_wait_field( ): $mol_form_field
+		long_wait_name( ): string
+		long_wait( next?: number ): number
+		Long_wait( ): $mol_number
+		Long_wait_field( ): $mol_form_field
+		counter_title( ): string
+		waiting( ): string
+		count_msg( ): ReturnType< $yuf_drop_list_demo['waiting'] >
+		Counter( ): $mol_labeler
 		Cat_title( ): $mol_status
 		Settings_page( ): $mol_page
 		cat_title( ): ReturnType< ReturnType< $yuf_drop_list_demo['Catalog'] >['title'] >
@@ -21850,6 +21902,7 @@ declare namespace $.$$ {
         pages(): readonly $mol_view[];
         toggling_task(): null;
         toggling_title(): string;
+        count_msg(): string;
     }
     class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
         ids_actual(next?: readonly string[]): readonly string[];

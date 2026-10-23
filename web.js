@@ -41957,11 +41957,11 @@ var $;
 			return obj;
 		}
 		every_field_name(){
-			return "Wait 10sec every count";
+			return "Long wait every counts";
 		}
 		every_count_wait(next){
 			if(next !== undefined) return next;
-			return 30;
+			return 100;
 		}
 		Every_count(){
 			const obj = new this.$.$mol_number();
@@ -41972,6 +41972,57 @@ var $;
 			const obj = new this.$.$mol_form_field();
 			(obj.name) = () => ((this.every_field_name()));
 			(obj.content) = () => ([(this.Every_count())]);
+			return obj;
+		}
+		short_wait_name(){
+			return "Short wait, ms";
+		}
+		short_wait(next){
+			if(next !== undefined) return next;
+			return 120;
+		}
+		Short_wait(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.short_wait(next)));
+			return obj;
+		}
+		Short_wait_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.short_wait_name()));
+			(obj.content) = () => ([(this.Short_wait())]);
+			return obj;
+		}
+		long_wait_name(){
+			return "Long wait, ms";
+		}
+		long_wait(next){
+			if(next !== undefined) return next;
+			return 30000;
+		}
+		Long_wait(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.long_wait(next)));
+			return obj;
+		}
+		Long_wait_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.long_wait_name()));
+			(obj.content) = () => ([(this.Long_wait())]);
+			return obj;
+		}
+		counter_title(){
+			return "Count";
+		}
+		waiting(){
+			return "waiting";
+		}
+		count_msg(){
+			return (this.waiting());
+		}
+		Counter(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.counter_title()));
+			(obj.content) = () => ([(this.count_msg())]);
 			return obj;
 		}
 		Cat_title(){
@@ -41985,6 +42036,9 @@ var $;
 				(this.Hide_pages()), 
 				(this.Toggling_check()), 
 				(this.Every_field()), 
+				(this.Short_wait_field()), 
+				(this.Long_wait_field()), 
+				(this.Counter()), 
 				(this.Cat_title())
 			]);
 			return obj;
@@ -42038,6 +42092,13 @@ var $;
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "every_count_wait"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Every_count"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Every_field"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "short_wait"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Short_wait"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Short_wait_field"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "long_wait"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Long_wait"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Long_wait_field"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Counter"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_title"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Settings_page"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
@@ -42155,17 +42216,23 @@ var $;
                 if (!this.toggling())
                     return null;
                 const val = this.count(this.count() + 1);
-                $mol_state_time.now(val === this.every_count_wait() ? 20_000 : 150);
+                $mol_state_time.now((val % this.every_count_wait()) === 0 ? this.long_wait() : this.short_wait());
                 this.hided(!this.hided());
                 return null;
             }
             toggling_title() {
                 return super.toggling_title().replace('{count}', this.count().toFixed(0));
             }
+            count_msg() {
+                return (this.count() % (this.every_count_wait() - 1)) === 0 ? this.waiting() : this.count().toFixed(0);
+            }
         }
         __decorate([
             $mol_mem
         ], $yuf_drop_list_demo.prototype, "toggling_task", null);
+        __decorate([
+            $mol_mem
+        ], $yuf_drop_list_demo.prototype, "count_msg", null);
         $$.$yuf_drop_list_demo = $yuf_drop_list_demo;
         class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
             ids_actual(next) {
@@ -42199,6 +42266,14 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        $mol_style_define($yuf_drop_list_demo, {
+            Settings_page: {
+                flex: {
+                    basis: '20rem',
+                    grow: 0
+                }
+            }
+        });
         $mol_style_define($yuf_drop_list_demo_catalog, {
             Menu_item: {
                 padding: { top: '1px' },
@@ -42208,7 +42283,7 @@ var $;
             },
             Foot_title: {
                 padding: $mol_gap.text,
-            }
+            },
         });
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));

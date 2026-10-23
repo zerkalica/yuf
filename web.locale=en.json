@@ -65,7 +65,7 @@
 	"$yuf_drop_list_cancel_title": "Cancel drag",
 	"$yuf_drop_list_demo_catalog_errors_on_title": "Error",
 	"$yuf_drop_list_demo_hide_pages_title": "Hide, show, drag to explore bug",
-	"$yuf_drop_list_demo_toggling_title": "Auto hide/show to explore memory leaks {count}",
+	"$yuf_drop_list_demo_toggling_title": "Auto hide/show to explore memory leaks",
 	"$yuf_form_bid_date_max_msg": "To {max_date_val}",
 	"$yuf_form_bid_date_min_msg": "From {min_date_val}",
 	"$yuf_form_bid_field_name_msg": "{field_name}: {message}",
