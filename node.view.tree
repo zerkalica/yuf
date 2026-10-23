@@ -4876,11 +4876,13 @@ $yuf_drop_list_demo $mol_example_large
 				<= Long_wait_field $mol_form_field
 					name <= long_wait_name \Long wait, ms
 					content / <= Long_wait $mol_number
-						value? <=> long_wait? 30000
+						value? <=> long_wait? 10000
 				<= Counter $mol_labeler
 					title <= counter_title \Count
 					content / <= count_msg <= waiting \waiting
-				<= Cat_title $mol_status message <= cat_title - pull title to simulate catalog behaviour
+				<= Cat_puller $mol_labeler
+					title <= cat_puller_title \Pull catalog wire
+					content / <= cat_title - pull title to simulate catalog behaviour
 			^ pages /$mol_view <= Catalog $yuf_drop_list_demo_catalog
 				menu_title \DnD - status in top
 				title => cat_title

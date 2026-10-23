@@ -42067,7 +42067,7 @@ var $;
 		}
 		long_wait(next){
 			if(next !== undefined) return next;
-			return 30000;
+			return 10000;
 		}
 		Long_wait(){
 			const obj = new this.$.$mol_number();
@@ -42095,9 +42095,13 @@ var $;
 			(obj.content) = () => ([(this.count_msg())]);
 			return obj;
 		}
-		Cat_title(){
-			const obj = new this.$.$mol_status();
-			(obj.message) = () => ((this.cat_title()));
+		cat_puller_title(){
+			return "Pull catalog wire";
+		}
+		Cat_puller(){
+			const obj = new this.$.$mol_labeler();
+			(obj.title) = () => ((this.cat_puller_title()));
+			(obj.content) = () => ([(this.cat_title())]);
 			return obj;
 		}
 		Settings_page(){
@@ -42109,7 +42113,7 @@ var $;
 				(this.Short_wait_field()), 
 				(this.Long_wait_field()), 
 				(this.Counter()), 
-				(this.Cat_title())
+				(this.Cat_puller())
 			]);
 			return obj;
 		}
@@ -42169,7 +42173,7 @@ var $;
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Long_wait"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Long_wait_field"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Counter"));
-	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_title"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_puller"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Settings_page"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Book"));
