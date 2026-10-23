@@ -3,6 +3,20 @@ namespace $.$$ {
 		override pages() {
 			return this.hided() ? [] : super.pages()
 		}
+
+		@ $mol_mem
+		override toggling_task() {
+			if (! this.toggling()) return null
+
+			const val = this.count(this.count() + 1)
+			$mol_state_time.now(val === this.every_count_wait() ? 20_000 : 150)
+			this.hided(! this.hided())
+			return null
+		}
+
+		override toggling_title() {
+			return super.toggling_title().replace('{count}', this.count().toFixed(0))
+		}
 	}
 
 	export class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
