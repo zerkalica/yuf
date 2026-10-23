@@ -6,17 +6,6 @@ namespace $.$$ {
 		override uris() { return this.$.$mol_state_arg.link(this.args()) }
 
 		override start(e?: DragEvent) {
-			const crt = this.Drag_image()?.dom_node()
-			if ( crt ) {
-				let x = 0
-				let y = 0
-				if (this.drag_align() === 'center') {
-					x = crt.clientWidth / 2
-					y = crt.clientHeight / 2
-				}
-				e?.dataTransfer?.setDragImage(crt, x, y)
-			}
-
 			this.$.$yuf_drop.dragging.add(this.uris())
 		}
 

@@ -1,4 +1,10 @@
 namespace $.$$ {
+	export class $yuf_drop_list_demo extends $.$yuf_drop_list_demo {
+		override pages() {
+			return this.hided() ? [] : super.pages()
+		}
+	}
+
 	export class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
 		@ $mol_mem
 		override ids_actual(next?: readonly string[]) {
@@ -21,12 +27,5 @@ namespace $.$$ {
 	}
 
 	export class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
-		constructor() {
-			super()
-			console.log('constr', this)
-		}
-		destructor(): void {
-			console.log('destr', this)
-		}
 	}
 }

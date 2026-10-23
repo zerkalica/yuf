@@ -1,0 +1,4 @@
+view.tree
+    filter remove_matches ^\s*-.*$
+    extension view.tree
+    3rd_gen_scale 1.00

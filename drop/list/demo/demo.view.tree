@@ -1,20 +1,23 @@
 $yuf_drop_list_demo $mol_example_large
-	title \DnD
 	sub /
-		<= Book $mol_book2 pages /
-			<= Catalog $yuf_drop_list_demo_catalog
-				menu_title \DnD - status in top
-				param \dnd
-			- <= Catalog2 $yuf_drop_list_demo_catalog
-				menu_title \DnD - Per item status
-				param \dnd_per_item
-				status_content /
-				-
-				Item_status* => Item_status2*
-				item_status_content* / <= Item_status2*
-				-
-				ids_current => ids_current2
-				spread_ids <= ids_current2
+		<= Cat_title $mol_view sub / <= cat_title
+		<= Hide_pages $mol_check_box
+			title <= hide_pages_title @ \Hide, show, drag to explore bug
+			checked? <=> hided? false
+		^ pages /$mol_view <= Catalog $yuf_drop_list_demo_catalog
+			menu_title \DnD - status in top
+			title => cat_title
+			param \dnd
+		- <= Catalog2 $yuf_drop_list_demo_catalog
+			menu_title \DnD - Per item status
+			param \dnd_per_item
+			status_content /
+			-
+			Item_status* => Item_status2*
+			item_status_content* / <= Item_status2*
+			-
+			ids_current => ids_current2
+			spread_ids <= ids_current2
 	tags /
 		\drag
 		\dragndrop
