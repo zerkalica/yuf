@@ -9,13 +9,18 @@ namespace $.$$ {
 			if (! this.toggling()) return null
 
 			const val = this.count(this.count() + 1)
-			$mol_state_time.now(val === this.every_count_wait() ? 20_000 : 150)
+			$mol_state_time.now((val % this.every_count_wait()) === 0 ? this.long_wait() : this.short_wait())
 			this.hided(! this.hided())
 			return null
 		}
 
 		override toggling_title() {
 			return super.toggling_title().replace('{count}', this.count().toFixed(0))
+		}
+
+		@ $mol_mem
+		override count_msg() {
+			return (this.count() % (this.every_count_wait() - 1)) === 0 ? this.waiting() : this.count().toFixed(0)
 		}
 	}
 
