@@ -21660,39 +21660,86 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_view__sub_yuf_drop_list_demo_1 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_view['sub'] >
-	>
-	type $mol_check_box__title_yuf_drop_list_demo_2 = $mol_type_enforce<
+	type $mol_check_box__title_yuf_drop_list_demo_1 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo['hide_pages_title'] >
 		,
 		ReturnType< $mol_check_box['title'] >
 	>
-	type $mol_check_box__checked_yuf_drop_list_demo_3 = $mol_type_enforce<
+	type $mol_check_box__checked_yuf_drop_list_demo_2 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo['hided'] >
 		,
 		ReturnType< $mol_check_box['checked'] >
 	>
-	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_4 = $mol_type_enforce<
+	type $mol_check_box__title_yuf_drop_list_demo_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['toggling_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_drop_list_demo_4 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['toggling'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_number__value_yuf_drop_list_demo_5 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['every_count_wait'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_form_field__name_yuf_drop_list_demo_6 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['every_field_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_drop_list_demo_7 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_status__message_yuf_drop_list_demo_8 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['cat_title'] >
+		,
+		ReturnType< $mol_status['message'] >
+	>
+	type $mol_page__body_yuf_drop_list_demo_9 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_page['body'] >
+	>
+	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_10 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
 	>
-	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_5 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_11 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 	>
+	type $mol_book2__pages_yuf_drop_list_demo_12 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_book2['pages'] >
+	>
 	export class $yuf_drop_list_demo extends $mol_example_large {
-		Cat_title( ): $mol_view
+		toggling_task( ): any
 		hide_pages_title( ): string
 		hided( next?: boolean ): boolean
 		Hide_pages( ): $mol_check_box
+		toggling_title( ): string
+		toggling( next?: boolean ): boolean
+		Toggling_check( ): $mol_check_box
+		every_field_name( ): string
+		every_count_wait( next?: number ): number
+		Every_count( ): $mol_number
+		Every_field( ): $mol_form_field
+		Cat_title( ): $mol_status
+		Settings_page( ): $mol_page
 		cat_title( ): ReturnType< ReturnType< $yuf_drop_list_demo['Catalog'] >['title'] >
 		Catalog( ): $yuf_drop_list_demo_catalog
 		pages( ): readonly($mol_view)[]
+		Book( ): $mol_book2
+		auto( ): readonly(any)[]
+		count( next?: number ): number
 		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
@@ -21801,6 +21848,8 @@ declare namespace $ {
 declare namespace $.$$ {
     class $yuf_drop_list_demo extends $.$yuf_drop_list_demo {
         pages(): readonly $mol_view[];
+        toggling_task(): null;
+        toggling_title(): string;
     }
     class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
         ids_actual(next?: readonly string[]): readonly string[];

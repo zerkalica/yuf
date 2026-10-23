@@ -41997,10 +41997,8 @@ var $;
 
 ;
 	($.$yuf_drop_list_demo) = class $yuf_drop_list_demo extends ($.$mol_example_large) {
-		Cat_title(){
-			const obj = new this.$.$mol_view();
-			(obj.sub) = () => ([(this.cat_title())]);
-			return obj;
+		toggling_task(){
+			return null;
 		}
 		hide_pages_title(){
 			return (this.$.$mol_locale.text("$yuf_drop_list_demo_hide_pages_title"));
@@ -42015,6 +42013,52 @@ var $;
 			(obj.checked) = (next) => ((this.hided(next)));
 			return obj;
 		}
+		toggling_title(){
+			return (this.$.$mol_locale.text("$yuf_drop_list_demo_toggling_title"));
+		}
+		toggling(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Toggling_check(){
+			const obj = new this.$.$mol_check_box();
+			(obj.title) = () => ((this.toggling_title()));
+			(obj.checked) = (next) => ((this.toggling(next)));
+			return obj;
+		}
+		every_field_name(){
+			return "Wait 10sec every count";
+		}
+		every_count_wait(next){
+			if(next !== undefined) return next;
+			return 30;
+		}
+		Every_count(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.every_count_wait(next)));
+			return obj;
+		}
+		Every_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.every_field_name()));
+			(obj.content) = () => ([(this.Every_count())]);
+			return obj;
+		}
+		Cat_title(){
+			const obj = new this.$.$mol_status();
+			(obj.message) = () => ((this.cat_title()));
+			return obj;
+		}
+		Settings_page(){
+			const obj = new this.$.$mol_page();
+			(obj.body) = () => ([
+				(this.Hide_pages()), 
+				(this.Toggling_check()), 
+				(this.Every_field()), 
+				(this.Cat_title())
+			]);
+			return obj;
+		}
 		cat_title(){
 			return (this.Catalog().title());
 		}
@@ -42027,12 +42071,20 @@ var $;
 		pages(){
 			return [(this.Catalog())];
 		}
+		Book(){
+			const obj = new this.$.$mol_book2();
+			(obj.pages) = () => ([(this.Settings_page()), ...(this.pages())]);
+			return obj;
+		}
+		auto(){
+			return [...(super.auto()), (this.toggling_task())];
+		}
+		count(next){
+			if(next !== undefined) return next;
+			return 0;
+		}
 		sub(){
-			return [
-				(this.Cat_title()), 
-				(this.Hide_pages()), 
-				...(this.pages())
-			];
+			return [(this.Book())];
 		}
 		tags(){
 			return [
@@ -42049,10 +42101,18 @@ var $;
 			return ["Widget/Plugin", "Drag'n'Drop"];
 		}
 	};
-	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_title"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "hided"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Hide_pages"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "toggling"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Toggling_check"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "every_count_wait"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Every_count"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Every_field"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_title"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Settings_page"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Book"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "count"));
 	($.$yuf_drop_list_demo_catalog) = class $yuf_drop_list_demo_catalog extends ($.$mol_book2_catalog) {
 		errors_on_title(){
 			return (this.$.$mol_locale.text("$yuf_drop_list_demo_catalog_errors_on_title"));
@@ -42113,7 +42173,7 @@ var $;
 			return obj;
 		}
 		items_max(){
-			return 3;
+			return 300;
 		}
 		menu_tools(){
 			return [(this.Errors_on())];
@@ -42161,7 +42221,21 @@ var $;
             pages() {
                 return this.hided() ? [] : super.pages();
             }
+            toggling_task() {
+                if (!this.toggling())
+                    return null;
+                const val = this.count(this.count() + 1);
+                $mol_state_time.now(val === this.every_count_wait() ? 20_000 : 150);
+                this.hided(!this.hided());
+                return null;
+            }
+            toggling_title() {
+                return super.toggling_title().replace('{count}', this.count().toFixed(0));
+            }
         }
+        __decorate([
+            $mol_mem
+        ], $yuf_drop_list_demo.prototype, "toggling_task", null);
         $$.$yuf_drop_list_demo = $yuf_drop_list_demo;
         class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
             ids_actual(next) {
@@ -42198,6 +42272,9 @@ var $;
         $mol_style_define($yuf_drop_list_demo_catalog, {
             Menu_item: {
                 padding: { top: '1px' },
+            },
+            flex: {
+                direction: 'row',
             },
             Foot_title: {
                 padding: $mol_gap.text,
