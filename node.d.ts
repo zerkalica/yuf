@@ -21512,7 +21512,6 @@ declare namespace $ {
 		args( ): Record<string, any>
 		receive_outside( next?: any ): any
 		Drag_image( ): any
-		drag_align( ): string
 	}
 	
 }
@@ -21531,37 +21530,37 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	export class $yuf_drag_drop extends $yuf_drop {
-		start( next?: any ): any
-		drag_start( next?: ReturnType< $yuf_drag_drop['start'] > ): ReturnType< $yuf_drag_drop['start'] >
-		drag_move( next?: any ): any
-		end( next?: any ): any
-		drag_end( next?: ReturnType< $yuf_drag_drop['end'] > ): ReturnType< $yuf_drag_drop['end'] >
-		draggable( ): boolean
-		status( next?: string ): string
-		plain( ): ReturnType< $yuf_drag_drop['title'] >
-		html( ): string
-		uris( ): string
+	type $yuf_drop__id_yuf_drag_drop_1 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['id'] >
+		,
+		ReturnType< $yuf_drop['id'] >
+	>
+	type $yuf_drop__param_yuf_drag_drop_2 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['param'] >
+		,
+		ReturnType< $yuf_drop['param'] >
+	>
+	type $yuf_drop__Sub_yuf_drag_drop_3 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['Item'] >
+		,
+		ReturnType< $yuf_drop['Sub'] >
+	>
+	type $yuf_drop__ids_yuf_drag_drop_4 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['ids'] >
+		,
+		ReturnType< $yuf_drop['ids'] >
+	>
+	type $yuf_drop__receive_yuf_drag_drop_5 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['receive'] >
+		,
+		ReturnType< $yuf_drop['receive'] >
+	>
+	export class $yuf_drag_drop extends $yuf_drag {
 		Item( ): $mol_view
-		args( ): Record<string, any>
-		event( ): ({ 
-			dragstart( next?: ReturnType< $yuf_drag_drop['drag_start'] > ): ReturnType< $yuf_drag_drop['drag_start'] >,
-			drag( next?: ReturnType< $yuf_drag_drop['drag_move'] > ): ReturnType< $yuf_drag_drop['drag_move'] >,
-			dragend( next?: ReturnType< $yuf_drag_drop['drag_end'] > ): ReturnType< $yuf_drag_drop['drag_end'] >,
-		})  & ReturnType< $yuf_drop['event'] >
-		attr( ): ({ 
-			'draggable': ReturnType< $yuf_drag_drop['draggable'] >,
-			'mol_drag_status': ReturnType< $yuf_drag_drop['status'] >,
-		})  & ReturnType< $yuf_drop['attr'] >
-		transfer( ): Record<string, string>
-		allow_copy( ): boolean
-		allow_link( ): boolean
-		allow_move( ): boolean
-		image( ): ReturnType< $yuf_drag_drop['dom_node'] >
-		receive_outside( next?: any ): any
-		Drag_image( ): any
-		drag_align( ): string
-		Sub( ): ReturnType< $yuf_drag_drop['Item'] >
+		ids( ): readonly(string)[]
+		receive( next?: any ): any
+		Drop( ): $yuf_drop
+		Sub( ): ReturnType< $yuf_drag_drop['Drop'] >
 	}
 	
 }
@@ -21569,14 +21568,6 @@ declare namespace $ {
 //# sourceMappingURL=drop.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_drag_drop extends $.$yuf_drag_drop {
-        args(): {
-            [x: string]: string;
-        };
-        uris(): string;
-        end(e?: Event): void;
-        status(next?: "ready" | "drag"): "ready" | "drag";
-        drag_start(event: DragEvent): void;
-        drag_end(event: DragEvent): void;
     }
 }
 
@@ -21733,25 +21724,39 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_1 = $mol_type_enforce<
+	type $mol_view__sub_yuf_drop_list_demo_1 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_view['sub'] >
+	>
+	type $mol_check_box__title_yuf_drop_list_demo_2 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['hide_pages_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_drop_list_demo_3 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['hided'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_4 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
 	>
-	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_2 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_5 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 	>
-	type $mol_book2__pages_yuf_drop_list_demo_3 = $mol_type_enforce<
-		readonly(any)[]
-		,
-		ReturnType< $mol_book2['pages'] >
-	>
 	export class $yuf_drop_list_demo extends $mol_example_large {
+		Cat_title( ): $mol_view
+		hide_pages_title( ): string
+		hided( next?: boolean ): boolean
+		Hide_pages( ): $mol_check_box
+		cat_title( ): ReturnType< ReturnType< $yuf_drop_list_demo['Catalog'] >['title'] >
 		Catalog( ): $yuf_drop_list_demo_catalog
-		Book( ): $mol_book2
-		title( ): string
+		pages( ): readonly($mol_view)[]
 		sub( ): readonly(any)[]
 		tags( ): readonly(any)[]
 		aspects( ): readonly(any)[]
@@ -21858,13 +21863,14 @@ declare namespace $ {
 
 //# sourceMappingURL=demo.view.tree.d.ts.map
 declare namespace $.$$ {
+    class $yuf_drop_list_demo extends $.$yuf_drop_list_demo {
+        pages(): readonly $mol_view[];
+    }
     class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
         ids_actual(next?: readonly string[]): readonly string[];
         id(id: string): string;
     }
     class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
-        constructor();
-        destructor(): void;
     }
 }
 

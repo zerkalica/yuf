@@ -41634,9 +41634,6 @@ var $;
 		Drag_image(){
 			return null;
 		}
-		drag_align(){
-			return "center";
-		}
 	};
 	($mol_mem(($.$yuf_drag.prototype), "receive_outside"));
 
@@ -41655,16 +41652,6 @@ var $;
             args() { return { [this.param()]: this.id() }; }
             uris() { return this.$.$mol_state_arg.link(this.args()); }
             start(e) {
-                const crt = this.Drag_image()?.dom_node();
-                if (crt) {
-                    let x = 0;
-                    let y = 0;
-                    if (this.drag_align() === 'center') {
-                        x = crt.clientWidth / 2;
-                        y = crt.clientHeight / 2;
-                    }
-                    e?.dataTransfer?.setDragImage(crt, x, y);
-                }
                 this.$.$yuf_drop.dragging.add(this.uris());
             }
             end(e) {
@@ -41682,102 +41669,34 @@ var $;
 })($ || ($ = {}));
 
 ;
-	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drop) {
-		start(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		drag_start(next){
-			return (this.start(next));
-		}
-		drag_move(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		end(next){
-			if(next !== undefined) return next;
-			return null;
-		}
-		drag_end(next){
-			return (this.end(next));
-		}
-		draggable(){
-			return true;
-		}
-		status(next){
-			if(next !== undefined) return next;
-			return "ready";
-		}
-		plain(){
-			return (this.title());
-		}
-		html(){
-			return "";
-		}
-		uris(){
-			return "";
-		}
+	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drag) {
 		Item(){
 			const obj = new this.$.$mol_view();
 			return obj;
 		}
-		args(){
-			return {};
+		ids(){
+			return [];
 		}
-		event(){
-			return {
-				...(super.event()), 
-				"dragstart": (next) => (this.drag_start(next)), 
-				"drag": (next) => (this.drag_move(next)), 
-				"dragend": (next) => (this.drag_end(next))
-			};
-		}
-		attr(){
-			return {
-				...(super.attr()), 
-				"draggable": (this.draggable()), 
-				"mol_drag_status": (this.status())
-			};
-		}
-		transfer(){
-			return {
-				"text/plain": (this.plain()), 
-				"text/html": (this.html()), 
-				"text/uri-list": (this.uris())
-			};
-		}
-		allow_copy(){
-			return true;
-		}
-		allow_link(){
-			return true;
-		}
-		allow_move(){
-			return true;
-		}
-		image(){
-			return (this.dom_node());
-		}
-		receive_outside(next){
+		receive(next){
 			if(next !== undefined) return next;
 			return null;
 		}
-		Drag_image(){
-			return null;
-		}
-		drag_align(){
-			return "center";
+		Drop(){
+			const obj = new this.$.$yuf_drop();
+			(obj.id) = () => ((this.id()));
+			(obj.param) = () => ((this.param()));
+			(obj.Sub) = () => ((this.Item()));
+			(obj.ids) = () => ((this.ids()));
+			(obj.receive) = (next) => ((this.receive(next)));
+			return obj;
 		}
 		Sub(){
-			return (this.Item());
+			return (this.Drop());
 		}
 	};
-	($mol_mem(($.$yuf_drag_drop.prototype), "start"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "drag_move"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "end"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "status"));
 	($mol_mem(($.$yuf_drag_drop.prototype), "Item"));
-	($mol_mem(($.$yuf_drag_drop.prototype), "receive_outside"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "receive"));
+	($mol_mem(($.$yuf_drag_drop.prototype), "Drop"));
 
 
 ;
@@ -41791,54 +41710,7 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_drag_drop extends $.$yuf_drag_drop {
-            args() { return { [this.param()]: this.id() }; }
-            uris() { return this.$.$mol_state_arg.link(this.args()); }
-            end(e) {
-                new this.$.$mol_after_frame($mol_wire_async(() => {
-                    const uris = this.uris();
-                    if (!this.$.$yuf_drop.dragging.has(uris))
-                        return;
-                    $mol_error_fence(() => this.receive_outside(e), e => ($mol_fail_log(e), null));
-                    this.$.$yuf_drop.dragging.delete(uris);
-                }));
-            }
-            status(next = 'ready') { return next; }
-            drag_start(event) {
-                setTimeout(() => this.status('drag'));
-                const transfer = this.transfer();
-                for (let type in transfer) {
-                    event.dataTransfer.setData(type, transfer[type]);
-                }
-                const crt = this.image();
-                let x = 0;
-                let y = -32;
-                if (this.drag_align() === 'center') {
-                    x = crt.clientWidth / 2;
-                    y = crt.clientHeight / 2;
-                }
-                event.dataTransfer.setDragImage(crt, x, y);
-                const effects = [];
-                if (this.allow_copy())
-                    effects.push('Copy');
-                if (this.allow_link())
-                    effects.push('Link');
-                if (this.allow_move())
-                    effects.push('Move');
-                let effectAllowed = effects[0].toLowerCase() + effects.slice(1).join('');
-                if (effectAllowed === 'copyLinkMove')
-                    effectAllowed = 'all';
-                event.dataTransfer.effectAllowed = effectAllowed;
-                this.$.$yuf_drop.dragging.add(this.uris());
-                this.start(event);
-            }
-            drag_end(event) {
-                setTimeout(() => this.status('ready'));
-                this.end(event);
-            }
         }
-        __decorate([
-            $mol_mem
-        ], $yuf_drag_drop.prototype, "status", null);
         $$.$yuf_drag_drop = $yuf_drag_drop;
     })($$ = $.$$ || ($.$$ = {}));
 })($ || ($ = {}));
@@ -42125,22 +41997,42 @@ var $;
 
 ;
 	($.$yuf_drop_list_demo) = class $yuf_drop_list_demo extends ($.$mol_example_large) {
+		Cat_title(){
+			const obj = new this.$.$mol_view();
+			(obj.sub) = () => ([(this.cat_title())]);
+			return obj;
+		}
+		hide_pages_title(){
+			return (this.$.$mol_locale.text("$yuf_drop_list_demo_hide_pages_title"));
+		}
+		hided(next){
+			if(next !== undefined) return next;
+			return false;
+		}
+		Hide_pages(){
+			const obj = new this.$.$mol_check_box();
+			(obj.title) = () => ((this.hide_pages_title()));
+			(obj.checked) = (next) => ((this.hided(next)));
+			return obj;
+		}
+		cat_title(){
+			return (this.Catalog().title());
+		}
 		Catalog(){
 			const obj = new this.$.$yuf_drop_list_demo_catalog();
 			(obj.menu_title) = () => ("DnD - status in top");
 			(obj.param) = () => ("dnd");
 			return obj;
 		}
-		Book(){
-			const obj = new this.$.$mol_book2();
-			(obj.pages) = () => ([(this.Catalog())]);
-			return obj;
-		}
-		title(){
-			return "DnD";
+		pages(){
+			return [(this.Catalog())];
 		}
 		sub(){
-			return [(this.Book())];
+			return [
+				(this.Cat_title()), 
+				(this.Hide_pages()), 
+				...(this.pages())
+			];
 		}
 		tags(){
 			return [
@@ -42157,8 +42049,10 @@ var $;
 			return ["Widget/Plugin", "Drag'n'Drop"];
 		}
 	};
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Cat_title"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "hided"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Hide_pages"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Catalog"));
-	($mol_mem(($.$yuf_drop_list_demo.prototype), "Book"));
 	($.$yuf_drop_list_demo_catalog) = class $yuf_drop_list_demo_catalog extends ($.$mol_book2_catalog) {
 		errors_on_title(){
 			return (this.$.$mol_locale.text("$yuf_drop_list_demo_catalog_errors_on_title"));
@@ -42263,6 +42157,12 @@ var $;
 (function ($) {
     var $$;
     (function ($$) {
+        class $yuf_drop_list_demo extends $.$yuf_drop_list_demo {
+            pages() {
+                return this.hided() ? [] : super.pages();
+            }
+        }
+        $$.$yuf_drop_list_demo = $yuf_drop_list_demo;
         class $yuf_drop_list_demo_catalog extends $.$yuf_drop_list_demo_catalog {
             ids_actual(next) {
                 if (next !== undefined) {
@@ -42284,13 +42184,6 @@ var $;
         ], $yuf_drop_list_demo_catalog.prototype, "ids_actual", null);
         $$.$yuf_drop_list_demo_catalog = $yuf_drop_list_demo_catalog;
         class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
-            constructor() {
-                super();
-                console.log('constr', this);
-            }
-            destructor() {
-                console.log('destr', this);
-            }
         }
         $$.$yuf_drop_list_demo_catalog_item = $yuf_drop_list_demo_catalog_item;
     })($$ = $.$$ || ($.$$ = {}));
