@@ -30107,12 +30107,16 @@ var $;
 
 ;
 	($.$yuf_video_bar) = class $yuf_video_bar extends ($.$mol_view) {
+		enabled(){
+			return true;
+		}
 		playing(next){
 			if(next !== undefined) return next;
 			return false;
 		}
 		Playing(){
 			const obj = new this.$.$yuf_video_play();
+			(obj.enabled) = () => ((this.enabled()));
 			(obj.checked) = (next) => ((this.playing(next)));
 			return obj;
 		}
@@ -30122,6 +30126,7 @@ var $;
 		}
 		Fullscreen(){
 			const obj = new this.$.$yuf_video_full();
+			(obj.enabled) = () => ((this.enabled()));
 			(obj.checked) = (next) => ((this.fullscreen(next)));
 			return obj;
 		}
@@ -30142,6 +30147,7 @@ var $;
 		}
 		Slider(){
 			const obj = new this.$.$yuf_video_slider();
+			(obj.enabled) = () => ((this.enabled()));
 			(obj.value) = (next) => ((this.time(next)));
 			(obj.value_max) = () => ((this.duration()));
 			return obj;
@@ -41545,6 +41551,9 @@ var $;
 		is_before(id){
 			return false;
 		}
+		fix_destruct(){
+			return false;
+		}
 	};
 
 
@@ -41580,6 +41589,13 @@ var $;
                 if (!before_id)
                     return moved_id === ids.at(-1);
                 return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1;
+            }
+            destructor() {
+                super.destructor();
+                if (!this.fix_destruct())
+                    return;
+                const sub = $mol_wire_probe(() => this.Sub());
+                sub?.destructor();
             }
         }
         __decorate([
@@ -41625,6 +41641,9 @@ var $;
 		Drag_image(){
 			return null;
 		}
+		fix_destruct(){
+			return false;
+		}
 	};
 	($mol_mem(($.$yuf_drag.prototype), "receive_outside"));
 
@@ -41654,6 +41673,13 @@ var $;
                     this.$.$yuf_drop.dragging.delete(uris);
                 }));
             }
+            destructor() {
+                super.destructor();
+                if (!this.fix_destruct())
+                    return;
+                const sub = $mol_wire_probe(() => this.Sub());
+                sub?.destructor();
+            }
         }
         $$.$yuf_drag = $yuf_drag;
     })($$ = $.$$ || ($.$$ = {}));
@@ -41661,6 +41687,9 @@ var $;
 
 ;
 	($.$yuf_drag_drop) = class $yuf_drag_drop extends ($.$yuf_drag) {
+		fix_destruct(){
+			return false;
+		}
 		Item(){
 			const obj = new this.$.$mol_view();
 			return obj;
@@ -41675,6 +41704,7 @@ var $;
 		Drop(){
 			const obj = new this.$.$yuf_drop();
 			(obj.id) = () => ((this.id()));
+			(obj.fix_destruct) = () => ((this.fix_destruct()));
 			(obj.param) = () => ((this.param()));
 			(obj.Sub) = () => ((this.Item()));
 			(obj.ids) = () => ((this.ids()));
@@ -41782,6 +41812,9 @@ var $;
 		error_message(){
 			return "";
 		}
+		fix_destruct(){
+			return false;
+		}
 		param(){
 			return "";
 		}
@@ -41802,6 +41835,7 @@ var $;
 		}
 		Drop(id){
 			const obj = new this.$.$yuf_drag_drop();
+			(obj.fix_destruct) = () => ((this.fix_destruct()));
 			(obj.param) = () => ((this.param()));
 			(obj.receive) = (next) => ((this.receive(id, next)));
 			(obj.receive_outside) = (next) => ((this.receive_outside(id, next)));

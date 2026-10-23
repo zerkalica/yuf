@@ -14567,52 +14567,68 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_video_play__checked_yuf_video_bar_1 = $mol_type_enforce<
+	type $yuf_video_play__enabled_yuf_video_bar_1 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['enabled'] >
+		,
+		ReturnType< $yuf_video_play['enabled'] >
+	>
+	type $yuf_video_play__checked_yuf_video_bar_2 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['playing'] >
 		,
 		ReturnType< $yuf_video_play['checked'] >
 	>
-	type $yuf_video_full__checked_yuf_video_bar_2 = $mol_type_enforce<
+	type $yuf_video_full__enabled_yuf_video_bar_3 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['enabled'] >
+		,
+		ReturnType< $yuf_video_full['enabled'] >
+	>
+	type $yuf_video_full__checked_yuf_video_bar_4 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['fullscreen'] >
 		,
 		ReturnType< $yuf_video_full['checked'] >
 	>
-	type $mol_view__sub_yuf_video_bar_3 = $mol_type_enforce<
+	type $mol_view__sub_yuf_video_bar_5 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['left_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_video_slider__value_yuf_video_bar_4 = $mol_type_enforce<
+	type $yuf_video_slider__enabled_yuf_video_bar_6 = $mol_type_enforce<
+		ReturnType< $yuf_video_bar['enabled'] >
+		,
+		ReturnType< $yuf_video_slider['enabled'] >
+	>
+	type $yuf_video_slider__value_yuf_video_bar_7 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['time'] >
 		,
 		ReturnType< $yuf_video_slider['value'] >
 	>
-	type $yuf_video_slider__value_max_yuf_video_bar_5 = $mol_type_enforce<
+	type $yuf_video_slider__value_max_yuf_video_bar_8 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['duration'] >
 		,
 		ReturnType< $yuf_video_slider['value_max'] >
 	>
-	type $mol_view__sub_yuf_video_bar_6 = $mol_type_enforce<
+	type $mol_view__sub_yuf_video_bar_9 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['mid_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type $yuf_video_estimate__time_yuf_video_bar_7 = $mol_type_enforce<
+	type $yuf_video_estimate__time_yuf_video_bar_10 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['time'] >
 		,
 		ReturnType< $yuf_video_estimate['time'] >
 	>
-	type $yuf_video_estimate__duration_yuf_video_bar_8 = $mol_type_enforce<
+	type $yuf_video_estimate__duration_yuf_video_bar_11 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['duration'] >
 		,
 		ReturnType< $yuf_video_estimate['duration'] >
 	>
-	type $mol_view__sub_yuf_video_bar_9 = $mol_type_enforce<
+	type $mol_view__sub_yuf_video_bar_12 = $mol_type_enforce<
 		ReturnType< $yuf_video_bar['right_content'] >
 		,
 		ReturnType< $mol_view['sub'] >
 	>
 	export class $yuf_video_bar extends $mol_view {
+		enabled( ): boolean
 		playing( next?: boolean ): boolean
 		Playing( ): $yuf_video_play
 		fullscreen( next?: boolean ): boolean
@@ -21488,6 +21504,7 @@ declare namespace $ {
 		param( ): string
 		ids( ): readonly(string)[]
 		is_before( id: any): boolean
+		fix_destruct( ): boolean
 	}
 	
 }
@@ -21498,6 +21515,7 @@ declare namespace $.$$ {
         static dragging: Set<string>;
         adopt(transfer: DataTransfer): any;
         is_before(moved_id: string): boolean;
+        destructor(): void;
     }
 }
 
@@ -21512,6 +21530,7 @@ declare namespace $ {
 		args( ): Record<string, any>
 		receive_outside( next?: any ): any
 		Drag_image( ): any
+		fix_destruct( ): boolean
 	}
 	
 }
@@ -21525,6 +21544,7 @@ declare namespace $.$$ {
         uris(): string;
         start(e?: DragEvent): void;
         end(e?: Event): void;
+        destructor(): void;
     }
 }
 
@@ -21535,27 +21555,33 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_drop['id'] >
 	>
-	type $yuf_drop__param_yuf_drag_drop_2 = $mol_type_enforce<
+	type $yuf_drop__fix_destruct_yuf_drag_drop_2 = $mol_type_enforce<
+		ReturnType< $yuf_drag_drop['fix_destruct'] >
+		,
+		ReturnType< $yuf_drop['fix_destruct'] >
+	>
+	type $yuf_drop__param_yuf_drag_drop_3 = $mol_type_enforce<
 		ReturnType< $yuf_drag_drop['param'] >
 		,
 		ReturnType< $yuf_drop['param'] >
 	>
-	type $yuf_drop__Sub_yuf_drag_drop_3 = $mol_type_enforce<
+	type $yuf_drop__Sub_yuf_drag_drop_4 = $mol_type_enforce<
 		ReturnType< $yuf_drag_drop['Item'] >
 		,
 		ReturnType< $yuf_drop['Sub'] >
 	>
-	type $yuf_drop__ids_yuf_drag_drop_4 = $mol_type_enforce<
+	type $yuf_drop__ids_yuf_drag_drop_5 = $mol_type_enforce<
 		ReturnType< $yuf_drag_drop['ids'] >
 		,
 		ReturnType< $yuf_drop['ids'] >
 	>
-	type $yuf_drop__receive_yuf_drag_drop_5 = $mol_type_enforce<
+	type $yuf_drop__receive_yuf_drag_drop_6 = $mol_type_enforce<
 		ReturnType< $yuf_drag_drop['receive'] >
 		,
 		ReturnType< $yuf_drop['receive'] >
 	>
 	export class $yuf_drag_drop extends $yuf_drag {
+		fix_destruct( ): boolean
 		Item( ): $mol_view
 		ids( ): readonly(string)[]
 		receive( next?: any ): any
@@ -21596,72 +21622,77 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $yuf_drag_drop__param_yuf_drop_list_1 = $mol_type_enforce<
+	type $yuf_drag_drop__fix_destruct_yuf_drop_list_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list['fix_destruct'] >
+		,
+		ReturnType< $yuf_drag_drop['fix_destruct'] >
+	>
+	type $yuf_drag_drop__param_yuf_drop_list_2 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['param'] >
 		,
 		ReturnType< $yuf_drag_drop['param'] >
 	>
-	type $yuf_drag_drop__receive_yuf_drop_list_2 = $mol_type_enforce<
+	type $yuf_drag_drop__receive_yuf_drop_list_3 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['receive'] >
 		,
 		ReturnType< $yuf_drag_drop['receive'] >
 	>
-	type $yuf_drag_drop__receive_outside_yuf_drop_list_3 = $mol_type_enforce<
+	type $yuf_drag_drop__receive_outside_yuf_drop_list_4 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['receive_outside'] >
 		,
 		ReturnType< $yuf_drag_drop['receive_outside'] >
 	>
-	type $yuf_drag_drop__id_yuf_drop_list_4 = $mol_type_enforce<
+	type $yuf_drag_drop__id_yuf_drop_list_5 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['id'] >
 		,
 		ReturnType< $yuf_drag_drop['id'] >
 	>
-	type $yuf_drag_drop__ids_yuf_drop_list_5 = $mol_type_enforce<
+	type $yuf_drag_drop__ids_yuf_drop_list_6 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['ids_actual'] >
 		,
 		ReturnType< $yuf_drag_drop['ids'] >
 	>
-	type $yuf_drag_drop__Item_yuf_drop_list_6 = $mol_type_enforce<
+	type $yuf_drag_drop__Item_yuf_drop_list_7 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['Item'] >
 		,
 		ReturnType< $yuf_drag_drop['Item'] >
 	>
-	type $yuf_drop_empty__param_yuf_drop_list_7 = $mol_type_enforce<
+	type $yuf_drop_empty__param_yuf_drop_list_8 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['param'] >
 		,
 		ReturnType< $yuf_drop_empty['param'] >
 	>
-	type $yuf_drop_empty__receive_yuf_drop_list_8 = $mol_type_enforce<
+	type $yuf_drop_empty__receive_yuf_drop_list_9 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['receive'] >
 		,
 		ReturnType< $yuf_drop_empty['receive'] >
 	>
-	type $mol_button_major__sub_yuf_drop_list_9 = $mol_type_enforce<
+	type $mol_button_major__sub_yuf_drop_list_10 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_major['sub'] >
 	>
-	type $mol_button_major__hint_yuf_drop_list_10 = $mol_type_enforce<
+	type $mol_button_major__hint_yuf_drop_list_11 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['cancel_title'] >
 		,
 		ReturnType< $mol_button_major['hint'] >
 	>
-	type $mol_button_major__click_yuf_drop_list_11 = $mol_type_enforce<
+	type $mol_button_major__click_yuf_drop_list_12 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['cancel'] >
 		,
 		ReturnType< $mol_button_major['click'] >
 	>
-	type $mol_button_major__error_yuf_drop_list_12 = $mol_type_enforce<
+	type $mol_button_major__error_yuf_drop_list_13 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['error_message'] >
 		,
 		ReturnType< $mol_button_major['error'] >
 	>
-	type $yuf_drop_list_rows__13 = $mol_type_enforce<
+	type $yuf_drop_list_rows__14 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['items'] >[number]
 		,
 		$mol_view
 	>
-	type $yuf_drop_list_rows__14 = $mol_type_enforce<
+	type $yuf_drop_list_rows__15 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list['last'] >[number]
 		,
 		$mol_view
@@ -21674,6 +21705,7 @@ declare namespace $ {
 		cancel_title( ): string
 		cancel( next?: Event|null | null ): Event|null | null
 		error_message( ): string
+		fix_destruct( ): boolean
 		param( ): string
 		receive( id: any, next?: any ): any
 		receive_outside( id: any, next?: any ): any

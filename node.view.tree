@@ -3198,12 +3198,15 @@ $yuf_video_bar $mol_view
 		<= Left $mol_view
 			sub <= left_content /$mol_view
 				<= Playing $yuf_video_play
+					enabled <= enabled true
 					checked? <=> playing? false
 				<= Fullscreen $yuf_video_full
+					enabled <= enabled
 					checked? <=> fullscreen? false
 		<= Mid $mol_view
 			sub <= mid_content /$mol_view
 				<= Slider $yuf_video_slider
+					enabled <= enabled
 					value? <=> time? 0
 					value_max <= duration 100
 		<= Right $mol_view
@@ -3211,6 +3214,7 @@ $yuf_video_bar $mol_view
 				<= Time $yuf_video_estimate
 					time <= time
 					duration <= duration
+
 
 $yuf_karaoke_bar $yuf_video_bar
 	left_content /
@@ -4790,6 +4794,7 @@ $yuf_drop $mol_drop
 	param \
 	ids /string
 	is_before* false
+	fix_destruct false
 
 $yuf_drag $mol_drag
 	id \
@@ -4797,10 +4802,12 @@ $yuf_drag $mol_drag
 	args *
 	receive_outside? null
 	Drag_image null
+	fix_destruct false
 
 $yuf_drag_drop $yuf_drag
 	Sub <= Drop $yuf_drop
 		id <= id
+		fix_destruct <= fix_destruct false
 		param <= param
 		Sub <= Item $mol_view
 		ids <= ids /string
@@ -4829,6 +4836,7 @@ $yuf_drop_list $mol_list
 		error <= error_message \
 	rows /$mol_view
 		^ items /$mol_view <= Drop* $yuf_drag_drop
+			fix_destruct <= fix_destruct false
 			param <= param \
 			receive? <=> receive*? null
 			receive_outside? <=> receive_outside*? null
