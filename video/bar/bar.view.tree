@@ -3,12 +3,15 @@ $yuf_video_bar $mol_view
 		<= Left $mol_view
 			sub <= left_content /$mol_view
 				<= Playing $yuf_video_play
+					enabled <= enabled true
 					checked? <=> playing? false
 				<= Fullscreen $yuf_video_full
+					enabled <= enabled
 					checked? <=> fullscreen? false
 		<= Mid $mol_view
 			sub <= mid_content /$mol_view
 				<= Slider $yuf_video_slider
+					enabled <= enabled
 					value? <=> time? 0
 					value_max <= duration 100
 		<= Right $mol_view
@@ -16,3 +19,4 @@ $yuf_video_bar $mol_view
 				<= Time $yuf_video_estimate
 					time <= time
 					duration <= duration
+

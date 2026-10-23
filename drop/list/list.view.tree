@@ -18,6 +18,7 @@ $yuf_drop_list $mol_list
 		error <= error_message \
 	rows /$mol_view
 		^ items /$mol_view <= Drop* $yuf_drag_drop
+			fix_destruct <= fix_destruct false
 			param <= param \
 			receive? <=> receive*? null
 			receive_outside? <=> receive_outside*? null

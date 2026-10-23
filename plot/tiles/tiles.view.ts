@@ -1,12 +1,15 @@
 namespace $.$$ {
+	type Tile_id = [number, number, number]
+
 	export class $yuf_plot_tiles extends $.$yuf_plot_tiles {
-		override Tile(id: unknown) {
-			return this.tile_type(id) === 'video' ? this.Tile_video(id) : super.Tile(id)
+		override Tile(id: Tile_id) {
+			return this.tile_type(id) === 'video' ? this.Tile_video(id) : this.Tile_image(id)
 		}
 
 		override level() {
 			return this.level_override() ?? super.level()
 		}
+
 
 		@ $mol_mem
 		override transform() {
@@ -40,7 +43,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem_key
-		override tile_uri(id: [number, number, number]): string {
+		override tile_uri(id: Tile_id): string {
 			const prev = $mol_wire_probe(() => this.tile_uri(id))
 
 			this.tile_error(id, [])
@@ -53,7 +56,7 @@ namespace $.$$ {
 		}
 
 		@ $mol_mem_key
-		override tile_error(id: [number, number, number], next?: readonly Error[]) {
+		override tile_error(id: Tile_id, next?: readonly Error[]) {
 			if (! next) return []
 
 			const ids = this.tile_error_ids().filter(target => target !== id)
@@ -62,13 +65,18 @@ namespace $.$$ {
 			return next
 		}
 
+		error_event(id: Tile_id, next?: Event | null) {
+			this.tile_error(id, next ? [ new Error(next.type, { cause: next }) ] : undefined)
+			return null
+		}
+
 		override Active_video() {
 			const id = this.tile_main_id()
 			return this.Tile_video(id)
 		}
 
 		@ $mol_action
-		override click_event(id: unknown, e: Event) {
+		override click_event(id: Tile_id, e: Event) {
 			this.playing(! this.playing())
 		}
 
@@ -105,9 +113,12 @@ namespace $.$$ {
 			return [x, y]
 		}
 
+		override tile_dims_real() {
+			return $mol_error_fence(() => this.image_size(), e => ($mol_fail_log(e), new $mol_vector_2d(0, 0)))
+		}
 
 		@ $mol_mem_key
-		override tile_transform( id: readonly [number, number, number] ) {
+		override tile_transform( id: Tile_id ) {
 			const [ level, x, y ] = id
 			const [ shift_x, shift_y ] = this.shift_flipped()
 			const [ scale_x, scale_y ] = this.scale()

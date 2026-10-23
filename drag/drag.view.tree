@@ -4,3 +4,4 @@ $yuf_drag $mol_drag
 	args *
 	receive_outside? null
 	Drag_image null
+	fix_destruct false

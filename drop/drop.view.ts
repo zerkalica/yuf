@@ -30,6 +30,12 @@ namespace $.$$ {
 			if (! before_id) return moved_id === ids.at(-1)
 			return ids.indexOf(moved_id) === ids.indexOf(before_id) - 1
 		}
+		override destructor() {
+			super.destructor()
+			if (! this.fix_destruct()) return
+			const sub = $mol_wire_probe(() => this.Sub())
+			sub?.destructor()
+		}
 
 	}
 }

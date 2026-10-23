@@ -1,6 +1,7 @@
 $yuf_drag_drop $yuf_drag
 	Sub <= Drop $yuf_drop
 		id <= id
+		fix_destruct <= fix_destruct false
 		param <= param
 		Sub <= Item $mol_view
 		ids <= ids /string

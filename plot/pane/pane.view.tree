@@ -24,6 +24,8 @@ $yuf_plot_pane $mol_plot_pane
 	gap_vert 0
 	center? null
 	allow_draw false
+	error? null [Error]
+	error_message \
 	-
 	zoom_limit $mol_vector_range<number> /
 		<= zoom_min .8

@@ -3,3 +3,4 @@ $yuf_drop $mol_drop
 	param \
 	ids /string
 	is_before* false
+	fix_destruct false

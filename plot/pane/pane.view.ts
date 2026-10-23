@@ -102,7 +102,21 @@ namespace $.$$ {
 		@ $mol_mem
 		override image_size_safe(): ReturnType<typeof this.image_size> {
 			const prev = $mol_wire_probe(() => this.image_size_safe())
-			return $mol_error_fence(() => this.image_size(), e => e, p => prev ?? p)
+			try {
+				this.error(null)
+				return this.image_size()
+			} catch (e) {
+				if (! $mol_promise_like(e)) {
+					this.error([e as Error])
+					return prev ?? this.size_real()
+				}
+				if (prev) return prev
+				$mol_fail_hidden(e)
+			}
+		}
+
+		override error_message() {
+			return this.error()?.[0]?.message || ''
 		}
 
 		protected scale_default_by_size(size = 'min' as 'min' | 'max') {

@@ -1,5 +1,8 @@
 $yuf_svg_video $mol_svg_image
 	dom_name \foreignObject
+	style *
+		^
+		transform <= tile_transform null string
 	attr *
 		^
 		href null
@@ -20,22 +23,19 @@ $yuf_svg_video $mol_svg_image
 			preload <= preload \metadata
 			time? => time?
 			click_event? <=> click_event? null
-			size? <=> size_real? /number
-				256
-				144
+			error? <=> error? null
+			info? <=> info? null HTMLVideoElement
 
 $yuf_svg_video_player $mol_video_player
 	fullscreen? false
+	info? null HTMLVideoElement
+	-
 	attr *
 		^
 		xmlns \http://www.w3.org/1999/xhtml
 		preload <= preload \metadata
-	auto /
-		<= size
-	size? /number
-		256
-		144
 	event *
 		^
 		loadedmetadata? <=> metadata_event? null
 		click? <=> click_event? null
+		error? <=> error? null

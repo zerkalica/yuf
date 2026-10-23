@@ -18,5 +18,11 @@ namespace $.$$ {
 			}))
 		}
 
+		override destructor() {
+			super.destructor()
+			if (! this.fix_destruct()) return
+			const sub = $mol_wire_probe(() => this.Sub())
+			sub?.destructor()
+		}
 	}
 }
