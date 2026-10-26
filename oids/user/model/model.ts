@@ -41,6 +41,16 @@ namespace $ {
 		login?: string
 	}
 
+	function credentials_to_extra(creds: typeof Credentials_rec.Value): Extra_fields | null {
+		const pass = creds.find(rec => rec.type === 'password')
+		if (! pass ) return null
+
+		return {
+			password: pass.value,
+			password_temporary: pass.temporary ?? false,
+		}
+	}
+
 	export function $yuf_oids_user_model_credentials(next: Extra_fields): typeof Credentials_rec.Value {
 		return [
 			! next.password ? null : {
@@ -323,7 +333,7 @@ namespace $ {
 			for (const key of Object.keys(next) as (keyof $yuf_oids_user_model_data)[]) {
 				if (next[key] === undefined) continue
 				if (next[key] === null) delete (merged as Record<string, unknown>)[key]
-				else if (key !== 'attributes') (merged as Record<string, unknown>)[key] = next[key]
+				else if (key !== 'attributes' && key !== 'credentials') (merged as Record<string, unknown>)[key] = next[key]
 			}
 
 			const attributes = this.attributes_decode(next.attributes)
@@ -380,11 +390,14 @@ namespace $ {
 				is_admin ? 'PUT' : 'POST'
 			)
 
-			if (merged.password && is_admin) this.put(this.admin_user_url() + '/reset-password', {
-				type: 'password',
-				value: merged.password,
-				temporary: merged.password_temporary ?? false,
-			})
+			if ((next.credentials?.length || merged.password) && is_admin) this.put(
+				this.admin_user_url() + '/reset-password',
+				next.credentials?.[0] ?? {
+					type: 'password',
+					value: merged.password,
+					temporary: merged.password_temporary ?? false,
+				}
+			)
 
 			if (merged.password && ! is_admin) this.post(this.account_url() + '/credentials/password', {
 				currentPassword: merged.password_old,

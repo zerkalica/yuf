@@ -1,0 +1,16 @@
+{
+	"$yuf_oids_password_bid_password": "Mot de passe",
+	"$yuf_oids_password_bid_invalid_password_min_length": "Longueur minimale {0}",
+	"$yuf_oids_password_bid_invalid_password_max_length": "Longueur maximale {0}",
+	"$yuf_oids_password_bid_invalid_password_min_digits": "Doit contenir au moins {0} chiffres",
+	"$yuf_oids_password_bid_invalid_password_min_lower_case_chars": "Doit contenir au moins {0} caractères minuscules",
+	"$yuf_oids_password_bid_invalid_password_min_upper_case_chars": "Doit contenir au moins {0} caractères majuscules",
+	"$yuf_oids_password_bid_invalid_password_min_special_chars": "Doit contenir au moins {0} caractères spéciaux",
+	"$yuf_oids_password_bid_invalid_password_not_username": "Ne doit pas être égal au nom d'utilisateur",
+	"$yuf_oids_password_bid_invalid_password_not_contains_username": "Ne doit pas contenir le nom d'utilisateur",
+	"$yuf_oids_password_bid_invalid_password_not_email": "Ne doit pas être égal à l'adresse e-mail",
+	"$yuf_oids_password_bid_invalid_password_regex_pattern": "Ne correspond pas au modèle regex",
+	"$yuf_oids_password_bid_invalid_password_history": "Ne doit pas être égal à l'un des {0} derniers mots de passe",
+	"$yuf_oids_password_bid_invalid_password_blacklisted": "Le mot de passe est sur liste noire",
+	"$yuf_oids_password_bid_invalid_password_generic": "Politique de mot de passe non respectée"
+}

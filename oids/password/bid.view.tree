@@ -1,0 +1,16 @@
+$yuf_oids_password_bid $mol_view
+	password @ \Password
+	errors *string
+		invalidPasswordMinLengthMessage <= invalid_password_min_length @ \Minimum length {0}
+		invalidPasswordMaxLengthMessage <= invalid_password_max_length @ \Maximum length {0}
+		invalidPasswordMinDigitsMessage <= invalid_password_min_digits @ \Must contain at least {0} numerical digits
+		invalidPasswordMinLowerCaseCharsMessage <= invalid_password_min_lower_case_chars @ \Must contain at least {0} lower case characters
+		invalidPasswordMinUpperCaseCharsMessage <= invalid_password_min_upper_case_chars @ \Must contain at least {0} upper case characters
+		invalidPasswordMinSpecialCharsMessage <= invalid_password_min_special_chars @ \Must contain at least {0} special characters
+		invalidPasswordNotUsernameMessage <= invalid_password_not_username @ \Must not be equal to the username
+		invalidPasswordNotContainsUsernameMessage <= invalid_password_not_contains_username @ \Must not contain the username
+		invalidPasswordNotEmailMessage <= invalid_password_not_email @ \Must not be equal to the email
+		invalidPasswordRegexPatternMessage <= invalid_password_regex_pattern @ \Fails to match the regex pattern
+		invalidPasswordHistoryMessage <= invalid_password_history @ \Must not be equal to any of last {0} passwords
+		invalidPasswordBlacklistedMessage <= invalid_password_blacklisted @ \Password is blacklisted
+		invalidPasswordGenericMessage <= invalid_password_generic @ \Password policy not met

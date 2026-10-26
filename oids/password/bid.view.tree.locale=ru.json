@@ -1,0 +1,16 @@
+{
+	"$yuf_oids_password_bid_invalid_password_min_length": "Минимальная длина {0}",
+	"$yuf_oids_password_bid_invalid_password_max_length": "Максимальная длина {0}",
+	"$yuf_oids_password_bid_invalid_password_min_digits": "Должен содержать не менее {0} цифр",
+	"$yuf_oids_password_bid_invalid_password_min_lower_case_chars": "Должен содержать не менее {0} строчных букв",
+	"$yuf_oids_password_bid_invalid_password_min_upper_case_chars": "Должен содержать не менее {0} заглавных букв",
+	"$yuf_oids_password_bid_invalid_password_min_special_chars": "Должен содержать не менее {0} специальных символов",
+	"$yuf_oids_password_bid_invalid_password_not_username": "Не должен совпадать с именем пользователя",
+	"$yuf_oids_password_bid_invalid_password_not_contains_username": "Не должен содержать имя пользователя",
+	"$yuf_oids_password_bid_invalid_password_not_email": "Не должен совпадать с адресом электронной почты",
+	"$yuf_oids_password_bid_invalid_password_regex_pattern": "Не соответствует регулярному выражению",
+	"$yuf_oids_password_bid_invalid_password_history": "Не должен совпадать с любым из последних {0} паролей",
+	"$yuf_oids_password_bid_invalid_password_blacklisted": "Пароль находится в чёрном списке",
+	"$yuf_oids_password_bid_invalid_password_generic": "Политика паролей не выполнена",
+	"$yuf_oids_password_bid_password": "Пароль"
+}

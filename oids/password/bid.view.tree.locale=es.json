@@ -1,0 +1,16 @@
+{
+	"$yuf_oids_password_bid_password": "Contraseña",
+	"$yuf_oids_password_bid_invalid_password_min_length": "Longitud mínima {0}",
+	"$yuf_oids_password_bid_invalid_password_max_length": "Longitud máxima {0}",
+	"$yuf_oids_password_bid_invalid_password_min_digits": "Debe contener al menos {0} dígitos numéricos",
+	"$yuf_oids_password_bid_invalid_password_min_lower_case_chars": "Debe contener al menos {0} caracteres en minúscula",
+	"$yuf_oids_password_bid_invalid_password_min_upper_case_chars": "Debe contener al menos {0} caracteres en mayúscula",
+	"$yuf_oids_password_bid_invalid_password_min_special_chars": "Debe contener al menos {0} caracteres especiales",
+	"$yuf_oids_password_bid_invalid_password_not_username": "No debe ser igual al nombre de usuario",
+	"$yuf_oids_password_bid_invalid_password_not_contains_username": "No debe contener el nombre de usuario",
+	"$yuf_oids_password_bid_invalid_password_not_email": "No debe ser igual al correo electrónico",
+	"$yuf_oids_password_bid_invalid_password_regex_pattern": "No coincide con el patrón de expresión regular",
+	"$yuf_oids_password_bid_invalid_password_history": "No debe ser igual a ninguna de las últimas {0} contraseñas",
+	"$yuf_oids_password_bid_invalid_password_blacklisted": "La contraseña está en la lista negra",
+	"$yuf_oids_password_bid_invalid_password_generic": "No se cumple la política de contraseñas"
+}

@@ -1,0 +1,16 @@
+{
+	"$yuf_oids_password_bid_password": "كلمة المرور",
+	"$yuf_oids_password_bid_invalid_password_min_length": "الحد الأدنى للطول {0}",
+	"$yuf_oids_password_bid_invalid_password_max_length": "الحد الأقصى للطول {0}",
+	"$yuf_oids_password_bid_invalid_password_min_digits": "يجب أن يحتوي على {0} أرقام على الأقل",
+	"$yuf_oids_password_bid_invalid_password_min_lower_case_chars": "يجب أن يحتوي على {0} أحرف صغيرة على الأقل",
+	"$yuf_oids_password_bid_invalid_password_min_upper_case_chars": "يجب أن يحتوي على {0} أحرف كبيرة على الأقل",
+	"$yuf_oids_password_bid_invalid_password_min_special_chars": "يجب أن يحتوي على {0} أحرف خاصة على الأقل",
+	"$yuf_oids_password_bid_invalid_password_not_username": "يجب ألا يكون مطابقًا لاسم المستخدم",
+	"$yuf_oids_password_bid_invalid_password_not_contains_username": "يجب ألا يحتوي على اسم المستخدم",
+	"$yuf_oids_password_bid_invalid_password_not_email": "يجب ألا يكون مطابقًا للبريد الإلكتروني",
+	"$yuf_oids_password_bid_invalid_password_regex_pattern": "لا يطابق نمط التعبير النمطي",
+	"$yuf_oids_password_bid_invalid_password_history": "يجب ألا يكون مطابقًا لأي من كلمات المرور {0} الأخيرة",
+	"$yuf_oids_password_bid_invalid_password_blacklisted": "كلمة المرور موجودة في القائمة السوداء",
+	"$yuf_oids_password_bid_invalid_password_generic": "لم يتم استيفاء سياسة كلمة المرور"
+}

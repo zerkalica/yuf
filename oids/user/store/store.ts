@@ -469,7 +469,7 @@ namespace $ {
 
 		@ $mol_action
 		protected users_create_body(next: readonly User_data[], i = 0, max = this.chunk_max()) {
-			const users = next.slice(i, max)
+			const users = next.slice(i, max).map(rec => ( { ... rec, credentials: undefined }))
 			if (! users.length) return null
 			return JSON.stringify({ ifResourceExists: 'SKIP', users })
 		}
@@ -501,10 +501,11 @@ namespace $ {
 		protected user_update(next: User_data) {
 			const user = this.by_id(next.id)
 			const prev = user.data()
+			const data = { ... prev, ... next }
 
 			$mol_error_fence(
-				() => user.data({ ...prev, ...next }),
-				e => new $yuf_oids_user_store_error('User import error', { user_data: next }, e)
+				() => user.data(data),
+				e => new $yuf_oids_user_store_error('User import error', { user_data: data }, e)
 			)
 
 			return user.login()
