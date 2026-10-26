@@ -1,18 +1,15 @@
 namespace $.$$ {
 	
 	$mol_style_define($yuf_plot_tiles, {
-		Tile_video: {
-			transition: 'none',
-		},
-		// @ts-ignore
-		animation: 'none',
+		animation: { name: 'none' },
 		transition: 'none',
-		Tile: {
-			transition: 'none',
-			imageRendering: '-webkit-optimize-contrast',
-			willChange: 'transform',
-			// @ts-ignore
-			animation: 'none',
+		'>': {
+			$mol_view: {
+				willChange: 'transform',
+				transition: 'none',
+				animation: { name: 'none' },
+				imageRendering: '-webkit-optimize-contrast',
+			}
 		},
 	})
 	
