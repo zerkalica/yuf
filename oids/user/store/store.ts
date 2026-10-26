@@ -6,10 +6,6 @@ namespace $ {
 	const arr = $mol_data_array
 	const nul = $yuf_data_nul
 
-	export class $yuf_oids_user_store_error extends $mol_error_mix<{
-		user_data?: typeof $yuf_oids_user_model_dto.Value
-	}> {}
-
 
 	const Meta_response = $yuf_oids_response_data($yuf_oids_user_model_meta_dto)
 
@@ -505,10 +501,25 @@ namespace $ {
 
 			$mol_error_fence(
 				() => user.data(data),
-				e => new $yuf_oids_user_store_error('User import error', { user_data: data }, e)
+				e => new $mol_error_mix('User import', { user_data: data }, e)
 			)
 
 			return user.login()
+		}
+
+		@ $mol_action
+		protected users_update(next: readonly User_data[]) {
+			const logins = [] as string[]
+			const errors = [] as Error[]
+			for (const user_data of next) {
+				const result = $mol_error_fence<string | [Error]>(() => this.user_update(user_data), e => [ e ])
+				if (typeof result === 'string') logins.push(result)
+				else if (result[0] instanceof Error) errors.push(result[0])
+			}
+
+			if (errors.length) throw new $mol_error_mix('Users import', {}, ...errors)
+
+			return logins
 		}
 
 		@ $mol_action
@@ -548,14 +559,12 @@ namespace $ {
 			if (profile_data) this.profile_update(profile_data)
 			const stat = this.users_create(to_create)
 
-			const created = to_create.map(next => ! next.credentials?.length || ! next.id ? null : this.user_update({
-				id: next.id,
-				credentials: next.credentials
-			})).filter($mol_guard_defined)
+			const created_data = to_create.filter(next => next.credentials?.length && next.id)
+			const created = $mol_error_fence<string[] | [Error]>(() => this.users_update(created_data), e => [ e ])
+			const updated = this.users_update(to_update)
+			if (created[0] instanceof Error) throw created[0]
 
-			const updated = to_update.map(next => this.user_update(next))
-
-			return { stat, updated, created }
+			return { stat, updated, created: created as string[] }
 		}
 	}
 
