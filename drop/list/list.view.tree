@@ -17,7 +17,7 @@ $yuf_drop_list $mol_list
 		click? <=> cancel? null Event|null
 		error <= error_message \
 	rows /$mol_view
-		^ items /$mol_view <= Drop* $yuf_drag_drop
+		^ items /$mol_view <= Drop* $yuf_drop
 			fix_destruct <= fix_destruct false
 			param <= param \
 			receive? <=> receive*? null
@@ -25,7 +25,7 @@ $yuf_drop_list $mol_list
 			-
 			id <= id* \
 			ids <= ids_actual
-			Item <= Item* $mol_view
+			Sub <= Item* $mol_view
 		^ last /$mol_view <= Drop_last $yuf_drop_empty
 			param <= param
 			receive? <=> receive*0?

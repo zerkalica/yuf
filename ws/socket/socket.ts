@@ -12,7 +12,7 @@ namespace $ {
 			let url = this.url_debug() || this.url()
 
 			if (! url.match(/^wss?\:/)) {
-				url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url
+				url = this.$.$mol_dom_context.location.origin.replace(/^http/, 'ws') + url
 			}
 
 			const ws = this._native = new WebSocket( url, this.protocols() )

@@ -46,5 +46,13 @@ namespace $.$$ {
 	}
 
 	export class $yuf_drop_list_demo_catalog_item extends $.$yuf_drop_list_demo_catalog_item {
+		// constructor() {
+		// 	super()
+		// 	console.log('constr',this)
+		// }
+		// override destructor(): void {
+		// 	console.log('destr', this)
+		// 	super.destructor()
+		// }
 	}
 }

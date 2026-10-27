@@ -34,7 +34,7 @@ namespace $ {
 		ws_url() {
 			const loc = this.$.$mol_dom_context.location
 			const port = Number(loc.port || 0)
-			return port ? `${loc.protocol.replace('http', 'ws')}//${loc.hostname}:${port + 1}` : '/ws'
+			return port ? `${loc.protocol.replace(/^http/, 'ws')}//${loc.hostname}:${port + 1}` : '/ws'
 		}
 
 		code_to_error(error: number | string) {
