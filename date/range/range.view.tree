@@ -4,11 +4,14 @@ $yuf_date_range $mol_view
 			enabled <= enabled true
 			input_mask* => from_input_mask*
 			align <= from_align \bottom_right
+			time_enabled <= time_enabled false
 			moment? <=> from? null $mol_time_moment
 			clear? => from_clear?
 		<= Separator $mol_view sub / <= separator \-
 		<= To $yuf_date_range_date
 			enabled <= enabled
+			end true
+			time_enabled <= time_enabled false
 			input_mask* <= to_input_mask* <= from_input_mask*
 			align <= to_align \bottom_left
 			moment? <=> to? null $mol_time_moment
@@ -21,5 +24,6 @@ $yuf_date_range $mol_view
 
 $yuf_date_range_date $mol_date
 	moment? null $mol_time_moment
+	end false
+	time_enabled false
 	trigger_enabled <= enabled
-	parse_mask \YYYY-MM-DD hh:mm

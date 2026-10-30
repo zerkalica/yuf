@@ -10,15 +10,22 @@ namespace $.$$ {
 		}
 
 		override clear_all_enabled() {
-			return Boolean(this.from() || this.to())
+			return $mol_error_fence(() => Boolean(this.from() || this.to()), e => ($mol_fail_log(e), true))
 		}
 	}
 
 	export class $yuf_date_range_date extends $.$yuf_date_range_date {
 
 		override value_moment(next?: $mol_time_moment | null) {
+			const end = this.end()
+
 			return this.moment(next
-				? next.offset ? next : next.merge({ offset: new $mol_time_moment().offset })
+				? next.merge({
+					offset: next.offset ?? new $mol_time_moment().offset,
+					hour: next.hour ?? (end ? 23 : 0),
+					minute: next.minute ?? ( end ? 59 : 0),
+					second: next.second ?? ( end ? 59 : 0),
+				})
 				: next
 			) as $mol_time_moment
 		}
@@ -26,9 +33,7 @@ namespace $.$$ {
 		@ $mol_mem
 		override value( val? : string ) {
 
-			const moment = this.value_moment()
-
-			if( val === undefined ) return moment?.toString( 'YYYY-MM-DD hh:mm' ) ?? ''
+			if( val === undefined ) return this.value_moment()?.toString( `YYYY-MM-DD${this.time_enabled() ? ' hh:mm' : ''}` ) ?? ''
 
 			return super.value(val)
 		}
