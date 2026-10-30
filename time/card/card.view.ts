@@ -1,21 +1,18 @@
 namespace $.$$ {
 	export class $yuf_time_card extends $.$yuf_time_card {
-		protected current() {
+		override lang() { return this.$.$mol_locale.lang() }
+
+		protected native() {
 			const moment = this.moment()
-			return this.local() ? moment?.toOffset() : moment
+			return (this.local() ? moment?.toOffset() : moment)?.native ?? null
 		}
 
-		protected format_value() {
-			return this.formats()[this.format()] || this.format() || this.formats().normal
+		protected format_value(format: string) {
+			const native = this.native()
+			return ! native ? '' : this.$.$yuf_time_native_format(this.lang(), format, native)
 		}
 
-		override formatted_date() {
-			return this.current()?.toString(this.format_value()) ?? ''
-		}
-
-		override hint() {
-			return this.current()?.toString(this.formats()['hint'] ?? '') ?? ''
-		}
-		
+		override formatted_date() { return this.format_value(this.format()) }
+		override hint() { return this.format_value(this.format_hint()) }
 	}
 }

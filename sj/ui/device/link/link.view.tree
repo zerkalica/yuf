@@ -24,7 +24,6 @@ $yuf_sj_ui_device_link $yuf_link
 				content / <= Uptime $yuf_time_card
 					moment <= uptime
 					hint <= uptime_hint @ \First data at
-					format \short
 			<= Version_label $yuf_sj_ui_device_link_label
 				title <= version_label @ \Ver
 				content / <= version

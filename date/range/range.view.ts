@@ -15,10 +15,14 @@ namespace $.$$ {
 	}
 
 	export class $yuf_date_range_date extends $.$yuf_date_range_date {
-		
+
 		override value_moment(next?: $mol_time_moment | null) {
-			return this.moment(next) as $mol_time_moment
+			return this.moment(next
+				? next.offset ? next : next.merge({ offset: new $mol_time_moment().offset })
+				: next
+			) as $mol_time_moment
 		}
+
 		@ $mol_mem
 		override value( val? : string ) {
 
