@@ -23729,6 +23729,9 @@ var $;
 		from_align(){
 			return "bottom_right";
 		}
+		time_enabled(){
+			return false;
+		}
 		from(next){
 			if(next !== undefined) return next;
 			return null;
@@ -23740,6 +23743,7 @@ var $;
 			const obj = new this.$.$yuf_date_range_date();
 			(obj.enabled) = () => ((this.enabled()));
 			(obj.align) = () => ((this.from_align()));
+			(obj.time_enabled) = () => ((this.time_enabled()));
 			(obj.moment) = (next) => ((this.from(next)));
 			return obj;
 		}
@@ -23767,6 +23771,8 @@ var $;
 		To(){
 			const obj = new this.$.$yuf_date_range_date();
 			(obj.enabled) = () => ((this.enabled()));
+			(obj.end) = () => (true);
+			(obj.time_enabled) = () => ((this.time_enabled()));
 			(obj.input_mask) = (id) => ((this.to_input_mask(id)));
 			(obj.align) = () => ((this.to_align()));
 			(obj.moment) = (next) => ((this.to(next)));
@@ -23819,11 +23825,14 @@ var $;
 			if(next !== undefined) return next;
 			return null;
 		}
+		end(){
+			return false;
+		}
+		time_enabled(){
+			return false;
+		}
 		trigger_enabled(){
 			return (this.enabled());
-		}
-		parse_mask(){
-			return "YYYY-MM-DD hh:mm";
 		}
 	};
 	($mol_mem(($.$yuf_date_range_date.prototype), "moment"));
@@ -23848,18 +23857,25 @@ var $;
                 return this.clear_all_enabled() ? super.clear_all_content() : [];
             }
             clear_all_enabled() {
-                return Boolean(this.from() || this.to());
+                return $mol_error_fence(() => Boolean(this.from() || this.to()), e => ($mol_fail_log(e), true));
             }
         }
         $$.$yuf_date_range = $yuf_date_range;
         class $yuf_date_range_date extends $.$yuf_date_range_date {
             value_moment(next) {
-                return this.moment(next);
+                const end = this.end();
+                return this.moment(next
+                    ? next.merge({
+                        offset: next.offset ?? new $mol_time_moment().offset,
+                        hour: next.hour ?? (end ? 23 : 0),
+                        minute: next.minute ?? (end ? 59 : 0),
+                        second: next.second ?? (end ? 59 : 0),
+                    })
+                    : next);
             }
             value(val) {
-                const moment = this.value_moment();
                 if (val === undefined)
-                    return moment?.toString('YYYY-MM-DD hh:mm') ?? '';
+                    return this.value_moment()?.toString(`YYYY-MM-DD${this.time_enabled() ? ' hh:mm' : ''}`) ?? '';
                 return super.value(val);
             }
         }
@@ -27696,7 +27712,7 @@ var $;
                 return this._native;
             let url = this.url_debug() || this.url();
             if (!url.match(/^wss?\:/)) {
-                url = this.$.$mol_dom_context.location.origin.replace('http', 'ws') + url;
+                url = this.$.$mol_dom_context.location.origin.replace(/^http/, 'ws') + url;
             }
             const ws = this._native = new WebSocket(url, this.protocols());
             ws.onerror = e => this.onerror(e);
@@ -33358,21 +33374,19 @@ var $;
 			return "";
 		}
 		format(){
-			return "normal";
+			return "date_time_short";
 		}
-		formats(){
-			return {
-				"normal": "DD Month YY hh:mm:ss", 
-				"short": "DD.MM.YY hh:mm", 
-				"hint": "DD Month YYYY hh:mm:ss"
-			};
+		format_hint(){
+			return "date_time_long";
 		}
 		local(){
-			return false;
+			return true;
+		}
+		lang(){
+			return "en";
 		}
 		moment(){
-			const obj = new this.$["$mol_time_moment|null"]();
-			return obj;
+			return null;
 		}
 		attr(){
 			return {...(super.attr()), "title": (this.hint())};
@@ -33381,8 +33395,33 @@ var $;
 			return [(this.formatted_date())];
 		}
 	};
-	($mol_mem(($.$yuf_time_card.prototype), "moment"));
 
+
+;
+"use strict";
+var $;
+(function ($) {
+    function $yuf_time_native_format(lang, template, native) {
+        return template.replace(/(date_time|date|time)(?:_(tiny|short|medium|long|full))?/g, (_, kind, type) => {
+            const style = type === 'tiny' ? 'short' : type ? type : undefined;
+            let str = '';
+            if (kind === 'date')
+                str = native.toLocaleDateString(lang, { dateStyle: style });
+            if (kind === 'time')
+                str = native.toLocaleTimeString(lang, { timeStyle: style });
+            if (kind === 'date_time')
+                str = native.toLocaleString(lang, { timeStyle: style, dateStyle: style });
+            if (type !== 'tiny')
+                return str;
+            if (kind === 'date' || kind === 'date_time')
+                str = str.replace(/\d{2}(\d{2})/, '$1'); // YYYY -> YY
+            if (kind === 'time' || kind === 'date_time')
+                str = str.replace(/(\d{2}:\d{2}):\d{2}/, '$1'); // hh:mm:ss -> hh:mm
+            return str;
+        });
+    }
+    $.$yuf_time_native_format = $yuf_time_native_format;
+})($ || ($ = {}));
 
 ;
 "use strict";
@@ -33395,19 +33434,17 @@ var $;
     var $$;
     (function ($$) {
         class $yuf_time_card extends $.$yuf_time_card {
-            current() {
+            lang() { return this.$.$mol_locale.lang(); }
+            native() {
                 const moment = this.moment();
-                return this.local() ? moment?.toOffset() : moment;
+                return (this.local() ? moment?.toOffset() : moment)?.native ?? null;
             }
-            format_value() {
-                return this.formats()[this.format()] || this.format() || this.formats().normal;
+            format_value(format) {
+                const native = this.native();
+                return !native ? '' : this.$.$yuf_time_native_format(this.lang(), format, native);
             }
-            formatted_date() {
-                return this.current()?.toString(this.format_value()) ?? '';
-            }
-            hint() {
-                return this.current()?.toString(this.formats()['hint'] ?? '') ?? '';
-            }
+            formatted_date() { return this.format_value(this.format()); }
+            hint() { return this.format_value(this.format_hint()); }
         }
         $$.$yuf_time_card = $yuf_time_card;
     })($$ = $.$$ || ($.$$ = {}));
@@ -33460,7 +33497,6 @@ var $;
 		}
 		Uptime(){
 			const obj = new this.$.$yuf_time_card();
-			(obj.format) = () => ("short");
 			(obj.moment) = () => ((this.uptime()));
 			return obj;
 		}
@@ -35933,7 +35969,7 @@ var $;
         ws_url() {
             const loc = this.$.$mol_dom_context.location;
             const port = Number(loc.port || 0);
-            return port ? `${loc.protocol.replace('http', 'ws')}//${loc.hostname}:${port + 1}` : '/ws';
+            return port ? `${loc.protocol.replace(/^http/, 'ws')}//${loc.hostname}:${port + 1}` : '/ws';
         }
         code_to_error(error) {
             return error_codes_map['' + error] || ('' + error);
@@ -36142,7 +36178,6 @@ var $;
 			const obj = new this.$.$yuf_time_card();
 			(obj.moment) = () => ((this.uptime()));
 			(obj.hint) = () => ((this.uptime_hint()));
-			(obj.format) = () => ("short");
 			return obj;
 		}
 		Uptime_label(){
@@ -42076,6 +42111,24 @@ var $;
 		toggling_task(){
 			return null;
 		}
+		item_count_name(){
+			return "Items";
+		}
+		item_count(next){
+			if(next !== undefined) return next;
+			return 2;
+		}
+		Item_count(){
+			const obj = new this.$.$mol_number();
+			(obj.value) = (next) => ((this.item_count(next)));
+			return obj;
+		}
+		Item_count_field(){
+			const obj = new this.$.$mol_form_field();
+			(obj.name) = () => ((this.item_count_name()));
+			(obj.content) = () => ([(this.Item_count())]);
+			return obj;
+		}
 		hide_pages_title(){
 			return (this.$.$mol_locale.text("$yuf_drop_list_demo_hide_pages_title"));
 		}
@@ -42183,6 +42236,7 @@ var $;
 		Settings_page(){
 			const obj = new this.$.$mol_page();
 			(obj.body) = () => ([
+				(this.Item_count_field()), 
 				(this.Hide_pages()), 
 				(this.Toggling_check()), 
 				(this.Every_field()), 
@@ -42199,6 +42253,7 @@ var $;
 		Catalog(){
 			const obj = new this.$.$yuf_drop_list_demo_catalog();
 			(obj.menu_title) = () => ("DnD - status in top");
+			(obj.items_max) = () => ((this.item_count()));
 			(obj.param) = () => ("dnd");
 			return obj;
 		}
@@ -42235,6 +42290,9 @@ var $;
 			return ["Widget/Plugin", "Drag'n'Drop"];
 		}
 	};
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "item_count"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Item_count"));
+	($mol_mem(($.$yuf_drop_list_demo.prototype), "Item_count_field"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "hided"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "Hide_pages"));
 	($mol_mem(($.$yuf_drop_list_demo.prototype), "toggling"));

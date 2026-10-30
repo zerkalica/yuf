@@ -11437,57 +11437,72 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_5 = $mol_type_enforce<
+	type $yuf_date_range_date__time_enabled_yuf_date_range_5 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['time_enabled'] >
+		,
+		ReturnType< $yuf_date_range_date['time_enabled'] >
+	>
+	type $yuf_date_range_date__moment_yuf_date_range_6 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['from'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
 	>
-	type $mol_view__sub_yuf_date_range_6 = $mol_type_enforce<
+	type $mol_view__sub_yuf_date_range_7 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
 	>
-	type __yuf_date_range_7 = $mol_type_enforce<
+	type __yuf_date_range_8 = $mol_type_enforce<
 		Parameters< $yuf_date_range['to_clear'] >[0]
 		,
 		Parameters< ReturnType< $yuf_date_range['To'] >['clear'] >[0]
 	>
-	type $yuf_date_range_date__enabled_yuf_date_range_8 = $mol_type_enforce<
+	type $yuf_date_range_date__enabled_yuf_date_range_9 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['enabled'] >
 		,
 		ReturnType< $yuf_date_range_date['enabled'] >
 	>
-	type $yuf_date_range_date__input_mask_yuf_date_range_9 = $mol_type_enforce<
+	type $yuf_date_range_date__end_yuf_date_range_10 = $mol_type_enforce<
+		boolean
+		,
+		ReturnType< $yuf_date_range_date['end'] >
+	>
+	type $yuf_date_range_date__time_enabled_yuf_date_range_11 = $mol_type_enforce<
+		ReturnType< $yuf_date_range['time_enabled'] >
+		,
+		ReturnType< $yuf_date_range_date['time_enabled'] >
+	>
+	type $yuf_date_range_date__input_mask_yuf_date_range_12 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_input_mask'] >
 		,
 		ReturnType< $yuf_date_range_date['input_mask'] >
 	>
-	type $yuf_date_range_date__align_yuf_date_range_10 = $mol_type_enforce<
+	type $yuf_date_range_date__align_yuf_date_range_13 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to_align'] >
 		,
 		ReturnType< $yuf_date_range_date['align'] >
 	>
-	type $yuf_date_range_date__moment_yuf_date_range_11 = $mol_type_enforce<
+	type $yuf_date_range_date__moment_yuf_date_range_14 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['to'] >
 		,
 		ReturnType< $yuf_date_range_date['moment'] >
 	>
-	type $mol_button_minor__click_yuf_date_range_12 = $mol_type_enforce<
+	type $mol_button_minor__click_yuf_date_range_15 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['clear_all_click'] >
 		,
 		ReturnType< $mol_button_minor['click'] >
 	>
-	type $mol_button_minor__enabled_yuf_date_range_13 = $mol_type_enforce<
+	type $mol_button_minor__enabled_yuf_date_range_16 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['clear_all_enabled'] >
 		,
 		ReturnType< $mol_button_minor['enabled'] >
 	>
-	type $mol_button_minor__hint_yuf_date_range_14 = $mol_type_enforce<
+	type $mol_button_minor__hint_yuf_date_range_17 = $mol_type_enforce<
 		ReturnType< $yuf_date_range['clear_all_hint'] >
 		,
 		ReturnType< $mol_button_minor['hint'] >
 	>
-	type $mol_button_minor__sub_yuf_date_range_15 = $mol_type_enforce<
+	type $mol_button_minor__sub_yuf_date_range_18 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_button_minor['sub'] >
@@ -11496,6 +11511,7 @@ declare namespace $ {
 		enabled( ): boolean
 		from_input_mask( id: any): ReturnType< ReturnType< $yuf_date_range['From'] >['input_mask'] >
 		from_align( ): string
+		time_enabled( ): boolean
 		from( next?: $mol_time_moment | null ): $mol_time_moment | null
 		from_clear( next?: ReturnType< ReturnType< $yuf_date_range['From'] >['clear'] > ): ReturnType< ReturnType< $yuf_date_range['From'] >['clear'] >
 		From( ): $yuf_date_range_date
@@ -11517,8 +11533,9 @@ declare namespace $ {
 	
 	export class $yuf_date_range_date extends $mol_date {
 		moment( next?: $mol_time_moment | null ): $mol_time_moment | null
+		end( ): boolean
+		time_enabled( ): boolean
 		trigger_enabled( ): ReturnType< $yuf_date_range_date['enabled'] >
-		parse_mask( ): string
 	}
 	
 }
@@ -16575,14 +16592,19 @@ declare namespace $.$$ {
 }
 
 declare namespace $ {
+    function $yuf_time_native_format(lang: string | undefined, template: string, native: Date): string;
+}
+
+declare namespace $ {
 
 	export class $yuf_time_card extends $mol_view {
 		hint( ): string
 		formatted_date( ): string
 		format( ): string
-		formats( ): Record<string, string>
+		format_hint( ): string
 		local( ): boolean
-		moment( ): $mol_time_moment|null
+		lang( ): string
+		moment( ): $mol_time_moment | null
 		attr( ): ({ 
 			'title': ReturnType< $yuf_time_card['hint'] >,
 		})  & ReturnType< $mol_view['attr'] >
@@ -16594,8 +16616,9 @@ declare namespace $ {
 //# sourceMappingURL=card.view.tree.d.ts.map
 declare namespace $.$$ {
     class $yuf_time_card extends $.$yuf_time_card {
-        protected current(): $mol_time_moment | null | undefined;
-        protected format_value(): string;
+        lang(): string;
+        protected native(): Date | null;
+        protected format_value(format: string): string;
         formatted_date(): string;
         hint(): string;
     }
@@ -16611,12 +16634,7 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_time_duration['value'] >
 	>
-	type $yuf_time_card__format_yuf_sj_ui_uptime_2 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $yuf_time_card['format'] >
-	>
-	type $yuf_time_card__moment_yuf_sj_ui_uptime_3 = $mol_type_enforce<
+	type $yuf_time_card__moment_yuf_sj_ui_uptime_2 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_uptime['uptime'] >
 		,
 		ReturnType< $yuf_time_card['moment'] >
@@ -18012,42 +18030,37 @@ declare namespace $ {
 		,
 		ReturnType< $yuf_time_card['hint'] >
 	>
-	type $yuf_time_card__format_yuf_sj_ui_device_link_9 = $mol_type_enforce<
-		string
-		,
-		ReturnType< $yuf_time_card['format'] >
-	>
-	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_10 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_9 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_device_link['uptime_label'] >
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['title'] >
 	>
-	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_11 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_10 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['content'] >
 	>
-	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_12 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_11 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_device_link['version_label'] >
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['title'] >
 	>
-	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_13 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_12 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['content'] >
 	>
-	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_14 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__title_yuf_sj_ui_device_link_13 = $mol_type_enforce<
 		ReturnType< $yuf_sj_ui_device_link['serial_title'] >
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['title'] >
 	>
-	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_15 = $mol_type_enforce<
+	type $yuf_sj_ui_device_link_label__content_yuf_sj_ui_device_link_14 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $yuf_sj_ui_device_link_label['content'] >
 	>
-	type $mol_view__sub_yuf_sj_ui_device_link_16 = $mol_type_enforce<
+	type $mol_view__sub_yuf_sj_ui_device_link_15 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_view['sub'] >
@@ -20486,8 +20499,8 @@ declare namespace $ {
         bind_uuid?: string | null | undefined;
         spread_factors?: readonly string[] | null | undefined;
         id: string;
-        freq_range: readonly number[];
         time: string;
+        freq_range: readonly number[];
         access: "allow" | "deny";
     }) => Readonly<{
         comment?: string | undefined;
@@ -20495,8 +20508,8 @@ declare namespace $ {
         bind_uuid?: string | null | undefined;
         spread_factors?: readonly string[] | null | undefined;
         id: string;
-        freq_range: readonly number[];
         time: string;
+        freq_range: readonly number[];
         access: "allow" | "deny";
     }>) & {
         config: {
@@ -20566,8 +20579,8 @@ declare namespace $ {
             bind_uuid?: string | null | undefined;
             spread_factors?: readonly string[] | null | undefined;
             id: string;
-            freq_range: readonly number[];
             time: string;
+            freq_range: readonly number[];
             access: "allow" | "deny";
         }>;
     };
@@ -20579,8 +20592,8 @@ declare namespace $ {
             bind_uuid?: string | null | undefined;
             spread_factors?: readonly string[] | null | undefined;
             id: string;
-            freq_range: readonly number[];
             time: string;
+            freq_range: readonly number[];
             access: "allow" | "deny";
         }>;
         sdr(): $yuf_sj_jammer_sdr_model;
@@ -21772,48 +21785,48 @@ declare namespace $.$$ {
 
 declare namespace $ {
 
-	type $mol_check_box__title_yuf_drop_list_demo_1 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['hide_pages_title'] >
-		,
-		ReturnType< $mol_check_box['title'] >
-	>
-	type $mol_check_box__checked_yuf_drop_list_demo_2 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['hided'] >
-		,
-		ReturnType< $mol_check_box['checked'] >
-	>
-	type $mol_check_box__title_yuf_drop_list_demo_3 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['toggling_title'] >
-		,
-		ReturnType< $mol_check_box['title'] >
-	>
-	type $mol_check_box__checked_yuf_drop_list_demo_4 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['toggling'] >
-		,
-		ReturnType< $mol_check_box['checked'] >
-	>
-	type $mol_number__value_yuf_drop_list_demo_5 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['every_count_wait'] >
+	type $mol_number__value_yuf_drop_list_demo_1 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['item_count'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
-	type $mol_form_field__name_yuf_drop_list_demo_6 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['every_field_name'] >
+	type $mol_form_field__name_yuf_drop_list_demo_2 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['item_count_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
-	type $mol_form_field__content_yuf_drop_list_demo_7 = $mol_type_enforce<
+	type $mol_form_field__content_yuf_drop_list_demo_3 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_form_field['content'] >
 	>
+	type $mol_check_box__title_yuf_drop_list_demo_4 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['hide_pages_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_drop_list_demo_5 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['hided'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
+	type $mol_check_box__title_yuf_drop_list_demo_6 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['toggling_title'] >
+		,
+		ReturnType< $mol_check_box['title'] >
+	>
+	type $mol_check_box__checked_yuf_drop_list_demo_7 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['toggling'] >
+		,
+		ReturnType< $mol_check_box['checked'] >
+	>
 	type $mol_number__value_yuf_drop_list_demo_8 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['short_wait'] >
+		ReturnType< $yuf_drop_list_demo['every_count_wait'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
 	type $mol_form_field__name_yuf_drop_list_demo_9 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['short_wait_name'] >
+		ReturnType< $yuf_drop_list_demo['every_field_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
@@ -21823,12 +21836,12 @@ declare namespace $ {
 		ReturnType< $mol_form_field['content'] >
 	>
 	type $mol_number__value_yuf_drop_list_demo_11 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['long_wait'] >
+		ReturnType< $yuf_drop_list_demo['short_wait'] >
 		,
 		ReturnType< $mol_number['value'] >
 	>
 	type $mol_form_field__name_yuf_drop_list_demo_12 = $mol_type_enforce<
-		ReturnType< $yuf_drop_list_demo['long_wait_name'] >
+		ReturnType< $yuf_drop_list_demo['short_wait_name'] >
 		,
 		ReturnType< $mol_form_field['name'] >
 	>
@@ -21837,48 +21850,72 @@ declare namespace $ {
 		,
 		ReturnType< $mol_form_field['content'] >
 	>
-	type $mol_labeler__title_yuf_drop_list_demo_14 = $mol_type_enforce<
+	type $mol_number__value_yuf_drop_list_demo_14 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['long_wait'] >
+		,
+		ReturnType< $mol_number['value'] >
+	>
+	type $mol_form_field__name_yuf_drop_list_demo_15 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['long_wait_name'] >
+		,
+		ReturnType< $mol_form_field['name'] >
+	>
+	type $mol_form_field__content_yuf_drop_list_demo_16 = $mol_type_enforce<
+		readonly(any)[]
+		,
+		ReturnType< $mol_form_field['content'] >
+	>
+	type $mol_labeler__title_yuf_drop_list_demo_17 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo['counter_title'] >
 		,
 		ReturnType< $mol_labeler['title'] >
 	>
-	type $mol_labeler__content_yuf_drop_list_demo_15 = $mol_type_enforce<
+	type $mol_labeler__content_yuf_drop_list_demo_18 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_labeler['content'] >
 	>
-	type $mol_labeler__title_yuf_drop_list_demo_16 = $mol_type_enforce<
+	type $mol_labeler__title_yuf_drop_list_demo_19 = $mol_type_enforce<
 		ReturnType< $yuf_drop_list_demo['cat_puller_title'] >
 		,
 		ReturnType< $mol_labeler['title'] >
 	>
-	type $mol_labeler__content_yuf_drop_list_demo_17 = $mol_type_enforce<
+	type $mol_labeler__content_yuf_drop_list_demo_20 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_labeler['content'] >
 	>
-	type $mol_page__body_yuf_drop_list_demo_18 = $mol_type_enforce<
+	type $mol_page__body_yuf_drop_list_demo_21 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_page['body'] >
 	>
-	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_19 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__menu_title_yuf_drop_list_demo_22 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['menu_title'] >
 	>
-	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_20 = $mol_type_enforce<
+	type $yuf_drop_list_demo_catalog__items_max_yuf_drop_list_demo_23 = $mol_type_enforce<
+		ReturnType< $yuf_drop_list_demo['item_count'] >
+		,
+		ReturnType< $yuf_drop_list_demo_catalog['items_max'] >
+	>
+	type $yuf_drop_list_demo_catalog__param_yuf_drop_list_demo_24 = $mol_type_enforce<
 		string
 		,
 		ReturnType< $yuf_drop_list_demo_catalog['param'] >
 	>
-	type $mol_book2__pages_yuf_drop_list_demo_21 = $mol_type_enforce<
+	type $mol_book2__pages_yuf_drop_list_demo_25 = $mol_type_enforce<
 		readonly(any)[]
 		,
 		ReturnType< $mol_book2['pages'] >
 	>
 	export class $yuf_drop_list_demo extends $mol_example_large {
 		toggling_task( ): any
+		item_count_name( ): string
+		item_count( next?: number ): number
+		Item_count( ): $mol_number
+		Item_count_field( ): $mol_form_field
 		hide_pages_title( ): string
 		hided( next?: boolean ): boolean
 		Hide_pages( ): $mol_check_box

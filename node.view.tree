@@ -2363,11 +2363,14 @@ $yuf_date_range $mol_view
 			enabled <= enabled true
 			input_mask* => from_input_mask*
 			align <= from_align \bottom_right
+			time_enabled <= time_enabled false
 			moment? <=> from? null $mol_time_moment
 			clear? => from_clear?
 		<= Separator $mol_view sub / <= separator \-
 		<= To $yuf_date_range_date
 			enabled <= enabled
+			end true
+			time_enabled <= time_enabled false
 			input_mask* <= to_input_mask* <= from_input_mask*
 			align <= to_align \bottom_left
 			moment? <=> to? null $mol_time_moment
@@ -2380,8 +2383,9 @@ $yuf_date_range $mol_view
 
 $yuf_date_range_date $mol_date
 	moment? null $mol_time_moment
+	end false
+	time_enabled false
 	trigger_enabled <= enabled
-	parse_mask \YYYY-MM-DD hh:mm
 
 $yuf_date_range_demo $mol_example_small
 	title \Date range
@@ -3617,13 +3621,11 @@ $yuf_time_duration $mol_view
 		<= formatted \
 
 $yuf_time_card $mol_view
-	format \normal
-	formats *string
-		normal \DD Month YY hh:mm:ss
-		short \DD.MM.YY hh:mm
-		hint \DD Month YYYY hh:mm:ss
-	local false
-	moment $mol_time_moment|null
+	format \date_time_short
+	format_hint \date_time_long
+	local true
+	lang \en
+	moment null $mol_time_moment
 	attr *
 		^
 		title <= hint \
@@ -3633,7 +3635,6 @@ $yuf_time_card $mol_view
 $yuf_sj_ui_uptime $mol_labeler
 	title <= uptime_label @ \Uptime from {formatted_date}
 	Uptime $yuf_time_card
-		format \short
 		moment <= uptime $mol_time_moment
 		formatted_date => formatted_date
 	content /
@@ -3997,7 +3998,6 @@ $yuf_sj_ui_device_link $yuf_link
 				content / <= Uptime $yuf_time_card
 					moment <= uptime
 					hint <= uptime_hint @ \First data at
-					format \short
 			<= Version_label $yuf_sj_ui_device_link_label
 				title <= version_label @ \Ver
 				content / <= version
@@ -4866,6 +4866,10 @@ $yuf_drop_list_demo $mol_example_large
 				ids_current => ids_current2
 				spread_ids <= ids_current2
 			<= Settings_page $mol_page body /
+				<= Item_count_field $mol_form_field
+					name <= item_count_name \Items
+					content / <= Item_count $mol_number
+						value? <=> item_count? 2
 				<= Hide_pages $mol_check_box
 					title <= hide_pages_title @ \Hide, show, drag to explore bug
 					checked? <=> hided? false
@@ -4894,6 +4898,7 @@ $yuf_drop_list_demo $mol_example_large
 			^ pages /$mol_view <= Catalog $yuf_drop_list_demo_catalog
 				menu_title \DnD - status in top
 				title => cat_title
+				items_max <= item_count
 				param \dnd
 	tags /
 		\drag

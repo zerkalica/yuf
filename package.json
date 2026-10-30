@@ -574,6 +574,8 @@
     "$yuf_time_duration",
     "$yuf_time",
     "$yuf_time_card",
+    "$yuf_time_native_format",
+    "$yuf_time_native",
     "$yuf_sj_ui_device_reboot_page",
     "$yuf_sj_ui_device_status_label",
     "$yuf_sj_ui_device_status",
