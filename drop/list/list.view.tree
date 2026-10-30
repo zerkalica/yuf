@@ -25,7 +25,7 @@ $yuf_drop_list $mol_list
 			-
 			id <= id* \
 			ids <= ids_actual
-			Sub <= Item* $mol_view
+			Item <= Item* $mol_view
 		^ last /$mol_view <= Drop_last $yuf_drop_empty
 			param <= param
 			receive? <=> receive*0?
