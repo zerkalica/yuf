@@ -81,6 +81,7 @@ namespace $ {
 	const roles_admin = ['admin']
 
 	function attr_internal_to_meta2(name: string, attr: $yuf_form_attr_type): Profile_attr {
+		const enabled = attr.enabled ?? true
 		return {
 			name: attr.id || name,
 			group: attr.group || undefined,
@@ -88,8 +89,8 @@ namespace $ {
 			multivalued: attr.type === 'list',
 			required: ! attr.required ? undefined : { roles },
 			permissions: {
-				view: attr.enabled ? roles : roles_admin,
-				edit: attr.enabled ? roles : [],
+				view: enabled ? roles : roles_admin,
+				edit: enabled ? roles : [],
 			},
 			annotations: ! attr.hint ? undefined : {
 				description: attr.hint

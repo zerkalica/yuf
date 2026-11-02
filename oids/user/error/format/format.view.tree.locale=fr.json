@@ -1,0 +1,4 @@
+{
+  "$yuf_oids_user_error_format_invalid_length": "{field} est plus long que {max}",
+  "$yuf_oids_user_error_format_attr_ro": "{field} est désactivé dans l'éditeur de champs"
+}

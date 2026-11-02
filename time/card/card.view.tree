@@ -1,4 +1,5 @@
 $yuf_time_card $mol_view
+	- ${'date_time' | 'date' | 'time'}_${'tiny' | 'short' | 'medium' | 'long' | 'full'}
 	format \date_time_short
 	format_hint \date_time_long
 	local true

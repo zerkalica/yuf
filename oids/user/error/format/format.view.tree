@@ -1,0 +1,6 @@
+$yuf_oids_user_error_format $mol_view
+	errors *string
+		error-invalid-length <= invalid_length @ \{field} is longer than {max}
+		error-user-attribute-read-only <= attr_ro @ \{field} is disabled in field editor
+		error-field <= invalid_field \{field}: {message}
+	sub / <= message*0 \

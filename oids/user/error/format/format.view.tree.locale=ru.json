@@ -1,0 +1,4 @@
+{
+  "$yuf_oids_user_error_format_invalid_length": "{field} длиннее, чем {max}",
+  "$yuf_oids_user_error_format_attr_ro": "{field} отключено в редакторе полей"
+}

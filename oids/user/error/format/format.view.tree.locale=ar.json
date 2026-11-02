@@ -1,0 +1,4 @@
+{
+  "$yuf_oids_user_error_format_invalid_length": "{field} أطول من {max}",
+  "$yuf_oids_user_error_format_attr_ro": "{field} معطّل في محرر الحقول"
+}
