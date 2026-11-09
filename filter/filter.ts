@@ -1,6 +1,9 @@
 namespace $ {
 	export class $yuf_filter extends $mol_object {
-		prefix() { return '' }
+		prefix() { return `${this.param_prefix()}_${this.param_suffix()}` }
+		param_suffix() { return 'filter' }
+		param_prefix() { return '' }
+
 		pairs_separator() { return '~' }
 		key_val_separator() { return '.' }
 		array_item_separator() { return '^' }
