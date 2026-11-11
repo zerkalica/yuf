@@ -18,7 +18,7 @@
 	"$yuf_form_bid_list_min_msg": "Desde {min_val} elementos",
 	"$yuf_form_bid_max_msg": "Hasta {max_val}",
 	"$yuf_form_bid_min_msg": "Desde {min_val}",
-	"$yuf_form_bid_pattern_not_match_msg": "Máscara {mask}",
+	"$yuf_form_bid_pattern_not_match_msg": "Máscara {pattern_val_readable}",
 	"$yuf_form_bid_regexp_str_message": "No es una expresión regular",
 	"$yuf_form_bid_required_msg": "*",
 	"$yuf_form_bid_rows_max_msg": "Hasta {max_val} filas",

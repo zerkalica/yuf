@@ -16473,10 +16473,17 @@ var $;
          */
         class $mol_form_field extends $.$mol_form_field {
             state() {
-                return this.bid() ? 'bid' : null;
+                return $mol_error_fence(() => this.bid() ? 'bid' : null, e => e, p => null // do not flash all form field if bid is async
+                );
+            }
+            label() {
+                // flash label if bids async
+                // bid handles error - prevent hiding label on first fetch error
+                this.bid();
+                return super.label();
             }
             bid() {
-                return this.bids().filter(Boolean)[0] ?? '';
+                return $mol_error_fence(() => this.bids().filter(Boolean)[0] ?? '', e => ($mol_fail_log(e), this.$.$mol_error_message(e)));
             }
         }
         __decorate([
@@ -22253,6 +22260,9 @@ var $;
 			const obj = new this.$["$mol_time_moment|null"]();
 			return obj;
 		}
+		pattern_val_readable(id){
+			return "";
+		}
 		regexp_str(id){
 			return (this.regexp_str_message(id));
 		}
@@ -22454,6 +22464,11 @@ var $;
             }
             pattern_val(field) {
                 return this.params_pattern()[field] ?? super.pattern_val(field);
+            }
+            pattern_val_readable(field) {
+                const regexp = this.pattern_val(field);
+                const symbols = regexp.match(/^\[([^\]]+)\][+*]*$/)?.[1] ?? '';
+                return symbols || regexp;
             }
             min_date_val(field) {
                 const val = this.params_min_date()[field];

@@ -7315,6 +7315,7 @@ declare namespace $.$$ {
      */
     class $mol_form_field extends $.$mol_form_field {
         state(): string | null;
+        label(): readonly any[];
         bid(): string;
     }
 }
@@ -10634,6 +10635,7 @@ declare namespace $ {
 		max_val( id: any): number | null
 		min_date_val( id: any): $mol_time_moment|null
 		max_date_val( id: any): $mol_time_moment|null
+		pattern_val_readable( id: any): string
 		regexp_str( id: any): ReturnType< $yuf_form_bid['regexp_str_message'] >
 		url( id: any): ReturnType< $yuf_form_bid['url_msg'] >
 		required( id: any): ReturnType< $yuf_form_bid['required_msg'] >
@@ -10681,6 +10683,7 @@ declare namespace $.$$ {
         max_val(field: string): number;
         rows_max_val(field: string): number;
         pattern_val(field: string): string;
+        pattern_val_readable(field: string): string;
         min_date_val(field: string): $mol_time_moment;
         max_date_val(field: string): $mol_time_moment;
         pattern(field: string): string;

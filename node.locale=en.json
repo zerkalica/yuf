@@ -77,7 +77,7 @@
 	"$yuf_form_bid_list_min_msg": "From {min_val} elements",
 	"$yuf_form_bid_max_msg": "To {max_val}",
 	"$yuf_form_bid_min_msg": "From {min_val}",
-	"$yuf_form_bid_pattern_not_match_msg": "Mask {mask}",
+	"$yuf_form_bid_pattern_not_match_msg": "Mask {pattern_val_readable}",
 	"$yuf_form_bid_regexp_str_message": "Not an regexp",
 	"$yuf_form_bid_required_msg": "*",
 	"$yuf_form_bid_rows_max_msg": "To {max_val} rows",

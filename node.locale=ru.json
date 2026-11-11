@@ -71,7 +71,7 @@
 	"$yuf_form_bid_list_min_msg": "От {min_val} элементов",
 	"$yuf_form_bid_max_msg": "До {max_val}",
 	"$yuf_form_bid_min_msg": "От {min_val}",
-	"$yuf_form_bid_pattern_not_match_msg": "Маска {pattern_val}",
+	"$yuf_form_bid_pattern_not_match_msg": "Маска {pattern_val_readable}",
 	"$yuf_form_bid_regexp_str_message": "Не является регулярным выражением",
 	"$yuf_form_bid_required_msg": "*",
 	"$yuf_form_bid_rows_max_msg": "До {max_val} строк",
