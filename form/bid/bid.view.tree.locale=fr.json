@@ -10,7 +10,7 @@
   "$yuf_form_bid_list_min_msg": "À partir de {min_val} éléments",
   "$yuf_form_bid_max_msg": "Jusqu'à {max_val}",
   "$yuf_form_bid_min_msg": "À partir de {min_val}",
-  "$yuf_form_bid_pattern_not_match_msg": "Masque {mask}",
+  "$yuf_form_bid_pattern_not_match_msg": "Masque {pattern_val_readable}",
   "$yuf_form_bid_required_msg": "*",
   "$yuf_form_bid_rows_max_msg": "Jusqu'à {max_val} lignes",
   "$yuf_form_bid_str_max_msg": "Jusqu'à {max_val} caractères",

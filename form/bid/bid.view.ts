@@ -125,6 +125,12 @@ namespace $.$$ {
 			return this.params_pattern()[field] ?? super.pattern_val(field)
 		}
 
+		override pattern_val_readable(field: string) {
+			const regexp = this.pattern_val(field)
+			const symbols = regexp.match(/^\[([^\]]+)\][+*]*$/)?.[1] ?? ''
+			return symbols || regexp
+		}
+
 		@ $mol_mem_key
 		override min_date_val(field: string) {
 			const val = this.params_min_date()[field]

@@ -294,9 +294,6 @@ namespace $ {
 		@ $mol_mem_key
 		attr(key: string) { return this.$.$yuf_form_attr.make({ data: next => this.attr_data(key, next) }) }
 
-		@ $mol_action
-		make_empty() { return this.by_id('tmp_' + $mol_guid()) }
-
 		@ $mol_mem
 		deleted_ids(next?: readonly string[]): readonly string[] {
 			$mol_wire_solid()
