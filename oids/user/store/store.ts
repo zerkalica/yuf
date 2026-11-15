@@ -526,8 +526,18 @@ namespace $ {
 			this.attrs(profile_data)
 		}
 
+		import_files(files: readonly File[]) {
+			const data = files.flatMap(file => $mol_error_fence(
+				() => $yuf_oids_user_store_dto(JSON.parse($mol_wire_sync(file).text())),
+				e => new $mol_error_mix(e.message, file, e)
+			))
+
+			return this.import_info(data)
+		}
+
 		@ $mol_action
 		import_info(to_import: readonly User_data[]) {
+
 			const profile_prev = this.attrs()
 			const ids = this.ids({}) // preload
 			const preloaded = this._preloaded
