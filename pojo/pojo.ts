@@ -18,6 +18,8 @@ namespace $ {
 		[Error, parse_error],
 		[Map, parse_entries],
 		[Set, parse_set],
+		[File, parse_file],
+		[Blob, parse_blob],
 	])
 
 	export const $yuf_pojo_known = new WeakMap<{}, unknown>()
@@ -74,6 +76,14 @@ namespace $ {
 			promise: object_to_string(p),
 			stack: ! options.include_stack || ! p.stack ? undefined : String(p.stack).split('\n') || undefined
 		}
+	}
+
+	function parse_file(file: File, options: $yuf_pojo_options) {
+		return { name: file.name, type: file.type, size: file.size }
+	}
+
+	function parse_blob(blob: Blob, options: $yuf_pojo_options) {
+		return { name: blob.type, size: blob.size }
 	}
 
 	function parse_pojo(obj: Object, options: $yuf_pojo_options) {

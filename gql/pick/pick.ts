@@ -42,8 +42,8 @@ namespace $ {
 
 		const message = json?.internal?.error?.message || json?.error || error.message || ''
 		const code = json?.internal?.error?.status_code || json?.code || 'ASSERT_FAILED'
-
-		return { code, message }
+		const path = json?.path ?? undefined
+		return { code, message, path }
 	}
 
 	export function $yuf_gql_pick(json?: { data?: unknown, errors?: unknown } | null, ctx?: () => {}) {

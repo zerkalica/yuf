@@ -17,11 +17,11 @@ namespace $ {
 			}
 			json = json ?? { internal: { error: { message: text } } }
 
-			const { code , message } = $yuf_gql_pick_error(json) ?? {
+			const { code , message, path } = $yuf_gql_pick_error(json) ?? {
 				message: err?.message ?? (response.ok() ? 'Unknown' : response.message())
 			}
 
-			const cause = { code, response, json }
+			const cause = { code, json, path, response }
 
 			if (err) throw new $mol_error_mix(message, cause, err)
 			throw new Error(message, { cause })
